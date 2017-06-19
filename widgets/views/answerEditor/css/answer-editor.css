@@ -1,0 +1,5 @@
+.answer-editor .template {display: none;}
+.answer-editor {
+    padding: 20px 10px;
+    line-height: 2em;
+}

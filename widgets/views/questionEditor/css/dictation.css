@@ -1,0 +1,35 @@
+.dictation .editor {
+    border: 1px solid #444;
+    padding: 10px 20px;
+    background: #fff;
+}
+
+.dictation .selection-menu {
+    position: absolute;
+    padding: 2px;
+    border: #999;
+    background: #fff;
+}
+
+.dictation .carret {
+    display: inline-block;
+    width: 0px;
+}
+
+.dictation .item {
+    display: inline-block;
+    padding: 0 5px;
+}
+
+.dictation .item a {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.dictation .item.template {
+    display: none;
+}
+
+.dictation .dropdown-menu .option {
+    padding: 2px 5px;
+}

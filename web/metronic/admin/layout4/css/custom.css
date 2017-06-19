@@ -1,0 +1,120 @@
+/* here you can put your own css to customize and override the theme */
+
+/***
+Rounded Portlets
+***/
+/*
+.portlet {
+	border-radius: 4px !important;
+}
+
+.portlet .portlet-title {
+	border-radius: 4px 4px 0px 0px !important;
+}
+
+.portlet .portlet-body,
+.portlet .portlet-body .form-actions  {
+	border-radius: 0px 0px 4px 4px !important;
+}
+*/
+.table-finish {display: table; border-spacing:0px; border:solid 0px ghostwhite; width: 100%; overflow-wrap: break-word}
+.table-row {display:table-row; border:solid 1px ghostwhite; width: 100%}
+.table-cell {display:table-cell; border:solid 1px gainsboro; text-align: center; padding: 5px}
+.table-cell-top {display:table-cell; border:solid 1px gainsboro; text-align: center; vertical-align:middle}
+.table-cell-left {display:table-cell; border:solid 1px gainsboro; text-align: left}
+.table-cell-danger {display:table-cell; border:solid 1px gainsboro; background-color: #F3565D; text-align: center; color: white}
+.table-cell-success {display:table-cell; border:solid 1px gainsboro; background-color: #26A69A; text-align: center; color: white}
+.table-finish ul li {margin: 3px; padding: 5px; line-height: 1em}
+
+table.table-finish { width: 100%; border: 0px none; margin-top: -16px;   }
+ .table-finish th {vertical-align: middle; text-align: center;  padding-top: 20px; margin-top: 20px}
+/*table.table-finish > tbody td { padding: 7px 6px; border: 0px none; color: rgb(0, 0, 0); }
+table.table-finish > tbody > tr > th { width: auto; padding: 11px 6px; position: relative; border: 0px none; font-weight: 400; font-size: 15px; color: #0a0a0a; text-align: left; }
+table.table-finish > tbody > tr > th:first-child, table.table-finish > tbody > tr > td:first-child { width: 15%; padding-left: 20px; text-align: left; }
+table.table-finish > tbody > tr > th:first-child + th { width: 25%; }
+table.table-finish > tbody > tr > th:first-child + th + th { width: 25%; }*/
+table.table-finish > tbody > tr > th { width: 1%; vertical-align: middle; padding: 5px;}
+table.table-finish > tbody > tr > td, table.table-finish > tbody > tr.odd > td { padding: 7px 7px; border-top: 1px solid rgb(210, 225, 207); position: relative; font-size: 13px; background: transparent none repeat scroll 0px center; }
+table.table-finish > tbody > tr > td > p:first-child { margin-top: 0px; }
+table.table-finish > tbody > tr > td > p:last-child { margin-bottom: 0px; }
+/*table.table-finish > tbody > tr > td span.red { color: red; }
+table.table-finish > tbody > tr > td span.green { color: #ffffff; }
+table.table-finish > tbody > tr > td span.orange { color: orange; }*/
+table.table-finish .fa { float: none; margin: auto; cursor: pointer; }
+table.table-finish i { display: none; }
+
+table.table-finish .fa.options-text{ width: 45px; height: 52px; display: block; position: relative;  background: transparent url('/i/optionsicon.png') no-repeat scroll 0px 0px; }
+table.table-finish .fa.answer-text { width: 45px; height: 52px; display: block; position: relative;  background: transparent url('/i/youranswericon.png') no-repeat scroll 0px 0px; }
+table.table-finish .fa.correct-answer-text { width: 45px; height: 52px; display: block; position: relative;  background: transparent url('/i/correctanswericon.png') no-repeat scroll 0px 0px; }
+table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: block; position: relative;  background: transparent url('/i/explanationicon.png') no-repeat scroll 0px 0px; }
+
+.refrigerator {position: absolute; width: 700px; height: auto; left: 275px; z-index: 1;  }
+.feeding IMG { position: absolute; width: 70px;}
+.one {  top: 150px; left: 300px; z-index: 1; }
+.two { top: 160px; left: 380px; z-index: 1; }
+.three { top: 240px; left: 300px; z-index: 1; }
+.four { top: 250px; left: 380px; z-index:1; }
+.five { top: 320px; left: 300px; z-index: 1; }
+.six { top: 320px; left: 380px; z-index: 1; }
+
+.feeding IMG:hover { z-index:2;
+ -webkit-transform: scale(1.02);
+ -moz-transform: scale(1.02);
+ -o-transform: scale(1.02);}
+
+@media only screen and (max-width:400px) {
+    .refrigerator {
+        width: 300px;
+        height: auto;
+        max-width: 300px;
+        left: 10px;
+        z-index: 1;  }
+}
+@media only screen and (max-width:480px) {
+    .refrigerator {
+        width: 450px;
+        height: auto;
+        left: 10px;
+        z-index: 1;  }
+}
+
+@media only screen and (max-width:768px) {
+    .refrigerator {
+        width: 700px;
+        height: auto;
+        left: 10px;
+        z-index: 1;  }
+}
+
+@media only screen and (max-width:800px) {
+    .refrigerator {
+        width: 760px;
+        height: auto;
+        left: 10px;
+        z-index: 1;  }
+}
+
+@media only screen and (max-width:1024px) {
+    .refrigerator {
+        width: 700px;
+        height: auto;
+        left: 20px;
+        z-index: 1;  }
+}
+
+@media only screen and (max-width:1280px) {
+    .refrigerator {
+        width: 700px;
+        height: auto;
+        z-index: 1;  }
+}
+
+
+/*.table-finish {display:table; border-spacing:0px; border:solid 0px ghostwhite; width:100%; font-size: 1em}
+.table-row {display:table-row; border:solid 1px ghostwhite;}
+.table-cell {display:table-cell; border:solid 1px gainsboro; text-align: center; padding: 5px}
+.table-cell-top {display:table-cell; border:solid 1px gainsboro; text-align: center; vertical-align:middle}
+.table-cell-left {display:table-cell; border:solid 1px gainsboro; text-align: left; padding: 5px}
+.table-cell-danger {display:table-cell; border:solid 1px gainsboro; background-color: red; text-align: center; color: white}
+.table-cell-success {display:table-cell; border:solid 1px gainsboro; background-color: #26A69A; text-align: center; color: white}
+.table-finish ul li {margin: 5px; padding: 5px; line-height: 1em}*/
