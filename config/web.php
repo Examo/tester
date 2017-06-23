@@ -65,6 +65,8 @@ $config = [
     ],
     'params' => $params,
     'modules' => [
+
+
         'user' => [
             'class' => 'dektrium\user\Module',
             'adminPermission' => 'admin',
@@ -83,10 +85,12 @@ $config = [
                         Yii::$app->response->redirect(array('/user/security/login'))->send();
                         Yii::$app->end();
                     },
+
                     'on ' . \dektrium\user\controllers\RegistrationController::EVENT_AFTER_CONFIRM => function ($e) {
                         Yii::$app->response->redirect(array('/site/index'))->send();
                         Yii::$app->end();
-                    }
+                    },
+                    'layout' => '@app/views/layouts/register_login_metronic',
                 ],
             ]
         ],

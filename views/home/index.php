@@ -3,7 +3,7 @@
 ?>
 <div class="panel panel-default">
     <div class="panel-heading">
-        Моя страница
+        Мой дом
     </div>
     <div class="panel-body">
         <?php if( !count($challenges) ): ?>

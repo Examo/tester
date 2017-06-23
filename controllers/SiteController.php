@@ -40,6 +40,7 @@ class SiteController extends Controller
     public function actionIndex()
     {
         if ( \Yii::$app->user->isGuest ) {
+            $this->layout = 'metronic_sidebar';
             return $this->render('index');
         } else {
             return $this->redirect( Url::to(['home/index']) );

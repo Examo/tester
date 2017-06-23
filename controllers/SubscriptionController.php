@@ -25,6 +25,7 @@ class SubscriptionController extends Controller
         if (parent::beforeAction($action)) {
             // Authorized users only
             if ( \Yii::$app->user->isGuest ) {
+                $this->layout = 'register_login_metronic';
                 $this->redirect( ['user/login'] );
                 return false;
             }
