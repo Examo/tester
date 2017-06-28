@@ -19,15 +19,16 @@ $this->params['breadcrumbs'][] = $this->title;
     <tbody>
     <th class="col-md-1">ID недели</th>
     <th class="col-md-10">Тесты</th>
+    <?php  foreach ($course->challenges as $num => $challenge): ?>
         <tr>
             <td>
+                <?php echo $challenge->week ?>
             </td>
             <td>
-  <?php  foreach ($course->challenges as $num => $challenge): ?>
-      <?php echo '<span class="badge badge-success">ID ' . $challenge->id . '</span>' ?>
-  <?php endforeach;?>
+                <?php echo '<span class="badge badge-success">ID ' . $challenge->id . '</span>' ?>
             </td>
         </tr>
+    <?php endforeach;?>
     </tbody>
 </table>
 </div>

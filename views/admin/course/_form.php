@@ -26,6 +26,8 @@ use app\models\Subject;
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
+    <?= $form->field($model, 'start_time')->label('Дата начала') ?>
+
     <?= $form->field($model, 'subjects')->widget(SubsetWidget::className(), [
         'form' => $form,
         'child' => Subject::className(),

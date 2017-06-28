@@ -19,6 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a(Yii::t('app', 'Create') . ' ' . Yii::t('challenge', 'Challenge'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -68,6 +69,13 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'description',
+                'format' => 'ntext',
+                'headerOptions' => [
+                    'class' => 'col-md-2'
+                ],
+            ],
+            [
+                'attribute' => 'week',
                 'format' => 'ntext',
                 'headerOptions' => [
                     'class' => 'col-md-2'

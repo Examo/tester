@@ -38,6 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'grade_number',
             'name:ntext',
             'description:ntext',
+            'week',
             'exercise_number',
             'exercise_challenge_number',
         ],

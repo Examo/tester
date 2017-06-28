@@ -82,6 +82,8 @@ $modelSettings = $model->settings ? $model->settings : new \app\models\Challenge
 
             <?= $form->field($model, 'grade_number')->textInput() ?>
 
+            <?= $form->field($model, 'week') ?>
+
             <?= $form->field($model, 'exercise_number')->textInput() ?>
 
             <?= $form->field($model, 'exercise_challenge_number')->textInput() ?>

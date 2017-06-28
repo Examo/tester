@@ -12,7 +12,7 @@ return [
     'Exercise Challenge Number' => 'Номер теста на занятии',
     'Challenge Has Questions' => 'Задания',
     'Challenge Generations' => 'Правила генерации',
-    'Weeks' => 'Недели',
+    'Weeks' => 'Недели тестов',
 
     // Settings
     'Settings' => 'Настройки',

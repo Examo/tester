@@ -49,6 +49,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 
             [
+                'attribute' => 'start_time',
+                'format' => 'ntext',
+                'headerOptions' => [
+                    'class' => 'col-md-3'
+                ],
+            ],
+
+            [
                 'class' => 'yii\grid\ActionColumn',
                 'headerOptions' => [
                     'class' => 'col-md-1'

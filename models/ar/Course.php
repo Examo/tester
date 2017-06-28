@@ -40,6 +40,7 @@ class Course extends \app\components\ActiveRecord
             [['name', 'description'], 'string'],
             [['position', 'discipline_id'], 'integer'],
             [['discipline_id'], 'required'],
+            [['start_time'], 'date', 'format' => 'yyyy-M-d H:m:s'],
             [['discipline_id'], 'exist', 'skipOnError' => true, 'targetClass' => Discipline::className(), 'targetAttribute' => ['discipline_id' => 'id']],
         ];
     }
@@ -55,6 +56,7 @@ class Course extends \app\components\ActiveRecord
             'description' => 'Description',
             'position' => 'Position',
             'discipline_id' => 'Discipline ID',
+            'start_time' => 'Start Time'
         ];
     }
 
