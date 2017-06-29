@@ -3905,3 +3905,15 @@
 ::1 - - [29/Jun/2017:20:01:30 +0300] "GET /assets/66215a06/jquery-ui.js HTTP/1.1" 304 -
 ::1 - - [29/Jun/2017:20:01:30 +0300] "GET /assets/9662f7aa/yii.js HTTP/1.1" 304 -
 ::1 - - [29/Jun/2017:20:01:30 +0300] "GET /debug/default/toolbar?tag=5955326a176b8 HTTP/1.1" 200 11251
+::1 - - [29/Jun/2017:20:22:02 +0300] "GET /assets/42cf6dbe/css/bootstrap.css HTTP/1.1" 200 146010
+::1 - - [29/Jun/2017:20:22:02 +0300] "GET /css/site.css HTTP/1.1" 200 2434
+::1 - - [29/Jun/2017:20:22:02 +0300] "GET /assets/5de79a86/jquery.js HTTP/1.1" 200 257551
+::1 - - [29/Jun/2017:20:22:02 +0300] "GET /assets/9662f7aa/yii.js HTTP/1.1" 200 16019
+::1 - - [29/Jun/2017:20:22:02 +0300] "GET /assets/66215a06/themes/smoothness/jquery-ui.css HTTP/1.1" 200 35212
+::1 - - [29/Jun/2017:20:22:02 +0300] "GET /assets/9662f7aa/yii.gridView.js HTTP/1.1" 200 7175
+::1 - - [29/Jun/2017:20:22:02 +0300] "GET /assets/fd30b3c3/jquery.pjax.js HTTP/1.1" 200 28596
+::1 - - [29/Jun/2017:20:22:02 +0300] "GET /assets/66215a06/jquery-ui.js HTTP/1.1" 200 470596
+::1 - - [29/Jun/2017:20:22:01 +0300] "GET /admin/discipline/index HTTP/1.1" 200 17506
+::1 - - [29/Jun/2017:20:22:02 +0300] "GET /assets/42cf6dbe/js/bootstrap.js HTTP/1.1" 200 69707
+::1 - - [29/Jun/2017:20:22:02 +0300] "GET /assets/42cf6dbe/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+::1 - - [29/Jun/2017:20:22:02 +0300] "GET /debug/default/toolbar?tag=59553739e0741 HTTP/1.1" 200 11255

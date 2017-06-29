@@ -1,17 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-use kartik\select2\Select2;
-use app\models\Course;
-use app\models\Subject;
-use app\models\ChallengeType;
-use app\models\Element;
-use app\models\ChallengeMark;
-use app\models\ChallengeGeneration;
-use app\models\QuestionType;
-use app\widgets\SubsetWidget;
-use app\widgets\QuestionsList;
 
 $this->title = Yii::t('challenge', 'Weeks');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Admin'), 'url' => ['admin/index']];
@@ -25,23 +14,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a(Yii::t('app', 'Create') . ' новый ' . Yii::t('challenge', 'Challenge'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-
-<!--<table class="table table-striped table-bordered">
-    <tbody>
-    <th class="col-md-1">ID недели</th>
-    <th class="col-md-10">Тесты</th>
-    <?php  //foreach ($course->challenges as $num => $challenge): ?>
-        <tr>
-            <td>
-                <?php //echo $challenge->week ?>
-            </td>
-            <td>
-                <?php //echo '<span class="badge badge-success">ID ' . $challenge->id . '</span>' ?>
-            </td>
-        </tr>
-    <?php //endforeach;?>
-    </tbody>
-</table>-->
 
     <?php $testByWeeks = []; ?>
     <table class="table table-striped table-bordered">
