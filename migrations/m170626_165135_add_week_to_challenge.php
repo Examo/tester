@@ -9,7 +9,7 @@ class m170626_165135_add_week_to_challenge extends Migration
     {
         $this->addColumn(
             'challenge',
-            'week',
+            'weeks',
             Schema::TYPE_SMALLINT . ' NOT NULL'
         );
     }

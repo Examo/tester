@@ -960,7 +960,7 @@
             html += '<thead>';
             html += '<tr>';
 
-            // add empty cell for week number
+            // add empty cell for weeks number
             if (this.showWeekNumbers)
                 html += '<th></th>';
 
@@ -986,9 +986,9 @@
             html += '</tr>';
             html += '<tr>';
 
-            // add week number label
+            // add weeks number label
             if (this.showWeekNumbers)
-                html += '<th class="week">' + this.locale.weekLabel + '</th>';
+                html += '<th class="weeks">' + this.locale.weekLabel + '</th>';
 
             $.each(this.locale.daysOfWeek, function (index, dayOfWeek) {
                 html += '<th>' + dayOfWeek + '</th>';
@@ -1001,9 +1001,9 @@
             for (var row = 0; row < 6; row++) {
                 html += '<tr>';
 
-                // add week number
+                // add weeks number
                 if (this.showWeekNumbers)
-                    html += '<td class="week">' + calendar[row][0].week() + '</td>';
+                    html += '<td class="weeks">' + calendar[row][0].week() + '</td>';
 
                 for (var col = 0; col < 7; col++) {
                     var cname = 'available ';

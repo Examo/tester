@@ -19,7 +19,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a(Yii::t('app', 'Create') . ' ' . Yii::t('challenge', 'Challenge'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-
+    <p>
+        <?= Html::a(Yii::t('challenge', 'Weeks'), ['weeks'], ['class' => 'btn btn-primary']) ?>
+    </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,

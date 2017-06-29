@@ -770,16 +770,16 @@
 				if (prevMonth.getUTCDay() === this.o.weekStart){
 					html.push('<tr>');
 					if (this.o.calendarWeeks){
-						// ISO 8601: First week contains first thursday.
-						// ISO also states week starts on Monday, but we can be more abstract here.
+						// ISO 8601: First weeks contains first thursday.
+						// ISO also states weeks starts on Monday, but we can be more abstract here.
 						var
-							// Start of current week: based on weekstart/current date
+							// Start of current weeks: based on weekstart/current date
 							ws = new Date(+prevMonth + (this.o.weekStart - prevMonth.getUTCDay() - 7) % 7 * 864e5),
-							// Thursday of this week
+							// Thursday of this weeks
 							th = new Date(Number(ws) + (7 + 4 - ws.getUTCDay()) % 7 * 864e5),
 							// First Thursday of year, year from thursday
 							yth = new Date(Number(yth = UTCDate(th.getUTCFullYear(), 0, 1)) + (7 + 4 - yth.getUTCDay())%7*864e5),
-							// Calendar week: ms between thursdays, div ms per day, div 7 days
+							// Calendar weeks: ms between thursdays, div ms per day, div 7 days
 							calWeek =  (th - yth) / 864e5 / 7 + 1;
 						html.push('<td class="cw">'+ calWeek +'</td>');
 

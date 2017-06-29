@@ -159,7 +159,7 @@ $.extend(Countdown.prototype, {
 
 	/* Convert a set of periods into seconds.
 	   Averaged for months and years.
-	   @param  periods  (number[7]) the periods per year/month/week/day/hour/minute/second
+	   @param  periods  (number[7]) the periods per year/month/weeks/day/hour/minute/second
 	   @return  (number) the corresponding number of seconds */
 	periodsToSeconds: function(periods) {
 		return periods[0] * 31557600 + periods[1] * 2629800 + periods[2] * 604800 +
@@ -668,7 +668,7 @@ $.extend(Countdown.prototype, {
 	   @param  significant  (number) the number of periods with values to show, zero for all
 	   @param  now          (Date) the current date and time
 	   @return  (number[7]) the current time periods (always positive)
-	            by year, month, week, day, hour, minute, second */
+	            by year, month, weeks, day, hour, minute, second */
 	_calculatePeriods: function(inst, show, significant, now) {
 		// Find endpoints
 		inst._now = now;

@@ -2,14 +2,15 @@
 
 use yii\helpers\Html;
 
-$this->title = Yii::t('challenge', 'Weeks');
+$this->title = Yii::t('challenge', 'Weeks') . ' по курсу "' . $course->name . '"';
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Admin'), 'url' => ['admin/index']];
 $this->params['breadcrumbs'][] = ['label' => Yii::t('challenge', 'Challenges'), 'url' => ['admin/challenge/index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('challenge', 'Weeks'), 'url' => ['admin/challenge/weeks']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="challenge-index">
 
-    <h1><?= Html::encode($this->title) ?> по курсу "<?= $course->name?>"</h1>
+    <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
         <?= Html::a(Yii::t('app', 'Create') . ' новый ' . Yii::t('challenge', 'Challenge'), ['create'], ['class' => 'btn btn-success']) ?>

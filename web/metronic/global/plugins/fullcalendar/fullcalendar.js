@@ -132,7 +132,7 @@ function generateWeekColumnFormat(options, langData) {
 	var format = langData.longDateFormat('L'); // for the format like "MM/DD/YYYY"
 	format = format.replace(/^Y+[^\w\s]*|[^\w\s]*Y+$/g, ''); // strip the year off the edge, as well as other misc non-whitespace chars
 	if (options.isRTL) {
-		format += ' ddd'; // for RTL, add day-of-week to end
+		format += ' ddd'; // for RTL, add day-of-weeks to end
 	}
 	else {
 		format = 'ddd ' + format; // for LTR, add day-of-week to beginning
@@ -489,7 +489,7 @@ function Calendar(element, instanceOptions) {
 	};
 
 
-	// Calculates the week number for a moment according to the calendar's
+	// Calculates the weeks number for a moment according to the calendar's
 	// `weekNumberCalculation` setting.
 	t.calculateWeekNumber = function(mom) {
 		var calc = options.weekNumberCalculation;
@@ -971,7 +971,7 @@ function Calendar(element, instanceOptions) {
 			viewName = viewName || 'day';
 			viewStr = header.getViewsWithButtons().join(' '); // space-separated string of all the views in the header
 
-			// try to match a general view name, like "week", against a specific one, like "agendaWeek"
+			// try to match a general view name, like "weeks", against a specific one, like "agendaWeek"
 			match = viewStr.match(new RegExp('\\w+' + capitaliseFirstLetter(viewName)));
 
 			// fall back to the day view being used in the header
@@ -4778,7 +4778,7 @@ function DayGrid(view) {
 DayGrid.prototype = createObject(Grid.prototype); // declare the super-class
 $.extend(DayGrid.prototype, {
 
-	numbersVisible: false, // should render a row for day/week numbers? manually set by the view
+	numbersVisible: false, // should render a row for day/weeks numbers? manually set by the view
 	cellDuration: moment.duration({ days: 1 }), // required for Grid.event.js. Each cell is always a single day
 	bottomCoordPadding: 0, // hack for extending the hit area for the last row of the coordinate grid
 
@@ -7147,9 +7147,9 @@ function View(calendar) {
 
 	// internals
 	var hiddenDays = opt('hiddenDays') || []; // array of day-of-week indices that are hidden
-	var isHiddenDayHash = []; // is the day-of-week hidden? (hash with day-of-week-index -> bool)
+	var isHiddenDayHash = []; // is the day-of-weeks hidden? (hash with day-of-weeks-index -> bool)
 	var cellsPerWeek;
-	var dayToCellMap = []; // hash from dayIndex -> cellIndex, for one week
+	var dayToCellMap = []; // hash from dayIndex -> cellIndex, for one weeks
 	var cellToDayMap = []; // hash from cellIndex -> dayIndex, for one week
 	var isRTL = opt('isRTL');
 
@@ -7248,7 +7248,7 @@ function View(calendar) {
 
 	// cell offset -> day offset
 	function cellOffsetToDayOffset(cellOffset) {
-		var day0 = t.start.day(); // first date's day of week
+		var day0 = t.start.day(); // first date's day of weeks
 		cellOffset += dayToCellMap[day0]; // normlize cellOffset to beginning-of-week
 		return Math.floor(cellOffset / cellsPerWeek) * 7 + // # of days from full weeks
 			cellToDayMap[ // # of days from partial last week
@@ -7285,7 +7285,7 @@ function View(calendar) {
 		var day0 = t.start.day(); // first date's day of week
 		dayOffset += day0; // normalize dayOffset to beginning-of-week
 		return Math.floor(dayOffset / 7) * cellsPerWeek + // # of cells from full weeks
-			dayToCellMap[ // # of cells from partial last week
+			dayToCellMap[ // # of cells from partial last weeks
 				(dayOffset % 7 + 7) % 7 // crazy math to handle negative dayOffsets
 			] -
 			dayToCellMap[day0]; // adjustment for beginning-of-week normalization
@@ -7482,7 +7482,7 @@ $.extend(BasicView.prototype, {
 				'<thead>' +
 					'<tr>' +
 						'<td class="' + this.widgetHeaderClass + '">' +
-							this.dayGrid.headHtml() + // render the day-of-week headers
+							this.dayGrid.headHtml() + // render the day-of-weeks headers
 						'</td>' +
 					'</tr>' +
 				'</thead>' +
@@ -7714,7 +7714,7 @@ $.extend(BasicView.prototype, {
 
 ;;
 
-/* A month view with day cells running in rows (one-per-week) and columns
+/* A month view with day cells running in rows (one-per-weeks) and columns
 ----------------------------------------------------------------------------------------------------------------------*/
 
 setDefaults({
@@ -8031,7 +8031,7 @@ $.extend(AgendaView.prototype, {
 	},
 
 
-	// Generates the HTML that will go before the day-of week header cells.
+	// Generates the HTML that will go before the day-of weeks header cells.
 	// Queried by the TimeGrid subcomponent when generating rows. Ordering depends on isRTL.
 	headIntroHtml: function() {
 		var date;

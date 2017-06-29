@@ -37,7 +37,7 @@ $this->title = \Yii::$app->name;
                     <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/challenge/index') ?>">Список</a>
                     <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/challenge/create') ?>">Создать</a>
                     <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/challengetype/index') ?>">Типы тестов</a>
-                    <a class="btn btn-default disabled" href="<?= yii\helpers\Url::toRoute('admin/challenge/week/index') ?>">Тесты по неделям</a>
+                    <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/challenge/weeks') ?>">Тесты по неделям</a>
                 </p>
             </div>
             <div class="col-lg-4">

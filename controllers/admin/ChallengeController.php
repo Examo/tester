@@ -96,4 +96,20 @@ class ChallengeController extends BaseAdminCrudController
         }
     }
 
+    public function actionWeeks()
+    {
+        //$this->layout = 'metronic_sidebar';
+        $courses = Course::find()->all();
+
+        if (!empty($courses)) {
+            return $this->render('weeks/index',
+                [
+                    'courses' => $courses,
+
+                ]);
+        } else {
+            throw new NotFoundHttpException('Course not found.');
+        }
+    }
+
 }
