@@ -33,14 +33,12 @@ $config = [
         ],
         'mailer' => require(__DIR__ . '/mailer.php'),
         'db' => require(__DIR__ . '/db.php'),
-
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
         ],
-
         'i18n' => [
             'translations' => [
                 '*' => [
@@ -54,7 +52,6 @@ $config = [
                 ],
             ],
         ],
-
         'view' => [
             'theme' => [
                 'pathMap' => [
@@ -65,8 +62,6 @@ $config = [
     ],
     'params' => $params,
     'modules' => [
-
-
         'user' => [
             'class' => 'dektrium\user\Module',
             'adminPermission' => 'admin',

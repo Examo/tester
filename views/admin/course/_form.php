@@ -1,5 +1,6 @@
 <?php
 
+use kartik\date\DatePicker;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\widgets\SubsetWidget;
@@ -26,7 +27,13 @@ use app\models\Subject;
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'start_time')->label('Дата начала') ?>
+    <?= $form->field($model, 'start_time')->widget(DatePicker::classname(), [
+        'options' => ['placeholder' => Yii::t('course', 'Введите дату начала')],
+        'pluginOptions' => [
+            'autoclose' => true,
+            'format' => 'yyyy-mm-dd 00:00:00'
+        ]
+    ]); ?>
 
     <?= $form->field($model, 'subjects')->widget(SubsetWidget::className(), [
         'form' => $form,
