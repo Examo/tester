@@ -19,6 +19,7 @@ class AdminController extends BaseAdminController
      */
     public function actionIndex()
     {
+        $this->layout = 'metronic';
         return $this->render('index');
     }
 

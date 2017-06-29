@@ -1,6 +1,17 @@
 <?php
 
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+use kartik\select2\Select2;
+use app\models\Course;
+use app\models\Subject;
+use app\models\ChallengeType;
+use app\models\Element;
+use app\models\ChallengeMark;
+use app\models\ChallengeGeneration;
+use app\models\QuestionType;
+use app\widgets\SubsetWidget;
+use app\widgets\QuestionsList;
 
 $this->title = Yii::t('challenge', 'Weeks');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Admin'), 'url' => ['admin/index']];
@@ -15,25 +26,46 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a(Yii::t('app', 'Create') . ' новый ' . Yii::t('challenge', 'Challenge'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-<table class="table table-striped table-bordered">
+<!--<table class="table table-striped table-bordered">
     <tbody>
     <th class="col-md-1">ID недели</th>
     <th class="col-md-10">Тесты</th>
-    <?php  foreach ($course->challenges as $num => $challenge): ?>
+    <?php  //foreach ($course->challenges as $num => $challenge): ?>
         <tr>
             <td>
-                <?php echo $challenge->week ?>
+                <?php //echo $challenge->week ?>
             </td>
             <td>
-                <?php echo '<span class="badge badge-success">ID ' . $challenge->id . '</span>' ?>
+                <?php //echo '<span class="badge badge-success">ID ' . $challenge->id . '</span>' ?>
+            </td>
+        </tr>
+    <?php //endforeach;?>
+    </tbody>
+</table>-->
+
+    <?php $testByWeeks = []; ?>
+    <table class="table table-striped table-bordered">
+        <tbody>
+        <th class="col-md-1">ID недели</th>
+        <th class="col-md-10">Тесты</th>
+    <?php foreach ($course->challenges as $challenge): ?>
+    <?php $testByWeeks[$challenge->week][] = $challenge->id; ?>
+    <?php endforeach; ?>
+    <?php ksort($testByWeeks);?>
+    <?php foreach ($testByWeeks as $week => $tests):?>
+        <tr>
+            <td>
+        <?= $week?>
+            </td>
+            <td>
+            <?php foreach ($tests as $test): ?>
+                <?php echo '<span class="badge badge-success">ID ' . $test . '</span>' ?>
+            <?php endforeach; ?>
             </td>
         </tr>
     <?php endforeach;?>
-    </tbody>
-</table>
+        </tbody>
+    </table>
 </div>
 
-<div>
 
-
-</div>

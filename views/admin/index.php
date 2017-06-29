@@ -5,25 +5,19 @@
 $this->title = \Yii::$app->name;
 ?>
 <div class="site-index">
-
-    <div class="row">
-        <div class="col-md-10">
-            <!-- PLACEHOLDER!!! -->
-            <div style="width: 100%; height: 20em; background: #eee url(/i/donut.png) center center no-repeat; background-size: contain; border: 1px solid #666;"></div>
-        </div>
-        <!--<div class="col-md-2">
-            <div class="btn-group-vertical" role="group" aria-label="...">
-                <a href="#" class="btn btn-default disabled active">Statistics Mode 1</a>
-                <a href="#" class="btn btn-default disabled">Statistics Mode 2</a>
-                <a href="#" class="btn btn-default disabled">Statistics Mode 3</a>
-            </div>
-
-        </div>-->
-    </div>
-
     <div class="body-content">
         <hr>
         <div class="row">
+            <div class="col-lg-4">
+                <h2>Предметы</h2>
+
+                <p>Создание предметов обучения для использования в курсах, тестах и заданиях</p>
+
+                <p>
+                    <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/discipline/index') ?>">Список</a>
+                    <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/discipline/create') ?>">Создать</a>
+                </p>
+            </div>
             <div class="col-lg-4">
                 <h2>Курсы</h2>
 
@@ -37,11 +31,13 @@ $this->title = \Yii::$app->name;
             <div class="col-lg-4">
                 <h2>Тесты</h2>
 
-                <p>Настройка параметров генерации тестов на основе базы заданий</p>
+                <p>Создание тестов, настройка параметров их генерации на основе базы заданий, создание типов тестов, "Тесты по неделям"</p>
 
                 <p>
                     <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/challenge/index') ?>">Список</a>
                     <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/challenge/create') ?>">Создать</a>
+                    <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/challengetype/index') ?>">Типы тестов</a>
+                    <a class="btn btn-default disabled" href="<?= yii\helpers\Url::toRoute('admin/challenge/week/index') ?>">Тесты по неделям</a>
                 </p>
             </div>
             <div class="col-lg-4">
@@ -58,9 +54,9 @@ $this->title = \Yii::$app->name;
         <hr>
         <div class="row">
             <div class="col-lg-4">
-                <h2>Игра</h2>
+                <h2>Игровые элементы</h2>
 
-                <p>Управление настройками игровых элементов обучения</p>
+                <p>Управление настройками игровых элементов обучения: "Еда", "Учёба", "Уборка"...</p>
 
                 <p>
                     <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/element/index') ?>">Элементы</a>
@@ -85,8 +81,6 @@ $this->title = \Yii::$app->name;
                 <p>
                     <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('rbac/role/index') ?>">Роли</a>
                     <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('rbac/permission/index') ?>">Разрешения</a>
-                    <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/challengetype/index') ?>">Типы тестов</a>
-                    <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/discipline/index') ?>">Предметы</a>
                 </p>
             </div>
         </div>

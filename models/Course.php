@@ -136,4 +136,5 @@ class Course extends \app\models\ar\Course
 
         return round($attempts / count($challenges) * 100);
     }
+
 }

@@ -1,6 +1,6 @@
 <?php
-    use yii\widgets\ActiveForm;
-    use app\widgets\AnswerEditor;
+use yii\widgets\ActiveForm;
+use app\widgets\AnswerEditor;
 
     $currentQuestion = $session->getCurrentQuestionNumber();
     $totalQuestions = $challenge->getQuestionsCount();
