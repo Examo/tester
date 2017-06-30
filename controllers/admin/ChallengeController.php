@@ -92,7 +92,7 @@ class ChallengeController extends BaseAdminCrudController
                     'challenges' => $course->challenges,
                 ]);
         } else {
-            throw new NotFoundHttpException('Course not found.');
+            throw new NotFoundHttpException('Тестов по этому курсу пока ещё не существует!');
         }
     }
 
@@ -108,7 +108,7 @@ class ChallengeController extends BaseAdminCrudController
 
                 ]);
         } else {
-            throw new NotFoundHttpException('Course not found.');
+            throw new NotFoundHttpException('Тестов по этому курсу пока ещё не существует!');
         }
     }
 

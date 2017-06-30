@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\models\ar\Challenge;
 
 $this->title = Yii::t('challenge', 'Weeks');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Admin'), 'url' => ['admin/index']];
@@ -15,6 +16,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     </p>
     <?php foreach ($courses as $course): ?>
-        <?= Html::a(Yii::t('challenge', 'Weeks') . ' по курсу "' . $course->name .'"', ['week?course_id=' . $course->id], ['class' => 'btn btn-primary']) ?>
+        <p><?= Html::a('По курсу "' . $course->name .'"', ['week?course_id=' . $course->id], ['class' => 'btn btn-primary']) ?></p>
     <?php endforeach; ?>
 </div>
