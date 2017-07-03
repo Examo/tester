@@ -4,26 +4,14 @@ namespace app\models;
 
 use Yii;
 
-class Feeding extends \app\components\ActiveRecord
+class Clean extends \app\components\ActiveRecord
 {
-    const FEEDING_CONST = ['one', 'two', 'three', 'four', 'five', 'six'];
-    public $tests = 'TASTE SOME TEST';
-    public $image = ['/i/orange.png',
-        '/i/cherry-pie.png',
-        '/i/milk-carton.png',
-        '/i/potato-chips.png',
-        '/i/sausage.png',
-        '/i/meat.png'];
-    public $title = 'Первый тест по теме Приставки ПРЕ- и ПРИ-';
-    public $time = 5;
-    public $percent = 10;
-
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'comment';
+        return '';
     }
 
     /**
@@ -41,20 +29,8 @@ class Feeding extends \app\components\ActiveRecord
 
     public function getTests()
     {
-        return $this->tests;
+        // return $this->tests;
     }
-
-    public function getFeedingConst($number)
-    {
-        return $one = self::FEEDING_CONST[$number];
-    }
-
-
-    public function getImageFeeding($i)
-    {
-        return $this->image[$i];
-    }
-
 
     public function getUser()
     {

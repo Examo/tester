@@ -40,6 +40,9 @@ $this->title = \Yii::$app->name;
                     <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/challenge/weeks') ?>">Тесты по неделям</a>
                 </p>
             </div>
+            </div>
+        <hr>
+        <div class="row">
             <div class="col-lg-4">
                 <h2>Задания</h2>
 
@@ -50,9 +53,7 @@ $this->title = \Yii::$app->name;
                     <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/question/create') ?>">Создать</a>
                 </p>
             </div>
-        </div>
-        <hr>
-        <div class="row">
+
             <div class="col-lg-4">
                 <h2>Игровые элементы</h2>
 
@@ -61,16 +62,6 @@ $this->title = \Yii::$app->name;
                 <p>
                     <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/element/index') ?>">Элементы</a>
                     <a class="btn btn-default disabled" href="<?= yii\helpers\Url::toRoute('admin/element/index') ?>">Предметы</a>
-                </p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Пользователи</h2>
-
-                <p>Управление пользователями, блокировка, редактирование профиля и т.п.</p>
-
-                <p>
-                    <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('user/admin/index') ?>">Список</a>
-                    <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('user/admin/create') ?>">Создать</a>
                 </p>
             </div>
             <div class="col-lg-4">
@@ -83,6 +74,31 @@ $this->title = \Yii::$app->name;
                     <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('rbac/permission/index') ?>">Разрешения</a>
                 </p>
             </div>
+        </div>
+            <hr>
+            <div class="row">
+            <div class="col-lg-4">
+                <h2>Пользователи</h2>
+
+                <p>Управление пользователями, блокировка, редактирование профиля и т.п.</p>
+
+                <p>
+                    <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('user/admin/index') ?>">Список</a>
+                    <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('user/admin/create') ?>">Создать</a>
+                </p>
+            </div>
+
+            <div class="col-lg-4">
+                <h2>Успеваемость</h2>
+
+                <p>Общая статистика работы курса, статистика выполнения конкретных тестов по курсам, личная статистика учеников</p>
+
+                <p>
+                    <a class="btn btn-default disabled" href="<?= yii\helpers\Url::toRoute(' ') ?>">Список</a>
+                    <a class="btn btn-default disabled" href="<?= yii\helpers\Url::toRoute(' ') ?>">Создать</a>
+                </p>
+            </div>
+                </div>
         </div>
 
     </div>

@@ -48,7 +48,9 @@ table.table-finish .fa.answer-text { width: 45px; height: 52px; display: block; 
 table.table-finish .fa.correct-answer-text { width: 45px; height: 52px; display: block; position: relative;  background: transparent url('/i/correctanswericon.png') no-repeat scroll 0px 0px; }
 table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: block; position: relative;  background: transparent url('/i/explanationicon.png') no-repeat scroll 0px 0px; }
 
-.refrigerator {position: absolute; width: 700px; height: auto; left: 275px; z-index: 1;  }
+.element-container {position: absolute; width: 700px; height: auto;  z-index: 1;  }
+.required-container {position: relative; width: 77%; height: auto; margin-top: 555px;   z-index: 1;  }
+.passed-container {position: relative; width: 77%; height: auto;    z-index: 1;  }
 .feeding IMG { position: absolute; width: 70px;}
 .one {  top: 150px; left: 300px; z-index: 1; }
 .two { top: 160px; left: 380px; z-index: 1; }
@@ -63,7 +65,7 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
  -o-transform: scale(1.02);}
 
 @media only screen and (max-width:400px) {
-    .refrigerator {
+    .element-container, .required-container, .passed-container {
         width: 300px;
         height: auto;
         max-width: 300px;
@@ -71,7 +73,7 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
         z-index: 1;  }
 }
 @media only screen and (max-width:480px) {
-    .refrigerator {
+    .element-container, .required-container, .passed-container {
         width: 450px;
         height: auto;
         left: 10px;
@@ -79,7 +81,7 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
 }
 
 @media only screen and (max-width:768px) {
-    .refrigerator {
+    .element-container, .required-container, .passed-container {
         width: 700px;
         height: auto;
         left: 10px;
@@ -87,7 +89,7 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
 }
 
 @media only screen and (max-width:800px) {
-    .refrigerator {
+    .element-container, .required-container, .passed-container {
         width: 760px;
         height: auto;
         left: 10px;
@@ -95,7 +97,7 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
 }
 
 @media only screen and (max-width:1024px) {
-    .refrigerator {
+    .element-container, .required-container, .passed-container {
         width: 700px;
         height: auto;
         left: 20px;
@@ -103,7 +105,7 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
 }
 
 @media only screen and (max-width:1280px) {
-    .refrigerator {
+    .element-container, .required-container, .passed-container {
         width: 700px;
         height: auto;
         z-index: 1;  }

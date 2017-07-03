@@ -1,16 +1,16 @@
 <?php
 namespace app\controllers;
-use app\models\Feeding;
+use app\models\Learn;
 use Yii;
 use yii\web\Controller;
 
-class FeedingController extends Controller
+class LearnController extends Controller
 {
     public $layout = 'metronic_sidebar';
 
     public function actionIndex() // основной экшн
     {
-        $feedingTests = new Feeding();
-        return $this->render('index', ['feedingTests' => $feedingTests]);
+        $learning = new Learn();
+        return $this->render('index', ['learning' => $learning]);
     }
 }

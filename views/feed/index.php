@@ -1,4 +1,4 @@
-<div class="panel panel-default refrigerator" xmlns="http://www.w3.org/1999/html">
+<div class="panel panel-default element-container" xmlns="http://www.w3.org/1999/html">
     <div class="panel-heading">
         <h4 class="panel-title">
              Еда

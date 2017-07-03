@@ -2,6 +2,7 @@
 use yii\widgets\Menu;
 use yii\helpers\Html;
 $user = Yii::$app->user->identity;
+$networksVisible = count(Yii::$app->authClientCollection->clients) > 0;
 ?>
 
 <ul class="nav navbar-nav pull-right">
@@ -341,9 +342,9 @@ $user = Yii::$app->user->identity;
         </a>
         <?php
         $menuItems = [];
-
         $menuItems[] = ['label' => Yii::t('user', 'Profile'), 'url' => ['/user/settings/profile']];
         $menuItems[] = ['label' => Yii::t('user', 'Account'), 'url' => ['/user/settings/account']];
+        $menuItems[] = ['label' => Yii::t('user', 'Networks'), 'url' => ['/user/settings/networks'], 'visible' => $networksVisible];
 
         if (Yii::$app->user->can('admin')) {
             $menuItems[] = ['label' => 'Админка', 'url' => ['/admin/index']];

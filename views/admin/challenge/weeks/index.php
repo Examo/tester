@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-use yii\models\ar\Challenge;
 
 $this->title = Yii::t('challenge', 'Weeks');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Admin'), 'url' => ['admin/index']];
