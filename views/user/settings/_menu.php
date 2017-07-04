@@ -54,19 +54,19 @@ $networksVisible = count(Yii::$app->authClientCollection->clients) > 0;
         'class' => 'page-sidebar-menu',
         'data-keep-expanded' => 'false',
         'data-auto-scroll' => 'true',
-        'data-slide-speed' => '200',
+        'data-slide-speed' => '1000',
     ],
     'items' => [
-        ['label' => '<i class="fa fa-home"> </i>     ' . Yii::t('home', 'Home'), 'url' => ['/home']],
-        ['label' => '<i class="fa fa-tasks"> </i>     ' . Yii::t('home', 'Learn'), 'url' => ['/learn']],
-        ['label' => '<i class="fa fa-coffee"> </i>     ' . Yii::t('home', 'Feed'), 'url' => ['/feed']],
-        ['label' => '<i class="fa fa-inbox"> </i>     ' . Yii::t('home', 'Clean'), 'url' => ['/clean']],
-        ['label' => '<i class="fa fa-gamepad"> </i>     ' . Yii::t('home', 'Game'), 'url' => ['/game']],
-        ['label' => '<i class="fa fa-book"> </i>     ' . Yii::t('home', 'Subscriptions'), 'url' => ['/subscription']],
-        ['label' => '<i class="fa fa-sitemap"> </i>     ' . Yii::t('home', 'Courses'), 'url' => ['/subscription/all']],
+        ['label' => '<i class="fa fa-home"> </i><span class="title"> ' . Yii::t('home', 'Home') . '</span>', 'url' => ['/home']],
+        ['label' => '<i class="fa fa-tasks"> </i><span class="title"> ' . Yii::t('home', 'Learn') . '</span>', 'url' => ['/learn']],
+        ['label' => '<i class="fa fa-coffee"> </i><span class="title"> ' . Yii::t('home', 'Feed') . '</span>', 'url' => ['/feed']],
+        ['label' => '<i class="fa fa-inbox"> </i><span class="title"> ' . Yii::t('home', 'Clean') . '</span>', 'url' => ['/clean']],
+        ['label' => '<i class="fa fa-gamepad"> </i><span class="title"> ' . Yii::t('home', 'Game') . '</span>', 'url' => ['/game']],
+        ['label' => '<i class="fa fa-book"> </i><span class="title"> ' . Yii::t('home', 'Subscriptions') . '</span>', 'url' => ['/subscription']],
+        ['label' => '<i class="fa fa-sitemap"> </i><span class="title"> ' . Yii::t('home', 'Courses') . '</span>', 'url' => ['/subscription/all']],
 
     ],
     'encodeLabels' => false,
-    'linkTemplate' => '<a href="{url}"><span class="title">{label}</span></a>',
+    'linkTemplate' => '<a href="{url}">{label}</a>',
 ]) ?>
 
