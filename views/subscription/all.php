@@ -16,7 +16,7 @@
                 Нет ничего нового, зайди попозже!
             </p>
             <p class="text-muted text-center">
-                Или можешь <strong><a href="<?= \yii\helpers\Url::to(['subscription/index']) ?>">посмотреть прежние тесты, которые уже выполнены</a></strong>.
+                Или можешь <strong><a href="<?= \yii\helpers\Url::to(['/subscription']) ?>">посмотреть прежние тесты, которые уже прошли по разным курсам. А вдруг что-то было упущено?</a></strong>.
             </p>
         <?php endif; ?>
 

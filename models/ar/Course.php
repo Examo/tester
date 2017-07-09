@@ -115,4 +115,11 @@ class Course extends \app\components\ActiveRecord
     {
         return $this->hasMany(Subject::className(), ['course_id' => 'id'])->inverseOf('course');
     }
+
+    public function getAllUsers($course_id)
+    {
+        return CourseSubscription::find()
+            ->where(['course_id' => $course_id])
+            ->all();
+    }
 }

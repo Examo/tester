@@ -11,6 +11,8 @@ class FeedController extends Controller
     public function actionIndex() // основной экшн
     {
         $feedingTests = new Feed();
-        return $this->render('index', ['feedingTests' => $feedingTests]);
+        return $this->render('index', [
+            'feedingTests' => $feedingTests
+        ]);
     }
 }

@@ -2,5 +2,7 @@
 
 return [
     'Course' => 'Курс',
-    'Courses' => 'Курсы'
+    'Courses' => 'Курсы',
+    'Courses stats' => 'Статистика курсов',
+    'Course stats' => 'Статистика курса'
 ];
