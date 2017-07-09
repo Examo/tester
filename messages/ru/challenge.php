@@ -13,6 +13,7 @@ return [
     'Challenge Has Questions' => 'Задания',
     'Challenge Generations' => 'Правила генерации',
     'Weeks' => 'Недели тестов',
+    'Nothing was found' => 'Ничего нет...',
 
     // Settings
     'Settings' => 'Настройки',

@@ -188,6 +188,14 @@ class Challenge extends \app\models\ar\Challenge
         return $this->getAttempts()->where(['user_id' => is_object($user) ? $user->id : $user])->count();
     }
 
+    public function getMarks($user_id, $challenge_id)
+    {
+        return Attempt::find()->select(['mark'])
+            ->where(['user_id' => $user_id])
+            ->andWhere(['challenge_id' => $challenge_id])
+            ->all();
+    }
+
     public function getChallengesByWeeks($courseChallenges) {
         $testByWeeks = [];
         foreach ($courseChallenges as $number => $challenge) {
