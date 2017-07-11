@@ -16,6 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <table class="table table-striped table-bordered">
         <tbody>
         <th class="col-md-1 text-center">ID ученика</th>
+        <th class="col-md-2 text-center">Имя ученика</th>
         <th class="col-md-3 text-center">Общее количество выполненных тестов</th>
         <th class="col-md-3 text-center">Перейти к подробной статистике</th>
 
@@ -24,8 +25,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 <td class="text-center">
                     <?= $user->user_id; ?>
                 </td>
+
+                <td class="text-center">
+                    <?php foreach($dataProvider->models as $model):?>
+                        <?php if ($user->user_id == $model->attributes["id"]):?>
+                            <?= $model->attributes["username"] ?>
+                        <?php endif; ?>
+                    <?php endforeach;?>
+                </td>
+
                 <td>
                 </td>
+
                 <td>
                 </td>
             </tr>
@@ -37,3 +48,4 @@ $this->params['breadcrumbs'][] = $this->title;
             <p>Никто ещё не подписался на курс, вот какой он хороший :(</p>
     <?php endif;?>
 </div>
+
