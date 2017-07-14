@@ -17,15 +17,17 @@ $this->params['breadcrumbs'][] = $this->title;
         <tbody>
         <th class="col-md-1 text-center">ID ученика</th>
         <th class="col-md-2 text-center">Имя ученика</th>
-        <th class="col-md-3 text-center">Общее количество выполненных тестов</th>
-        <th class="col-md-3 text-center">Перейти к подробной статистике</th>
+        <th class="col-md-2 text-center">Тест / Попытки / Последняя оценка</th>
+        <th class="col-md-1 text-center">Все курсы ученика</th>
 
             <?php foreach ($course->getAllUsers($course->id) as $user):?>
             <tr>
+                <!-- ID ученика -->
                 <td class="text-center">
                     <?= $user->user_id; ?>
                 </td>
 
+                <!-- Имя ученика -->
                 <td class="text-center">
                     <?php foreach($dataProvider->models as $model):?>
                         <?php if ($user->user_id == $model->attributes["id"]):?>
@@ -34,10 +36,25 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?php endforeach;?>
                 </td>
 
-                <td>
+                <!-- Тест / Попытки / Последняя оценка -->
+                <td class="text-center">
+                    <?php foreach ($course->getChallenges()->all() as $challenge):?>
+                        <?php if ($challenge->getAttemptsCount($user->user_id)):?>
+                            №<?= $challenge->id ?> /
+                        <?= $challenge->getAttemptsCount($user->user_id)?> /
+                        <?php endif;?>
+
+                    <?php if ($challenge->getMarks($user->user_id, $challenge->id) && $challenge->getAttemptsCount($user->user_id)):?>
+                        <?php foreach( $challenge->getMarks($user->user_id, $challenge->id) as $markContainer):?>
+                        <?php endforeach;?>
+                        <strong><?= $markContainer->mark?></strong><br>
+                        <?php endif;?>
+                    <?php endforeach; ?>
                 </td>
 
-                <td>
+                <!-- Все курсы ученика -->
+                <td class="text-center">
+                    <a href="<?= \yii\helpers\Url::to(['admin/grades/list', 'user_id' => $user->user_id])?>" class="btn btn-xs btn-success">Перейти</a>
                 </td>
             </tr>
             <?php endforeach; ?>

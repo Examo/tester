@@ -70,27 +70,6 @@ class CourseController extends BaseAdminCrudController
         }
     }
 
-    /*public function actionStat()
-    {
-        //$this->layout = 'metronic_sidebar';
-        $course = Course::findOne(Yii::$app->request->get('course_id'));
-
-        Url::remember('', 'actions-redirect');
-        $searchModel  = Yii::createObject(UserSearch::className());
-        $dataProvider = $searchModel->search(Yii::$app->request->get());
-
-        if (!empty($course)) {
-            return $this->render('stat',
-                [
-                    'course' => $course,
-                    'dataProvider' => $dataProvider,
-                    'searchModel'  => $searchModel,
-                ]);
-        } else {
-            throw new NotFoundHttpException('Статистики по этому курсу пока ещё не существует!');
-        }
-    }*/
-
     public function actionStats()
     {
         //$this->layout = 'metronic_sidebar';
@@ -100,16 +79,10 @@ class CourseController extends BaseAdminCrudController
             return $this->render('stats/index',
                 [
                     'courses' => $courses,
-
-
                 ]);
         } else {
             throw new NotFoundHttpException('Статистики пока ещё не существует!');
         }
     }
-
-    public function findUserById($data, $id)
-    {
-
-    }
+    
 }

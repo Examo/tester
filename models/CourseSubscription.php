@@ -19,4 +19,10 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
             'course_id' => Yii::t('course', 'Course'),
         ];
     }
+
+    public function getAllCourses($course_id)
+    {
+        return CourseSubscription::find()
+            ->with('courses')->where(['user_id' => $course_id]);
+    }
 }

@@ -10,6 +10,21 @@ class LearnController extends Controller
 {
     public $layout = 'metronic_sidebar';
 
+    public function beforeAction($action)
+    {
+        if (parent::beforeAction($action)) {
+            // Authorized users only
+            if ( \Yii::$app->user->isGuest ) {
+                $this->redirect( ['user/login'] );
+                return false;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
     public function actionIndex() // основной экшн
     {
         $learning = new Learn();

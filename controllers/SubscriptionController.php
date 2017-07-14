@@ -107,7 +107,7 @@ class SubscriptionController extends Controller
 
         $course->subscribe(Yii::$app->user->id);
 
-        return $this->redirect(Url::to(['subscription/index']));
+        return $this->redirect(Url::to(['/subscription']));
     }
 
     /**
@@ -125,7 +125,7 @@ class SubscriptionController extends Controller
 
         $course->unsubscribe(Yii::$app->user->id);
 
-        return $this->redirect(Url::to(['subscription/index']));
+        return $this->redirect(Url::to(['/subscription']));
     }
 
 }

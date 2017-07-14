@@ -13,8 +13,6 @@
     </div>
     <div class="panel-body">
         <p><?= $course->description ?></p>
-
-
         <table class="table table-striped table-hover">
             <tr>
                 <th class="col-md-5 text-left">Тест</th>

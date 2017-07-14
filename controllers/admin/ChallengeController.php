@@ -105,7 +105,6 @@ class ChallengeController extends BaseAdminCrudController
             return $this->render('weeks/index',
                 [
                     'courses' => $courses,
-
                 ]);
         } else {
             throw new NotFoundHttpException('Тестов по этому курсу пока ещё не существует!');
