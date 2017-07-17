@@ -14,6 +14,8 @@ return [
     'Challenge Generations' => 'Правила генерации',
     'Weeks' => 'Недели тестов',
     'Nothing was found' => 'Ничего нет...',
+    'Challenge Statistics' => 'Статистика теста',
+    'Challenges Statistics' => 'Статистика тестов',
 
     // Settings
     'Settings' => 'Настройки',

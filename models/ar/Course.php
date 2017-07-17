@@ -124,4 +124,23 @@ class Course extends \app\components\ActiveRecord
             ->all();
     }
 
+    public function getCourse($course_id)
+    {
+        return Course::find()
+            ->where(['id' => $course_id])
+            ->all();
+    }
+
+    public function getCourseName($course, $challenge)
+    {
+        $name = '';
+        foreach($course as $courseElement) {
+            if ($courseElement->id == $challenge->course_id) {
+                $name = $challenge->name;
+                break;
+            }
+        }
+        return $name;
+    }
+
 }

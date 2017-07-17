@@ -42,7 +42,7 @@ class GradesController extends Controller
 
     public function actionIndex()
     {
-        $notice = 'Здравствуй, администратор! До свидания, администратор!';
+        $notice = 'Здравствуй, администратор! Ты не настроил эту страницу, поэтому до свидания, администратор!';
 
         return $this->render('index', [
             'notice' => $notice,

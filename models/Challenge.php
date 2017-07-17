@@ -188,14 +188,6 @@ class Challenge extends \app\models\ar\Challenge
         return $this->getAttempts()->where(['user_id' => is_object($user) ? $user->id : $user])->count();
     }
 
-    public function getMarks($user_id, $challenge_id)
-    {
-        return Attempt::find()->select(['mark'])
-            ->where(['user_id' => $user_id])
-            ->andWhere(['challenge_id' => $challenge_id])
-            ->all();
-    }
-
     public function getChallengesByWeeks($courseChallenges) {
         $testByWeeks = [];
         foreach ($courseChallenges as $number => $challenge) {
@@ -204,5 +196,39 @@ class Challenge extends \app\models\ar\Challenge
             }
         }
         return $testByWeeks;
+    }
+
+    public function getMarks($user_id, $challenge_id)
+    {
+        return Attempt::find()->select(['mark'])
+            ->where(['user_id' => $user_id])
+            ->andWhere(['challenge_id' => $challenge_id])
+            ->all();
+    }
+
+    public function getAllChallengeAttempts($challenge_id)
+    {
+        return Attempt::find()->select(['id'])
+            ->where(['challenge_id' => $challenge_id])
+            ->all();
+    }
+
+    public function getAllChallengeMarks($challenge_id)
+    {
+        return Attempt::find()->select(['mark'])
+            ->where(['challenge_id' => $challenge_id])
+            ->all();
+    }
+
+    public function getCourseName($course_ids, $challenge_course_id)
+    {
+        $name = '';
+        foreach($course_ids as $course_id) {
+            if ($course_id->id == $challenge_course_id->course_id) {
+                $name = $challenge_course_id->name;
+                break;
+            }
+        }
+        return $name;
     }
 }

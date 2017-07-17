@@ -111,4 +111,20 @@ class ChallengeController extends BaseAdminCrudController
         }
     }
 
+    public function actionStat()
+    {
+        //$this->layout = 'metronic_sidebar';
+        $course = Course::find()->all();
+        $challenge = Challenge::findOne(Yii::$app->request->get('challenge_id'));
+
+        if (!empty($challenge)) {
+            return $this->render('stat',
+                [
+                    'course' => $course,
+                    'challenge' => $challenge
+                ]);
+        } else {
+            throw new NotFoundHttpException('Теста с указанным ID не существует!');
+        }
+    }
 }
