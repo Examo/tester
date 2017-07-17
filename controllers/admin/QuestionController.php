@@ -12,6 +12,7 @@ use Yii;
  */
 class QuestionController extends BaseAdminCrudController
 {
+    public $layout = 'OLDMAIN/main';
     public function behaviors()
     {
         return [];

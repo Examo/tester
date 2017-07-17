@@ -8,8 +8,11 @@ use app\models\CourseSubscription;
 use app\models\LoginForm;
 use app\models\search\CourseSearch;
 use app\models\User;
+use dektrium\user\models\UserSearch;
 use Yii;
+use yii\helpers\Url;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 
 /**
  * Class SiteController
@@ -50,10 +53,12 @@ class GradesController extends Controller
     {
         $courseSubscriptions = CourseSubscription::find()->all();
         $user = User::findOne(Yii::$app->request->get('user_id'));
+        $courses = Course::find()->all();
 
         return $this->render('list', [
             'courseSubscriptions' => $courseSubscriptions,
-            'user' => $user
+            'user' => $user,
+            'courses' => $courses,
         ]);
     }
 

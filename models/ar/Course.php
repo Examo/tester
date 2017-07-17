@@ -3,6 +3,7 @@
 namespace app\models\ar;
 
 use Yii;
+use yii\web\NotFoundHttpException;
 
 /**
  * This is the model class for table "course".
@@ -122,4 +123,5 @@ class Course extends \app\components\ActiveRecord
             ->where(['course_id' => $course_id])
             ->all();
     }
+
 }

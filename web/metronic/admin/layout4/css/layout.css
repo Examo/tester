@@ -1390,7 +1390,9 @@ Page content
 }
 
 .breadcrumb > li + li:before {
-  display: none;
+  padding: 0 5px;
+  color: #ccc;
+  content: "/\00a0";
 }
 
 .breadcrumb .fa {
