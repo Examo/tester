@@ -63,7 +63,7 @@ $summary = \app\helpers\ChallengeSummarizer::fromSession( $session );
             ]) ?>
 
             <div class="hint-content" style="display: none">
-                <div class="panel panel-default" style="border: solid; border: solid; border-color: blue">
+                <div class="panel panel-default" style="border: solid; border-color: #00a5bb">
                     <div class="panel-heading">
                         <div class="general-item-list">
                             <div class="item">

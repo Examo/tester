@@ -27,15 +27,18 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'id',
                 'headerOptions' => [
-                    'class' => 'col-md-1'
-                ]
+                    'class' => 'text-center'
+                ],
+                'contentOptions' =>[
+                    'class' => 'text-center'
+                ],
             ],
 
             [
                 'attribute' => 'name',
                 'format' => 'ntext',
                 'headerOptions' => [
-                    'class' => 'col-md-4'
+                    'class' => 'col-md-2 text-center'
                 ],
             ],
 
@@ -44,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'description',
                 'format' => 'ntext',
                 'headerOptions' => [
-                    'class' => 'col-md-6'
+                    'class' => 'col-md-5 text-center'
                 ],
             ],
 
@@ -52,14 +55,32 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'start_time',
                 'format' => 'ntext',
                 'headerOptions' => [
-                    'class' => 'col-md-3'
+                    'class' => 'col-md-2 text-center'
+                ],
+                'contentOptions' =>[
+                    'class' => 'text-center'
                 ],
             ],
-
+            [
+                'label' => 'К статистике',
+                'format' => 'raw',
+                'value' => function($model){
+                    return '<center><a href='. \yii\helpers\Url::to(['admin/course/stat', 'course_id' => $model->attributes['id']]) . ' " class="btn btn-xs btn-success">Перейти</a></center>';
+                },
+                'headerOptions' => [
+                    'class' => 'col-md-1 text-center'
+                ],
+                'contentOptions' =>[
+                    'class' => 'text-center'
+                ],
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'headerOptions' => [
-                    'class' => 'col-md-1'
+                    'class' => 'col-md-1 text-center'
+                ],
+                'contentOptions' =>[
+                    'class' => 'text-center'
                 ],
             ],
         ],

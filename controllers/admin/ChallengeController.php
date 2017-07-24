@@ -11,10 +11,12 @@ use app\models\ChallengeSettings;
 use app\models\Course;
 use app\models\Question;
 use app\models\search\ChallengeSearch;
+use dektrium\user\models\UserSearch;
 use Yii;
 use yii\data\ArrayDataProvider;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
+use yii\web\User;
 
 /**
  * ChallengeController implements the CRUD actions for Challenge model.
@@ -116,15 +118,18 @@ class ChallengeController extends BaseAdminCrudController
         //$this->layout = 'metronic_sidebar';
         $course = Course::find()->all();
         $challenge = Challenge::findOne(Yii::$app->request->get('challenge_id'));
+        $usernames = \dektrium\user\models\User::find()->all();
 
         if (!empty($challenge)) {
             return $this->render('stat',
                 [
                     'course' => $course,
-                    'challenge' => $challenge
+                    'challenge' => $challenge,
+                    'usernames' => $usernames
                 ]);
         } else {
             throw new NotFoundHttpException('Теста с указанным ID не существует!');
         }
     }
+
 }

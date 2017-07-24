@@ -36,6 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <th class="col-md-1 text-center">Тест</th>
                                 <th class="col-md-1 text-center">Попытки</th>
                                 <th class="col-md-1 text-center">Последняя оценка</th>
+                                <th class="col-md-1 text-center">Средняя оценка</th>
 
                                 <?php foreach ($course->getChallenges()->all() as $challenge):?>
                                     <?php if ($challenge->getAttemptsCount($user->id)):?>
@@ -58,6 +59,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                             <?php foreach( $challenge->getMarks($user->id, $challenge->id) as $markContainer):?>
                                             <?php endforeach;?>
                                             <strong><?= $markContainer->mark?></strong>
+                                        </td>
+
+                                        <!-- Средняя оценка -->
+                                        <td class="text-center">
+                                            <?php $averageMark = 0; $number = 0; ?>
+                                            <?php foreach( $challenge->getMarks($user->id, $challenge->id) as $markContainer):?>
+                                                <?php $averageMark += $markContainer->mark; $number++; ?>
+                                            <?php endforeach;?>
+                                            <strong><?= $averageMark / $number; ?></strong>
                                         </td>
                                     </tr>
                                     <?php endif;?>

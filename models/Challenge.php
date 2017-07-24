@@ -231,4 +231,18 @@ class Challenge extends \app\models\ar\Challenge
         }
         return $name;
     }
+
+    public function getAllChallengeUsers($challenge_id)
+    {
+        return Attempt::find()
+            ->select(['user_id'])
+            ->where(['challenge_id' => $challenge_id])
+            ->groupBy('user_id')
+            ->all();
+    }
+
+    public function getUserById($id)
+    {
+        return User::find()->where(['id' => $id]);
+    }
 }

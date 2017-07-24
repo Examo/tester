@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Url;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\search\ChallengeSearch */
@@ -29,14 +30,17 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'id',
                 'headerOptions' => [
-                    'class' => 'col-md-1'
-                ]
+                    'class' => 'text-center'
+                ],
+                'contentOptions' =>[
+                    'class' => 'text-center'
+                ],
             ],
             [
                 'attribute'=>'course_id',
                 'filter' => \app\models\Course::getList(),
                 'headerOptions' => [
-                    'class' => 'col-md-2'
+                    'class' => 'col-md-2 text-center'
                 ],
                 'value' => function($model) {
                     return $model->course->name;
@@ -46,7 +50,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute'=>'challenge_type_id',
                 'filter' => \app\models\ChallengeType::getList(),
                 'headerOptions' => [
-                    'class' => 'col-md-2'
+                    'class' => 'text-center'
+                ],
+                'contentOptions' =>[
+                    'class' => 'text-center'
                 ],
                 'value' => function($model) {
                     return $model->challengeType->name;
@@ -56,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute'=>'subject_id',
                 'filter' => \app\models\Subject::getList(),
                 'headerOptions' => [
-                    'class' => 'col-md-2'
+                    'class' => 'col-md-2 text-center'
                 ],
                 'value' => function($model) {
                     return $model->subject->name;
@@ -66,27 +73,40 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'name',
                 'format' => 'ntext',
                 'headerOptions' => [
-                    'class' => 'col-md-2'
+                    'class' => 'col-md-2 text-center'
                 ],
             ],
             [
                 'attribute' => 'description',
                 'format' => 'ntext',
                 'headerOptions' => [
-                    'class' => 'col-md-2'
+                    'class' => 'col-md-2 text-center'
                 ],
             ],
             [
                 'attribute' => 'week',
                 'format' => 'ntext',
                 'headerOptions' => [
-                    'class' => 'col-md-2'
+                    'class' => 'text-center'
+                ],
+                'contentOptions' =>[
+                    'class' => 'text-center'
+                ],
+            ],
+            [
+                'label' => 'К статистике',
+                'format' => 'raw',
+                'value' => function($model){
+                    return '<center><a href='. \yii\helpers\Url::to(['admin/challenge/stat', 'challenge_id' => $model->attributes['id']]) . ' " class="btn btn-xs btn-success">Перейти</a></center>';
+                },
+                'headerOptions' => [
+                    'class' => 'col-md-1 text-center'
                 ],
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'headerOptions' => [
-                    'class' => 'col-md-1'
+                    'class' => 'text-center'
                 ],
             ],
         ],

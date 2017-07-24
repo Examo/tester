@@ -10,7 +10,7 @@ use yii\helpers\Html;
 <?php
 $this->title = Yii::t('challenge', 'Challenge Statistics') . ' №'. $challenge->id . ' по курсу ' . '"' . $courseName . '"';
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Admin'), 'url' => ['admin/index']];
-$this->params['breadcrumbs'][] = ['label' => Yii::t('challenge', 'Challenges') . ' (с переходом на статистику)', 'url' => ['admin/challenge/index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('challenge', 'Challenges'), 'url' => ['admin/challenge/index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="challenge-index">
@@ -103,6 +103,61 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div id="allwho" class="collapse">
             <div class="panel-body">
+
+                <table class="table table-striped table-bordered">
+                    <tbody>
+                    <th class="col-md-1 text-center">Имя</th>
+                    <th class="col-md-1 text-center">Попытки</th>
+                    <th class="col-md-1 text-center">Последняя оценка</th>
+                    <th class="col-md-1 text-center">Все курсы ученика</th>
+                <?php foreach($usernames as $username):?>
+                <?php foreach ($challenge->getAllChallengeUsers($challenge->id) as $user):?>
+                    <?php if($username->attributes['id'] == $user->user_id): ?>
+
+
+
+                        <?php if ($challenge->getAttemptsCount($user->user_id)):?>
+
+
+
+                            <tr>
+                            <!-- Тест -->
+                            <td class="text-center">
+                                <?= $username->attributes['username']; ?>
+                            </td>
+
+                            <!-- Попытки -->
+                            <td class="text-center">
+                                <?= $challenge->getAttemptsCount($user->user_id)?>
+                            </td>
+                        <?php endif;?>
+                        <?php if ($challenge->getMarks($user->user_id, $challenge->id) && $challenge->getAttemptsCount($user->user_id)):?>
+
+                            <!-- Последняя оценка -->
+                            <td class="text-center">
+                                <?php foreach( $challenge->getMarks($user->user_id, $challenge->id) as $markContainer):?>
+                                <?php endforeach;?>
+                                <strong><?= $markContainer->mark?></strong>
+                            </td>
+
+                                <!-- Все курсы ученика -->
+                                <td class="text-center">
+                                    <a href="<?= \yii\helpers\Url::to(['admin/grades/list', 'user_id' => $user->user_id])?>" class="btn btn-xs btn-success">Перейти</a>
+                                </td>
+
+                            </tr>
+
+
+
+                        <?php endif;?>
+
+
+                    <?php endif;?>
+                <?php endforeach; ?>
+
+            <?php endforeach; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
