@@ -5,7 +5,6 @@ namespace app\controllers;
 use app\helpers\ChallengeSession;
 use app\helpers\ChallengeSummarizer;
 use app\models\Challenge;
-use app\models\Course;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
@@ -80,6 +79,7 @@ class ChallengeController extends Controller
 
             $session = new ChallengeSession($challenge, Yii::$app->user->id);
             if ($session->start()) {
+                $_SESSION['pre'] = '';
                 return $this->redirect(Url::to(['challenge/progress', 'id' => $challenge->id]));
             } else {
                 throw new HttpException(500);
@@ -162,7 +162,29 @@ class ChallengeController extends Controller
         $session = new ChallengeSession($challenge, Yii::$app->user->id);
 
         if (!$session->isFinished()) {
-            $session->answer(\Yii::$app->request->post('answer'));
+            if (empty($_SESSION['pre'])) {
+                $pre = true;
+            }
+            $session->answer(\Yii::$app->request->post('answer'), $pre);
+        }
+
+        if ($session->isFinished()) {
+            return $this->redirect(Url::to(['challenge/finish', 'id' => $challenge->id]));
+        } else {
+            return $this->redirect(Url::to(['challenge/progress', 'id' => $challenge->id]));
+        }
+    }
+
+    public function actionContinue($id = 0)
+    {
+        $challenge = $this->getChallenge($id);
+        $session = new ChallengeSession($challenge, Yii::$app->user->id);
+
+        if (!$session->isFinished()) {
+            if (!empty($_SESSION['pre'])) {
+                $pre = false;
+            }
+            $session->answer(\Yii::$app->request->post('answer'), $pre);
         }
 
         if ($session->isFinished()) {

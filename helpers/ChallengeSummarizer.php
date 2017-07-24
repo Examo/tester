@@ -44,7 +44,7 @@ class ChallengeSummarizer
      */
     protected $hints = [];
 
-    //protected $comment = [];
+    protected $comments = [];
 
     /**
      * @var Challenge
@@ -57,8 +57,6 @@ class ChallengeSummarizer
     protected $user = false;
 
     protected $questions = null;
-    
-    
 
     /**
      * @param ChallengeSession $session
@@ -72,10 +70,9 @@ class ChallengeSummarizer
         $inst->setFinishTime($session->getFinishTime());
 
         $hints = $session->getHints();
-        $comments = $session->getComments();
         foreach ($session->getAnswers() as $question => $answer) {
             $hint = isset($hints[$question]) && $hints[$question];
-            $inst->addAnswer($question, $answer, null, $hint, $comments);
+            $inst->addAnswer($question, $answer, null, $hint);
         }
 
         foreach ($session->getChallenge()->getChallengeMarks()->all() as $range) {
@@ -124,11 +121,10 @@ class ChallengeSummarizer
      * @param $answer
      * @param null|bool $correct If null answer will be checked automaticaly
      */
-    public function addAnswer($question, $answer, $correct = null, $hintUsed = false, $comments)
+    public function addAnswer($question, $answer, $correct = null, $hintUsed = false)
     {
         $this->answers[$question] = $answer;
         $this->hints[$question] = $hintUsed;
-        $this->comment[$question] = $comments;
 
         if (!is_null($correct)) {
             $this->correct[$question] = $correct;
@@ -185,7 +181,6 @@ class ChallengeSummarizer
             $answer->data = $this->answers[$question->id];
             $answer->correct = (int)$correct[$question->id];
             $answer->hint = (int)$this->hints[$question->id];
-            //$answer->comment = $this->comment[$question->id];
             $answer->save();
         }
 
@@ -236,7 +231,7 @@ class ChallengeSummarizer
 
     public function getComments()
     {
-        return $this->comment;
+        return $this->comments;
     }
 
     /**
@@ -304,7 +299,7 @@ class ChallengeSummarizer
 
         return false;
     }
-    
+
     public function getTextMark($numberMark)
     {
         switch ($numberMark) {
@@ -352,12 +347,12 @@ class ChallengeSummarizer
                 break;
             case 5: echo '<img src="/i/'.$emoticonExcellent[mt_rand(0, count($emoticonExcellent) - 1)].'" />';
                 break;
-         }
+        }
     }
 
     public function getAnswersFinish($data, $questionId, $questionTypeId, $answers)
     {
-       switch ($questionTypeId){
+        switch ($questionTypeId){
             case 1:
                 foreach (json_decode($data, true)['options'] as $key => $option) {
                     $rightOption = '[' . $key . ']';
@@ -370,7 +365,7 @@ class ChallengeSummarizer
                 for ($i = 0; $i < count(json_decode($answers[$questionId], true)); $i++) {
                     if (json_decode($data, true)['options'][json_decode($answers[$questionId], true)[$i]]) {
                         echo '<li>'.mb_strtoupper(json_decode($data, true)['options'][json_decode($answers[$questionId], true)[$i]]).'</li>';
-                   }
+                    }
                 }
                 break;
             case 3:
@@ -397,43 +392,42 @@ class ChallengeSummarizer
                         }
                     }
                 }
-                 /*
-                 *var_dump(json_decode($data, true));
-                 * array(3) {
-                 * ["options"]=> array(5) {
-                 * [0]=> string(16) "1 задание" [1]=> string(16) "2 задание" [2]=> string(16) "3 задание" [3]=> string(16) "4 задание" [4]=> string(16) "5 задание" }
-                 * ["associations"]=> array(5) {
-                 * [0]=> string(22) "А к 1 заданию" [1]=> string(22) "Б к 2 задание" [2]=> string(22) "В к 3 заданию" [3]=> string(23) "Г к 4 заданию " [4]=> string(22) "Д к 5 заданию" }
-                 * ["comments"]=> array(5) {
-                 * [0]=> string(29) "Комментарий к 1А" [1]=> string(29) "Комментарий к 2Б" [2]=> string(29) "Комментарий к 3В" [3]=> string(29) "Комментарий к 4Г" [4]=> string(29) "Комментарий к 5Д" } }
-                 *
-                 * var_dump(json_decode($data, true)['associations']);
-                 * array(5) {
-                 * [0]=> string(22) "А к 1 заданию"
-                 * [1]=> string(22) "Б к 2 задание"
-                 * [2]=> string(22) "В к 3 заданию"
-                 * [3]=> string(23) "Г к 4 заданию "
-                 * [4]=> string(22) "Д к 5 заданию" }
-                 *
-                 * var_dump(json_decode($data, true)['options']);
-                 * array(5) {
-                 * [0]=> string(16) "1 задание"
-                 * [1]=> string(16) "2 задание"
-                 * [2]=> string(16) "3 задание"
-                 * [3]=> string(16) "4 задание"
-                 * [4]=> string(16) "5 задание" }
-                 *
-                 * var_dump(json_decode($answers[$questionId]));
-                 * array(5) {
-                [0]=> array(2) { [0]=> int(0) [1]=> int(1) }
-                [1]=> array(2) { [0]=> int(1) [1]=> int(2) }
-                [2]=> array(2) { [0]=> int(2) [1]=> int(4) }
-                [3]=> array(2) { [0]=> int(3) [1]=> int(3) }
-                [4]=> array(2) { [0]=> int(4) [1]=> int(0) } }*/
+                /*
+                *var_dump(json_decode($data, true));
+                * array(3) {
+                * ["options"]=> array(5) {
+                * [0]=> string(16) "1 задание" [1]=> string(16) "2 задание" [2]=> string(16) "3 задание" [3]=> string(16) "4 задание" [4]=> string(16) "5 задание" }
+                * ["associations"]=> array(5) {
+                * [0]=> string(22) "А к 1 заданию" [1]=> string(22) "Б к 2 задание" [2]=> string(22) "В к 3 заданию" [3]=> string(23) "Г к 4 заданию " [4]=> string(22) "Д к 5 заданию" }
+                * ["comments"]=> array(5) {
+                * [0]=> string(29) "Комментарий к 1А" [1]=> string(29) "Комментарий к 2Б" [2]=> string(29) "Комментарий к 3В" [3]=> string(29) "Комментарий к 4Г" [4]=> string(29) "Комментарий к 5Д" } }
+                *
+                * var_dump(json_decode($data, true)['associations']);
+                * array(5) {
+                * [0]=> string(22) "А к 1 заданию"
+                * [1]=> string(22) "Б к 2 задание"
+                * [2]=> string(22) "В к 3 заданию"
+                * [3]=> string(23) "Г к 4 заданию "
+                * [4]=> string(22) "Д к 5 заданию" }
+                *
+                * var_dump(json_decode($data, true)['options']);
+                * array(5) {
+                * [0]=> string(16) "1 задание"
+                * [1]=> string(16) "2 задание"
+                * [2]=> string(16) "3 задание"
+                * [3]=> string(16) "4 задание"
+                * [4]=> string(16) "5 задание" }
+                *
+                * var_dump(json_decode($answers[$questionId]));
+                * array(5) {
+               [0]=> array(2) { [0]=> int(0) [1]=> int(1) }
+               [1]=> array(2) { [0]=> int(1) [1]=> int(2) }
+               [2]=> array(2) { [0]=> int(2) [1]=> int(4) }
+               [3]=> array(2) { [0]=> int(3) [1]=> int(3) }
+               [4]=> array(2) { [0]=> int(4) [1]=> int(0) } }*/
                 break;
         }
     }
-
 
 //----------------------------------------------------------------------------------------------------------------------
 // Time tracking

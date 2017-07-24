@@ -2,12 +2,10 @@
 use yii\widgets\ActiveForm;
 use app\widgets\AnswerEditor;
 
-    $currentQuestion = $session->getCurrentQuestionNumber();
-    $totalQuestions = $challenge->getQuestionsCount();
-
-    $question = $session->getCurrentQuestion();
-
-    $summary = \app\helpers\ChallengeSummarizer::fromSession( $session );
+$currentQuestion = $session->getCurrentQuestionNumber();
+$totalQuestions = $challenge->getQuestionsCount();
+$question = $session->getCurrentQuestion();
+$summary = \app\helpers\ChallengeSummarizer::fromSession( $session );
 
 /**
  * @var \app\helpers\ChallengeSummarizer $summary
@@ -53,49 +51,89 @@ use app\widgets\AnswerEditor;
     </div>
     <div class="panel-body">
         <?= $question->getText() ?>
-
-        <?php $form = ActiveForm::begin([
-            'action' => ['challenge/answer', 'id' => $challenge->id],
-            'method' => 'post'
-        ]); ?>
+        <?php if (empty($_SESSION['pre'])) { ?>
+            <?php $form = ActiveForm::begin([
+                'action' => ['challenge/answer', 'id' => $challenge->id],
+                'method' => 'post'
+            ]); ?>
 
             <?php echo AnswerEditor::widget([
                 'name' => 'answer',
                 'question' => $question
             ]) ?>
 
-    <div class="hint-content" style="display: none;">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <div class="general-item-list">
-                    <div class="item">
-                        <div class="item-head">
-                            <div class="item-details">
-                            <img class="item-pic" src="/i/hintemoticon.jpg">
-                            <div class="item-name primary-link"><strong>Кошка подсказывает:</strong></div>
+            <div class="hint-content" style="display: none">
+                <div class="panel panel-default" style="border: solid; border: solid; border-color: blue">
+                    <div class="panel-heading">
+                        <div class="general-item-list">
+                            <div class="item">
+                                <div class="item-head">
+                                    <div class="item-details">
+                                        <img class="item-pic" src="/i/hintemoticon.jpg">
+                                        <div class="item-name primary-link"><strong>Кошка подсказывает:</strong></div>
+                                    </div>
+                                </div>
+                                <span></span>
                             </div>
                         </div>
-                        <span></span>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-        <div class="row question-buttons">
-            <div class="col-xs-6 col-md-6 text-left">
-                <input type="submit" class="btn btn-success" value="Ответить">
+            <div class="row question-buttons">
+                <div class="col-xs-6 col-md-6 text-left">
+                    <input type="submit" class="btn btn-success" value="Ответить">
+                </div>
+                <div class="col-xs-6 col-md-6 text-right">
+                    <a href="#" class="btn btn-primary hint-button">Подсказать</a>
+                    <?php if( $session->getCurrentQuestionNumber() < $challenge->getQuestionsCount() - 1 ): ?>
+                        <a href="<?= \yii\helpers\Url::toRoute(['challenge/skip', 'id' => $challenge->id]) ?>" class="btn btn-warning ">Пропустить</a>
+                    <?php endif; ?>
+                    <a href="<?= \yii\helpers\Url::toRoute(['challenge/finish', 'id' => $challenge->id]) ?>" class="btn btn-danger">Завершить</a>
+                </div>
             </div>
-            <div class="col-xs-6 col-md-6 text-right">
-                <a href="#" class="btn btn-primary hint-button">Подсказать</a>
-                <?php if( $session->getCurrentQuestionNumber() < $challenge->getQuestionsCount() - 1 ): ?>
-                    <a href="<?= \yii\helpers\Url::toRoute(['challenge/skip', 'id' => $challenge->id]) ?>" class="btn btn-warning ">Пропустить</a>
+
+            <?php ActiveForm::end(); ?>
+        <?php } else { ?>
+            <?php echo AnswerEditor::widget([
+                'name' => 'answer',
+                'question' => $question
+            ]) ?>
+            <strong>Твой ответ <?= $question->check($_SESSION['pre']) ? 'ПРАВИЛЬНЫЙ!' : 'НЕПРАВИЛЬНЫЙ...' ?></strong><br><br>
+
+            <div class="comment-content">
+                <div class="panel panel-default" style="border: solid; border-color: <?= $question->check($_SESSION['pre']) ? '#219187' : '#F3565D'?>">
+                    <div class="panel-heading">
+                        <div class="general-item-list">
+                            <div class="item">
+                                <div class="item-head">
+                                    <div class="item-details">
+                                        <img class="item-pic" src="/i/hintemoticon.jpg">
+                                        <div class="item-name primary-link"><strong>Кошка объясняет:</strong></div>
+                                    </div>
+                                </div>
+                                <span><?= $question->comment ?></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row question-buttons">
+                <div class="col-xs-6 col-md-6 text-left">
+                    <a href="<?= \yii\helpers\Url::toRoute(['challenge/continue', 'id' => $challenge->id]) ?>" class="btn btn-success ">Продолжить</a>
+                </div>
+                <div class="col-xs-6 col-md-6 text-right">
+            <?php if (empty($_SESSION['pre'])):?>
+                    <a href="#" class="btn btn-primary hint-button">Подсказать</a>
                 <?php endif; ?>
-                <a href="<?= \yii\helpers\Url::toRoute(['challenge/finish', 'id' => $challenge->id]) ?>" class="btn btn-danger">Завершить</a>
+                    <?php if( $session->getCurrentQuestionNumber() < $challenge->getQuestionsCount() - 1 ): ?>
+                        <a href="<?= \yii\helpers\Url::toRoute(['challenge/skip', 'id' => $challenge->id]) ?>" class="btn btn-warning ">Пропустить</a>
+                    <?php endif; ?>
+                    <a href="<?= \yii\helpers\Url::toRoute(['challenge/finish', 'id' => $challenge->id]) ?>" class="btn btn-danger">Завершить</a>
+                </div>
             </div>
-        </div>
-
-        <?php ActiveForm::end(); ?>
+        <?php } ?>
 
     </div>
 </div>

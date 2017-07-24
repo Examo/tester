@@ -6,15 +6,15 @@
 
         <h1>Завершить тестирование</h1>
 
-        <p>Вы уверены, что хотите досрочно завершить тестирование?</p>
-        <p>Оценка за данное тестирование будет недоступна.</p>
+        <p>Ты реально хочешь досрочно завершить тестирование?</p>
+        <p>Но ведь тогда... оценка за него будет не доступна...</p>
 
         <div class="row">
             <div class="col-xs-6 col-md-6 text-left">
-                <a href="<?= \yii\helpers\Url::toRoute(['challenge/progress', 'id' => $challenge->id]) ?>" class="btn btn-primary">Отмена</a>
+                <a href="<?= \yii\helpers\Url::toRoute(['challenge/progress', 'id' => $challenge->id]) ?>" class="btn btn-primary">Не буду завершать</a>
             </div>
             <div class="col-xs-6 col-md-6 text-right">
-                <a href="<?= \yii\helpers\Url::toRoute(['challenge/finish', 'id' => $challenge->id, 'confirm' => true]) ?>" class="btn btn-danger">Завершить</a>
+                <a href="<?= \yii\helpers\Url::toRoute(['challenge/finish', 'id' => $challenge->id, 'confirm' => true]) ?>" class="btn btn-danger">Завершить!</a>
             </div>
         </div>
 

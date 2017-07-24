@@ -81,11 +81,17 @@ class ChallengeSession
      * If no questions left - finish challenge
      * @param $answer string
      */
-    public function answer($answer)
+    public function answer($answer, $pre)
     {
         if (!$this->isFinished()) {
-            $this->storeAnswer($answer);
-            $this->setCurrentQuestionNumber($this->getCurrentQuestionNumber() + 1);
+            if($pre) {
+                $_SESSION['pre'] = $answer;
+                $this->setCurrentQuestionNumber($this->getCurrentQuestionNumber());
+            } else {
+                $this->storeAnswer($_SESSION['pre']);
+                $_SESSION['pre'] = '';
+                $this->setCurrentQuestionNumber($this->getCurrentQuestionNumber() + 1);
+            }
         }
 
         if ($this->isFinished()) {
@@ -205,10 +211,6 @@ class ChallengeSession
         return \Yii::$app->session->get($this->getSessionKey('hints'), []);
     }
 
-    public function getComments()
-    {
-        return \Yii::$app->session->get($this->getSessionKey('comments'), []);
-    }
     /**
      * Get is hint used for current question
      * @return bool
