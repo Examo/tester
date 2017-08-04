@@ -24,6 +24,7 @@ use yii\web\NotFoundHttpException;
  */
 class Course extends \app\components\ActiveRecord
 {
+    public $user_id;
     /**
      * @inheritdoc
      */
@@ -39,7 +40,8 @@ class Course extends \app\components\ActiveRecord
     {
         return [
             [['name', 'description'], 'string'],
-            [['position', 'discipline_id'], 'integer'],
+            [['user_id'], 'safe'],
+            [['position', 'discipline_id', 'user_id'], 'integer'],
             [['discipline_id'], 'required'],
             [['start_time'], 'date', 'format' => 'yyyy-M-d H:m:s'],
             [['discipline_id'], 'exist', 'skipOnError' => true, 'targetClass' => Discipline::className(), 'targetAttribute' => ['discipline_id' => 'id']],

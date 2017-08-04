@@ -1,5 +1,10 @@
 <?php
-    //use yii\helpers\Html;
+/**
+ * @var \yii\data\ActiveDataProvider $dataProvider
+ * @var \yii\web\View $this
+ *
+ */
+$this->title = Yii::t('home', 'Home');
 ?>
 <div class="panel panel-default">
     <div class="panel-heading">

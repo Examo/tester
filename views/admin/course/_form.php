@@ -25,6 +25,14 @@ use app\models\Subject;
 
     <?= $form->field($model, 'name')->textarea(['rows' => 6]) ?>
 
+        <?= $form->field($model, 'user_id')->label('Преподаватель курса')->widget(\kartik\select2\Select2::className(), [
+            'data' => \dektrium\user\models\User::getList(),
+            'options' => [
+                'id' => 'user_id',
+                'multiple' => false
+            ],
+        ]) ?>
+
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
     <?= $form->field($model, 'start_time')->widget(DatePicker::classname(), [

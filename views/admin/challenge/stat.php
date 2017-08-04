@@ -109,18 +109,16 @@ $this->params['breadcrumbs'][] = $this->title;
                     <th class="col-md-1 text-center">Имя</th>
                     <th class="col-md-1 text-center">Попытки</th>
                     <th class="col-md-1 text-center">Последняя оценка</th>
+                    <th class="col-md-1 text-center">Средняя оценка</th>
                     <th class="col-md-1 text-center">Все курсы ученика</th>
                 <?php foreach($usernames as $username):?>
                 <?php foreach ($challenge->getAllChallengeUsers($challenge->id) as $user):?>
                     <?php if($username->attributes['id'] == $user->user_id): ?>
 
-
-
                         <?php if ($challenge->getAttemptsCount($user->user_id)):?>
 
-
-
                             <tr>
+
                             <!-- Тест -->
                             <td class="text-center">
                                 <?= $username->attributes['username']; ?>
@@ -140,14 +138,22 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <strong><?= $markContainer->mark?></strong>
                             </td>
 
+                            <!-- Средняя оценка -->
+                            <td class="text-center">
+                                    <?php $averageMark = 0; $number = 0; ?>
+                                    <?php foreach( $challenge->getMarks($user->user_id, $challenge->id) as $markContainer):?>
+                                        <?php $averageMark += $markContainer->mark; $number++; ?>
+                                    <?php endforeach;?>
+                                    <?php $averageMark != 0 ? $averageMark = round($averageMark / $number) : $averageMark?>
+                                    <strong><?= $averageMark ?></strong>
+                            </td>
+
                                 <!-- Все курсы ученика -->
                                 <td class="text-center">
                                     <a href="<?= \yii\helpers\Url::to(['admin/grades/list', 'user_id' => $user->user_id])?>" class="btn btn-xs btn-success">Перейти</a>
                                 </td>
 
                             </tr>
-
-
 
                         <?php endif;?>
 

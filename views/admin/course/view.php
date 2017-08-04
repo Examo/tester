@@ -38,4 +38,19 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
+    <?php foreach ($users as $user):?>
+        <?php if ($user->id == $lecturer[0]->user_id): ?>
+
+            <table class="table table-striped table-bordered detail-view">
+                <tbody>
+                <tr>
+                    <th class="col-md-3">Преподователь курса</th>
+                    <td><strong><?= $user->username; ?></strong>, ID<?= $user->id; ?></td>
+                </tr>
+                </tbody>
+            </table>
+
+        <?php endif; ?>
+    <?php endforeach; ?>
+
 </div>

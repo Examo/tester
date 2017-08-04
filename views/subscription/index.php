@@ -4,6 +4,7 @@
  * @var \yii\web\View $this
  *
  */
+$this->title = Yii::t('course', 'My courses');
 ?>
 
 <div class="panel panel-default">

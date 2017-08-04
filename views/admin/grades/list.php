@@ -37,6 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <th class="col-md-1 text-center">Попытки</th>
                                 <th class="col-md-1 text-center">Последняя оценка</th>
                                 <th class="col-md-1 text-center">Средняя оценка</th>
+                                <th class="col-md-1 text-center">К статистике теста</th>
 
                                 <?php foreach ($course->getChallenges()->all() as $challenge):?>
                                     <?php if ($challenge->getAttemptsCount($user->id)):?>
@@ -67,8 +68,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                             <?php foreach( $challenge->getMarks($user->id, $challenge->id) as $markContainer):?>
                                                 <?php $averageMark += $markContainer->mark; $number++; ?>
                                             <?php endforeach;?>
-                                            <strong><?= $averageMark / $number; ?></strong>
+                                            <?php $averageMark != 0 ? $averageMark = round($averageMark / $number) : $averageMark?>
+                                            <strong><?= $averageMark ?></strong>
                                         </td>
+
+                                        <!-- К статистике теста -->
+                                        <td class="text-center">
+                                            <a href="<?= \yii\helpers\Url::to(['admin/challenge/stat', 'challenge_id' => $challenge->id])?>" class="btn btn-xs btn-success">Перейти</a>
+                                        </td>
+
                                     </tr>
                                     <?php endif;?>
                                 <?php endforeach; ?>
