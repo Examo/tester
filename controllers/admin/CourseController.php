@@ -4,9 +4,11 @@ namespace app\controllers\admin;
 
 use app\components\BaseAdminCrudController;
 use app\helpers\Subset;
+use app\models\AuthAssignment;
 use app\models\Course;
 use app\models\CourseLecturer;
 use app\models\CourseSubscription;
+use app\models\Discipline;
 use app\models\search\CourseSearch;
 use app\models\Subject;
 use dektrium\user\models\User;
@@ -156,6 +158,54 @@ class CourseController extends BaseAdminCrudController
                 ]);
         } else {
             throw new NotFoundHttpException('Статистики пока ещё не существует!');
+        }
+    }
+
+    public function actionLecturer()
+    {
+        //$this->layout = 'metronic_sidebar';
+        $lecturer = CourseLecturer::find()->where(['user_id' => Yii::$app->request->get('user_id')])->all();
+        $user = User::findOne(Yii::$app->request->get('user_id'));
+        $disciplines = Discipline::find()->all();
+        $courses = Course::find()->all();
+
+        if (!empty($lecturer)) {
+            return $this->render('lecturer/courses',
+                [
+                    'lecturer' => $lecturer,
+                    'user' => $user,
+                    'courses' => $courses,
+                    'disciplines' => $disciplines
+                ]);
+        } else {
+            throw new NotFoundHttpException('Такого преподавателя не существует в природе!');
+        }
+    }
+
+    public function actionLecturers()
+    {
+        //$this->layout = 'metronic_sidebar';
+        $lecturers = AuthAssignment::find()->select('user_id')->where(['item_name' => 'Lecturer'])->all();
+        $users = [];
+        $lecturersCourses = [];
+        foreach ($lecturers as $lecturer){
+            $users[] = User::find()->where(['id' => $lecturer->user_id])->one();
+            $lecturersCourses[] = CourseLecturer::find()->where(['user_id' => $lecturer->user_id])->all();
+        }
+        $disciplines = Discipline::find()->all();
+        $courses = Course::find()->all();
+
+        if (!empty($lecturers)) {
+            return $this->render('lecturer/index',
+                [
+                    'lecturers' => $lecturers,
+                    'users' => $users,
+                    'courses' => $courses,
+                    'disciplines' => $disciplines,
+                    'lecturersCourses' => $lecturersCourses
+                ]);
+        } else {
+            throw new NotFoundHttpException('Преподавателей пока ещё не существует!');
         }
     }
     

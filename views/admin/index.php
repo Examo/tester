@@ -57,7 +57,7 @@ $this->title = \Yii::$app->name;
         </div>
             <hr>
             <div class="row">
-                <h1>СИСТЕМА И ПОЛЬЗОВАТЕЛИ</h1>
+                <h1>СИСТЕМА И ВСЕ ПОЛЬЗОВАТЕЛИ</h1>
                 <div class="col-lg-4">
                     <h2>Система</h2>
                     <p>Системные настройки</p>
@@ -70,8 +70,9 @@ $this->title = \Yii::$app->name;
                 <h2>Пользователи</h2>
                 <p>Управление пользователями, блокировка, редактирование профиля и т.п.</p>
                 <p>
-                    <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('user/admin/index') ?>">Список</a>
-                    <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('user/admin/create') ?>">Создать</a>
+                    <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('user/admin/index') ?>">Общий список</a>
+                    <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('user/admin/create') ?>">Создать пользователя</a>
+                    <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/course/lecturers') ?>">Преподаватели курсов</a>
                 </p>
             </div>
             </div>
