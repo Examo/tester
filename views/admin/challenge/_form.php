@@ -1,5 +1,6 @@
 <?php
 
+use app\models\ar\Food;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\select2\Select2;
@@ -76,6 +77,14 @@ $modelSettings = $model->settings ? $model->settings : new \app\models\Challenge
                 'data' => Element::getList(),
                 'options' => [
                     'id' => 'element_id',
+                    'multiple' => false
+                ],
+            ]) ?>
+
+            <?= $form->field($food, 'id')->label('Продукт')->widget(\kartik\select2\Select2::className(), [
+                'data' => Food::getList(),
+                'options' => [
+                    'id' => 'id',
                     'multiple' => false
                 ],
             ]) ?>
@@ -192,3 +201,5 @@ $modelSettings = $model->settings ? $model->settings : new \app\models\Challenge
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php \yii\helpers\VarDumper::dump($food, 10, true)?>

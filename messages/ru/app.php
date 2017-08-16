@@ -13,5 +13,6 @@ return [
     'Reset' => 'Сбросить',
     'Name' => 'Название',
     'Description' => 'Описание',
-    'Position' => 'Положение'
+    'Position' => 'Положение',
+    'Create Food' => 'Создать продукт'
 ];
