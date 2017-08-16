@@ -6,17 +6,6 @@ use Yii;
 
 class Feed extends \app\components\ActiveRecord
 {
-    const FEEDING_CONST = ['one', 'two', 'three', 'four', 'five', 'six'];
-    public $tests = 'TASTE SOME TEST';
-    public $image = ['/i/orange.png',
-        '/i/cherry-pie.png',
-        '/i/milk-carton.png',
-        '/i/potato-chips.png',
-        '/i/sausage.png',
-        '/i/meat.png'];
-    public $title = 'Первый тест по теме Приставки ПРЕ- и ПРИ-';
-    public $time = 5;
-    public $percent = 10;
 
     /**
      * @inheritdoc

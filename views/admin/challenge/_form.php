@@ -202,4 +202,4 @@ $modelSettings = $model->settings ? $model->settings : new \app\models\Challenge
 
 </div>
 
-<?php \yii\helpers\VarDumper::dump($challengesFood, 10, true)?>
+<?php //\yii\helpers\VarDumper::dump($challengesFood, 10, true)?>

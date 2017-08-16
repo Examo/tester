@@ -92,7 +92,6 @@ class CourseController extends BaseAdminCrudController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        //$lecturer = CourseLecturer::find()->where(['course_id' => $id])->one();
         $lecturer = CourseLecturer::find()->where(['course_id' => $id])->one();
         $users = CourseLecturer::find()->all();
 

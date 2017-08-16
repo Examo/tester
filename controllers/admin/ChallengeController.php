@@ -88,23 +88,54 @@ class ChallengeController extends BaseAdminCrudController
         $class = $this->getModelClass();
         $model = new $class();
 
-        $food = new Food();
+       // $food = new Food();
 
-        $challengesFood = new ChallengeFood();
+        $challengeFood = new ChallengeFood();
 
         if ($model->load(Yii::$app->request->post()) && $model->save() && $this->saveModel($model)) {
-            $challengesFood->id = $model->id;
-            $challengesFood->food_id = $model->food_id;
-            $challengesFood->challenge_id = $model->id;
-            $challengesFood->save();
+            $challengeFood->id = $model->id;
+            $challengeFood->food_id = $model->food_id;
+            $challengeFood->challenge_id = $model->id;
+            $challengeFood->save();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
-                'food' => $food,
-                'challengesFood' => $challengesFood
+             //   'food' => $food,
+                'challengeFood' => $challengeFood
             ]);
         }
+    }
+
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+        $challengeFood = ChallengeFood::find()->where(['id' => $id])->one();
+        $food = Food::find()->all();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $challengeFood->id = $id;
+            $challengeFood->food_id = $model->food_id;
+            $challengeFood->challenge_id = $id;
+            $challengeFood->save();
+
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+                'food' => $food,
+                'challengeFood' => $challengeFood
+            ]);
+        }
+    }
+
+    public function actionView($id)
+    {
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+            'challengeFood' => ChallengeFood::find()->where(['id' => $id])->one(),
+            'food' => Food::find()->all()
+        ]);
     }
 
     public function actionWeek()

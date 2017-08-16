@@ -44,4 +44,19 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
+    <?php foreach ($food as $product):?>
+    <?php if ($product->id == $challengeFood->food_id): ?>
+
+        <table class="table table-striped table-bordered detail-view">
+            <tbody>
+            <tr>
+                <th class="col-md-3">Продукт</th>
+                <td><strong><?= $product->food_name; ?></strong>, ID<?= $product->id; ?></td>
+            </tr>
+            </tbody>
+        </table>
+
+    <?php endif; ?>
+    <?php endforeach; ?>
+
 </div>

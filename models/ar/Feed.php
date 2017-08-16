@@ -19,13 +19,23 @@ class Feed extends \yii\db\ActiveRecord
         'one', 'two', 'three', 'four', 'five',
         'six', 'seven', 'eight', 'nine', 'ten',
         'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen',
-        'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty'];
+        'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty',
+        'twenty_one', 'twenty_two', 'twenty_three', 'twenty_four', 'twenty_five',
+        'twenty_six', 'twenty_seven', 'twenty_eight', 'twenty_nine', 'thirty'];
     public $tests = 'TASTE SOME TEST';
     public $image = ['/i/orange.png',
         '/i/cherry_pie.png',
         '/i/milk_carton.png',
         '/i/potato_chips.png',
         '/i/hot_dog.png',
+        '/i/meat.png',
+        '/i/meat.png',
+        '/i/meat.png',
+        '/i/meat.png',
+        '/i/meat.png',
+        '/i/meat.png',
+        '/i/meat.png',
+        '/i/meat.png',
         '/i/meat.png',
         '/i/meat.png',
         '/i/meat.png',
@@ -106,7 +116,7 @@ class Feed extends \yii\db\ActiveRecord
     public function getClass($classes, $class)
     {
         if (!empty($classes[$class])) {
-            for ($i = 1; $i <= count($classes[$class]); $i++){
+                        for ($i = 1; $i <= count($classes[$class]); $i++){
             }
             $classes[$class][] = $i;
             $currentClass = $class . '_' . $i;
@@ -116,6 +126,7 @@ class Feed extends \yii\db\ActiveRecord
         } else {
             //return 'Вложенного массива нет';
             $classes[$class][] = 1;
+           // $classes[$class][] = 1;
             \yii\helpers\VarDumper::dump($classes, 10, true);
         }
 

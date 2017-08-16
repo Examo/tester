@@ -14,8 +14,8 @@ use yii\helpers\Html;
 
     <?= $this->render('_form', [
         'model' => $model,
-        'food' => $food,
-        'challengesFood' => $challengesFood
+      //  'food' => $food,
+        'challengeFood' => $challengeFood
     ]) ?>
 
 </div>
