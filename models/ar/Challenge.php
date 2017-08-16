@@ -31,6 +31,7 @@ use Yii;
  */
 class Challenge extends \app\components\ActiveRecord
 {
+    public $food_id;
     /**
      * @inheritdoc
      */
@@ -46,8 +47,9 @@ class Challenge extends \app\components\ActiveRecord
     {
         return [
             [['course_id', 'challenge_type_id', 'element_id', 'subject_id'], 'required'],
-            [['course_id', 'challenge_type_id', 'element_id', 'subject_id', 'grade_number', 'exercise_number', 'exercise_challenge_number', 'week'], 'integer'],
+            [['course_id', 'challenge_type_id', 'element_id', 'subject_id', 'grade_number', 'exercise_number', 'exercise_challenge_number', 'week', 'food_id'], 'integer'],
             [['name', 'description'], 'string'],
+            [['food_id'], 'safe'],
             [['element_id'], 'exist', 'skipOnError' => true, 'targetClass' => Element::className(), 'targetAttribute' => ['element_id' => 'id']],
             [['subject_id'], 'exist', 'skipOnError' => true, 'targetClass' => Subject::className(), 'targetAttribute' => ['subject_id' => 'id']],
             [['challenge_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => ChallengeType::className(), 'targetAttribute' => ['challenge_type_id' => 'id']],

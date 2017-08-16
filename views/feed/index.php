@@ -66,8 +66,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php $classes = [
     'apple' => [1, 2, 3],
-    'orange' => [
-    1]
+    'orange' => [1],
+    'cherry_pie' => [1]
 ];
 $class = 'orange'?>
 <br><br><br><br><br>

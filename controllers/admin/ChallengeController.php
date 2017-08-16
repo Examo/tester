@@ -5,6 +5,7 @@ namespace app\controllers\admin;
 use app\components\BaseAdminCrudController;
 use app\helpers\QuestionChooser;
 use app\helpers\Subset;
+use app\models\ar\ChallengeFood;
 use app\models\ar\Food;
 use app\models\Challenge;
 use app\models\ChallengeMark;
@@ -85,20 +86,23 @@ class ChallengeController extends BaseAdminCrudController
     public function actionCreate()
     {
         $class = $this->getModelClass();
+        $model = new $class();
 
         $food = new Food();
 
-        $model = new $class();
+        $challengesFood = new ChallengeFood();
 
         if ($model->load(Yii::$app->request->post()) && $model->save() && $this->saveModel($model)) {
-            $food->id = $food->id;
-            $food->food_name = '';
-            
+            $challengesFood->id = $model->id;
+            $challengesFood->food_id = $model->food_id;
+            $challengesFood->challenge_id = $model->id;
+            $challengesFood->save();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
-                'food' => $food
+                'food' => $food,
+                'challengesFood' => $challengesFood
             ]);
         }
     }

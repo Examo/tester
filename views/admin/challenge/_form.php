@@ -81,7 +81,7 @@ $modelSettings = $model->settings ? $model->settings : new \app\models\Challenge
                 ],
             ]) ?>
 
-            <?= $form->field($food, 'id')->label('Продукт')->widget(\kartik\select2\Select2::className(), [
+            <?= $form->field($model, 'food_id')->label('Продукт')->widget(\kartik\select2\Select2::className(), [
                 'data' => Food::getList(),
                 'options' => [
                     'id' => 'id',
@@ -202,4 +202,4 @@ $modelSettings = $model->settings ? $model->settings : new \app\models\Challenge
 
 </div>
 
-<?php \yii\helpers\VarDumper::dump($food, 10, true)?>
+<?php \yii\helpers\VarDumper::dump($challengesFood, 10, true)?>

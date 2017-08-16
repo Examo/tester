@@ -106,21 +106,16 @@ class Feed extends \yii\db\ActiveRecord
     public function getClass($classes, $class)
     {
         if (!empty($classes[$class])) {
-            //return 'Вложенный массив существует';
-            //foreach ($classes[$class] as $currentClass){
-            //    echo $currentClass;
-           // }
             for ($i = 1; $i <= count($classes[$class]); $i++){
             }
             $classes[$class][] = $i;
             $currentClass = $class . '_' . $i;
-            \yii\helpers\VarDumper::dump($classes[$class], 10, true);
-            \yii\helpers\VarDumper::dump($class, 10, true);
-            \yii\helpers\VarDumper::dump($currentClass, 10, true);
+            \yii\helpers\VarDumper::dump($classes, 10, true);
+            //\yii\helpers\VarDumper::dump($class, 10, true);
+            //\yii\helpers\VarDumper::dump($currentClass, 10, true);
         } else {
             //return 'Вложенного массива нет';
             $classes[$class][] = 1;
-           // $classes[$class][] = 1;
             \yii\helpers\VarDumper::dump($classes, 10, true);
         }
 
