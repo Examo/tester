@@ -14,6 +14,8 @@
         <?php endif; ?>
         <p>Количество заданий: <?= $challenge->getQuestionsCount() ?></p>
 
+        <p><a href="<?= \yii\helpers\Url::to(['start', 'id' => $challenge->id, 'confirm' => true]) ?>"><img src="/i/<?= $challengeFood->food_name; ?>.png" /></a></p>
+
         <p><a class="btn btn-lg btn-success" href="<?= \yii\helpers\Url::to(['start', 'id' => $challenge->id, 'confirm' => true]) ?>">Начать этот тест</a></p>
     </center>
     </div>

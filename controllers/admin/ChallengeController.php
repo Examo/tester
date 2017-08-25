@@ -113,10 +113,10 @@ class ChallengeController extends BaseAdminCrudController
         $challengeFood = ChallengeFood::find()->where(['id' => $id])->one();
         $food = Food::find()->all();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $challengeFood->id = $id;
+        if ($model->load(Yii::$app->request->post()) && $model->save() && $this->saveModel($model)) {
+            $challengeFood->id = $model->id;
             $challengeFood->food_id = $model->food_id;
-            $challengeFood->challenge_id = $id;
+            $challengeFood->challenge_id = $model->id;
             $challengeFood->save();
 
             return $this->redirect(['view', 'id' => $model->id]);

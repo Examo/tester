@@ -16,6 +16,8 @@ $summary = \app\helpers\ChallengeSummarizer::fromSession( $session );
 ?>
 
 <div class="panel panel-default">
+    <p><center><img src="/i/<?= $challengeFood->food_name; ?>.png" /></center></p>
+    <?php //\yii\helpers\VarDumper::dump($currentQuestion, 10, true) ?>
     <div class="panel-heading">
         <?= $challenge->name ?>
         <div class="pull-right text-right" style="width: 30%;">

@@ -44,39 +44,35 @@ $this->params['breadcrumbs'][] = $this->title;
     <center><img src="/i/refrigerator.png" width="600" height="auto" /></center>
     <div class="feeding">
 
+        <?php $classes = []; ?>
+
         <?php if(!empty($feedingTests)):?>
             <?php if(!empty($challenges)):?>
                 <?php $number = 0; ?>
                 <?php foreach ($challenges as $challenge): ?>
-                    <a href="/challenge/start?id=<?= $challenge->id; ?>"><img src="<?= $feedingTests->getImageFeeding($number); ?>" title="Тест <?= $challenge->name; ?> на <?= $feedingTests->time; ?> минут, прибавляет <?= $feedingTests->percent; ?> % к шкале" class="<?= $feedingTests->getFeedingConst($number); ?>" /></a>
-                    <?php $number++; ?>
+                    <?php if(!empty($feedingTests->getChallengeFood($challenge->id)->food_name)):?>
+
+                        <?php $class = $challenge->getChallengeFood($challenge->id)->food_name; ?>
+                        <?php $all = $feedingTests->getClass($classes, $class); ?>
+                        <?php $classes = $all['classes']; ?>
+
+                    <a href="/challenge/start?id=<?= $challenge->id; ?>"><img src="<?= $feedingTests->getImageFeeding($feedingTests->getChallengeFood($challenge->id)->food_name); ?>" title="Тест <?= $challenge->id; ?> на <?= $feedingTests->time; ?> минут, прибавляет <?= $feedingTests->percent; ?> % к шкале" class="<?= $all['currentClass']; ?>" /></a>
+
+                        <?php $number++; ?>
+
+                    <?php else: ?>
+                        <?= $challenge->id; ?> - исправить <br>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             <?php endif; ?>
-
-
         <?php endif;?>
-
     </div>
-
 </div>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <?php //\yii\helpers\VarDumper::dump($challenges, 10, true)?>
 
-
-
-<?php $classes = [
-    'apple' => [1, 2, 3],
-    'orange' => [1],
-    'cherry_pie' => [1]
-];
-$class = 'orange'?>
-<br><br><br><br><br>
-<?= $feedingTests->getClass($classes, $class); ?>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 
 
-<?php foreach ($challenges as $challenge): ?>
-    <?php $challenge->id; ?>
-    <?php $number++; ?>
-<?php endforeach; ?>
 

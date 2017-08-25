@@ -51,13 +51,88 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
 .element-container {position: absolute; width: 700px; height: auto;  z-index: 1;  }
 .required-container {position: relative; width: 77%; height: auto; margin-top: 555px;   z-index: 1;  }
 .passed-container {position: relative; width: 77%; height: auto;    z-index: 1;  }
-.feeding IMG { position: absolute; width: 70px;}
-.one {  top: 150px; left: 300px; z-index: 1; }
-.two { top: 160px; left: 380px; z-index: 1; }
-.three { top: 240px; left: 300px; z-index: 1; }
-.four { top: 250px; left: 380px; z-index:1; }
-.five { top: 320px; left: 300px; z-index: 1; }
-.six { top: 320px; left: 380px; z-index: 1; }
+.feeding IMG { position: absolute; }
+
+.orange { width: 70px; top: 150px; left: 300px; z-index: 3; }
+.orange_2 { width: 65px; top: 155px; left: 315px; z-index: 1; }
+.orange_3 { width: 60px; top: 160px; left: 330px; z-index: 1; }
+.orange_4 { width: 55px; top: 147px; left: 315px; z-index: 1; }
+.orange_5 { width: 50px; top: 146px; left: 320px; z-index: 1; }
+.orange_6 { width: 45px; top: 145px; left: 325px; z-index: 1; }
+.orange_7 { width: 40px; top: 144px; left: 330px; z-index: 1; }
+.orange_8 { width: 35px; top: 143px; left: 335px; z-index: 1; }
+.orange_9 { width: 30px; top: 142px; left: 340px; z-index: 1; }
+.orange_10 { width: 25px; top: 141px; left: 345px; z-index: 1; }
+
+
+.milk_carton { width: 70px; top: 160px; left: 380px; z-index: 2; }
+.milk_carton_2 { width: 60px; top: 165px; left: 395px; z-index: 1; }
+.milk_carton_3 { width: 70px; top: 160px; left: 380px; z-index: 1; }
+.milk_carton_4 { width: 70px; top: 160px; left: 380px; z-index: 1; }
+.milk_carton_5 { width: 70px; top: 160px; left: 380px; z-index: 1; }
+.milk_carton_6 { width: 70px; top: 160px; left: 380px; z-index: 1; }
+.milk_carton_7 { width: 70px; top: 160px; left: 380px; z-index: 1; }
+.milk_carton_8 { width: 70px; top: 160px; left: 380px; z-index: 1; }
+.milk_carton_9 { width: 70px; top: 160px; left: 380px; z-index: 1; }
+.milk_carton_10 { width: 70px; top: 160px; left: 380px; z-index: 1; }
+
+.potato_chips { width: 70px; top: 240px; left: 300px; z-index: 1; }
+.potato_chips_2 { width: 70px; top: 240px; left: 300px; z-index: 1; }
+.potato_chips_3 { width: 70px; top: 240px; left: 300px; z-index: 1; }
+.potato_chips_4 { width: 70px; top: 240px; left: 300px; z-index: 1; }
+.potato_chips_5 { width: 70px; top: 240px; left: 300px; z-index: 1; }
+.potato_chips_6 { width: 70px; top: 240px; left: 300px; z-index: 1; }
+.potato_chips_7 { width: 70px; top: 240px; left: 300px; z-index: 1; }
+.potato_chips_8 { width: 70px; top: 240px; left: 300px; z-index: 1; }
+.potato_chips_9 { width: 70px; top: 240px; left: 300px; z-index: 1; }
+.potato_chips_10 { width: 70px; top: 240px; left: 300px; z-index: 1; }
+
+.hot_dog { width: 70px; top: 250px; left: 380px; z-index:1; }
+.hot_dog_2 { width: 70px; top: 250px; left: 380px; z-index:1; }
+.hot_dog_3 { width: 70px; top: 250px; left: 380px; z-index:1; }
+.hot_dog_4 { width: 70px; top: 250px; left: 380px; z-index:1; }
+.hot_dog_5 { width: 70px; top: 250px; left: 380px; z-index:1; }
+.hot_dog_6 { width: 70px; top: 250px; left: 380px; z-index:1; }
+.hot_dog_7 { width: 70px; top: 250px; left: 380px; z-index:1; }
+.hot_dog_8 { width: 70px; top: 250px; left: 380px; z-index:1; }
+.hot_dog_9 { width: 70px; top: 250px; left: 380px; z-index:1; }
+.hot_dog_10 { width: 70px; top: 250px; left: 380px; z-index:1; }
+
+.meat { width: 70px; top: 320px; left: 300px; z-index: 1; }
+.meat_2 { width: 70px; top: 320px; left: 300px; z-index: 1; }
+.meat_3 { width: 70px; top: 320px; left: 300px; z-index: 1; }
+.meat_4 { width: 70px; top: 320px; left: 300px; z-index: 1; }
+.meat_5 { width: 70px; top: 320px; left: 300px; z-index: 1; }
+.meat_6 { width: 70px; top: 320px; left: 300px; z-index: 1; }
+.meat_7 { width: 70px; top: 320px; left: 300px; z-index: 1; }
+.meat_8 { width: 70px; top: 320px; left: 300px; z-index: 1; }
+.meat_9 { width: 70px; top: 320px; left: 300px; z-index: 1; }
+.meat_10 { width: 70px; top: 320px; left: 300px; z-index: 1; }
+
+.coffee { width: 70px; top: 320px; left: 380px; z-index: 1; }
+.coffee_2 { width: 70px; top: 320px; left: 380px; z-index: 1; }
+.coffee_3 { width: 70px; top: 320px; left: 380px; z-index: 1; }
+.coffee_4 { width: 70px; top: 320px; left: 380px; z-index: 1; }
+.coffee_5 { width: 70px; top: 320px; left: 380px; z-index: 1; }
+.coffee_6 { width: 70px; top: 320px; left: 380px; z-index: 1; }
+.coffee_7 { width: 70px; top: 320px; left: 380px; z-index: 1; }
+.coffee_8 { width: 70px; top: 320px; left: 380px; z-index: 1; }
+.coffee_9 { width: 70px; top: 320px; left: 380px; z-index: 1; }
+.coffee_10 { width: 70px; top: 320px; left: 380px; z-index: 1; }
+
+/*
+
+'/i/chocolate.png',
+'/i/cookie_cat.png',
+'/i/banana.png',
+'/i/donut.png',
+
+.one { width: 70px; top: 150px; left: 300px; z-index: 1; }
+.two { width: 70px; top: 160px; left: 380px; z-index: 1; }
+.three { width: 70px; top: 240px; left: 300px; z-index: 1; }
+.four { width: 70px; top: 250px; left: 380px; z-index:1; }
+.five { width: 70px; top: 320px; left: 300px; z-index: 1; }
+.six { width: 70px; top: 320px; left: 380px; z-index: 1; }*/
 
 .feeding IMG:hover { z-index:2;
  -webkit-transform: scale(1.02);

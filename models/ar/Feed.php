@@ -29,11 +29,11 @@ class Feed extends \yii\db\ActiveRecord
         '/i/potato_chips.png',
         '/i/hot_dog.png',
         '/i/meat.png',
-        '/i/meat.png',
-        '/i/meat.png',
-        '/i/meat.png',
-        '/i/meat.png',
-        '/i/meat.png',
+        '/i/coffee.png',
+        '/i/chocolate.png',
+        '/i/cookie_cat.png',
+        '/i/banana.png',
+        '/i/donut.png',
         '/i/meat.png',
         '/i/meat.png',
         '/i/meat.png',
@@ -103,10 +103,15 @@ class Feed extends \yii\db\ActiveRecord
     }
 
 
-    public function getImageFeeding($i)
+    public function getImageFeeding($class)
+    {
+        return '/i/' . $class . '.png';
+    }
+
+    /*public function getImageFeeding($i)
     {
         return $this->image[$i];
-    }
+    }*/
 
     // Нужен метод для получения модели теста с привязанным продуктом - это имя класса
     // Получаем класс - проверяем перед выводом ссылки-картинки, нет ли у нас уже такого класса
@@ -115,21 +120,32 @@ class Feed extends \yii\db\ActiveRecord
     // Далее эти классы подставляются в class="" - и появляется соответствующее 
     public function getClass($classes, $class)
     {
+        $result = [];
         if (!empty($classes[$class])) {
-                        for ($i = 1; $i <= count($classes[$class]); $i++){
+                for ($i = 1; $i <= count($classes[$class]); $i++){
             }
             $classes[$class][] = $i;
             $currentClass = $class . '_' . $i;
-            \yii\helpers\VarDumper::dump($classes, 10, true);
+            $result['currentClass'] = $currentClass;
+            $result['classes'] = $classes;
+            return $result;
+            //\yii\helpers\VarDumper::dump($classes, 10, true);
             //\yii\helpers\VarDumper::dump($class, 10, true);
             //\yii\helpers\VarDumper::dump($currentClass, 10, true);
         } else {
             //return 'Вложенного массива нет';
             $classes[$class][] = 1;
-           // $classes[$class][] = 1;
-            \yii\helpers\VarDumper::dump($classes, 10, true);
+            $result['currentClass'] = $class;
+            $result['classes'] = $classes;
+            return $result;
+            //\yii\helpers\VarDumper::dump($classes, 10, true);
         }
+    }
 
-
+    public function getChallengeFood($id)
+    {
+        $food_id = ChallengeFood::find()->select('food_id')->where(['challenge_id' => $id])->one();
+        $challengeFood = Food::find()->select('food_name')->where(['id' => $food_id])->one();
+        return $challengeFood;
     }
 }

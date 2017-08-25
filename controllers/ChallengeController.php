@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use app\helpers\ChallengeSession;
 use app\helpers\ChallengeSummarizer;
+use app\models\ar\ChallengeFood;
+use app\models\ar\Food;
 use app\models\Challenge;
 use Yii;
 use yii\filters\VerbFilter;
@@ -75,6 +77,10 @@ class ChallengeController extends Controller
     {
         $challenge = $this->getChallenge($id);
 
+
+        $food_id = ChallengeFood::find()->select('food_id')->where(['challenge_id' => $id])->one();
+        $challengeFood = Food::find()->select('food_name')->where(['id' => $food_id])->one();
+
         if ($challenge->settings->autostart || $confirm) {
 
             $session = new ChallengeSession($challenge, Yii::$app->user->id);
@@ -87,7 +93,8 @@ class ChallengeController extends Controller
 
         } else {
             return $this->render('start', [
-                'challenge' => $challenge
+                'challenge' => $challenge,
+                'challengeFood' => $challengeFood
             ]);
         }
     }
@@ -140,13 +147,17 @@ class ChallengeController extends Controller
         $challenge = $this->getChallenge($id);
         $session = new ChallengeSession($challenge, Yii::$app->user->id);
 
+        $food_id = ChallengeFood::find()->select('food_id')->where(['challenge_id' => $id])->one();
+        $challengeFood = Food::find()->select('food_name')->where(['id' => $food_id])->one();
+
         if ($session->isFinished()) {
             return $this->redirect(Url::to(['challenge/finish', 'id' => $challenge->id]));
         }
 
         return $this->render('progress', [
             'session' => $session,
-            'challenge' => $challenge
+            'challenge' => $challenge,
+            'challengeFood' => $challengeFood
         ]);
     }
 

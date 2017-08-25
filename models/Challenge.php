@@ -3,6 +3,8 @@
 namespace app\models;
 
 use app\helpers\Subset;
+use app\models\ar\ChallengeFood;
+use app\models\ar\Food;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -244,5 +246,12 @@ class Challenge extends \app\models\ar\Challenge
     public function getUserById($id)
     {
         return User::find()->where(['id' => $id]);
+    }
+
+    public function getChallengeFood($id)
+    {
+        $food_id = ChallengeFood::find()->select('food_id')->where(['challenge_id' => $id])->one();
+        $challengeFood = Food::find()->select('food_name')->where(['id' => $food_id])->one();
+        return $challengeFood;
     }
 }
