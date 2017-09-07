@@ -2,7 +2,10 @@
 
 namespace app\controllers;
 
+use app\models\ar\ChallengeHasQuestion;
 use app\models\ar\Food;
+use app\models\ar\Question;
+use app\models\Attempt;
 use app\models\Course;
 use Yii;
 use app\models\ar\Feed;
@@ -57,6 +60,47 @@ class FeedController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $feedingTests = new Feed();
 
+        $lastChallenge = Attempt::find()->where(['user_id' => Yii::$app->user->id])->orderBy('id DESC')->one();
+        
+        $lastChallengeId = Attempt::find()->select(['challenge_id'])->where(['user_id' => Yii::$app->user->id])->orderBy('id DESC')->one();
+        $lastChallengeQuestions = ChallengeHasQuestion::find()->where(['challenge_id' => $lastChallengeId])->all();
+        $allLastChallengeQuestionsCost = 0;
+        foreach ($lastChallengeQuestions as $lastChallengeQuestion){
+            $lastChallengeQuestionCost = Question::find()->select('cost')->where(['id' => $lastChallengeQuestion->question_id])->one();
+            $allLastChallengeQuestionsCost += $lastChallengeQuestionCost->cost;
+        }
+        $allLastChallengeQuestionsCost = ceil($allLastChallengeQuestionsCost / 5 * intval($lastChallenge->mark));
+
+        $finishTime = Yii::$app->getFormatter()->asTimestamp($lastChallenge->finish_time);
+        $time = Yii::$app->getFormatter()->asTimestamp(time());
+        $scaleValue = $time - $finishTime;
+        if ($scaleValue <= 100){
+            
+        }
+
+        $allDoneChallenges = Attempt::find()->where(['user_id' => Yii::$app->user->id])->all();
+
+        $allDoneChallengesCosts = [];
+        $allLastCosts = [];
+        $costAmount = 0;
+        $nearlyFinishCostAmount = 0;
+        $finishCostAmount = 0;
+        for ($i =0; $i < count($allDoneChallenges); $i++){
+            $cost = ChallengeHasQuestion::find()->select('question_id')->where(['challenge_id' => $allDoneChallenges[$i]->challenge_id])->all();
+            $allDoneChallengesMarks = Attempt::find()->select('mark')->where(['user_id' => Yii::$app->user->id])->all();
+            for ($o = 0; $o < count($cost); $o++){
+                $lastCost = Question::find()->select('cost')->where(['id' => $cost[$o]->question_id])->all();
+                foreach ($lastCost as $item) {
+                    $allLastCosts[] = $item->cost;
+                    $costAmount += $item->cost;
+                    $nearlyFinishCostAmount += $item->cost;
+                }
+            }
+            $finishCostAmount += ceil($nearlyFinishCostAmount / 5 * intval($allDoneChallengesMarks[$i]->mark));
+            $nearlyFinishCostAmount = 0;
+        }
+        //$finishCostAmount = round($finishCostAmount);
+
         $foods = Food::find()->all();
 
         $challenges = [];
@@ -64,12 +108,22 @@ class FeedController extends Controller
             $challenges = array_merge($challenges, $course->getNewChallenges(Yii::$app->user->id)->all());
         }
 
+        $attempt = Attempt::find()->select(['finish_time'])->where(['user_id' => Yii::$app->user->id])->orderBy('id DESC')->one();
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'feedingTests' => $feedingTests,
             'foods' => $foods,
             'challenges' => $challenges,
+            'lastChallenge' => $lastChallenge,
+            'finishTime' => $finishTime,
+            'allLastChallengeQuestionsCost' => $allLastChallengeQuestionsCost,
+            'allDoneChallenges' => $allDoneChallenges,
+            'allDoneChallengesCosts' => $allDoneChallengesCosts,
+            'costAmount' => $costAmount,
+            'finishCostAmount' => $finishCostAmount,
+            'scaleValue' => $scaleValue,
+            'attempt' => $attempt
         ]);
     }
 

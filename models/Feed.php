@@ -55,4 +55,9 @@ class Feed extends \app\components\ActiveRecord
         //return Yii::$app->formatter->asDate($this->date);
     }
 
+    public function setScaleFoodValue()
+    {
+        return 'hello';
+    }
+
 }

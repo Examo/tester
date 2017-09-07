@@ -6,6 +6,8 @@ use app\helpers\ChallengeSession;
 use app\helpers\ChallengeSummarizer;
 use app\models\ar\ChallengeFood;
 use app\models\ar\Food;
+use app\models\ar\ScaleFeed;
+use app\models\Attempt;
 use app\models\Challenge;
 use Yii;
 use yii\filters\VerbFilter;
@@ -124,6 +126,20 @@ class ChallengeController extends Controller
             $summary = ChallengeSummarizer::fromSession($session);
             if (!Yii::$app->user->isGuest) {
                 $summary->saveAttempt();
+            }
+
+            $scale = ScaleFeed::find()->where(['user_id' => Yii::$app->user->id])->one();
+            if ($scale) {
+                $scale->user_id = Yii::$app->user->id;
+                $lastAttempt = Attempt::find()->select(['finish_time'])->where(['user_id' => Yii::$app->user->id])->orderBy('id DESC')->one();
+                $scale->last_time = $lastAttempt->finish_time;
+                $scale->save();
+            } else {
+                $scale = new ScaleFeed();
+                $scale->user_id = Yii::$app->user->id;
+                $lastAttempt = Attempt::find()->select(['finish_time'])->where(['user_id' => Yii::$app->user->id])->orderBy('id DESC')->one();
+                $scale->last_time = $lastAttempt->finish_time;
+                $scale->save();
             }
 
             return $this->render('finish', [

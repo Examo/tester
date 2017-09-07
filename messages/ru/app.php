@@ -14,5 +14,6 @@ return [
     'Name' => 'Название',
     'Description' => 'Описание',
     'Position' => 'Положение',
-    'Create Food' => 'Создать продукт'
+    'Create Food' => 'Создать продукт',
+    'Feed' => 'Еда'
 ];

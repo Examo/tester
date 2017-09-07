@@ -195,3 +195,78 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
 .table-cell-danger {display:table-cell; border:solid 1px gainsboro; background-color: red; text-align: center; color: white}
 .table-cell-success {display:table-cell; border:solid 1px gainsboro; background-color: #26A69A; text-align: center; color: white}
 .table-finish ul li {margin: 5px; padding: 5px; line-height: 1em}*/
+
+/* Scale */
+
+.bar-wrapper {
+    display: inline-block;
+    width:110px;
+}
+
+.feeding-progress-bar-fill {
+    background: rgb(226, 226, 226) none repeat scroll 0 0;
+    height: 50px;
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    transition: width 0.2s linear 0s; }
+
+.feeding-progress-bar-block {
+    position: relative;
+    margin: 0 -20px -20px -20px;
+    background: rgb(56, 172, 77) none repeat scroll 0 0;
+    height: 100px;
+    width: 100px;
+}
+
+.cleaning-progress-bar-fill {
+    background: rgb(226, 226, 226) none repeat scroll 0 0;
+    height: 50px;
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    transition: width 0.2s linear 0s; }
+
+.cleaning-progress-bar-block {
+    position: relative;
+    margin: 0 -20px -20px -20px;
+    background: rgb(56, 172, 77) none repeat scroll 0 0;
+    height: 100px;
+    width: 100px;
+}
+
+.gaming-progress-bar-fill {
+    background: rgb(226, 226, 226) none repeat scroll 0 0;
+    height: 50px;
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    transition: width 0.2s linear 0s; }
+
+.gaming-progress-bar-block {
+    position: relative;
+    margin: 0 -20px -20px -20px;
+    background: rgb(56, 172, 77) none repeat scroll 0 0;
+    height: 100px;
+    width: 100px;
+}
+
+.training-progress-bar-fill {
+    background: rgb(226, 226, 226) none repeat scroll 0 0;
+    height: 50px;
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    transition: width 0.2s linear 0s; }
+
+.training-progress-bar-block {
+    position: relative;
+    margin: 0 -20px -20px -20px;
+    background: rgb(56, 172, 77) none repeat scroll 0 0;
+    height: 100px;
+    width: 100px;
+}
