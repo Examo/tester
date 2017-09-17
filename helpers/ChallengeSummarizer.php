@@ -156,7 +156,8 @@ class ChallengeSummarizer
             'challenge_id' => $this->challenge->id,
             'user_id' => $this->user,
             'start_time' => date('Y-m-d H:i:s', $this->startTime),
-            'finish_time' => date('Y-m-d H:i:s', $this->finishTime)
+            'finish_time' => date('Y-m-d H:i:s', $this->finishTime),
+            //'points' => 0
         ])->one();
 
         if ($previous) {
@@ -169,6 +170,7 @@ class ChallengeSummarizer
         $attempt->start_time = date('Y-m-d H:i:s', $this->startTime);
         $attempt->finish_time = date('Y-m-d H:i:s', $this->finishTime);
         $attempt->mark = $this->getMark();
+        $attempt->points = 0;
         if (!$attempt->save()) {
             return false;
         }

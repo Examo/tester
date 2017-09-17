@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\ar\ChallengeHasQuestion;
 use app\models\ar\Food;
 use app\models\ar\Question;
+use app\models\ar\ScaleFeed;
 use app\models\Attempt;
 use app\models\Course;
 use Yii;
@@ -73,10 +74,66 @@ class FeedController extends Controller
 
         $finishTime = Yii::$app->getFormatter()->asTimestamp($lastChallenge->finish_time);
         $time = Yii::$app->getFormatter()->asTimestamp(time());
-        $scaleValue = $time - $finishTime;
-        if ($scaleValue <= 100){
-            
+        $scaleTwist = $time - $finishTime;
+        $scaleValue = 0;
+
+        for ($i = 0; $i < 5400; $i = $i + 100) {
+
+            //if ($scaleTwist < $i) {
+            //$allLastChallengeQuestionsCost = 1;
+            //  $scaleValue = $i;
+            //    print 'ScaleTwist меньше $i<br>';print $i . '<br>';
+            //     break;
+            // }
+            // if ($scaleTwist > $i) {
+            //$allLastChallengeQuestionsCost = 1;
+            //  $scaleValue = $i;
+            //print 'ScaleTwist $i<br>';
+            //break;
+            // }
+            //
+            if ($i >= 2700) {
+                print 'DONE';
+            }
+            if ($scaleTwist > $i && $scaleTwist < ($i + 100)) {
+                print 'Значение ScaleTwist чуть больше $i, но меньше $i + 100 и равно ' . $i . '<br>';
+                //print $i;
+                break;
+            }
         }
+           // print $i . '<br>';
+           // if ($scaleTwist >= $i && $scaleTwist < $i + 100) {
+            //$scaleValue = $i;
+             //   break;
+         /*if ($scaleTwist >= 200 || $scaleTwist < 300) {
+            $scaleValue = 200;
+        } if ($scaleTwist >= 300 || $scaleTwist < 400) {
+            $scaleValue = 300;
+        } if ($scaleTwist >= 400 || $scaleTwist < 500) {
+            $scaleValue = 400;
+        } if ($scaleTwist >= 500 || $scaleTwist < 600) {
+            $scaleValue = 500;
+        } if ($scaleTwist >= 600 || $scaleTwist < 700) {
+            $scaleValue = 600;
+        } if ($scaleTwist >= 700 || $scaleTwist < 800) {
+        $scaleValue = 700;
+        } if ($scaleTwist >= 800 || $scaleTwist < 900) {
+        $scaleValue = 800;
+        } if ($scaleTwist >= 900 || $scaleTwist < 1000) {
+        $scaleValue = 900;
+        } if ($scaleTwist >= 1000 || $scaleTwist < 1100) {
+        $scaleValue = 1000;
+        } if ($scaleTwist >= 1100 || $scaleTwist < 1200) {
+        $scaleValue = 1100;
+        } if ($scaleTwist >= 1200 || $scaleTwist < 1300) {
+        $scaleValue = 1200;
+        }*/
+            //$i = $i + 100;
+
+        $scalePoints = ScaleFeed::find()->select('points')->where(['user_id' => Yii::$app->user->id])->one();
+        $scalePoints = $scalePoints->points;
+
+        $scale = ScaleFeed::find()->select('last_time')->where(['user_id' => Yii::$app->user->id])->one();
 
         $allDoneChallenges = Attempt::find()->where(['user_id' => Yii::$app->user->id])->all();
 
@@ -99,7 +156,6 @@ class FeedController extends Controller
             $finishCostAmount += ceil($nearlyFinishCostAmount / 5 * intval($allDoneChallengesMarks[$i]->mark));
             $nearlyFinishCostAmount = 0;
         }
-        //$finishCostAmount = round($finishCostAmount);
 
         $foods = Food::find()->all();
 
@@ -122,8 +178,11 @@ class FeedController extends Controller
             'allDoneChallengesCosts' => $allDoneChallengesCosts,
             'costAmount' => $costAmount,
             'finishCostAmount' => $finishCostAmount,
+            'scaleTwist' => $scaleTwist,
+            'attempt' => $attempt,
+            'scale' => $scale,
             'scaleValue' => $scaleValue,
-            'attempt' => $attempt
+            'scalePoints' => $scalePoints
         ]);
     }
 

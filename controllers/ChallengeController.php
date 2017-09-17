@@ -9,6 +9,8 @@ use app\models\ar\Food;
 use app\models\ar\ScaleFeed;
 use app\models\Attempt;
 use app\models\Challenge;
+use app\models\ChallengeHasQuestion;
+use app\models\Question;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
@@ -121,6 +123,15 @@ class ChallengeController extends Controller
                 ]);
             }
         }
+        $lastChallenge = Attempt::find()->where(['user_id' => Yii::$app->user->id])->orderBy('id DESC')->one();
+        $lastChallengeId = Attempt::find()->select(['challenge_id'])->where(['user_id' => Yii::$app->user->id])->orderBy('id DESC')->one();
+        $lastChallengeQuestions = ChallengeHasQuestion::find()->where(['challenge_id' => $lastChallengeId])->all();
+        $allLastChallengeQuestionsCost = 0;
+        foreach ($lastChallengeQuestions as $lastChallengeQuestion){
+            $lastChallengeQuestionCost = Question::find()->select('cost')->where(['id' => $lastChallengeQuestion->question_id])->one();
+            $allLastChallengeQuestionsCost += $lastChallengeQuestionCost->cost;
+        }
+        $allLastChallengeQuestionsCost = ceil($allLastChallengeQuestionsCost / 5 * intval($lastChallenge->mark));
 
         if (count($session->getAnswers())) {
             $summary = ChallengeSummarizer::fromSession($session);
@@ -131,8 +142,14 @@ class ChallengeController extends Controller
             $scale = ScaleFeed::find()->where(['user_id' => Yii::$app->user->id])->one();
             if ($scale) {
                 $scale->user_id = Yii::$app->user->id;
-                $lastAttempt = Attempt::find()->select(['finish_time'])->where(['user_id' => Yii::$app->user->id])->orderBy('id DESC')->one();
+                $lastAttempt = Attempt::find()->where(['user_id' => Yii::$app->user->id])->orderBy('id DESC')->one();
                 $scale->last_time = $lastAttempt->finish_time;
+                if ($lastAttempt->points == 0){
+                    //print 'Очки равны нулю!';
+                    $scale->points = $scale->points + $allLastChallengeQuestionsCost;
+                    $lastAttempt->points = 1;
+                    $lastAttempt->save();
+                }
                 $scale->save();
             } else {
                 $scale = new ScaleFeed();

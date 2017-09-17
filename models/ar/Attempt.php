@@ -35,7 +35,7 @@ class Attempt extends \app\components\ActiveRecord
     {
         return [
             [['user_id', 'challenge_id'], 'required'],
-            [['user_id', 'challenge_id'], 'integer'],
+            [['user_id', 'challenge_id', 'points'], 'integer'],
             [['start_time', 'finish_time'], 'safe'],
             [['mark'], 'string', 'max' => 32],
             [['challenge_id'], 'exist', 'skipOnError' => true, 'targetClass' => Challenge::className(), 'targetAttribute' => ['challenge_id' => 'id']],
@@ -55,6 +55,7 @@ class Attempt extends \app\components\ActiveRecord
             'start_time' => 'Start Time',
             'finish_time' => 'Finish Time',
             'mark' => 'Mark',
+            'points' => 'Points'
         ];
     }
 

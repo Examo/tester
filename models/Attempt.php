@@ -20,6 +20,7 @@ class Attempt extends \app\models\ar\Attempt
             'start_time' => Yii::t('attempt', 'Start Time'),
             'finish_time' => Yii::t('attempt', 'Finish Time'),
             'mark' => Yii::t('attempt', 'Mark'),
+            'points' => Yii::t('attempt', 'Points')
         ];
     }
 }
