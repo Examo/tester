@@ -76,19 +76,19 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="button-wrapper">
                 <div>
                     <center>
-                        <a href="#"><div class="bar-wrapper"><p>Учёба</p>
+                        <!--<a href="#"><div class="bar-wrapper"><p>Учёба</p>
                                 <div class="training-progress-bar-block">
                                     <div class="training-progress-bar-fill" style="height: 50%; width:100%;"><center><p><b>50%</b></p></center></div>
                                 </div>
-                            </div></a>
+                            </div></a>-->
+
 
                         <a href="#"><div class="bar-wrapper"><p>Еда</p>
                                 <div class="feeding-progress-bar-block">
-                                    <div class="feeding-progress-bar-fill" style="height: 60%; width:100%;"><center><p><b>40%</b></p></center></div>
+                                    <div class="feeding-progress-bar-fill" style="height: <?= 100 - $scaleValue; ?>%; width:100%;"><center><p><b><?= $scaleValue; ?>%</b></p></center></div>
                                 </div>
                             </div></a>
-
-                        <a href="#"><div class="bar-wrapper"><p>Уборка</p>
+                        <!--<a href="#"><div class="bar-wrapper"><p>Уборка</p>
                                 <div class="cleaning-progress-bar-block">
                                     <div class="cleaning-progress-bar-fill" style="height: 77%; width:100%;"><center><p><b>23%</b></p></center></div>
                                 </div>
@@ -98,7 +98,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="gaming-progress-bar-block">
                                     <div class="gaming-progress-bar-fill" style="height: 67%; width:100%;"><center><p><b>33%</b></p></center></div>
                                 </div>
-                            </div></a>
+                            </div></a>-->
                     </center>
                 </div>
             </div>
@@ -110,12 +110,12 @@ $this->params['breadcrumbs'][] = $this->title;
  </div>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <?php \yii\helpers\VarDumper::dump($scaleTwist, 10, true)?>
-<?php \yii\helpers\VarDumper::dump($scale->last_time, 10, true)?>
-<?php \yii\helpers\VarDumper::dump($scalePoints, 10, true)?>
+<?php //\yii\helpers\VarDumper::dump($scale->last_time, 10, true)?>
+<?php \yii\helpers\VarDumper::dump($scale->points, 10, true)?>
 <?php \yii\helpers\VarDumper::dump($allLastChallengeQuestionsCost, 10, true)?>
 <?php \yii\helpers\VarDumper::dump($finishCostAmount, 10, true)?>
 
-<?php //\yii\helpers\VarDumper::dump($scaleValue, 10, true)?>
+<?php \yii\helpers\VarDumper::dump($scaleValue, 10, true)?>
 
 <?php //\yii\helpers\VarDumper::dump(Yii::$app->getFormatter()->asTimestamp($finishTime), 10, true)?>
 
