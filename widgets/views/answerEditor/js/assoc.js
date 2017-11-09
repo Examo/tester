@@ -86,18 +86,87 @@
 
         renderHtml: function (data) {
             var self = this;
-
+            var shuffle = $.cookie('sfl');
+            var quest_r = $.cookie('qstr');
+            var quest_l = $.cookie('qstl');
             var result = self.getTemplate('content');
+            var answer = this.owner.settings.answer;
+            answer = answer.replace(/\[/g, '').replace(/\]/g, '');
+            answer = answer.split(',');
+
+            // если есть ответ, рендерит ответ
+            if (answer[0] !== undefined && answer[0] !== null && answer[0] !== "") {
+                var answ_r = [];
+                var answ_l = [];
+
+                for (var i = 1; i < answer.length+1; i++) {
+                    if (i % 2 === 0) {
+                        answ_r.push(answer[i-1]);
+                    } else {
+                        answ_l.push(answer[i-1]);
+                    }
+                }
+
+                for (var y = 0; y < answ_l.length; y++) {
+                    var item = self.getTemplate('item');
+
+                    item.find('.text').text(data.options[answ_l[y]]);
+                    item.attr( 'data-id', answ_l[y] );
+
+                    result.find('.options-left').append(item);
+                }
+
+                result.find('.options-left').sortable({
+                    axis: 'y',
+                    update: function(e, ui) {
+                        self.changeAnswer();
+                    }
+                });
+
+                for (var z = 0; z < answ_r.length; z++) {
+                    var item = self.getTemplate('item');
+
+                    item.find('.text').text(data.associations[answ_r[z]]);
+                    item.attr( 'data-id', answ_r[z] );
+
+                    result.find('.options-right').append(item);
+                }
+
+                result.find('.options-right').sortable({
+                    axis: 'y',
+                    update: function(e, ui) {
+                        self.changeAnswer();
+                    }
+                });
+
+                return result;
+            }
+
 
             // left column
 
             // shuffle options
-            var ids = Object.keys(data.options);
-            for (var i = ids.length - 1; i > 0; i--) {
-                var j = Math.floor(Math.random() * (i + 1));
-                var temp = ids[i];
-                ids[i] = ids[j];
-                ids[j] = temp;
+            ids = sessionStorage.getItem(quest_l);
+
+            if (ids === undefined || ids === null || shuffle !== this.owner.settings.current) {
+                var ids = Object.keys(data.options);
+                for (var i = ids.length - 1; i > 0; i--) {
+                    var j = Math.floor(Math.random() * (i + 1));
+                    var temp = ids[i];
+                    ids[i] = ids[j];
+                    ids[j] = temp;
+                }
+                sessionStorage.setItem(this.element.id + 'l', ids);
+
+                $.cookie('qstl', this.element.id + 'l', {
+                    expires: 1
+                });
+
+                $.cookie('sfl', this.owner.settings.current, {
+                    expires: 1
+                });
+            } else {
+                ids = ids.split(',');
             }
 
             for (var i in ids) {
@@ -119,12 +188,24 @@
             // right column
 
             // shuffle options
-            var ids = Object.keys(data.options);
-            for (var i = ids.length - 1; i > 0; i--) {
-                var j = Math.floor(Math.random() * (i + 1));
-                var temp = ids[i];
-                ids[i] = ids[j];
-                ids[j] = temp;
+            ids = sessionStorage.getItem(quest_r);
+
+            if (ids === undefined || ids === null || shuffle !== this.owner.settings.current) {
+                var ids = Object.keys(data.options);
+                for (var i = ids.length - 1; i > 0; i--) {
+                    var j = Math.floor(Math.random() * (i + 1));
+                    var temp = ids[i];
+                    ids[i] = ids[j];
+                    ids[j] = temp;
+                }
+                sessionStorage.setItem(this.element.id + 'r', ids);
+
+                $.cookie('qstr', this.element.id + 'r', {
+                    expires: 1
+                });
+
+            } else {
+                ids = ids.split(',');
             }
 
             for (var i in data.associations) {

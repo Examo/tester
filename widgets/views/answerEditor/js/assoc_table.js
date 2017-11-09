@@ -37,6 +37,75 @@
         show: function (data) {
             var content = this.renderHtml(this.parseData(data));
             $('.content', this.element).html('').append(content);
+            var answer = this.owner.settings.answer;
+            var immediate_result = this.owner.settings.immediate_result;
+            answer = answer.replace(/\[/g, '').replace(/\]/g, '');
+            answer = answer.split(',');
+
+            // если есть ответ, рендерит ответ
+            if (answer[0] !== undefined && answer[0] !== null && answer[0] !== "") {
+                var answ_r = [];
+                var answ_l = [];
+
+                for (var i = 1; i < answer.length+1; i++) {
+                    if (i % 2 === 0) {
+                        answ_r.push(answer[i-1]);
+                    } else {
+                        answ_l.push(answer[i-1]);
+                    }
+                }
+                var rights = $('.content', this.element).find('.options-right [data-id]');
+
+                // оборачиваем в рамки выводим коментарии
+                $('.content', this.element).find('.options-left .item').each( function(y) {
+                    var right = rights[y];
+
+                    if (immediate_result === '1') {
+
+                        if (answ_r[y] === answ_l[y]) {
+                            $(this).wrap('<div class="row success"></div>');
+                            $(this).after(right);
+                            $(this).wrap('<div class="col-md-3 col-xs-3"></div>');
+                            $(right).wrap('<div class="col-md-3 col-xs-3"></div>');
+                        } else {
+                            $(this).wrap('<div class="row error"></div>');
+                            $(this).after(right);
+                            $(this).wrap('<div class="col-md-3 col-xs-3"></div>');
+                            $(right).wrap('<div class="col-md-3 col-xs-3"></div>');
+                            $(this).find('span').last().after("</br><b>Комментарий:</b><div class='item'><b>"+data.comments[y]+"</b></div>");
+                            $(right).find('span').last().after("</br><b>Правильный ответ:</b><div class='item success' style='padding: 0px'>"+data.associations[y]+"</div></div>");
+                        }
+
+                        $('.content', this.element).find('.col-xs-6').each (function() {
+                            if ($(this).find('.options-left').length > 0) {
+                                $(this).css("width", "100%");
+                            }
+                            if ($(this).find('.options-right').length > 0) {
+                                $(this).hide();
+                            }
+                        });
+
+                        $('.content', this.element).find('.col-xs-3').each (function() {
+                            $(this).css("width", "50%");
+                        });
+
+                    }
+
+
+                    //заполняем поля ответов
+                    for (var z = 0; z < answ_r.length; z++) {
+                        if ($(right).data('id') === parseInt(answ_r[z])) {
+                            var item = $('.content', this.element).find('.answers input')[z];
+                            $(item).val($(right).find('.number').text());
+                            $(item).prop("disabled", true);
+                        }
+                    }
+
+                });
+
+
+
+            }
         },
 
         hide: function () {
@@ -90,7 +159,8 @@
 
         renderHtml: function (data) {
             var self = this;
-
+            var shuffle = $.cookie('sfl');
+            var quest_r = $.cookie('qstr');
             var result = self.getTemplate('content');
 
             // left column
@@ -106,7 +176,7 @@
 
             var char = "А".charCodeAt(0);
             for (var i in ids) {
-                if ( data.options[ids[i]].length == 0 ) {
+                if ( data.options[ids[i]].length === 0 ) {
                     continue;
                 }
 
@@ -127,18 +197,53 @@
             // right column
 
             // shuffle options
-            var ids = Object.keys(data.associations);
-            for (var i = ids.length - 1; i > 0; i--) {
-                var j = Math.floor(Math.random() * (i + 1));
-                var temp = ids[i];
-                ids[i] = ids[j];
-                ids[j] = temp;
+            ids = sessionStorage.getItem(quest_r);
+
+            if (ids === undefined || ids === null || shuffle !== this.owner.settings.current) {
+                var ids = Object.keys(data.options);
+                for (var i = ids.length - 1; i > 0; i--) {
+                    var j = Math.floor(Math.random() * (i + 1));
+                    var temp = ids[i];
+                    ids[i] = ids[j];
+                    ids[j] = temp;
+                }
+                sessionStorage.setItem(this.element.id + 'r', ids);
+
+                $.cookie('qstr', this.element.id + 'r', {
+                    expires: 1
+                });
+
+                $.cookie('sfl', this.owner.settings.current, {
+                    expires: 1
+                });
+            } else {
+                var answer = this.owner.settings.answer;
+                var answ_r = [];
+                answer = answer.replace(/\[/g, '').replace(/\]/g, '');
+                answer = answer.split(',');
+                ids = ids.split(',');
+
+                if (answer[0] !== undefined && answer[0] !== null && answer[0] !== "") {
+                    for (var i = 1; i < answer.length + 1; i++) {
+                        if (i % 2 === 0) {
+                            answ_r.push(answer[i - 1]);
+                        }
+                    }
+
+                    ids.forEach( function (e) {
+                       if (answ_r.indexOf(e) === -1) {
+                           answ_r.push(e);
+                       }
+                    });
+                    ids = answ_r;
+                }
+
             }
 
             for (var i in data.associations) {
                 var item = self.getTemplate('item');
 
-                if ( data.associations[ids[i]].length == 0 ) {
+                if ( data.associations[ids[i]].length === 0 ) {
                     continue;
                 }
 

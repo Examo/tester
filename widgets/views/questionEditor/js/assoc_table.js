@@ -90,7 +90,6 @@
 
         renderHtml: function (data) {
             var self = this;
-
             var result = self.getTemplate('content');
 
             for (var i in data.options) {
@@ -99,7 +98,7 @@
 
                 $(inputs[0]).val(data.options[i]);
                 $(inputs[1]).val(data.associations[i]);
-                $(inputs[2]).val(data.associations[i]);
+                $(inputs[2]).val(data.comments[i]);
 
                 result.find('.items').append(item);
             }

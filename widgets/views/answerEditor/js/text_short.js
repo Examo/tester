@@ -25,6 +25,7 @@
         },
         registerExtension: function (owner) {
             var parent = $(this.element).parent();
+
             if (owner) {
                 owner.registerExtension(this.settings.type, this);
                 this.owner = owner;
@@ -36,8 +37,13 @@
 
         show: function (data) {
             var content = this.renderHtml(this.parseData(data));
+            var answer = this.owner.settings.answer;
             $('.content', this.element).html('').append(content);
             $('.content input', this.element).focus();
+            if (answer !== undefined && answer !== null && answer !== "") {
+                $('.content input', this.element).val(answer.replace(/"/g,''));
+                $('.content input', this.element).prop('disabled', true);
+            }
         },
 
         hide: function () {
@@ -78,16 +84,33 @@
 
         renderHtml: function (data) {
             var self = this;
-
+            var shuffle = $.cookie('sfl');
+            var quest = $.cookie('qst');
             var result = self.getTemplate('content');
 
             // shuffle options
-            var ids = Object.keys(data.options);
-            for (var i = ids.length - 1; i > 0; i--) {
-                var j = Math.floor(Math.random() * (i + 1));
-                var temp = ids[i];
-                ids[i] = ids[j];
-                ids[j] = temp;
+
+            var ids = sessionStorage.getItem(quest);
+
+            if (ids === undefined || ids === null || shuffle !== this.owner.settings.current) {
+                ids = Object.keys(data.options);
+                for (var i = ids.length - 1; i > 0; i--) {
+                    var j = Math.floor(Math.random() * (i + 1));
+                    var temp = ids[i];
+                    ids[i] = ids[j];
+                    ids[j] = temp;
+                }
+                sessionStorage.setItem(this.element.id, ids);
+
+                $.cookie('sfl', this.owner.settings.current, {
+                    expires: 1
+                });
+
+                $.cookie('qst', this.element.id, {
+                    expires: 1
+                });
+            } else {
+                ids = ids.split(',');
             }
 
             for (var i in ids) {

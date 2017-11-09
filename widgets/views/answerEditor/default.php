@@ -23,7 +23,10 @@ $id = uniqid('ae');
             input: '#input-<?= $id ?>',
             types: <?= Json::encode($types) ?>,
             type: '<?= $type ?>',
-            data: <?= Json::encode($data) ?>
+            data: <?= Json::encode($data) ?>,
+            current: '<?= $current ?>',
+            answer: '<?= $answer ?>',
+            immediate_result: '<?= $immediate_result ?>'
         });
     });
 </script>

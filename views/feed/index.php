@@ -84,7 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
                         <a href="#"><div class="bar-wrapper"><p>Еда</p>
-                                <div class="feeding-progress-bar-block">
+                                <div class="feeding-progress-bar-block" style="<?php if ($scaleValue <= 10) {echo 'background-color: red;';}?>">
                                     <div class="feeding-progress-bar-fill" style="height: <?= 100 - $scaleValue; ?>%; width:100%;"><center><p><b><?= $scaleValue; ?>%</b></p></center></div>
                                 </div>
                             </div></a>

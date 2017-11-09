@@ -36,7 +36,12 @@
 
         show: function (data) {
             var content = this.renderHtml(this.parseData(data));
+            var answer = this.owner.settings.answer;
             $('.content', this.element).html('').append(content);
+            if (answer !== undefined && answer !== null && answer !== "") {
+                $('.content textarea', this.element).val(answer.replace(/"/g,''));
+                $('.content textarea', this.element).prop('disabled', true);
+            }
         },
 
         hide: function () {

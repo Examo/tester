@@ -54,19 +54,12 @@ use kartik\markdown\MarkdownEditor;
 
             <?= $form->field($model, 'data')->widget(QuestionEditor::className()) ?>
 
-            <?php
-                /**
-                 * Убираем коментарий для таблицы ассоциаций
-                 */
-            ?>
-            <?php if ($model->question_type_id !== 7) { ?>
-                <?= $form->field($model, 'comment', ['template' => '{label}']) ?>
-                <?= MarkdownEditor::widget([
-                    'model' => $model,
-                    'attribute' => 'comment',
-                ]) ?>
-                <br />
-            <?php } ?>
+            <?= $form->field($model, 'comment', ['template' => '{label}']) ?>
+            <?= MarkdownEditor::widget([
+                'model' => $model,
+                'attribute' => 'comment',
+            ]) ?>
+            <br />
 
             <?= $form->field($model, 'hint', ['template' => '{label}']) ?>
             <?= MarkdownEditor::widget([

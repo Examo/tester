@@ -36,7 +36,20 @@
 
         show: function (data) {
             var content = this.renderHtml(this.parseData(data));
+            var answer = this.owner.settings.answer.replace("[",'').replace("]",'');
+            answer = answer.split(',');
             $('.content', this.element).html('').append(content);
+
+            if (answer[0] !== undefined && answer[0] !== null && answer[0] !== "") {
+                $('.content', this.element).find('input[type=checkbox]').each(function (i) {
+                    for (var y = 0; y < answer.length; y++) {
+                        if ($(this).val() === answer[y]) {
+                            $(this).prop('checked', true);
+                        }
+                        $(this).prop('disabled', true);
+                    }
+                });
+            }
         },
 
         hide: function () {
@@ -83,16 +96,33 @@
 
         renderHtml: function (data) {
             var self = this;
-
+            var shuffle = $.cookie('sfl');
+            var quest = $.cookie('qst');
             var result = self.getTemplate('content');
 
             // shuffle options
-            var ids = Object.keys(data.options);
-            for (var i = ids.length - 1; i > 0; i--) {
-                var j = Math.floor(Math.random() * (i + 1));
-                var temp = ids[i];
-                ids[i] = ids[j];
-                ids[j] = temp;
+
+            var ids = sessionStorage.getItem(quest);
+
+            if (ids === undefined || ids === null || shuffle !== this.owner.settings.current) {
+                ids = Object.keys(data.options);
+                for (var i = ids.length - 1; i > 0; i--) {
+                    var j = Math.floor(Math.random() * (i + 1));
+                    var temp = ids[i];
+                    ids[i] = ids[j];
+                    ids[j] = temp;
+                }
+                sessionStorage.setItem(this.element.id, ids);
+
+                $.cookie('sfl', this.owner.settings.current, {
+                    expires: 1
+                });
+
+                $.cookie('qst', this.element.id, {
+                    expires: 1
+                });
+            } else {
+                ids = ids.split(',');
             }
 
             // render options

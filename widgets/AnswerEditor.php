@@ -6,9 +6,7 @@ use app\helpers\QuestionClientizer;
 use app\models\Question;
 use app\models\QuestionType;
 use Yii;
-use yii\helpers\Json;
 use yii\web\AssetManager;
-use yii\base\Widget;
 use yii\web\View;
 
 /**
@@ -32,6 +30,16 @@ class AnswerEditor extends \yii\base\Widget
      * @var Question
      */
     public $question = null;
+
+    /**
+     * @var Answer
+     */
+    public $answer = null;
+
+    /**
+     * @var Immediate_result
+     */
+    public $immediate_result = null;
 
     /**
      * @inheritdoc
@@ -67,7 +75,10 @@ class AnswerEditor extends \yii\base\Widget
             'name' => $this->name,
             'types' => $types,
             'type' => $this->question->questionType->sysname,
-            'data' => QuestionClientizer::prepare($this->question)
+            'data' => QuestionClientizer::prepare($this->question),
+            'current' => $this->question->id,
+            'answer' => $this->answer,
+            'immediate_result' => $this->immediate_result,
         ]);
     }
 
