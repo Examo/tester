@@ -2,12 +2,15 @@
 
 use app\models\ar\Food;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use kartik\select2\Select2;
+use kartik\depdrop\DepDrop;
 use app\models\Course;
 use app\models\Subject;
 use app\models\ChallengeType;
 use app\models\Element;
+use app\models\ElementsItem;
 use app\models\ChallengeMark;
 use app\models\ChallengeGeneration;
 use app\models\QuestionType;
@@ -77,8 +80,19 @@ $modelSettings = $model->settings ? $model->settings : new \app\models\Challenge
                 'data' => Element::getList(),
                 'options' => [
                     'id' => 'element_id',
-                    'multiple' => false
+                    'multiple' => false,
+                    'placeholder' => 'Выбери элемент'
                 ],
+            ]) ?>
+
+            <?= $form->field($model, 'elements_item_id')->widget(DepDrop::className(), [
+                'data' => ElementsItem::getList(),
+                'options'=>['id'=>'elements_item-id'],
+                'pluginOptions'=>[
+                    'depends'=>['element_id'],
+                    'placeholder'=>'Выбрать...',
+                    'url'=>Url::to(['/admin/challenge/elements'])
+                ]
             ]) ?>
 
             <?= $form->field($model, 'food_id')->label('Продукт')->widget(\kartik\select2\Select2::className(), [

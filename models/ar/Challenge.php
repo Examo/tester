@@ -11,6 +11,7 @@ use Yii;
  * @property integer $course_id
  * @property integer $challenge_type_id
  * @property integer $element_id
+ * @property integer $elements_item_id
  * @property integer $subject_id
  * @property integer $grade_number
  * @property string $name
@@ -20,6 +21,7 @@ use Yii;
  *
  * @property Attempt[] $attempts
  * @property Element $element
+ * @property ElementsItem $elements_item
  * @property Subject $subject
  * @property ChallengeType $challengeType
  * @property Course $course
@@ -46,11 +48,11 @@ class Challenge extends \app\components\ActiveRecord
     public function rules()
     {
         return [
-            [['course_id', 'challenge_type_id', 'element_id', 'subject_id'], 'required'],
-            [['course_id', 'challenge_type_id', 'element_id', 'subject_id', 'grade_number', 'exercise_number', 'exercise_challenge_number', 'week', 'food_id'], 'integer'],
+            [['course_id', 'challenge_type_id', 'element_id', 'elements_item_id', 'subject_id'], 'required'],
+            [['course_id', 'challenge_type_id', 'element_id', 'elements_item_id', 'subject_id', 'grade_number', 'exercise_number', 'exercise_challenge_number', 'week', 'food_id'], 'integer'],
             [['name', 'description'], 'string'],
-            [['food_id'], 'safe'],
             [['element_id'], 'exist', 'skipOnError' => true, 'targetClass' => Element::className(), 'targetAttribute' => ['element_id' => 'id']],
+            [['elements_item_id'], 'exist', 'skipOnError' => true, 'targetClass' => ElementsItem::className(), 'targetAttribute' => ['elements_item_id' => 'id']],
             [['subject_id'], 'exist', 'skipOnError' => true, 'targetClass' => Subject::className(), 'targetAttribute' => ['subject_id' => 'id']],
             [['challenge_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => ChallengeType::className(), 'targetAttribute' => ['challenge_type_id' => 'id']],
             [['course_id'], 'exist', 'skipOnError' => true, 'targetClass' => Course::className(), 'targetAttribute' => ['course_id' => 'id']],
@@ -67,6 +69,7 @@ class Challenge extends \app\components\ActiveRecord
             'course_id' => 'Course ID',
             'challenge_type_id' => 'Challenge Type ID',
             'element_id' => 'Element ID',
+            'elements_item_id' => 'Elements Item ID',
             'subject_id' => 'Subject ID',
             'grade_number' => 'Grade Number',
             'name' => 'Name',
@@ -90,6 +93,14 @@ class Challenge extends \app\components\ActiveRecord
     public function getElement()
     {
         return $this->hasOne(Element::className(), ['id' => 'element_id'])->inverseOf('challenges');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getElements_item()
+    {
+        return $this->hasOne(ElementsItem::className(), ['id' => 'elements_item_id'])->inverseOf('challenges');
     }
 
     /**

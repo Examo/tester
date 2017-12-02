@@ -241,11 +241,16 @@
             }
 
             for (var i in data.associations) {
-                var item = self.getTemplate('item');
 
-                if ( data.associations[ids[i]].length === 0 ) {
+                if (data.associations[ids[i]] === undefined || data.associations[ids[i]] === null) {
                     continue;
+                } else {
+                    if (data.associations[ids[i]].length === 0) {
+                        continue;
+                    }
                 }
+
+                var item = self.getTemplate('item');
 
                 item.find('.text').text(data.associations[ids[i]]);
                 item.find('.number').text( parseInt(i) + 1 );

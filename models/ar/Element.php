@@ -10,7 +10,7 @@ use Yii;
  * @property integer $id
  * @property string $name
  * @property string $description
- * @property integer $position
+
  *
  * @property Challenge[] $challenges
  */
@@ -54,5 +54,13 @@ class Element extends \app\components\ActiveRecord
     public function getChallenges()
     {
         return $this->hasMany(Challenge::className(), ['element_id' => 'id'])->inverseOf('element');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getElements_item()
+    {
+        return $this->hasMany(ElementsItem::className(), ['element_id' => 'id'])->inverseOf('element');
     }
 }

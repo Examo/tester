@@ -141,11 +141,20 @@ class Feed extends \yii\db\ActiveRecord
             //\yii\helpers\VarDumper::dump($classes, 10, true);
         }
     }
-
     public function getChallengeFood($id)
     {
-        $food_id = ChallengeFood::find()->select('food_id')->where(['challenge_id' => $id])->one();
-        $challengeFood = Food::find()->select('food_name')->where(['id' => $food_id])->one();
+        //$food_id = ChallengeFood::find()->select('food_id')->where(['challenge_id' => $id])->one();
+        //$challengeFood = Food::find()->select('food_name')->where(['id' => $food_id])->one();
+
+        $challengeElementsItem = Challenge::find()->select('elements_item_id')->where(['id' => $id])->one();
+        $challengeFood = ElementsItem::find()->select('name')->where(['id' => $challengeElementsItem])->one();
         return $challengeFood;
     }
+
+ //   public function getChallengeFood($id)
+ //   {
+ //      $food_id = ChallengeFood::find()->select('food_id')->where(['challenge_id' => $id])->one();
+ //       $challengeFood = Food::find()->select('food_name')->where(['id' => $food_id])->one();
+  //      return $challengeFood;
+  //  }
 }

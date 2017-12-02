@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\helpers\ChallengeSession;
 use app\helpers\ChallengeSummarizer;
 use app\models\ar\ChallengeFood;
+use app\models\ar\ElementsItem;
 use app\models\ar\Food;
 use app\models\ar\ScaleFeed;
 use app\models\Attempt;
@@ -81,9 +82,8 @@ class ChallengeController extends Controller
     {
         $challenge = $this->getChallenge($id);
 
-
-        $food_id = ChallengeFood::find()->select('food_id')->where(['challenge_id' => $id])->one();
-        $challengeFood = Food::find()->select('food_name')->where(['id' => $food_id])->one();
+        $challengeElementsItem = Challenge::find()->select('elements_item_id')->where(['id' => $id])->one();
+        $challengeItem = ElementsItem::find()->select('name')->where(['id' => $challengeElementsItem])->one();
 
         if ($challenge->settings->autostart || $confirm) {
 
@@ -98,7 +98,7 @@ class ChallengeController extends Controller
         } else {
             return $this->render('start', [
                 'challenge' => $challenge,
-                'challengeFood' => $challengeFood
+                'challengeItem' => $challengeItem
             ]);
         }
     }
@@ -111,6 +111,11 @@ class ChallengeController extends Controller
      */
     public function actionFinish($id = 0, $confirm = false)
     {
+        $challengeElementsType = Challenge::find()->select('element_id')->where(['id' => $id])->one();
+
+        $challengeElementsItem = Challenge::find()->select('elements_item_id')->where(['id' => $id])->one();
+        $challengeItem = ElementsItem::find()->select('name')->where(['id' => $challengeElementsItem])->one();
+
         $challenge = $this->getChallenge($id);
         $session = new ChallengeSession($challenge, Yii::$app->user->id);
 
@@ -119,7 +124,8 @@ class ChallengeController extends Controller
                 $session->finish();
             } else {
                 return $this->render('finish_confirm', [
-                    'challenge' => $challenge
+                    'challenge' => $challenge,
+                    'challengeItem' => $challengeItem
                 ]);
             }
         }
@@ -139,29 +145,34 @@ class ChallengeController extends Controller
                 $summary->saveAttempt();
             }
 
-            $scale = ScaleFeed::find()->where(['user_id' => Yii::$app->user->id])->one();
-            if ($scale) {
-                $scale->user_id = Yii::$app->user->id;
-                $lastAttempt = Attempt::find()->where(['user_id' => Yii::$app->user->id])->orderBy('id DESC')->one();
-                $scale->last_time = $lastAttempt->finish_time;
-                if ($lastAttempt->points == 0){
-                    //print 'Очки равны нулю!';
-                    $scale->points = $scale->points + $allLastChallengeQuestionsCost;
-                    $lastAttempt->points = 1;
-                    $lastAttempt->save();
+            if ($challengeElementsType->element_id == 1) {
+
+                $scale = ScaleFeed::find()->where(['user_id' => Yii::$app->user->id])->one();
+                if ($scale) {
+                    $scale->user_id = Yii::$app->user->id;
+                    $lastAttempt = Attempt::find()->where(['user_id' => Yii::$app->user->id])->orderBy('id DESC')->one();
+                    $scale->last_time = $lastAttempt->finish_time;
+                    if ($lastAttempt->points == 0) {
+                        //print 'Очки равны нулю!';
+                        $scale->points = $scale->points + $allLastChallengeQuestionsCost;
+                        $lastAttempt->points = 1;
+                        $lastAttempt->save();
+                    }
+                    $scale->save();
+                } else {
+                    $scale = new ScaleFeed();
+                    $scale->user_id = Yii::$app->user->id;
+                    $lastAttempt = Attempt::find()->select(['finish_time'])->where(['user_id' => Yii::$app->user->id])->orderBy('id DESC')->one();
+                    $scale->last_time = $lastAttempt->finish_time;
+                    $scale->save();
                 }
-                $scale->save();
-            } else {
-                $scale = new ScaleFeed();
-                $scale->user_id = Yii::$app->user->id;
-                $lastAttempt = Attempt::find()->select(['finish_time'])->where(['user_id' => Yii::$app->user->id])->orderBy('id DESC')->one();
-                $scale->last_time = $lastAttempt->finish_time;
-                $scale->save();
             }
 
             return $this->render('finish', [
                 'challenge' => $challenge,
-                'summary' => $summary
+                'summary' => $summary,
+                'challengeItem' => $challengeItem,
+                'challengeElementsType' => $challengeElementsType
             ]);
         } else {
             // It looks like session wasn't even started
@@ -180,8 +191,11 @@ class ChallengeController extends Controller
         $challenge = $this->getChallenge($id);
         $session = new ChallengeSession($challenge, Yii::$app->user->id);
 
-        $food_id = ChallengeFood::find()->select('food_id')->where(['challenge_id' => $id])->one();
-        $challengeFood = Food::find()->select('food_name')->where(['id' => $food_id])->one();
+        //$food_id = ChallengeFood::find()->select('food_id')->where(['challenge_id' => $id])->one();
+        //$challengeFood = Food::find()->select('food_name')->where(['id' => $food_id])->one();
+
+        $challengeElementsItem = Challenge::find()->select('elements_item_id')->where(['id' => $id])->one();
+        $challengeItem = ElementsItem::find()->select('name')->where(['id' => $challengeElementsItem])->one();
 
         if ($session->isFinished()) {
             return $this->redirect(Url::to(['challenge/finish', 'id' => $challenge->id]));
@@ -190,7 +204,7 @@ class ChallengeController extends Controller
         return $this->render('progress', [
             'session' => $session,
             'challenge' => $challenge,
-            'challengeFood' => $challengeFood
+            'challengeItem' => $challengeItem
         ]);
     }
 

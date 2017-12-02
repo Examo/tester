@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use app\components\FoodWidget;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ar\FeedSearch */
@@ -9,6 +10,7 @@ use yii\grid\GridView;
 
 $this->title = Yii::t('app', 'Feed');
 $this->params['breadcrumbs'][] = $this->title;
+//$foodTest = "Моя первая ноdfdfdfdfвость";
 ?>
 <div class="feed-index">
 
@@ -48,18 +50,17 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php if(!empty($challenges)):?>
                 <?php $number = 0; ?>
                 <?php foreach ($challenges as $challenge): ?>
-                    <?php if(!empty($feedingTests->getChallengeFood($challenge->id)->food_name)):?>
-
-                        <?php $class = $challenge->getChallengeFood($challenge->id)->food_name; ?>
+                    <?php if(!empty($feedingTests->getChallengeFood($challenge->id)->name)):?>
+                        <?php $class = $challenge->getChallengeFood($challenge->id)->name; ?>
                         <?php $all = $feedingTests->getClass($classes, $class); ?>
                         <?php $classes = $all['classes']; ?>
 
-                    <a href="/challenge/start?id=<?= $challenge->id; ?>"><img src="<?= $feedingTests->getImageFeeding($feedingTests->getChallengeFood($challenge->id)->food_name); ?>" title="Тест <?= $challenge->id; ?> на <?= $feedingTests->time; ?> минут, прибавляет <?= $feedingTests->percent; ?> % к шкале" class="<?= $all['currentClass']; ?>" /></a>
+                        <a href="/challenge/start?id=<?= $challenge->id; ?>"><img src="<?= $feedingTests->getImageFeeding($feedingTests->getChallengeFood($challenge->id)->name); ?>" title="Тест <?= $challenge->id; ?> на <?= $feedingTests->time; ?> минут, прибавляет <?= $feedingTests->percent; ?> % к шкале" class="<?= $all['currentClass']; ?>" /></a>
 
                         <?php $number++; ?>
 
-                    <?php else: ?>
-                        <?= $challenge->id; ?> - добавить продукт в тест <br>
+                        <?php else: ?>
+                        Добавить продукт в тест №<?= $challenge->id; ?><br>
                     <?php endif; ?>
                 <?php endforeach; ?>
             <?php endif; ?>
@@ -82,12 +83,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </div>
                             </div></a>-->
 
+                        <?= FoodWidget::widget(); ?>
 
-                        <a href="#"><div class="bar-wrapper"><p>Еда</p>
-                                <div class="feeding-progress-bar-block" style="<?php if ($scaleValue <= 10) {echo 'background-color: red;';}?>">
-                                    <div class="feeding-progress-bar-fill" style="height: <?= 100 - $scaleValue; ?>%; width:100%;"><center><p><b><?= $scaleValue; ?>%</b></p></center></div>
+                        <!--<a href="#"><div class="bar-wrapper"><p>Еда</p>
+                                <div class="feeding-progress-bar-block" style="<?php //if ($scaleValue <= 10) {echo 'background-color: red;';}?>">
+                                    <div class="feeding-progress-bar-fill" style="height: <?php // 100 - $scaleValue; ?>%; width:100%;"><center><p><b><?php // $scaleValue; ?>%</b></p></center></div>
                                 </div>
-                            </div></a>
+                            </div></a> -->
                         <!--<a href="#"><div class="bar-wrapper"><p>Уборка</p>
                                 <div class="cleaning-progress-bar-block">
                                     <div class="cleaning-progress-bar-fill" style="height: 77%; width:100%;"><center><p><b>23%</b></p></center></div>
@@ -109,13 +111,13 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
  </div>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-<?php \yii\helpers\VarDumper::dump($scaleTwist, 10, true)?>
+<?php //\yii\helpers\VarDumper::dump($scaleTwist, 10, true)?>
 <?php //\yii\helpers\VarDumper::dump($scale->last_time, 10, true)?>
-<?php \yii\helpers\VarDumper::dump($scale->points, 10, true)?>
-<?php \yii\helpers\VarDumper::dump($allLastChallengeQuestionsCost, 10, true)?>
-<?php \yii\helpers\VarDumper::dump($finishCostAmount, 10, true)?>
+<?php //\yii\helpers\VarDumper::dump($scale->points, 10, true)?>
+<?php //\yii\helpers\VarDumper::dump($allLastChallengeQuestionsCost, 10, true)?>
+<?php //\yii\helpers\VarDumper::dump($finishCostAmount, 10, true)?>
 
-<?php \yii\helpers\VarDumper::dump($scaleValue, 10, true)?>
+<?php// \yii\helpers\VarDumper::dump($scaleValue, 10, true)?>
 
 <?php //\yii\helpers\VarDumper::dump(Yii::$app->getFormatter()->asTimestamp($finishTime), 10, true)?>
 

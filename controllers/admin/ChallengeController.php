@@ -5,6 +5,7 @@ namespace app\controllers\admin;
 use app\components\BaseAdminCrudController;
 use app\helpers\QuestionChooser;
 use app\helpers\Subset;
+use yii\helpers\Json;
 use app\models\ar\ChallengeFood;
 use app\models\ar\Food;
 use app\models\Challenge;
@@ -12,6 +13,7 @@ use app\models\ChallengeMark;
 use app\models\ChallengeSettings;
 use app\models\Course;
 use app\models\Question;
+use app\models\ElementsItem;
 use app\models\search\ChallengeSearch;
 use dektrium\user\models\UserSearch;
 use Yii;
@@ -131,10 +133,11 @@ class ChallengeController extends BaseAdminCrudController
 
     public function actionView($id)
     {
+        //$food = ElementsItem::find()->select('name')->where(['id' => $id])->one();
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'challengeFood' => ChallengeFood::find()->where(['id' => $id])->one(),
-            'food' => Food::find()->all()
+            //'challengeFood' => ChallengeFood::find()->where(['id' => $id])->one(),
+           // 'food' => $food
         ]);
     }
 
@@ -186,6 +189,28 @@ class ChallengeController extends BaseAdminCrudController
         } else {
             throw new NotFoundHttpException('Теста с указанным ID не существует!');
         }
+    }
+
+    public function actionElements()
+    {
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $parents = $_POST['depdrop_parents'];
+            if ($parents != null) {
+                $result = [];
+                $element_id[] = $parents[0];
+                $model = new ElementsItem;
+                $out = $model->find()->where(['element_id' => $element_id])->all();
+
+                foreach ($out as $key => $value) {
+                    $result[] = ['id' => $key, 'name' => $value];
+                }
+
+                echo Json::encode(['output'=>$out, 'selected'=>'']);
+                return;
+            }
+        }
+        echo Json::encode(['output'=>'', 'selected'=>'']);
     }
 
 }

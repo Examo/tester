@@ -18,6 +18,9 @@
             <center><p class="lead"><?= $challenge->name ?></p>
             <p><strong>Оценка: <?= $summary->getMark() ? $summary->getTextMark($summary->getMark()) : 'не доступно - слишком мало было дано ответов' ?></strong></p>
             <p><?php $summary->getEmoticon($summary->getMark());?></p>
+            <?php if($challengeItem): ?>
+                <p><center><img src="/i/<?= $challengeItem->name ? $challengeItem->name : "no_image" ; ?>.png" /></center></p>
+            <?php endif; ?>
             <p><strong>Всего набрано баллов: <?= $summary->getAllPoints($questions, $points)['allPoints']; ?> из <?=$summary->getAllPoints($questions, $points)['numberOfPoints']?></strong></p>
             <p>Время выполнения: <?= round($summary->getTime() / 60) ?> мин.</p>
             <p><a class="btn btn-lg btn-success" href="<?= \yii\helpers\Url::to(['start', 'id' => $challenge->id, 'confirm' => true]) ?>">Повторить этот тест</a></p>
@@ -52,22 +55,20 @@
                                 <td class="text-left"><?= $question->text ?></td>
                                 <!-- Варианты ответа -->
                                 <td class="text-left">
-
-                                        <?php if ($question->question_type_id == 7): ?>
-                                            <i class="fa options-text" data-id="options<?= $number?>"></i>
-                                        <?php else: ?>
-                                            <ul>
-                                            <?php $question->getOptionsFinish($question->data); ?>
-                                            </ul>
-                                        <?php endif;?>
-
+                                    <?php if ($question->question_type_id == 7): ?>
+                                        <i class="fa options-text" data-id="options<?= $number?>"></i>
+                                    <?php else: ?>
+                                        <ul>
+                                        <?php $question->getOptionsFinish($question->data); ?>
+                                        </ul>
+                                    <?php endif;?>
                                 </td>
                                 <!-- Твой ответ -->
                                 <td class="<?= $results[$question->id] ? 'success' : 'danger' ?> text-left">
                                     <?php if ($question->question_type_id == 7): ?>
                                         <i class="fa answer-text" data-id="answer<?= $number?>"></i>
                                     <?php else: ?>
-                                        <?php $summary->getAnswersFinish($question->data, $question->id, $question->question_type_id, $summary->answers); ?>
+                                        <?php $summary->getAnswersFinish($question->data, $question->id, $question->question_type_id, $summary->answers, $question); ?>
                                     <?php ?>
                                     <?php endif;?>
                                 </td>
@@ -95,7 +96,7 @@
                             <tr id="answer<?= $number?>" style="display: none;">
                                 <td colspan="8">
                                     <center><i class="fa answer-text" data-id="answer<?= $number?>"></i><strong>Твой ответ:</strong></center>
-                                    <p class="text-center"><center><?php $summary->getAnswersFinish($question->data, $question->id, $question->question_type_id, $summary->answers); ?></center></p>
+                                    <p class="text-center"><center><?php $summary->getAnswersFinish($question->data, $question->id, $question->question_type_id, $summary->answers, $question); ?></center></p>
                                 </td>
                             </tr>
                             <!-- Вставка блока с объяснением при 7-м задании -->
@@ -127,3 +128,5 @@
         },500);
     </script>
 </div>
+
+<?php \yii\helpers\VarDumper::dump($challengeElementsType->element_id, 10, true) ?>

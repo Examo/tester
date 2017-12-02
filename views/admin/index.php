@@ -51,7 +51,7 @@ $this->title = \Yii::$app->name;
                 <p>Управление настройками игровых элементов обучения: "Еда", "Учёба", "Уборка"...</p>
                 <p>
                     <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/element/index') ?>">Элементы</a>
-                    <a class="btn btn-default disabled" href="<?= yii\helpers\Url::toRoute('admin/element/index') ?>">Предметы</a>
+                    <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/elements-item/index') ?>">Предметы</a>
                 </p>
             </div>
         </div>

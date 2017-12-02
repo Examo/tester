@@ -6,6 +6,9 @@ use app\models\Answer;
 use app\models\Attempt;
 use app\models\Challenge;
 use app\models\Question;
+use app\models\QuestionType;
+use app\widgets\AnswerEditor;
+
 
 /**
  * Class ChallengeSummarizer
@@ -352,7 +355,7 @@ class ChallengeSummarizer
         }
     }
 
-    public function getAnswersFinish($data, $questionId, $questionTypeId, $answers)
+    public function getAnswersFinish($data, $questionId, $questionTypeId, $answers, $question=null)
     {
         switch ($questionTypeId){
             case 1:
@@ -382,18 +385,27 @@ class ChallengeSummarizer
             case 6:
                 echo 'type 6';
                 break;
-            case 7:
-                $number = 0;
-                for ($i = 0; $i < count(json_decode($answers[$questionId])); $i++) {
-                    $number++;
-                    foreach (json_decode($answers[$questionId])[$i] as $key => $item) {
-                        if ($key == 0){
-                            echo  '<strong>'.$number.'-я пара:</strong> <br>'.json_decode($data, true)['options'][$item].'<br><strong><=></strong><br>';
-                        } elseif ($key == 1){
-                            echo json_decode($data, true)['associations'][$item].'<br><br>';
-                        }
-                    }
-                }
+            case QuestionType::TYPE_ASSOC_TABLE:
+
+                echo AnswerEditor::widget([
+                    'name' => 'answer',
+                    'question' => $question,
+                    'answer' => $answers[$questionId],
+                    'immediate_result' => '1',
+                ]);
+//                $number = 0;
+//                for ($i = 0; $i < count(json_decode($answers[$questionId])); $i++) {
+//                    $number++;
+//                    foreach (json_decode($answers[$questionId])[$i] as $key => $item) {
+//                        if ($key == 0){
+//                            echo  '<strong>'.$number.'-я пара:</strong> <br>'.json_decode($data, true)['options'][$item].'<br><strong><=></strong><br>';
+//                        } elseif ($key == 1){
+//                            echo json_decode($data, true)['associations'][$item].'<br><br>';
+//                        }
+//                    }
+//                }
+
+
                 /*
                 *var_dump(json_decode($data, true));
                 * array(3) {

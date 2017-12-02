@@ -104,36 +104,36 @@ class FeedController extends Controller
         for ($i = 0; $i < 10000; $i = $i + 100) {
 
             if ($i >= 9900) {
-                print 'Шкала на нуле!.. ';
+               // print 'Шкала на нуле!.. ';
                 $scaleValue = 0;
                 break;
             }
             if ($scaleTwist > $i && $scaleTwist < ($i + 100)) {
-                print 'Значение ScaleTwist чуть больше $i, но меньше $i + 100 и равно ' . $i . '<br>';
+                //print 'Значение ScaleTwist чуть больше $i, но меньше $i + 100 и равно ' . $i . '<br>';
                 //$scaleValue = $i;
                 //$scale = ScaleFeed::find()->where(['user_id' => Yii::$app->user->id])->one();
 
                 if ($i == 0) {
-                    print 'ScaleValue равно Нулю';
+                  //  print 'ScaleValue равно Нулю';
                     $scaleValue = $scale->points;
                     $scale->points = $scaleValue;
                     $scale->step = $i;
                     $scale->save();
                 } elseif ($i == $scale->step) {
-                    print 'ScaleValue равно Step';
+                   // print 'ScaleValue равно Step';
                     $scaleValue = $scale->points;
                     $scale->points = $scaleValue;
                     $scale->step = $i;
                     $scale->save();}
                 else {
-                    print 'ScaleValue НЕ равно Step';
+                   // print 'ScaleValue НЕ равно Step';
                     $scaleValue = $scale->points - (($i - $scale->step) / 100);
                     //$scaleValue = $allLastChallengeQuestionsCost - ($i / 100);
-                    print $scaleValue;
+                   // print $scaleValue;
                     $scale->points = $scaleValue;
                     $scale->step = $i;
                     $scale->save();
-                    \yii\helpers\VarDumper::dump($scale, 10, true);
+                    //\yii\helpers\VarDumper::dump($scale, 10, true);
                 }
                 break;
             }
@@ -157,20 +157,20 @@ class FeedController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'feedingTests' => $feedingTests,
-            'foods' => $foods,
+            //'foods' => $foods,
             'challenges' => $challenges,
-            'lastChallenge' => $lastChallenge,
-            'finishTime' => $finishTime,
-            'allLastChallengeQuestionsCost' => $allLastChallengeQuestionsCost,
-            'allDoneChallenges' => $allDoneChallenges,
-            'allDoneChallengesCosts' => $allDoneChallengesCosts,
-            'costAmount' => $costAmount,
-            'finishCostAmount' => $finishCostAmount,
-            'scaleTwist' => $scaleTwist,
-            'attempt' => $attempt,
+           // 'lastChallenge' => $lastChallenge,
+           // 'finishTime' => $finishTime,
+           // 'allLastChallengeQuestionsCost' => $allLastChallengeQuestionsCost,
+           // 'allDoneChallenges' => $allDoneChallenges,
+           // 'allDoneChallengesCosts' => $allDoneChallengesCosts,
+           // 'costAmount' => $costAmount,
+           // 'finishCostAmount' => $finishCostAmount,
+          //  'scaleTwist' => $scaleTwist,
+          //  'attempt' => $attempt,
            // 'scale' => $scale,
-            'scaleValue' => $scaleValue,
-            'scale' => $scale
+          //  'scaleValue' => $scaleValue,
+          //  'scale' => $scale
         ]);
     }
 

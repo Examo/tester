@@ -20,6 +20,9 @@
 ?>
 
 <div class="panel panel-default">
+    <?php if($challengeItem): ?>
+    <p><center><img src="/i/<?= $challengeItem->name ? $challengeItem->name : "no_image" ; ?>.png" /></center></p>
+    <?php endif; ?>
     <div class="panel-heading">
         <?= $challenge->name ?>
         <div class="pull-right text-right" style="width: 30%;">

@@ -23,7 +23,8 @@
         "voskobovich/yii2-many-many-behavior": "^3.2",
         "yiisoft/yii2-jui": "^2.0",
         "kartik-v/yii2-markdown": "dev-master",
-        "kartik-v/yii2-widget-datepicker": "@dev"
+        "kartik-v/yii2-widget-datepicker": "@dev",
+        "kartik-v/yii2-widget-depdrop": "@dev"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

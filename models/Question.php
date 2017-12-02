@@ -205,8 +205,10 @@ class Question extends \app\models\ar\Question
                 $i++;
             }
         } else {
-            foreach (json_decode($data, true)['options'] as $option) {
-                echo "<li>" . $option . "</li>";
+            if (isset(json_decode($data, true)['options'])) {
+                foreach (json_decode($data, true)['options'] as $option) {
+                    echo "<li>" . $option . "</li>";
+                }
             }
         }
     }
