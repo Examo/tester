@@ -90,20 +90,20 @@ class ChallengeController extends BaseAdminCrudController
         $class = $this->getModelClass();
         $model = new $class();
 
-       // $food = new Food();
+        $food = new Food();
 
         $challengeFood = new ChallengeFood();
 
         if ($model->load(Yii::$app->request->post()) && $model->save() && $this->saveModel($model)) {
-            $challengeFood->id = $model->id;
-            $challengeFood->food_id = $model->food_id;
-            $challengeFood->challenge_id = $model->id;
-            $challengeFood->save();
+          //  $challengeFood->id = $model->id;
+         //   $challengeFood->food_id = $model->food_id;
+         //   $challengeFood->challenge_id = $model->id;
+         //   $challengeFood->save();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
-             //   'food' => $food,
+                'food' => $food,
                 'challengeFood' => $challengeFood
             ]);
         }
@@ -116,10 +116,10 @@ class ChallengeController extends BaseAdminCrudController
         $food = Food::find()->all();
 
         if ($model->load(Yii::$app->request->post()) && $model->save() && $this->saveModel($model)) {
-            $challengeFood->id = $model->id;
-            $challengeFood->food_id = $model->food_id;
-            $challengeFood->challenge_id = $model->id;
-            $challengeFood->save();
+       //     $challengeFood->id = $model->id;
+       //     $challengeFood->food_id = $model->food_id;
+       //     $challengeFood->challenge_id = $model->id;
+       //     $challengeFood->save();
 
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -133,11 +133,11 @@ class ChallengeController extends BaseAdminCrudController
 
     public function actionView($id)
     {
-        //$food = ElementsItem::find()->select('name')->where(['id' => $id])->one();
+        $food = ElementsItem::find()->select('name')->where(['id' => $id])->one();
         return $this->render('view', [
             'model' => $this->findModel($id),
             //'challengeFood' => ChallengeFood::find()->where(['id' => $id])->one(),
-           // 'food' => $food
+            'food' => $food
         ]);
     }
 

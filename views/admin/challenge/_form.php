@@ -95,17 +95,17 @@ $modelSettings = $model->settings ? $model->settings : new \app\models\Challenge
                 ]
             ]) ?>
 
-            <?= $form->field($model, 'food_id')->label('Продукт')->widget(\kartik\select2\Select2::className(), [
-                'data' => Food::getList(),
-                'options' => [
-                    'id' => 'id',
-                    'multiple' => false
-                ],
-            ]) ?>
+            <?php // $form->field($model, 'food_id')->label('Продукт')->widget(\kartik\select2\Select2::className(), [
+                //'data' => Food::getList(),
+                //'options' => [
+                //    'id' => 'id',
+                //    'multiple' => false
+                //],
+            //]) ?>
 
             <?= $form->field($model, 'grade_number')->textInput() ?>
 
-            <?= $form->field($model, 'week') ?>
+            <?= $form->field($model, 'week')->label('Неделя') ?>
 
             <?= $form->field($model, 'exercise_number')->textInput() ?>
 
