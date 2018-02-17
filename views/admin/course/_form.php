@@ -5,6 +5,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\widgets\SubsetWidget;
 use app\models\Subject;
+use app\models\ar\User;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Course */
@@ -26,7 +27,7 @@ use app\models\Subject;
     <?= $form->field($model, 'name')->textarea(['rows' => 6]) ?>
 
         <?= $form->field($model, 'user_id')->label('Преподаватель курса')->widget(\kartik\select2\Select2::className(), [
-            'data' => \dektrium\user\models\User::getList(),
+            'data' => User::getList(),
             'options' => [
                 'id' => 'user_id',
                 'multiple' => false

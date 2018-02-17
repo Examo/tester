@@ -27,6 +27,7 @@ use yii\web\User;
  */
 class ChallengeController extends BaseAdminCrudController
 {
+    public $layout = 'main';
 
     /**
      * @inheritdoc

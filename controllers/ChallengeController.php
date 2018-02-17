@@ -5,13 +5,17 @@ namespace app\controllers;
 use app\helpers\ChallengeSession;
 use app\helpers\ChallengeSummarizer;
 use app\models\ar\ChallengeFood;
+use app\models\ar\DifficultSubjects;
 use app\models\ar\ElementsItem;
 use app\models\ar\Food;
+use app\models\ar\QuestionHasSubject;
+use app\models\ar\ScaleClean;
 use app\models\ar\ScaleFeed;
 use app\models\Attempt;
 use app\models\Challenge;
 use app\models\ChallengeHasQuestion;
 use app\models\Question;
+use app\models\Subject;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
@@ -145,6 +149,78 @@ class ChallengeController extends Controller
                 $summary->saveAttempt();
             }
 
+
+            $testQuestions = $summary->getQuestions();
+            $testResults = $summary->getCorrectness();
+
+            $lastAttempt = Attempt::find()->where(['user_id' => Yii::$app->user->id])->orderBy('id DESC')->one();
+            if ($lastAttempt->points == 0) {
+
+                foreach ($summary->answers as $realQuestionId => $answer) {
+                    foreach ($testQuestions as $i => $question) {
+                        if ($realQuestionId == $question['id']) {
+
+
+
+                                $subject = QuestionHasSubject::find()->select(['subject_id'])->where(['question_id' => $question['id']])->one();
+                            $difficultSubjects = DifficultSubjects::find()->where(['user_id' => Yii::$app->user->id])->andWhere(['subject_id' => $subject])->one();
+
+                            $points = DifficultSubjects::find()->select(['points'])->where(['user_id' => Yii::$app->user->id])->andWhere(['subject_id' => $subject])->one();
+                            if ($difficultSubjects) {
+                                $difficultSubjects->user_id = Yii::$app->user->id;
+                                $difficultSubjects->subject_id = $subject->subject_id;
+                                if ($testResults[$question->id] == true) {
+                                    $difficultSubjects->points = $points->points + 1;
+                                } else {
+                                    $difficultSubjects->points = $points->points - 1;
+                                }
+                                //$difficultSubjects->points = $points->points + 1;
+                                // if ($difficultSubjects->points == 0) {
+
+//                            }
+                                $difficultSubjects->save();
+                            } else {
+                                $difficultSubjects = new DifficultSubjects();
+                                $difficultSubjects->user_id = Yii::$app->user->id;
+                                $difficultSubjects->subject_id = $subject->subject_id;
+                                $difficultSubjects->points = 1;
+                                $difficultSubjects->save();
+                            }
+
+                           // \yii\helpers\VarDumper::dump($subject->subject_id, 10, true);
+                           // \yii\helpers\VarDumper::dump($question['id'], 10, true);
+                            if ($testResults[$question->id] == true) {
+                          //      \yii\helpers\VarDumper::dump($testResults[$question->id], 10, true);
+                                // \yii\helpers\VarDumper::dump($difficultSubjects, 10, true);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if ($challengeElementsType->element_id == 2) {
+
+                $scale = ScaleClean::find()->where(['user_id' => Yii::$app->user->id])->one();
+                //\yii\helpers\VarDumper::dump($scale, 10, true);
+                if ($scale) {
+                    $scale->user_id = Yii::$app->user->id;
+                    $lastAttempt = Attempt::find()->where(['user_id' => Yii::$app->user->id])->orderBy('id DESC')->one();
+                    $scale->last_time = $lastAttempt->finish_time;
+                    if ($lastAttempt->points == 0) {
+                        //print 'Очки равны нулю!';
+                        $scale->points = $scale->points + $allLastChallengeQuestionsCost;
+                        $lastAttempt->points = 1;
+                        $lastAttempt->save();
+                    }
+                    $scale->save();
+                } else {
+                    $scale = new ScaleClean();
+                    $scale->user_id = Yii::$app->user->id;
+                    $lastAttempt = Attempt::find()->select(['finish_time'])->where(['user_id' => Yii::$app->user->id])->orderBy('id DESC')->one();
+                    $scale->last_time = $lastAttempt->finish_time;
+                    $scale->save();
+                }
+            }
             if ($challengeElementsType->element_id == 1) {
 
                 $scale = ScaleFeed::find()->where(['user_id' => Yii::$app->user->id])->one();
@@ -168,11 +244,18 @@ class ChallengeController extends Controller
                 }
             }
 
+            $difficultSubjects = DifficultSubjects::find()->where(['user_id' => Yii::$app->user->id])->all();
+            $allSubjects = Subject::find()->all();
+
             return $this->render('finish', [
                 'challenge' => $challenge,
                 'summary' => $summary,
                 'challengeItem' => $challengeItem,
-                'challengeElementsType' => $challengeElementsType
+                'challengeElementsType' => $challengeElementsType,
+                'testQuestions' => $testQuestions,
+                'difficultSubjects' => $difficultSubjects,
+                'allSubjects' => $allSubjects
+              //  'testResults' => $testResults
             ]);
         } else {
             // It looks like session wasn't even started

@@ -3,6 +3,7 @@
 namespace app\models\ar;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * @inheritdoc
@@ -55,5 +56,17 @@ class User extends \dektrium\user\models\User
     public function getTokens()
     {
         return $this->hasMany(Token::className(), ['user_id' => 'id'])->inverseOf('user');
+    }
+
+    public static function getList($exclude = [], $field = 'username')
+    {
+        $ids = [];
+        foreach ($exclude as $item) {
+            $ids[] = is_object($item) ? $item->id : $item;
+        }
+
+        $condition = count($ids) ? ['not in', 'id', $ids] : '';
+
+        return ArrayHelper::map(static::find()->where($condition)->all(), 'id', $field);
     }
 }

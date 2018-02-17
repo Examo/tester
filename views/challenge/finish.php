@@ -128,5 +128,3 @@
         },500);
     </script>
 </div>
-
-<?php \yii\helpers\VarDumper::dump($challengeElementsType->element_id, 10, true) ?>

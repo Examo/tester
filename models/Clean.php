@@ -11,7 +11,7 @@ class Clean extends \app\components\ActiveRecord
      */
     public static function tableName()
     {
-        return '';
+        //return 'fgfgfgfgg';
     }
 
     /**

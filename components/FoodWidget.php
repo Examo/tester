@@ -63,7 +63,16 @@ class FoodWidget extends Widget
             $finishCostAmount += ceil($nearlyFinishCostAmount / 5 * intval($allDoneChallengesMarks[$i]->mark));
             $nearlyFinishCostAmount = 0;
         }
-        $scale = ScaleFeed::find()->where(['user_id' => Yii::$app->user->id])->one();
+        if (ScaleFeed::find()->where(['user_id' => Yii::$app->user->id])->one()) {
+            $scale = ScaleFeed::find()->where(['user_id' => Yii::$app->user->id])->one();
+        } else {
+            $scale = new ScaleFeed();
+            $scale->user_id = Yii::$app->user->id;
+            $scale->last_time = 0;
+            $scale->points = 0;
+            $scale->step = 0;
+            $scale->save();
+        }
         for ($i = 0; $i < 10000; $i = $i + 100) {
 
             if ($i >= 9900) {
@@ -89,10 +98,9 @@ class FoodWidget extends Widget
                     $scale->step = $i;
                     $scale->save();}
                 else {
-                    print 'ScaleValue НЕ равно Step';
-                    $scaleValue = $scale->points - (($i - $scale->step) / 100);
-                    //$scaleValue = $allLastChallengeQuestionsCost - ($i / 100);
-                    print $scaleValue;
+                 //   print 'ScaleValue НЕ равно Step';
+                    //$scaleValue = $scale->points - (($i - $scale->step) / 100);
+                    $scaleValue = $allLastChallengeQuestionsCost - ($i / 100);
                     $scale->points = $scaleValue;
                     $scale->step = $i;
                     $scale->save();
@@ -116,13 +124,13 @@ class FoodWidget extends Widget
        // }
 
       //  $attempt = Attempt::find()->select(['finish_time'])->where(['user_id' => Yii::$app->user->id])->orderBy('id DESC')->one();
-       // $this->food;
-//\yii\helpers\VarDumper::dump($scaleTwist, 10, true);
-//\yii\helpers\VarDumper::dump($scale->last_time, 10, true);
-//\yii\helpers\VarDumper::dump($scale->points, 10, true);
-//\yii\helpers\VarDumper::dump($allLastChallengeQuestionsCost, 10, true);
-//\yii\helpers\VarDumper::dump($finishCostAmount, 10, true);
-//\yii\helpers\VarDumper::dump($scaleValue, 10, true);
+             // $this->food;
+      //\yii\helpers\VarDumper::dump($scaleTwist, 10, true);
+      //\yii\helpers\VarDumper::dump($scale->last_time, 10, true);
+      //\yii\helpers\VarDumper::dump($scale->points, 10, true);
+      //\yii\helpers\VarDumper::dump($allLastChallengeQuestionsCost, 10, true);
+      //\yii\helpers\VarDumper::dump($finishCostAmount, 10, true);
+      //\yii\helpers\VarDumper::dump($scaleValue, 10, true);
 
         if ($scaleValue <= 10) {
             $backgroundColor = 'red';
@@ -132,7 +140,7 @@ class FoodWidget extends Widget
         $heightScaleValue = 100 - $scaleValue;
 
     //echo '<br><br><br>';
-    echo '<a href="#">' .
+    echo '<a href="/feed">' .
         '<div class="bar-wrapper"><p>Еда</p>' .
             '<div class="feeding-progress-bar-block" style=" background-color:' . $backgroundColor .'">' .
                 '<div class="feeding-progress-bar-fill" style="height:' . $heightScaleValue . '%; width:100%;"><center><p><b>' . $scaleValue . '%</b></p></center></div>' .

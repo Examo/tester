@@ -1,5 +1,6 @@
 <?php
 
+use app\components\CleanWidget;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use app\components\FoodWidget;
@@ -41,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::encode($this->title) ?>
         </h4>
     </div>
-    <center><img src="/i/refrigerator.png" width="600" height="auto" /></center>
+    <center><img src="/i/refrigerator.png" width="400" height="auto" /></center>
     <div class="feeding">
 
         <?php $classes = []; ?>
@@ -51,6 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php $number = 0; ?>
                 <?php foreach ($challenges as $challenge): ?>
                     <?php if(!empty($feedingTests->getChallengeFood($challenge->id)->name)):?>
+                        <?php if($challenge->element_id == 1):?>
                         <?php $class = $challenge->getChallengeFood($challenge->id)->name; ?>
                         <?php $all = $feedingTests->getClass($classes, $class); ?>
                         <?php $classes = $all['classes']; ?>
@@ -61,6 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         <?php else: ?>
                         Добавить продукт в тест №<?= $challenge->id; ?><br>
+                        <?php endif; ?>
                     <?php endif; ?>
                 <?php endforeach; ?>
             <?php endif; ?>
@@ -84,6 +87,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             </div></a>-->
 
                         <?= FoodWidget::widget(); ?>
+
+                        <?= CleanWidget::widget(); ?>
 
                         <!--<a href="#"><div class="bar-wrapper"><p>Еда</p>
                                 <div class="feeding-progress-bar-block" style="<?php //if ($scaleValue <= 10) {echo 'background-color: red;';}?>">

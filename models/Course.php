@@ -68,6 +68,34 @@ class Course extends \app\models\ar\Course
             ->where(['id' => array_diff($challenges, $attempts)]);
     }
 
+    public function getNewCleanChallenges($user)
+    {
+        $challenges = $this->getChallenges()->select('id')->column();
+        $attempts = Attempt::find()->where([
+            'user_id' => is_object($user) ? $user->id : $user,
+            'challenge_id' => $challenges
+        ])->groupBy('challenge_id')->select('challenge_id')->column();
+
+        $challenges = $this->hasMany(Challenge::className(), ['course_id' => 'id'])
+            ->inverseOf('course')
+            ->where(['id' => array_diff($challenges, $attempts)]);
+
+        $cleanChallenges = [];
+        foreach ($challenges as $challenge){
+            //\yii\helpers\VarDumper::dump($challenges, 10, true);
+
+         // if ($challenge->element_id) {
+
+         //     if ($challenge->element_id == 2) {
+         //         $cleanChallenges[] = $challenge;
+         //     }
+         // }
+        }
+
+
+        return $challenges;
+    }
+
     /**
      * @param User|int $user
      * @return bool
