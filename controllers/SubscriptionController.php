@@ -2,8 +2,12 @@
 
 namespace app\controllers;
 
+use app\models\AuthAssignment;
 use app\models\Course;
+use app\models\CourseLecturer;
+use app\models\Discipline;
 use app\models\search\CourseSearch;
+use app\models\User;
 use Yii;
 use yii\helpers\Url;
 use yii\web\Controller;
@@ -68,10 +72,36 @@ class SubscriptionController extends Controller
             Yii::$app->request->queryParams
         );
 
-        return $this->render('all', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        //$this->layout = 'metronic_sidebar';
+        $lecturers = AuthAssignment::find()->select('user_id')->where(['item_name' => 'Lecturer'])->all();
+        $users = [];
+        $lecturersCourses = [];
+        foreach ($lecturers as $lecturer){
+            $users[] = User::find()->where(['id' => $lecturer->user_id])->one();
+            $lecturersCourses[] = CourseLecturer::find()->where(['user_id' => $lecturer->user_id])->all();
+        }
+        $disciplines = Discipline::find()->all();
+        $courses = Course::find()->all();
+
+        $testLecturer = CourseLecturer::find()->all();
+
+        if (!empty($lecturers)) {
+            return $this->render('all',
+                [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                    'lecturers' => $lecturers,
+                    'users' => $users,
+                    'courses' => $courses,
+                    'disciplines' => $disciplines,
+                    'lecturersCourses' => $lecturersCourses,
+                    'testLecturer' => $testLecturer
+                ]);
+        } else {
+            throw new NotFoundHttpException('Преподавателей пока ещё не существует!');
+        }
+
+
     }
 
     /**

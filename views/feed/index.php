@@ -1,9 +1,9 @@
 <?php
 
-use app\components\CleanWidget;
+use app\widgets\CleanWidget;
 use yii\helpers\Html;
 use yii\grid\GridView;
-use app\components\FoodWidget;
+use app\widgets\FoodWidget;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ar\FeedSearch */

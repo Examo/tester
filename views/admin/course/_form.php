@@ -36,13 +36,13 @@ use app\models\ar\User;
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'start_time')->widget(DatePicker::classname(), [
-        'options' => ['placeholder' => Yii::t('course', 'Введите дату начала')],
-        'pluginOptions' => [
-            'autoclose' => true,
-            'format' => 'yyyy-mm-dd 00:00:00'
-        ]
-    ]); ?>
+    <?php // $form->field($model, 'start_time')->widget(DatePicker::className(), [
+          //  'options' => ['placeholder' => Yii::t('course', 'Введите дату начала')],
+          //  'pluginOptions' => [
+          //      'autoclose' => true,
+          //      'format' => 'yyyy-mm-dd 00:00:00'
+          //  ]
+        //]); ?>
 
     <?= $form->field($model, 'subjects')->widget(SubsetWidget::className(), [
         'form' => $form,

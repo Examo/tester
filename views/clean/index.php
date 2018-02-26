@@ -1,14 +1,7 @@
 
 <?php
-
-use app\components\CleanWidget;
-use yii\helpers\Html;
-use yii\grid\GridView;
-use app\components\FoodWidget;
-
-/* @var $this yii\web\View */
-/* @var $searchModel app\models\ar\FeedSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+use app\widgets\CleanWidget;
+use app\widgets\FoodWidget;
 
 $this->title = Yii::t('app', 'Clean');
 $this->params['breadcrumbs'][] = $this->title;
@@ -129,46 +122,46 @@ array_multisort($subjectPoints, SORT_ASC, $newRightSubjects);
     <div class="learning">
 
         <div class="panel-body">
-<?php foreach ($newRightSubjects as $key => $oneSubject): ?>
-    <?php foreach ($subjectsOfRating as $subjectOfRating): ?>
-        <?php if ($subjectOfRating['subject'] == $oneSubject['subject_id']):?>
-        <div class="panel panel-default" style="border: normal; border-color: #00a5bb">
-            <div class="panel-heading">
-                 <div class="item">
-                    <div class="item-head">
-                        <div class="item-name primary-link">
-                            <strong>№<?= $key + 1; ?> тема по сложности - "<?= $oneSubject['name']; ?>" (ID в системе: <?= $oneSubject['subject_id']; ?>)
-                            <br>(Количество баллов у темы: <?= $oneSubject['points']; ?>)</strong>
-                            <br>Ссылка на тест: <a href="/challenge/start?id=<?= $subjectOfRating['id']; ?>">Тест №<?= $subjectOfRating['id']; ?> по теме <?= $oneSubject['name']; ?> на <?= $cleaningTests->time; ?> минут, прибавляет <?= $cleaningTests->percent; ?> % к шкале Уборки, ID темы: <?= $oneSubject['subject_id']; ?></a>
+            <?php foreach ($newRightSubjects as $key => $oneSubject): ?>
+                <?php foreach ($subjectsOfRating as $subjectOfRating): ?>
+                    <?php if ($subjectOfRating['subject'] == $oneSubject['subject_id']):?>
+                        <div class="panel panel-default" style="border: normal; border-color: #00a5bb">
+                            <div class="panel-heading">
+                                <div class="item">
+                                    <div class="item-head">
+                                        <div class="item-name primary-link">
+                                            <strong>№<?= $key + 1; ?> тема по сложности - "<?= $oneSubject['name']; ?>" (ID в системе: <?= $oneSubject['subject_id']; ?>)
+                                                <br>(Количество баллов у темы: <?= $oneSubject['points']; ?>)</strong>
+                                            <br>Ссылка на тест: <a href="/challenge/start?id=<?= $subjectOfRating['id']; ?>">Тест №<?= $subjectOfRating['id']; ?> по теме <?= $oneSubject['name']; ?> на <?= $cleaningTests->time; ?> минут, прибавляет <?= $cleaningTests->percent; ?> % к шкале Уборки, ID темы: <?= $oneSubject['subject_id']; ?></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php //unset($newRightSubjects[$key]);?>
+                        <?php break; ?>
+
+                    <?php endif; ?>
+
+                <?php endforeach; ?>
+                <?php if ($subjectOfRating['subject'] !== $oneSubject['subject_id']):?>
+                    <div class="panel panel-default" style="border: normal; border-color: #00a5bb">
+                        <div class="panel-heading">
+                            <div class="item">
+                                <div class="item-head">
+                                    <div class="item-name primary-link">
+                                        <strong>№<?= $key + 1; ?> тема по сложности - "<?= $oneSubject['name']; ?>" (ID в системе: <?= $oneSubject['subject_id']; ?>)
+                                            <br>(Количество баллов у темы: <?= $oneSubject['points']; ?>)</strong>
+                                        <br><a href="/challenge/start?id= ">Ссылка на тест №  по теме на <?= $cleaningTests->time; ?> минут, прибавляет <?= $cleaningTests->percent; ?> % к шкале Уборки, ID темы: <?= $oneSubject['subject_id']; ?></a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-          </div>
-            <?php //unset($newRightSubjects[$key]);?>
-            <?php break; ?>
-
-        <?php endif; ?>
-
-    <?php endforeach; ?>
-<?php if ($subjectOfRating['subject'] !== $oneSubject['subject_id']):?>
-    <div class="panel panel-default" style="border: normal; border-color: #00a5bb">
-        <div class="panel-heading">
-            <div class="item">
-                <div class="item-head">
-                    <div class="item-name primary-link">
-                        <strong>№<?= $key + 1; ?> тема по сложности - "<?= $oneSubject['name']; ?>" (ID в системе: <?= $oneSubject['subject_id']; ?>)
-                            <br>(Количество баллов у темы: <?= $oneSubject['points']; ?>)</strong>
-                        <br><a href="/challenge/start?id= ">Ссылка на тест №  по теме на <?= $cleaningTests->time; ?> минут, прибавляет <?= $cleaningTests->percent; ?> % к шкале Уборки, ID темы: <?= $oneSubject['subject_id']; ?></a>
-                    </div>
-                </div>
-            </div>
+                <?php endif; ?>
+            <?php endforeach; ?>
         </div>
     </div>
-    <?php endif; ?>
-<?php endforeach; ?>
-        </div>
-</div>
 
 
 

@@ -74,6 +74,14 @@ class Course extends \app\components\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getEvents()
+    {
+        return $this->hasMany(Event::className(), ['course_id' => 'id'])->inverseOf('course');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getDiscipline()
     {
         return $this->hasOne(Discipline::className(), ['id' => 'discipline_id'])->inverseOf('courses');

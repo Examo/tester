@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use app\widgets\EventWidget;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Course */
@@ -15,10 +16,14 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 
     <h1><?= Html::encode($this->title) ?></h1>
 
+    <?= EventWidget::widget(['course_id' => $model->id]) ?>
+
     <?= $this->render('_form', [
         'model' => $model,
         'lecturer' => $lecturer,
         'users' => $users
     ]) ?>
+
+
 
 </div>
