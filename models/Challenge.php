@@ -264,8 +264,8 @@ class Challenge extends \app\models\ar\Challenge
         //$challengeFood = Food::find()->select('food_name')->where(['id' => $food_id])->one();
 
         $challengeElementsItem = Challenge::find()->select('elements_item_id')->where(['id' => $id])->one();
-        $challengeFood = ElementsItem::find()->select('name')->where(['id' => $challengeElementsItem])->one();
-        return $challengeFood;
+        $challengeClean = ElementsItem::find()->select('name')->where(['id' => $challengeElementsItem])->one();
+        return $challengeClean;
     }
 
 }

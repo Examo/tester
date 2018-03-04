@@ -131,7 +131,7 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
 .coffee_10 { width: 70px; top: 320px; left: 380px; z-index: 1; }
 
 .broom { width: 100px; top: 150px; left: 300px; z-index: 3; }
-.broom_2 { width: 100px; top: 155px; left: 315px; z-index: 1; }
+.broom_2 { width: 100px; top: 175px; left: 315px; z-index: 1; }
 .broom_3 { width: 60px; top: 160px; left: 330px; z-index: 1; }
 .broom_4 { width: 55px; top: 147px; left: 315px; z-index: 1; }
 .broom_5 { width: 50px; top: 146px; left: 320px; z-index: 1; }
@@ -142,7 +142,7 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
 .broom_10 { width: 25px; top: 141px; left: 345px; z-index: 1; }
 
 .brush { width: 70px; top: 160px; left: 380px; z-index: 2; }
-.brush_2 { width: 60px; top: 165px; left: 395px; z-index: 1; }
+.brush_2 { width: 60px; top: 175px; left: 395px; z-index: 1; }
 .brush_3 { width: 70px; top: 160px; left: 380px; z-index: 1; }
 .brush_4 { width: 70px; top: 160px; left: 380px; z-index: 1; }
 .brush_5 { width: 70px; top: 160px; left: 380px; z-index: 1; }
@@ -164,7 +164,7 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
 .sponge_10 { width: 70px; top: 240px; left: 300px; z-index: 1; }
 
 .wisp { width: 70px; top: 250px; left: 380px; z-index:1; }
-.wisp_2 { width: 70px; top: 250px; left: 380px; z-index:1; }
+.wisp_2 { width: 70px; top: 270px; left: 400px; z-index:1; }
 .wisp_3 { width: 70px; top: 250px; left: 380px; z-index:1; }
 .wisp_4 { width: 70px; top: 250px; left: 380px; z-index:1; }
 .wisp_5 { width: 70px; top: 250px; left: 380px; z-index:1; }

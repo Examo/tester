@@ -130,8 +130,8 @@ class Clean extends \yii\db\ActiveRecord
         //$challengeFood = Food::find()->select('food_name')->where(['id' => $food_id])->one();
 
         $challengeElementsItem = Challenge::find()->select('elements_item_id')->where(['id' => $id])->one();
-        $challengeFood = ElementsItem::find()->select('name')->where(['id' => $challengeElementsItem])->one();
-        return $challengeFood;
+        $challengeClean = ElementsItem::find()->select('name')->where(['id' => $challengeElementsItem])->one();
+        return $challengeClean;
     }
 
     //   public function getChallengeFood($id)
@@ -149,9 +149,25 @@ class Clean extends \yii\db\ActiveRecord
             $classes['top'] = 120;
             $classes['left'] = 330;
                 break;
+            case 'broom_2':
+                $classes['top'] = 140;
+                $classes['left'] = 330;
+                break;
             case 'wisp':
                 $classes['top'] = 220;
                 $classes['left'] = 390;
+                break;
+            case 'wisp_2':
+                $classes['top'] = 240;
+                $classes['left'] = 410;
+                break;
+            case 'brush':
+                $classes['top'] = 140;
+                $classes['left'] = 390;
+                break;
+            case 'brush_2':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
                 break;
         }
         return $classes;
