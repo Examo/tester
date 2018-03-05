@@ -2,13 +2,12 @@
 namespace app\controllers;
 use app\models\ar\Clean;
 use app\models\ar\DifficultSubjects;
-use app\models\Attempt;
 use app\models\Challenge;
 use app\models\Course;
-use app\models\ElementsItem;
 use app\models\Subject;
 use Yii;
 use yii\web\Controller;
+use app\widgets\CleanWidget;
 
 class CleanController extends Controller
 {
@@ -23,26 +22,26 @@ class CleanController extends Controller
         $newCleanChallenges = [];
         $difficultSubjects = DifficultSubjects::find()->where(['user_id' => Yii::$app->user->id])->all();
 
-            foreach (Course::findSubscribed(Yii::$app->user->id)->all() as $course) {
-                $challenges = array_merge($challenges, $course->getNewCleanChallenges(Yii::$app->user->id)->all());
-            }
+        foreach (Course::findSubscribed(Yii::$app->user->id)->all() as $course) {
+            $challenges = array_merge($challenges, $course->getNewCleanChallenges(Yii::$app->user->id)->all());
+        }
 
-            $subjectsChecked = [];
-            foreach ($challenges as $challenge) {
-                if ($challenge->element_id == 2) {
-                    $subject = Challenge::find()->innerJoinWith('subject')->where(['challenge.subject_id' => $challenge->subject_id])->andWhere(['challenge.id' => $challenge->id])->one();
-                    if (!isset($subjectsChecked[$subject->subject->id])) {
-                        $cleanChallenges[$number]['subject_id'] = $subject->subject->id;
-                        $cleanChallenges[$number]['subject_name'] = $subject->subject->name;
-                        $cleanChallenges[$number]['challenge_id'] = $subject->id;
-                        $cleanChallenges[$number]['challenge_name'] = $subject->name;
-                        $elements_item = Challenge::find()->innerJoinWith('elements_item')->where(['challenge.elements_item_id' => $subject->elements_item_id])->one();
-                        $cleanChallenges[$number]['challenge_clean_item'] = $elements_item->elements_item->name;
-                        $number++;
-                        $subjectsChecked[$subject->subject->id] = $subject->subject->id;
-                    }
+        $subjectsChecked = [];
+        foreach ($challenges as $challenge) {
+            if ($challenge->element_id == 2) {
+                $subject = Challenge::find()->innerJoinWith('subject')->where(['challenge.subject_id' => $challenge->subject_id])->andWhere(['challenge.id' => $challenge->id])->one();
+                if (!isset($subjectsChecked[$subject->subject->id])) {
+                    $cleanChallenges[$number]['subject_id'] = $subject->subject->id;
+                    $cleanChallenges[$number]['subject_name'] = $subject->subject->name;
+                    $cleanChallenges[$number]['challenge_id'] = $subject->id;
+                    $cleanChallenges[$number]['challenge_name'] = $subject->name;
+                    $elements_item = Challenge::find()->innerJoinWith('elements_item')->where(['challenge.elements_item_id' => $subject->elements_item_id])->one();
+                    $cleanChallenges[$number]['challenge_clean_item'] = $elements_item->elements_item->name;
+                    $number++;
+                    $subjectsChecked[$subject->subject->id] = $subject->subject->id;
                 }
             }
+        }
 
         $difficultSubjects = DifficultSubjects::find()->where(['user_id' => Yii::$app->user->id])->all();
 
@@ -76,17 +75,24 @@ class CleanController extends Controller
                 }
                 array_multisort($subjectPoints, SORT_ASC, $newCleanChallenges);
             } else {
-                 $newCleanChallenges = null;
+                $newCleanChallenges = null;
             }
         } else {
-             $newCleanChallenges = null;
+            $newCleanChallenges = null;
         }
 
         return $this->render('index', [
             'cleaningTests' => $cleaningTests,
             'challenges' => $challenges,
             'difficultSubjects' => $difficultSubjects,
-           'newCleanChallenges' => $newCleanChallenges
+            'newCleanChallenges' => $newCleanChallenges
         ]);
+    }
+
+    public function actionWidget()
+    {
+        $this->layout = false;
+
+        return CleanWidget::widget();
     }
 }

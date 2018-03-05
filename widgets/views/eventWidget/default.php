@@ -24,7 +24,7 @@ use yii\helpers\Html;
         'size' => 'modal-md',
         'closeButton' => false,
     ]);
-$form = ActiveForm::begin(['action' => '/admin/event/create']);
+$form = ActiveForm::begin(['action' => '/admin/event/create', 'id' => 'add-event-form']);
 echo $form->field($model, 'title')->textInput(['id' => 'title']);
 echo $form->field($model, 'color')->dropDownList($colorSetting[0], $colorSetting[1]);
 echo $form->field($model, 'start')->textInput(['id' => 'start']);
@@ -47,7 +47,7 @@ Modal::end();
     'size' => 'modal-md',
     'closeButton' => false,
 ]);
-$form = ActiveForm::begin(['action' => '/admin/event/update?id=', 'id'=>'EventUpdate']);
+$form = ActiveForm::begin(['action' => '/admin/event/update?id=', 'id'=>'edit-event-form']);
 echo $form->field($model, 'title')->textInput(['id' => 'title']);
 echo $form->field($model, 'color')->dropDownList($colorSetting[0], $colorSetting[1]);
 ?>
@@ -89,7 +89,7 @@ echo $form->field($model, 'color')->dropDownList($colorSetting[0], $colorSetting
             },
             eventRender: function(event, element) {
                 element.bind('dblclick', function() {
-                    $('#ModalEdit #EventUpdate').attr('action', '/admin/event/update?id='+event.id);
+                    $('#ModalEdit #edit-event-form').attr('action', '/admin/event/update?id='+event.id);
                     $('#ModalEdit #CheckEventDel').attr('checked', false);
                     $('#ModalEdit #title').val(event.title);
                     $('#ModalEdit #event-color option[value='+event.color+']').attr('selected', true);
@@ -106,6 +106,7 @@ echo $form->field($model, 'color')->dropDownList($colorSetting[0], $colorSetting
                 edit(event);
 
             },
+
             events: [
                 <?php foreach($events as $event):
 
@@ -127,7 +128,7 @@ echo $form->field($model, 'color')->dropDownList($colorSetting[0], $colorSetting
                     title: '<?php echo $event->title; ?>',
                     start: '<?php echo $start; ?>',
                     end: '<?php echo $end; ?>',
-                    color: '<?php echo $event->color; ?>',
+                    color: '<?php echo $event->color ? $event->color : '#40E0D0'; ?>',
                     course_id: '<?php echo $event->course_id; ?>'
                 },
                 <?php endforeach; ?>
@@ -152,7 +153,6 @@ echo $form->field($model, 'color')->dropDownList($colorSetting[0], $colorSetting
             data['end'] = end;
             data['course_id'] = course_id;
             data['color'] = event.color;
-            console.log(data);
             $.ajax({
                 url: '/admin/event/update?id='+data['id'],
                 type: "POST",
@@ -166,25 +166,101 @@ echo $form->field($model, 'color')->dropDownList($colorSetting[0], $colorSetting
                     if(res === 'OK'){
                         alert('Сохранено');
                     }else{
-                        console.log(res);
                         alert('Не сохранено, попробуйте еще раз');
                     }
                 }
             });
         }
 
-    });
-</script>
+        $('#add-event-form').on('beforeSubmit', function () {
+            var f = $(this);
+            var form = $(this).serialize();
+            var data;
+            data = new FormData($(this)[0]);
+            $.ajax({
+                url: '/admin/event/create',
+                type: 'POST',
+                data: data,
+                async: false,
+                success: function (res) {
+                    if (!res) alert('Ошибка!');
+                    var source = { events: [
+                        {
+                            id: res.id,
+                            title: res.title,
+                            start: res.start,
+                            end: res.end,
+                            color: res.color,
+                            course_id: res.course_id
+                        }
+                    ]};
+                    $('#calendar').fullCalendar( 'addEventSource', source );
+                    $('#ModalAdd').modal('toggle');
+                    return false;
+                },
+                error: function () {
+                    alert('Ошибка!');
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+            return false;
+        });
 
-<script>
-    $(document).ready(function () {
+        Array.prototype.filterObjects = function(key, value) {
+            return this.filter(function(x) { return x[key] === value; })
+        }
+
+        $('#edit-event-form').on('beforeSubmit', function () {
+            var f = $(this);
+            var form = $(this).serialize();
+            var data;
+            var url = $(this).attr('action');
+            data = new FormData($(this)[0]);
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: data,
+                async: false,
+                success: function (res) {
+                    if (!res) alert('Ошибка!');
+
+                    var es = $('#calendar').fullCalendar('clientEvents');
+                    var ev = es.filterObjects("id",  res.id.toString() );
+
+                    if (url.indexOf("update") != (-1)) {
+                        //update
+                        ev[0].title = res.title;
+                        ev[0].color = res.color;
+                        $('#calendar').fullCalendar('updateEvent', ev[0]);
+                    } else {
+                        //delete
+                        if (ev[0]._id) {
+                            $('#calendar').fullCalendar('removeEvents', ev[0]._id);
+                        }
+                    }
+
+                    $('#ModalEdit').modal('toggle');
+                    return false;
+                },
+                error: function () {
+                    alert('Ошибка!');
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+            return false;
+        });
+
 
         $('#ModalEdit #CheckEventDel').change(function () {
             var checked = $(this).is(':checked');
             if (checked) {
-                $('#ModalEdit #EventUpdate').attr('action', $('#ModalEdit #EventUpdate').attr('action').replace(/update/g, 'delete'));
+                $('#ModalEdit #edit-event-form').attr('action', $('#ModalEdit #edit-event-form').attr('action').replace(/update/g, 'delete'));
             } else {
-                $('#ModalEdit #EventUpdate').attr('action', $('#ModalEdit #EventUpdate').attr('action').replace(/delete/g, 'update'));
+                $('#ModalEdit #edit-event-form').attr('action', $('#ModalEdit #edit-event-form').attr('action').replace(/delete/g, 'update'));
             }
         });
 

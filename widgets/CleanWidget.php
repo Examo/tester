@@ -71,7 +71,7 @@ class CleanWidget extends Widget
             $scale->save();
         }
 
-        echo '<a href="/clean">' .
+        echo '<a href="/clean" id="clean-widget">' .
             '<div class="bar-wrapper"><p>Уборка</p>' .
             '<div class="feeding-progress-bar-block" style=" background-color:' . $backgroundColor .'">' .
             '<div class="feeding-progress-bar-fill" style="height:' . $heightScaleValue . '%; width:100%;"><center><p><b>' . $scaleNumeration . '%</b></p></center></div>' .
@@ -80,6 +80,13 @@ class CleanWidget extends Widget
     }
 
     public function run(){
+        $script = <<< JS
+            var updateCleanWidget = setTimeout(function rqst() {
+                $('#clean-widget').load('/clean/widget #clean-widget');
+                updateCleanWidget = setTimeout(rqst, 100000);
+            }, 100000);
+JS;
+        $this->view->registerJs($script, yii\web\View::POS_READY);
         //return $this->food;
     }
 

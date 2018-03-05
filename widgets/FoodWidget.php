@@ -30,7 +30,6 @@ class FoodWidget extends Widget
             $roundTime = ceil($timeAfterLastFeedChallengeTest / 100) - 1;
             // достаём шкалу "Еды" текущего пользователя (если есть прохождение, то шкала тоже уже у него есть)
             $scale = ScaleFeed::find()->where(['user_id' => Yii::$app->user->id])->one();
-
             // если от баллов на шкале отнять баллы прошедшего времени и разность будет равна или меньше 0
             // то на шкале будет 0%
             if ($scale->points - $roundTime <= 0) {
@@ -70,15 +69,23 @@ class FoodWidget extends Widget
             $scale->save();
         }
 
-        echo '<a href="/feed">' .
+        echo '<a href="/feed" id="food-widget">' .
             '<div class="bar-wrapper"><p>Еда</p>' .
             '<div class="feeding-progress-bar-block" style=" background-color:' . $backgroundColor .'">' .
             '<div class="feeding-progress-bar-fill" style="height:' . $heightScaleValue . '%; width:100%;"><center><p><b>' . $scaleNumeration . '%</b></p></center></div>' .
             '</div>' .
             '</div></a>';
+
     }
 
     public function run(){
+        $script = <<< JS
+            var updateFoodWidget = setTimeout(function rqst() {
+                $('#food-widget').load('/feed/widget #food-widget');
+                updateFoodWidget = setTimeout(rqst, 100000);
+            }, 100000);
+JS;
+        $this->view->registerJs($script, yii\web\View::POS_READY);
         //return $this->food;
     }
 }

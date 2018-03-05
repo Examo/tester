@@ -8,6 +8,7 @@ use app\models\ar\Question;
 use app\models\ar\ScaleFeed;
 use app\models\Attempt;
 use app\models\Course;
+use app\widgets\FoodWidget;
 use Yii;
 use app\models\ar\Feed;
 use app\models\ar\FeedSearch;
@@ -148,6 +149,13 @@ class FeedController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionWidget()
+    {
+        $this->layout = false;
+
+        return FoodWidget::widget();
     }
 
     /**

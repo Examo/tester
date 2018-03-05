@@ -18,11 +18,22 @@ class EventController extends Controller
     {
         $model = new Event();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(Yii::$app->request->referrer);
-        } else {
-            return $this->redirect(Yii::$app->request->referrer);
+        if ($model->load(Yii::$app->request->post()) && !$model->save()) {
+            if ($model->hasErrors()) {
+                $errors = '';
+                foreach ($model->getErrors() as $error) {
+                    $errors .= $error . ', ';
+                }
+                return $errors;
+            }
         }
+
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = yii\web\Response::FORMAT_JSON;
+            return $model;
+        }
+
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
     /**
@@ -34,17 +45,19 @@ class EventController extends Controller
     {
         $model = Event::findOne(['id' => $id]);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            if (Yii::$app->request->isAjax) {
-                return 'OK';
-            }
-            return $this->redirect(Yii::$app->request->referrer);
-        } else {
+        if ($model->load(Yii::$app->request->post()) && !$model->save()) {
             if (Yii::$app->request->isAjax) {
                 return var_dump($model->getErrors());
             }
             return $this->redirect(Yii::$app->request->referrer);
         }
+
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = yii\web\Response::FORMAT_JSON;
+            return $model;
+        }
+
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
     /**
@@ -58,6 +71,11 @@ class EventController extends Controller
 
         if ($model) {
             $model->delete();
+        }
+
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = yii\web\Response::FORMAT_JSON;
+            return ['id' => $id];
         }
 
         return $this->redirect(Yii::$app->request->referrer);
