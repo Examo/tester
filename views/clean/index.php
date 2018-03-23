@@ -49,7 +49,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php  $all = $cleaningTests->getClass($classes, $class); ?>
                 <?php $classes = $all['classes']; ?>
                 <?php //$top = $cleaningTests->getTopLeftStyleNumber($all['currentClass'])['top'];?>
-                <a href="/challenge/start?id=<?= $challenge['challenge_id']; ?>"><img src="/i/<?= $challenge['challenge_clean_item'] ?>.png" title="Тест по порядку: <?= $number; ?>, №<?= $challenge['challenge_id']; ?> по теме <?= $challenge['challenge_name']; ?> на <?= $cleaningTests->time; ?> минут, прибавляет <?= $cleaningTests->percent; ?> % к шкале Уборки, ID темы: <?= $challenge['subject_id']; ?>, Тема по сложности: <?= $number; ?>" class="<?= $all['currentClass']; ?> " /><span style="top:<?= $top = $cleaningTests->getTopLeftStyleNumber($all['currentClass'])['top']; ?>px; left: <?= $left = $cleaningTests->getTopLeftStyleNumber($all['currentClass'])['left']?>px;">№<?= $number; ?></span></a>
+            <?php $realNumber = $number; ?>
+            <?php if (isset($classes[$class])): ?>
+                <?php if (isset($classes[$class][1])): ?>
+                    <?php $realNumber = '...'; ?><br>
+                <?php  endif; ?>
+            <?php  endif; ?>
+                <a href="/challenge/start?id=<?= $challenge['challenge_id']; ?>"><img src="/i/<?= $challenge['challenge_clean_item'] ?>.png" title="Тест по порядку: <?= $number; ?>, №<?= $challenge['challenge_id']; ?> по теме <?= $challenge['challenge_name']; ?> на <?= $cleaningTests->time; ?> минут, прибавляет <?= $cleaningTests->percent; ?> % к шкале Уборки, ID темы: <?= $challenge['subject_id']; ?>, Тема по сложности: <?= $number; ?>" class="<?= $all['currentClass']; ?> " /><span style="top:<?= $top = $cleaningTests->getTopLeftStyleNumber($all['currentClass'])['top']; ?>px; left: <?= $left = $cleaningTests->getTopLeftStyleNumber($all['currentClass'])['left']?>px;">№<?= $realNumber; ?></span></a>
                 <?php if (!$challenge['challenge_clean_item']): ?>
                     Добавить элемент уборки в тест №<?= $challenge['challenge_id']; ?><br>
                 <?php  endif; ?>
@@ -63,23 +69,26 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="panel panel-default element-container" xmlns="http://www.w3.org/1999/html">
     <div class="panel-heading">
         <h4 class="panel-title">
-            Рейтинг сложных тем
+            Рейтинг сложных тем по всем моим курсам
         </h4>
     </div>
     <div class="learning">
         <div class="panel-body">
+            <?php ;?>
                 <?php foreach ($newCleanChallenges as $key => $oneSubject): ?>
                     <?php if ($oneSubject['challenge_clean_item']):?>
                         <div class="panel panel-default" style="border: normal; border-color: #00a5bb">
                             <div class="panel-heading">
                                 <div class="item">
                                     <div class="item-head">
-                                        <div class="item-name primary-link">
-                                            <strong>№<?= $key + 1; ?> тема по сложности - "<?= $oneSubject['subject_name']; ?>" (ID в системе: <?= $oneSubject['subject_id']; ?>)
-                                                <br>(Количество баллов у темы: <?= $oneSubject['subject_points']; ?>)</strong>
-                                            <br>Пройти тест -> <a href="/challenge/start?id=<?= $oneSubject['challenge_id']; ?>">Тест №<?= $oneSubject['challenge_id']; ?> по теме <?= $oneSubject['subject_name']; ?> на <?= $cleaningTests->time; ?> минут, прибавляет <?= $cleaningTests->percent; ?> % к шкале Уборки, ID темы: <?= $oneSubject['subject_id']; ?>
-                                            <center><img src="/i/<?= $oneSubject['challenge_clean_item'] ? $oneSubject['challenge_clean_item'] : 'no_image' ?>.png" /></center></a>
-                                        </div>
+                                        <a href="/challenge/start?id=<?= $oneSubject['challenge_id']; ?>"><div class="item-name primary-link">
+
+                                            <strong>Курс: <?= $oneSubject['course_name']; ?><br></strong>
+                                            Тема: <strong><?= $oneSubject['subject_name']; ?></strong><br>
+                                            Место в рейтинге: <strong>№<?= $key + 1; ?></strong> (Количество баллов у темы: <strong><?= $oneSubject['subject_points']; ?></strong>)<br>
+                                            Предмет для уборки:<center><img src="/i/<?= $oneSubject['challenge_clean_item'] ? $oneSubject['challenge_clean_item'] : 'no_image' ?>.png" /></center><br>
+                                            Пройти тест -> Тест №<?= $oneSubject['challenge_id']; ?> по теме <strong><?= $oneSubject['subject_name']; ?></strong> на <?= $cleaningTests->time; ?> минут, прибавляет <?= $cleaningTests->percent; ?> % к шкале "Уборки"
+                                        </div></a>
                                     </div>
                                 </div>
                             </div>
@@ -90,7 +99,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="item">
                                     <div class="item-head">
                                         <div class="item-name primary-link">
-                                            <strong>№<?= $key + 1; ?> тема по сложности - "<?= $oneSubject['subject_name']; ?>" (ID в системе: <?= $oneSubject['subject_id']; ?>)
+                                            <strong>Курс <?= $oneSubject['course_name']; ?> №<?= $key + 1; ?> тема по сложности - "<?= $oneSubject['subject_name']; ?>" (ID в системе: <?= $oneSubject['subject_id']; ?>)
                                                 <br>(Количество баллов у темы: <?= $oneSubject['subject_points']; ?>)</strong>
                                             <br>Нет теста :(
                                         </div>

@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\helpers\ChallengeSession;
 use app\helpers\ChallengeSummarizer;
 use app\models\ar\ChallengeFood;
+use app\models\ar\ChallengesWeeks;
 use app\models\ar\DifficultSubjects;
 use app\models\ar\ElementsItem;
 use app\models\ar\Food;
@@ -14,6 +15,7 @@ use app\models\ar\ScaleFeed;
 use app\models\Attempt;
 use app\models\Challenge;
 use app\models\ChallengeHasQuestion;
+use app\models\Course;
 use app\models\Question;
 use app\models\Subject;
 use Yii;
@@ -252,6 +254,11 @@ class ChallengeController extends Controller
                         $scale->step = 0;
                         $scale->save();
                     }
+
+                    //\yii\helpers\VarDumper::dump($lastAttempt, 10, true);
+
+                    //$challengesWeeks = $challengesWeeks = ChallengesWeeks::find()->where(['course_id' => $course->id])->andWhere(['week_id' => $week])->andWhere(['user_id' => Yii::$app->user->id])->one();;
+
                 }
                 if ($challengeElementsType->element_id == 1) {
                     
@@ -306,7 +313,30 @@ class ChallengeController extends Controller
                     }
                 }
 
+                $challengeNew = Challenge::find()->where(['id' => $id])->one();
+
+                $challengesWeeks = ChallengesWeeks::find()->where(['course_id' => $challengeNew->course_id])->andWhere(['week_id' => $challengeNew->week])->andWhere(['user_id' => Yii::$app->user->id])->one();
+
+                // andWhere(['element_id' => 2])->
+                if ($challengesWeeks){
+                    if ($challengesWeeks->challenges){
+                        print 'axaxax';
+                        $challengesIds = json_decode($challengesWeeks->challenges, true);
+                        foreach ($challengesIds as $challengesId => $flag){
+                            if ($challengesId == $id) {
+                                $challengesIds[$challengesId] = 1;
+                                $challengesWeeks->course_id = $challengeNew->course_id;
+                                $challengesWeeks->week_id = $challengeNew->week;
+                                $challengesWeeks->user_id = Yii::$app->user->id;
+                                $challengesWeeks->challenges = json_encode($challengesIds);
+                                $challengesWeeks->save();
+                            }
+                        }
+                    }
+                }
             }
+
+
 
             $difficultSubjects = DifficultSubjects::find()->where(['user_id' => Yii::$app->user->id])->all();
             $allSubjects = Subject::find()->all();
@@ -319,7 +349,6 @@ class ChallengeController extends Controller
                 'testQuestions' => $testQuestions,
                 'difficultSubjects' => $difficultSubjects,
                 'allSubjects' => $allSubjects
-              //  'testResults' => $testResults
             ]);
         } else {
             // It looks like session wasn't even started

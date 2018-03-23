@@ -153,6 +153,22 @@ class Clean extends \yii\db\ActiveRecord
                 $classes['top'] = 140;
                 $classes['left'] = 330;
                 break;
+            case 'broom_3':
+                $classes['top'] = 140;
+                $classes['left'] = 330;
+                break;
+            case 'broom_4':
+                $classes['top'] = 140;
+                $classes['left'] = 330;
+                break;
+            case 'broom_5':
+                $classes['top'] = 140;
+                $classes['left'] = 330;
+                break;
+            case 'broom_6':
+                $classes['top'] = 140;
+                $classes['left'] = 330;
+                break;
             case 'wisp':
                 $classes['top'] = 220;
                 $classes['left'] = 390;
@@ -161,11 +177,47 @@ class Clean extends \yii\db\ActiveRecord
                 $classes['top'] = 240;
                 $classes['left'] = 410;
                 break;
+            case 'wisp_3':
+                $classes['top'] = 240;
+                $classes['left'] = 410;
+                break;
+            case 'wisp_4':
+                $classes['top'] = 240;
+                $classes['left'] = 410;
+                break;
+            case 'wisp_5':
+                $classes['top'] = 240;
+                $classes['left'] = 410;
+                break;
+            case 'wisp_6':
+                $classes['top'] = 240;
+                $classes['left'] = 410;
+                break;
             case 'brush':
                 $classes['top'] = 140;
                 $classes['left'] = 390;
                 break;
             case 'brush_2':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'brush_3':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'brush_4':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'brush_5':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'brush_6':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'brush_7':
                 $classes['top'] = 150;
                 $classes['left'] = 420;
                 break;

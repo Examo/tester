@@ -42,4 +42,12 @@ class Clean extends \app\components\ActiveRecord
         //return Yii::$app->formatter->asDate($this->date);
     }
 
+    public function save($runValidation = true, $attributeNames = null)
+    {
+        if ($this->getIsNewRecord()) {
+            return $this->insert($runValidation, $attributeNames);
+        }
+
+        return $this->update($runValidation, $attributeNames) !== false;
+    }
 }
