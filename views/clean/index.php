@@ -82,7 +82,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="item">
                                     <div class="item-head">
                                         <a href="/challenge/start?id=<?= $oneSubject['challenge_id']; ?>"><div class="item-name primary-link">
-
                                             <strong>Курс: <?= $oneSubject['course_name']; ?><br></strong>
                                             Тема: <strong><?= $oneSubject['subject_name']; ?></strong><br>
                                             Место в рейтинге: <strong>№<?= $key + 1; ?></strong> (Количество баллов у темы: <strong><?= $oneSubject['subject_points']; ?></strong>)<br>
@@ -99,9 +98,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="item">
                                     <div class="item-head">
                                         <div class="item-name primary-link">
-                                            <strong>Курс <?= $oneSubject['course_name']; ?> №<?= $key + 1; ?> тема по сложности - "<?= $oneSubject['subject_name']; ?>" (ID в системе: <?= $oneSubject['subject_id']; ?>)
-                                                <br>(Количество баллов у темы: <?= $oneSubject['subject_points']; ?>)</strong>
-                                            <br>Нет теста :(
+                                            <strong>Курс <?= $oneSubject['course_name']; ?><br>
+                                                Тема: <strong><?= $oneSubject['subject_name']; ?></strong><br>
+                                                Место в рейтинге: <strong>№<?= $key + 1; ?></strong> (Количество баллов у темы: <strong><?= $oneSubject['subject_points']; ?></strong>)<br>
+                                                Нет теста :(
                                         </div>
                                     </div>
                                 </div>

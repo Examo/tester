@@ -33,7 +33,7 @@ class CleanController extends Controller
 
                 // цикл с перебором всех событий конкретного курса и выбором события "Начало"
                 for ($i = 0; $i < count($event); $i++) {
-                    $allNewChallenges = [];
+                    //$allNewChallenges = [];
                     $allCurrentWeeksChallenges = [];
                     // если у события курса название "Начало", то...
                     if ($event[$i]->title == 'Начало') {
@@ -63,13 +63,33 @@ class CleanController extends Controller
                             }
 
                             $newChallengesIds = [];
+                            $allNewChallenges = [];
+                            $challengesTest = ChallengesWeeks::find()->where(['course_id' => $course->id])->andWhere(['element_id' => 2])->andWhere(['week_id' => $week])->andWhere(['user_id' => Yii::$app->user->id])->one();
+
+                            if (isset($challengesTest->challenges)) {
+                                $challengesWeeks = ChallengesWeeks::find()->where(['course_id' => $course->id])->andWhere(['element_id' => 2])->andWhere(['week_id' => $week])->andWhere(['user_id' => Yii::$app->user->id])->one();
+                                if (json_decode($challengesWeeks->challenges) == []) {
+                                    $allNewChallenges = [];
+                                    foreach (json_decode($challengesWeeks->challenges) as $challengesWeek){
+                                        print $challengesWeek . '<br>';
+                                    }
+                                    $currentWeeksChallenges = Challenge::find()->where(['course_id' => $course->id])->andWhere(['week' => $week])->andWhere(['element_id' => 2])->all();
+                                    // соберём все тесты в массив, в котором ключи будут id тестов
+                                    foreach ($currentWeeksChallenges as $weekChallengeNew) {
+                                        //print $newChallenge->id . '<br>';
+                                        $allNewChallenges[$weekChallengeNew->id] = 0;
+                                    }
+
+                                }
+                            }
+
                             // если в таблице challenges_weeks существует запись с указанием курса, недели и id ученика
-                            if (ChallengesWeeks::find()->where(['course_id' => $course->id])->andWhere(['week_id' => $week])->andWhere(['user_id' => Yii::$app->user->id])->one()) {
+                            if (ChallengesWeeks::find()->where(['course_id' => $course->id])->andWhere(['element_id' => 2])->andWhere(['week_id' => $week])->andWhere(['user_id' => Yii::$app->user->id])->one()) {
                                 // получаем запись о тестах на текущую неделю
-                                $challengesWeeks = ChallengesWeeks::find()->where(['course_id' => $course->id])->andWhere(['week_id' => $week])->andWhere(['user_id' => Yii::$app->user->id])->one();
+                                $challengesWeeks = ChallengesWeeks::find()->where(['course_id' => $course->id])->andWhere(['element_id' => 2])->andWhere(['week_id' => $week])->andWhere(['user_id' => Yii::$app->user->id])->one();
                                 // получаем из базы массив с записанными id тестов
                                 $challengesIds = json_decode($challengesWeeks->challenges, true);
-
+                                //$allNewChallenges = [2 => 0];
                                 // если существуют текущие тесты на эту неделю и существуют id тестов на эту неделю в базе данных
                                 if ($allCurrentWeeksChallenges && $challengesIds) {
                                     // если существует разница между тестами на эту неделю и записью id тестов на эту неделю (тест мог добавиться по время работы недели), то
@@ -99,6 +119,7 @@ class CleanController extends Controller
                                                 $allNewChallenges[$keyAll] = 0;
                                             }
                                         }
+
                                     }
 
                                     $checkOne = [];
@@ -120,10 +141,16 @@ class CleanController extends Controller
                                         $allNewChallenges = $veryNewChallenges;
                                     }
                                 }
+
+                                if ($allNewChallenges == []){
+                                    $allNewChallenges = [1 => 0];
+                                }
+
                                 $challengesWeeks->course_id = $course->id;
                                 $challengesWeeks->week_id = $week;
                                 $challengesWeeks->user_id = Yii::$app->user->id;
                                 $challengesWeeks->challenges = json_encode($allNewChallenges);
+                                $challengesWeeks->element_id = 2;
                                 $challengesWeeks->save();
                             } else {
                                 $currentWeeksChallenges = Challenge::find()->where(['course_id' => $course->id])->andWhere(['week' => $week])->andWhere(['element_id' => 2])->all();
@@ -131,14 +158,17 @@ class CleanController extends Controller
                                     $allNewChallenges[$newChallenge->id] = 0;
                                 }
                                 if (!$currentWeeksChallenges) {
-                                    $allNewChallenges = [2 => 0];
 
+                                }
+                                if ($allNewChallenges == []){
+                                    $allNewChallenges = [1 => 0];
                                 }
                                 $challengesWeeks = new ChallengesWeeks();
                                 $challengesWeeks->course_id = $course->id;
                                 $challengesWeeks->week_id = $week;
                                 $challengesWeeks->user_id = Yii::$app->user->id;
                                 $challengesWeeks->challenges = json_encode($allNewChallenges);
+                                $challengesWeeks->element_id = 2;
                                 $challengesWeeks->save();
                             }
 
@@ -148,7 +178,7 @@ class CleanController extends Controller
                 }
 
             }
-            
+
             $allCleanChallenges = [];
             for ($i = 0; $i < count($allPreparedChallenges); $i++) {
                 foreach ($allPreparedChallenges[$i] as $key => $value) {
@@ -193,7 +223,7 @@ class CleanController extends Controller
                 $needCourse = Subject::find()->select('course_id')->where(['id' => $difficultSubject->subject_id])->one();
                 foreach (Course::findSubscribed(Yii::$app->user->id)->all() as $keyCourse => $course) {
                     if ($needCourse->course_id == $course->id) {
-                        print $needCourse->course_id . '<br>';
+                        //print $needCourse->course_id . '<br>';
                         $newDifficultSubjects[] = $difficultSubject;
                     }
                 }
@@ -243,9 +273,9 @@ class CleanController extends Controller
                 $newCleanChallenges = null;
             }
         } else {
-            $newCleanChallenges = null;
+            $newCleanChallenges =  [];
             $cleaningTests = new Clean();
-            $challenges = [];
+            $challenges =  [];;
             $difficultSubjects = [];
         }
             return $this->render('index', [

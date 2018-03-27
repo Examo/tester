@@ -315,12 +315,11 @@ class ChallengeController extends Controller
 
                 $challengeNew = Challenge::find()->where(['id' => $id])->one();
 
-                $challengesWeeks = ChallengesWeeks::find()->where(['course_id' => $challengeNew->course_id])->andWhere(['week_id' => $challengeNew->week])->andWhere(['user_id' => Yii::$app->user->id])->one();
+                $challengesWeeks = ChallengesWeeks::find()->where(['course_id' => $challengeNew->course_id])->andWhere(['week_id' => $challengeNew->week])->andWhere(['element_id' => $challengeNew->element_id])->andWhere(['user_id' => Yii::$app->user->id])->one();
 
                 // andWhere(['element_id' => 2])->
                 if ($challengesWeeks){
                     if ($challengesWeeks->challenges){
-                        print 'axaxax';
                         $challengesIds = json_decode($challengesWeeks->challenges, true);
                         foreach ($challengesIds as $challengesId => $flag){
                             if ($challengesId == $id) {
@@ -329,6 +328,7 @@ class ChallengeController extends Controller
                                 $challengesWeeks->week_id = $challengeNew->week;
                                 $challengesWeeks->user_id = Yii::$app->user->id;
                                 $challengesWeeks->challenges = json_encode($challengesIds);
+                                $challengesWeeks->element_id = $challengeNew->element_id;
                                 $challengesWeeks->save();
                             }
                         }

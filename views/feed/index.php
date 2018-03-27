@@ -115,14 +115,14 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
  </div>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <?php //\yii\helpers\VarDumper::dump($scaleTwist, 10, true)?>
 <?php //\yii\helpers\VarDumper::dump($scale->last_time, 10, true)?>
 <?php //\yii\helpers\VarDumper::dump($scale->points, 10, true)?>
 <?php //\yii\helpers\VarDumper::dump($allLastChallengeQuestionsCost, 10, true)?>
 <?php //\yii\helpers\VarDumper::dump($finishCostAmount, 10, true)?>
 
-<?php// \yii\helpers\VarDumper::dump($scaleValue, 10, true)?>
+<?php //\yii\helpers\VarDumper::dump($newFeedChallenges, 10, true)?>
 
 <?php //\yii\helpers\VarDumper::dump(Yii::$app->getFormatter()->asTimestamp($finishTime), 10, true)?>
 
