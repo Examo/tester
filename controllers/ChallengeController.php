@@ -12,6 +12,7 @@ use app\models\ar\Food;
 use app\models\ar\QuestionHasSubject;
 use app\models\ar\ScaleClean;
 use app\models\ar\ScaleFeed;
+use app\models\ar\ScaleLearn;
 use app\models\Attempt;
 use app\models\Challenge;
 use app\models\ChallengeHasQuestion;
@@ -334,7 +335,77 @@ class ChallengeController extends Controller
                         }
                     }
                 }
+
+                $days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+                $currentDay = strtolower(date("l"));
+                $challengeNew = Challenge::find()->where(['id' => $id])->one();
+                if (ScaleLearn::find()->where(['course_id' => $challengeNew->course_id])->andWhere(['week_id' => $challengeNew->week])->andWhere(['user_id' => Yii::$app->user->id])->one()) {
+                    $learn = ScaleLearn::find()->where(['course_id' => $challengeNew->course_id])->andWhere(['week_id' => $challengeNew->week])->andWhere(['user_id' => Yii::$app->user->id])->one();
+                    //$learn = ScaleLearn::find()->where(['course_id' => $challengeNew->course_id])->andWhere(['week_id' => $challengeNew->week])->andWhere(['element_id' => $challengeNew->element_id])->andWhere(['user_id' => Yii::$app->user->id])->one();
+                    //\yii\helpers\VarDumper::dump($days, 10, true);
+                    //\yii\helpers\VarDumper::dump($learn, 10, true);
+                    foreach ($days as $day){
+                        if ($day == $currentDay){
+                            $data = json_decode($learn->$day, true);
+                            //print $data;
+                            \yii\helpers\VarDumper::dump($data, 10, true);
+                            if ($challengeNew->element_id == 1) {
+                                print 'Feed';
+                                $data['feed'] = 1;
+                                \yii\helpers\VarDumper::dump($data, 10, true);
+                            }
+                            if ($challengeNew->element_id == 2){
+                                print 'Clean';
+                                $data['clean'] = 1;
+                                \yii\helpers\VarDumper::dump($data, 10, true);
+                            }
+                            $learn->$day = json_encode($data);
+                            $learn->save();
+                        }
+                    }
+                } else {
+                    $learn = new ScaleLearn();
+                    $learn->user_id = Yii::$app->user->id;
+                    $learn->course_id = $challengeNew->course_id;
+                    $learn->week_id = $challengeNew->week;
+                    foreach ($days as $key => $day) {
+                        if ($day == $currentDay) {
+                            if ($challengeNew->element_id == 1) {
+                                $learn->$currentDay = json_encode(['feed' => 1, 'clean' => 0]);
+                            }
+                            if ($challengeNew->element_id == 2) {
+                                $learn->$currentDay = json_encode(['feed' => 0, 'clean' => 1]);
+                            }
+                            unset($days[$key]);
+                        }
+                    }
+
+                    foreach ($days as $day){
+                        $learn->$day = json_encode(['feed' => 0, 'clean' => 0]);
+                    }
+                    //       $learn->monday = 'Monday';
+                    //       $learn->tuesday = 'Tuesday';
+                    //       $learn->wednesday = 'Wednesday';
+                    //       $learn->thursday = 'Thursday';
+                    //       $learn->friday = 'Friday';
+                    //       $learn->saturday = 'Saturday';
+                    //       $learn->sunday = 'Sunday';
+
+                    $learn->save();
+                }
+
             }
+
+            //$challengeNew = Challenge::find()->where(['id' => $id])->one();
+            //$idTest = 'id';
+            //\yii\helpers\VarDumper::dump($challengeNew->$idTest, 10, true);
+            //\yii\helpers\VarDumper::dump(date("l"), 10, true);
+            //if (strtolower(date("l")) == 'thursday') {
+            //    print 'lalala';
+            //}
+            //$day = strtolower(date("l"));
+
+            \yii\helpers\VarDumper::dump(strtolower(date("l")), 10, true);
 
 
 

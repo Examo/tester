@@ -1,3 +1,8 @@
+<?php
+use app\widgets\CleanWidget;
+use app\widgets\FoodWidget;
+use app\widgets\LearnWidget;
+?>
 <div class="panel panel-default element-container">
     <div class="panel-heading">
         <h4 class="panel-title">
@@ -7,7 +12,28 @@
     <center><img src="/i/learn.png" width="600" height="auto" /></center>
     <div class="learning">
     </div>
+    <div class="row">
+        <div class="exercise-wrapper">
+            <form class="exercise-block">
+                <div class="button-wrapper">
+                    <div>
+                        <center>
+
+                            <?= LearnWidget::widget(); ?>
+
+                            <?= FoodWidget::widget(); ?>
+
+                            <?= CleanWidget::widget(); ?>
+
+                        </center>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+
+<br><br><br><br><br><br><br>
 
 <div class="panel panel-default required-container">
     <div class="panel-heading">

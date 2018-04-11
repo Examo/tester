@@ -1,6 +1,7 @@
 <?php
 use app\widgets\CleanWidget;
 use app\widgets\FoodWidget;
+use app\widgets\LearnWidget;
 
 $this->title = Yii::t('app', 'Clean');
 $this->params['breadcrumbs'][] = $this->title;
@@ -25,6 +26,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="button-wrapper">
                     <div>
                         <center>
+
+                            <?= LearnWidget::widget(); ?>
 
                             <?= FoodWidget::widget(); ?>
 

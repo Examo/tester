@@ -264,7 +264,11 @@ class FeedController extends Controller
                         $feedChallenges[$number]['challenge_name'] = $subject->name;
                         $feedChallenges[$number]['course_id'] = $subject->course_id;
                         $elements_item = Challenge::find()->innerJoinWith('elements_item')->where(['challenge.elements_item_id' => $subject->elements_item_id])->one();
-                        $feedChallenges[$number]['challenge_feed_item'] = $elements_item->elements_item->name;
+                        //\yii\helpers\VarDumper::dump($elements_item, 10, true);
+                        //die();
+                        if ($elements_item) {
+                            $feedChallenges[$number]['challenge_feed_item'] = $elements_item->elements_item;
+                        }
                         $number++;
                         $subjectsChecked[$subject->subject->id] = $subject->subject->id;
                     }
@@ -297,7 +301,7 @@ class FeedController extends Controller
                                 $newFeedChallenges[$difficultSubject->subject_id]['subject_name'] = $feedChallenge['subject_name'];
                                 $newFeedChallenges[$difficultSubject->subject_id]['challenge_id'] = $feedChallenge['challenge_id'];
                                 $newFeedChallenges[$difficultSubject->subject_id]['challenge_name'] = $feedChallenge['challenge_name'];
-                                $newFeedChallenges[$difficultSubject->subject_id]['challenge_feed_item'] = $feedChallenge['challenge_feed_item'];
+                                //$newFeedChallenges[$difficultSubject->subject_id]['challenge_feed_item'] = $feedChallenge['challenge_feed_item'];
                                 $newFeedChallenges[$difficultSubject->subject_id]['course_id'] = $feedChallenge['course_id'];
                                 $subjectCourseName = Course::find()->select('name')->where(['id' => $feedChallenge['course_id']])->one();
                                 $newFeedChallenges[$difficultSubject->subject_id]['course_name'] = $subjectCourseName->name;

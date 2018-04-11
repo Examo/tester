@@ -1,6 +1,7 @@
 <?php
 
 use app\widgets\CleanWidget;
+use app\widgets\LearnWidget;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use app\widgets\FoodWidget;
@@ -86,6 +87,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </div>
                             </div></a>-->
 
+                        <?= LearnWidget::widget(); ?>
+                        
                         <?= FoodWidget::widget(); ?>
 
                         <?= CleanWidget::widget(); ?>
