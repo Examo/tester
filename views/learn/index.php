@@ -1,4 +1,5 @@
 <?php
+use app\models\ar\LearnObject;
 use app\widgets\CleanWidget;
 use app\widgets\FoodWidget;
 use app\widgets\LearnWidget;
@@ -9,8 +10,20 @@ use app\widgets\LearnWidget;
             Учёба
         </h4>
     </div>
-    <center><img src="/i/learn.png" width="600" height="auto" /></center>
     <div class="learning">
+        <?php $learn = new \app\models\Learn();?>
+        <?php //\yii\helpers\VarDumper::dump($all, 10, true); ?>
+        <?php foreach ($all as $week):?>
+            <?php $object = $learn->getObjectClass($week); ?>
+            <?php $span = $learn->getTopLeftStyleNumber($week); ?>
+            <?php if ($object):?>
+                <span style="top: <?= $span['top']?>px; left: <?= $span['left']?>px; font-size:11px" title="<?= $week['week']?>-я неделя (<?= Yii::t('learnObjects', $week['object']);?>)"><center><strong><?= $week['week']?><br><?= $week['value']?>%</strong></center></span>
+                    <div class="learning-progress-bar-object-block <?=$week['object']?>" style="background-image: url(/i/<?=$week['object']?>.png); background-repeat: no-repeat; background-size: <?= $object['background-size']?>px; height: <?= $object['height']?>px; width: <?= $object['width']?>px;  " title="<?= Yii::t('learnObjects', $week['object']);?> и <?= $week['week']?>-я неделя, <?= $week['value']?>% заполнено из 100%">
+                        <div class="learning-progress-bar-object-fill" style="background-image: url(/i/<?=$week['object']?>negative.png); background-repeat: no-repeat;  background-size:  <?= $object['background-size']?>px; height:<?=$week['heightScaleValue']?>%; width:100%;  " title="<?= Yii::t('learnObjects', $week['object']);?> и <?= $week['week']?>-я неделя, <?= 100 - $week['value']?>% не заполнено из 100%"></div>
+                    </div>
+
+            <?php endif; ?>
+        <?php endforeach; ?>
     </div>
     <div class="row">
         <div class="exercise-wrapper">
@@ -20,6 +33,8 @@ use app\widgets\LearnWidget;
                         <center>
 
                             <?= LearnWidget::widget(); ?>
+
+                            <br>
 
                             <?= FoodWidget::widget(); ?>
 
@@ -33,7 +48,7 @@ use app\widgets\LearnWidget;
     </div>
 </div>
 
-<br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 <div class="panel panel-default required-container">
     <div class="panel-heading">
@@ -124,3 +139,4 @@ use app\widgets\LearnWidget;
     </div>
     </div>
 </div>
+

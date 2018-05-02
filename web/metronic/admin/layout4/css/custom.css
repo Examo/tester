@@ -230,6 +230,67 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
     background-color:rgba(0,0,0,.1);
     padding:1px 10px;
 }
+
+.learning IMG { position: absolute; }
+.learning {height: 500px; width: 500px}
+.schooldeskcat { top: 150px; left: 200px; z-index: 3; }
+.blackboard { top: -280px; left: 100px; z-index: 3; }
+.backpack {top: -280px; left: 350px; z-index: 3;}
+.bell {top: -567px; left: 315px; z-index: 3;}
+.schoolsponge {top: -600px; left: 110px; z-index: 3;}
+.colorchalks {top: -635px; left: 160px; z-index: 3;}
+.calendar {top: -815px; left: 280px; z-index: 3;}
+.book {top: -685px; left: 300px; z-index: 3;}
+.diary {top: -730px; left: 280px; z-index: 3;}
+.copybook {top: -765px; left: 290px; z-index: 3;}
+.stand {top: -865px; left: 210px; z-index: 4;}
+.colorpaper {top: -965px; left: 210px; z-index: 3;}
+
+.dailybook {top: -965px; left: 210px; z-index: 3;}
+.ruler {top: -965px; left: 210px; z-index: 3;}
+.scissors {top: -965px; left: 210px; z-index: 3;}
+.paperknife {top: -965px; left: 210px; z-index: 3;}
+.pen {top: -965px; left: 210px; z-index: 3;}
+.pencil {top: -965px; left: 210px; z-index: 3;}
+.stapler {top: -965px; left: 210px; z-index: 3;}
+.glue {top: -965px; left: 210px; z-index: 3;}
+.alarmclock {top: -965px; left: 210px; z-index: 3;}
+.scotch {top: -965px; left: 210px; z-index: 3;}
+.colors {top: -965px; left: 210px; z-index: 3;}
+.brushesjar {top: -965px; left: 210px; z-index: 3;}
+.album {top: -965px; left: 210px; z-index: 3;}
+.felttippens {top: -965px; left: 210px; z-index: 3;}
+.plasticine {top: -965px; left: 210px; z-index: 3;}
+.corrector {top: -965px; left: 210px; z-index: 3;}
+.stencil {top: -965px; left: 210px; z-index: 3;}
+.eraser {top: -965px; left: 210px; z-index: 3;}
+.clips {top: -965px; left: 210px; z-index: 3;}
+.sharpener {top: -965px; left: 210px; z-index: 3;}
+.chalk {top: -965px; left: 210px; z-index: 3;}
+.laptop {top: -965px; left: 210px; z-index: 3;}
+
+.learning IMG:hover { z-index:4;
+    -webkit-transform: scale(1.02);
+    -moz-transform: scale(1.02);
+    -o-transform: scale(1.02);}
+
+.learning span {
+    z-index:4;
+    position: absolute;
+    width: 30px;
+    /*top:100px;
+    left: 300px;*/
+
+    /* Оформление текста */
+    color: black;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:15px;
+
+    /* Фон */
+    background-color:rgba(226, 226, 226, 0.3);
+
+}
+
 .sign {
     /* width: 100px; top: 150px; left: 300px;
      /*float: right;  Выравнивание по правому краю */
@@ -328,6 +389,46 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
     width:110px;
 }
 
+.bar-wrapper-learn {
+    display: inline-block;
+    width:20px;
+}
+
+.learning-progress-bar-fill {
+    background: rgb(226, 226, 226) none repeat scroll 0 0;
+    height: 10px;
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    transition: width 0.2s linear 0s; }
+
+.learning-progress-bar-block {
+    position: relative;
+    margin: 0 -2px 2px -2px;
+    background: rgb(56, 172, 77) none repeat scroll 0 0;
+    height: 100px;
+    width: 5px;
+}
+
+.learning-progress-bar-object-fill {
+    background: /*rgba(226, 226, 226, 0.3)*/  none repeat scroll 0 0;
+
+    height: 10px;
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    transition: width 0.2s linear 0s; }
+
+.learning-progress-bar-object-block {
+    position: relative;
+    margin: 0 -2px 2px -2px;
+    background: /*rgba(218, 252, 255, 0.3)*/ none repeat scroll 0 0;
+    height: 157px;
+    width: 190px;
+}
+
 .feeding-progress-bar-fill {
     background: rgb(226, 226, 226) none repeat scroll 0 0;
     height: 50px;
@@ -339,12 +440,11 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
 
 .feeding-progress-bar-block {
     position: relative;
-    margin: 0 -20px -20px -20px;
+    margin: 0 -20px 20px -20px;
     background: rgb(56, 172, 77) none repeat scroll 0 0;
     height: 100px;
     width: 100px;
 }
-
 .cleaning-progress-bar-fill {
     background: rgb(226, 226, 226) none repeat scroll 0 0;
     height: 50px;
