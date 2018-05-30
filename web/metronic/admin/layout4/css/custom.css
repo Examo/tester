@@ -234,40 +234,39 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
 .learning IMG { position: absolute; }
 .learning {height: 500px; width: 500px}
 .schooldeskcat { top: 150px; left: 200px; z-index: 3; }
-.blackboard { top: -280px; left: 100px; z-index: 3; }
-.backpack {top: -280px; left: 350px; z-index: 3;}
-.bell {top: -567px; left: 315px; z-index: 3;}
-.schoolsponge {top: -600px; left: 110px; z-index: 3;}
-.colorchalks {top: -635px; left: 160px; z-index: 3;}
-.calendar {top: -815px; left: 280px; z-index: 3;}
-.book {top: -685px; left: 300px; z-index: 3;}
-.diary {top: -730px; left: 280px; z-index: 3;}
-.copybook {top: -765px; left: 290px; z-index: 3;}
-.stand {top: -865px; left: 210px; z-index: 4;}
-.colorpaper {top: -965px; left: 210px; z-index: 3;}
-
-.dailybook {top: -965px; left: 210px; z-index: 3;}
-.ruler {top: -965px; left: 210px; z-index: 3;}
-.scissors {top: -965px; left: 210px; z-index: 3;}
-.paperknife {top: -965px; left: 210px; z-index: 3;}
-.pen {top: -965px; left: 210px; z-index: 3;}
-.pencil {top: -965px; left: 210px; z-index: 3;}
-.stapler {top: -965px; left: 210px; z-index: 3;}
-.glue {top: -965px; left: 210px; z-index: 3;}
-.alarmclock {top: -965px; left: 210px; z-index: 3;}
-.scotch {top: -965px; left: 210px; z-index: 3;}
-.colors {top: -965px; left: 210px; z-index: 3;}
-.brushesjar {top: -965px; left: 210px; z-index: 3;}
-.album {top: -965px; left: 210px; z-index: 3;}
-.felttippens {top: -965px; left: 210px; z-index: 3;}
-.plasticine {top: -965px; left: 210px; z-index: 3;}
-.corrector {top: -965px; left: 210px; z-index: 3;}
-.stencil {top: -965px; left: 210px; z-index: 3;}
-.eraser {top: -965px; left: 210px; z-index: 3;}
-.clips {top: -965px; left: 210px; z-index: 3;}
-.sharpener {top: -965px; left: 210px; z-index: 3;}
-.chalk {top: -965px; left: 210px; z-index: 3;}
-.laptop {top: -965px; left: 210px; z-index: 3;}
+.blackboard { top: -380px; left: 100px; z-index: 3; }
+.backpack {top: -385px; left: 390px; z-index: 4;}
+.bell {top: -745px; left: 360px; z-index: 4;}
+.schoolsponge {top: -775px; left: 110px; z-index: 4;}
+.colorchalks {top: -810px; left: 170px; z-index: 4;}
+.calendar {top: -1050px; left: 320px; z-index: 4;}
+.book {top: -890px; left: 340px; z-index: 4;}
+.diary {top: -920px; left: 300px; z-index: 4;}
+.copybook {top: -935px; left: 340px; z-index: 4;}
+.stand {top: -1000px; left: 230px; z-index: 5;}
+.colorpaper {top: -1095px; left: 230px; z-index: 4;}
+.dailybook {top: -1130px; left: 210px; z-index: 4;}
+.ruler {top: -1225px; left: 260px; z-index: 4;}
+.scissors {top: -1290px; left: 280px; z-index: 4;}
+.paperknife {top: -1355px; left: 250px; z-index: 4;}
+.pen {top: -1330px; left: 470px; z-index: 4;}
+.pencil {top: -1345px; left: 470px; z-index: 4;}
+.stapler {top: -1430px; left: 250px; z-index: 6;}
+.glue {top: -1425px; left: 295px; z-index: 5;}
+.alarmclock {top: -1355px; left: 290px; z-index: 4;}
+.scotch {top: -1450px; left: 340px; z-index: 4;}
+.colors {top: -1450px; left: 480px; z-index: 4;}
+.brushesjar {top: -1480px; left: 400px; z-index: 4;}
+.album {top: -1625px; left: 430px; z-index: 4;}
+.felttippens {top: -1630px; left: 440px; z-index: 4;}
+.plasticine {top: -1725px; left: 410px; z-index: 4;}
+.corrector {top: -1910px; left: 530px; z-index: 4;}
+.stencil {top: -1925px; left: 410px; z-index: 4;}
+.eraser {top: -2025px; left: 240px; z-index: 6;}
+.clips {top: -2030px; left: 270px; z-index: 5;}
+.sharpener {top: -2000px; left: 385px; z-index: 6;}
+.chalk {top: -2150px; left: 320px; z-index: 4;}
+.laptop {top: -2095px; left: 310px; z-index: 4;}
 
 .learning IMG:hover { z-index:4;
     -webkit-transform: scale(1.02);
@@ -275,7 +274,7 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
     -o-transform: scale(1.02);}
 
 .learning span {
-    z-index:4;
+    z-index:6;
     position: absolute;
     width: 30px;
     /*top:100px;
@@ -412,7 +411,7 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
 }
 
 .learning-progress-bar-object-fill {
-    background: /*rgba(226, 226, 226, 0.3)*/  none repeat scroll 0 0;
+    /*background: rgba(226, 226, 226, 0.3) none repeat scroll 0 0;*/
 
     height: 10px;
     position: absolute;
@@ -424,7 +423,7 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
 .learning-progress-bar-object-block {
     position: relative;
     margin: 0 -2px 2px -2px;
-    background: /*rgba(218, 252, 255, 0.3)*/ none repeat scroll 0 0;
+    /*background: rgba(218, 252, 255, 0.3) none repeat scroll 0 0;*/
     height: 157px;
     width: 190px;
 }

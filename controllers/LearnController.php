@@ -2,6 +2,8 @@
 namespace app\controllers;
 use app\models\ar\LearnObject;
 use app\models\ar\ScaleLearn;
+use app\models\Attempt;
+use app\models\Challenge;
 use app\models\Course;
 use app\models\Learn;
 use app\models\search\CourseSearch;
@@ -33,6 +35,7 @@ class LearnController extends Controller
         $learning = new Learn();
 
         $challenges = [];
+        $match = [];
 
         foreach (Course::findSubscribed(Yii::$app->user->id)->all() as $course) {
             $challenges = array_merge($challenges, $course->getNewChallenges(Yii::$app->user->id)->all());
@@ -47,15 +50,25 @@ class LearnController extends Controller
         $heightScaleValue = 0;
         $allDaysFeed = [];
         $allDaysClean = [];
+        $allDays = [];
+        $allEvents = [];
+        $all = [];
+        $allCourses = [];
+        $data = [];
         $days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
         $currentDay = strtolower(date("l"));
 
         foreach (Course::findSubscribed(Yii::$app->user->id)->all() as $keyCourse => $course) {
             $events = Event::find()->where(['course_id' => $course->id])->all();
-            $allEvents[$course->id] = $events;
+            //\yii\helpers\VarDumper::dump($events, 10, true);
+            if ($events != []) {
+                $allEvents[$course->id] = $events;
+            }
         }
+        //\yii\helpers\VarDumper::dump($allEvents, 10, true);
+       // die();
 
-        if (isset($allEvents)) {
+        if ($allEvents) {
 
             // цикл с разбором всех событий
             foreach ($allEvents as $keyEvent => $event) {
@@ -83,10 +96,10 @@ class LearnController extends Controller
                             $week = ceil($timeAfterCourseStart / $weekTime);
                             //print 'Идёт ' . $week . '-я неделя курса<br>';
 
-                            for ($o = 1; $o <= $week; $o++){
+                            for ($o = 1; $o <= $week; $o++) {
                                 if (ScaleLearn::find()->where(['course_id' => $course->id])->andWhere(['week_id' => $o])->andWhere(['user_id' => Yii::$app->user->id])->one()) {
                                     $scale = ScaleLearn::find()->where(['course_id' => $course->id])->andWhere(['week_id' => $o])->andWhere(['user_id' => Yii::$app->user->id])->one();
-                                    foreach ($days as $day){
+                                    foreach ($days as $day) {
                                         $oneOfDays = json_decode($scale->$day, true);
                                         $allDaysFeed[$keyEvent][$o][] = $oneOfDays['feed'];
                                         $allDaysClean[$keyEvent][$o][] = $oneOfDays['clean'];
@@ -106,235 +119,328 @@ class LearnController extends Controller
 
                             }
                         }
+
+                        $test = Event::find()->where(['course_id' => $keyEvent])->all();
+                        //\yii\helpers\VarDumper::dump($test, 10, true);
+
+                        // узнаём текущее время и переводим его в простое число
+
+                        // получаем изменение времени с момента начала курса до текущего момента
+                        $timeAfterCourseStart = $time - $courseStartTime;
+                        // если курс ещё не начался
+
+                        $regexp = "/(тест)([0-9]*)/ui";
+                        $weekTime = 604800;
+                        foreach ($test as $key => $oneTest) {
+                            if (preg_match($regexp, $oneTest->title, $match[$keyEvent][$key])) {
+                                $currentWeek = ceil($timeAfterCourseStart / $weekTime);
+                                $testWeekTime = Yii::$app->getFormatter()->asTimestamp($oneTest->start);
+                                $tillTestWeekStart = $testWeekTime - $courseStartTime;
+                                if ($tillTestWeekStart > 0) {
+                                    $testWeek = ceil($tillTestWeekStart / $weekTime);
+                                    $week = ceil($timeAfterCourseStart / $weekTime);
+                                    if ($week - $testWeek > 0) {
+                                        $learnObject = LearnObject::find()->where(['id' => $testWeek])->one();
+                                        $data[$keyEvent]['currentWeek'] = $currentWeek;
+                                        $data[$keyEvent][$key]['week'] = $testWeek;
+                                        $data[$keyEvent][$key]['test'] = $match[$keyEvent][$key][2];
+                                        if (Challenge::find()->select(['week'])->where(['id' => $match[$keyEvent][$key][2]])->one()) {
+                                            $realChallengeWeek = Challenge::find()->select(['week'])->where(['id' => $match[$keyEvent][$key][2]])->one();
+                                            $data[$keyEvent][$key]['realChallengeWeek'] = $realChallengeWeek->week;
+                                        }
+                                        $data[$keyEvent][$key]['object'] = $learnObject->object;
+                                        //\yii\helpers\VarDumper::dump($learnObject, 10, true);
+                                        if (Attempt::find()->where(['challenge_id' => $match[$keyEvent][$key][2]])->andWhere(['user_id' => Yii::$app->user->id])->one()) {
+                                            //\yii\helpers\VarDumper::dump($ifAttemp, 10, true);
+                                            $data[$keyEvent][$key]['isAttempt'] = true;
+                                        } else {
+                                            $data[$keyEvent][$key]['isAttempt'] = null;
+                                        }
+                                    }
+                                }
+                            } else {
+                                unset($match[$keyEvent][$key]);
+                            }
+                        }
                     }
                 }
             }
-
+            //\yii\helpers\VarDumper::dump($data, 10, true);
             $test = Event::find()->where(['course_id' => 1])->all();
             //\yii\helpers\VarDumper::dump($test, 10, true);
 
             $regexp = "/(тест)([0-9]*)/ui";
             $match = [];
-            foreach ($test as $key => $oneTest){
-                if(preg_match($regexp, $oneTest->title, $match[$key])) {
+            foreach ($test as $key => $oneTest) {
+                if (preg_match($regexp, $oneTest->title, $match[$key])) {
 
                 } else {
                     unset($match[$key]);
                 }
             }
             //\yii\helpers\VarDumper::dump($match, 10, true);
-            foreach ($match as $key => $oneMatch){
-               // print $oneMatch[2];
+            foreach ($match as $key => $oneMatch) {
+                // print $oneMatch[2];
             }
+           // \yii\helpers\VarDumper::dump($data, 10, true);
 
-        }
+            $new = [];
+            $newData = [];
+            foreach ($data as $hey => $row) {
+                foreach ($row as $newKey => $newRow) {
+                    $new[$hey][$newKey] = $newRow['week'];
+                }
+                array_multisort($new[$hey], SORT_ASC, $row);
+                $newData[$hey] = $row;
+            //    \yii\helpers\VarDumper::dump($newData, 10, true);
+            }
+            $data = $newData;
 
-        //   $scale = ScaleLearn::find()->where(['user_id' => Yii::$app->user->id])->one();
-        //   $feed = $scale->getValue($allDaysFeed);
-        //   $clean = $scale->getValue($allDaysClean);
-        //   foreach ($feed as $courseNumber => $weeks){
-        //       foreach ($weeks as $weekNumber => $weekValue) {
-        //           print 'Курс: ' . $courseNumber . '<br>Неделя: ' . $weekNumber . '<br>Заполненность недели: ' . $weekValue . '<br>';
-        //       }
-        //   }
+          //  foreach ($data as ) {
 
-        $result = [];
-        $weekResult = 0;
-        foreach ($allDaysFeed as $courseFeed => $weekFeed){
-            foreach ($allDaysClean as $courseClean => $weekClean) {
-                if ($courseFeed == $courseClean) {
-                    //print $courseClean;
-                    foreach ($weekFeed as $keyFeed => $valueFeed){
-                        foreach ($weekClean as $keyClean => $valueClean){
-                            if ($keyFeed == $keyClean){
-                                //$result += $valueFeed + $valueClean;
-                                //print $keyClean;
-                                $weekResult = 0;
-                                foreach ($valueFeed as $lastKeyFeed => $lastValueFeed) {
-                                    foreach ($valueClean as $lastKeyClean => $lastValueClean) {
-                                        if ($lastKeyFeed == $lastKeyClean){
-                                            //print $lastValueFeed;
-                                            //print $lastValueClean;
-                                            $weekResult += $lastValueFeed + $lastValueClean;
-                                            // print '<br>';
+          //  }
+
+            
+            //$currentWeek = $row['currentWeek'];
+            //unset($row['currentWeek']);
+
+
+            //   $scale = ScaleLearn::find()->where(['user_id' => Yii::$app->user->id])->one();
+            //   $feed = $scale->getValue($allDaysFeed);
+            //   $clean = $scale->getValue($allDaysClean);
+            //   foreach ($feed as $courseNumber => $weeks){
+            //       foreach ($weeks as $weekNumber => $weekValue) {
+            //           print 'Курс: ' . $courseNumber . '<br>Неделя: ' . $weekNumber . '<br>Заполненность недели: ' . $weekValue . '<br>';
+            //       }
+            //   }
+
+            $result = [];
+            $weekResult = 0;
+            foreach ($allDaysFeed as $courseFeed => $weekFeed) {
+                foreach ($allDaysClean as $courseClean => $weekClean) {
+                    if ($courseFeed == $courseClean) {
+                        //print $courseClean;
+                        foreach ($weekFeed as $keyFeed => $valueFeed) {
+                            foreach ($weekClean as $keyClean => $valueClean) {
+                                if ($keyFeed == $keyClean) {
+                                    //$result += $valueFeed + $valueClean;
+                                    //print $keyClean;
+                                    $weekResult = 0;
+                                    foreach ($valueFeed as $lastKeyFeed => $lastValueFeed) {
+                                        foreach ($valueClean as $lastKeyClean => $lastValueClean) {
+                                            if ($lastKeyFeed == $lastKeyClean) {
+                                                //print $lastValueFeed;
+                                                //print $lastValueClean;
+                                                $weekResult += $lastValueFeed + $lastValueClean;
+                                                // print '<br>';
+                                            }
                                         }
                                     }
                                 }
                             }
+                            $result[$courseFeed][$keyFeed] = $weekResult;
                         }
-                        $result[$courseFeed][$keyFeed] = $weekResult;
                     }
                 }
             }
-        }
 
-        // print '<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>';
-        // \yii\helpers\VarDumper::dump($allDays, 10, true);
+            // print '<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>';
+            // \yii\helpers\VarDumper::dump($allDays, 10, true);
 
-        $dayName = [0 => 'monday', 1 => 'tuesday', 2 => 'wednesday', 3 => 'thursday', 4 => 'friday', 5 => 'saturday', 6 => 'sunday'];
+            $dayName = [0 => 'monday', 1 => 'tuesday', 2 => 'wednesday', 3 => 'thursday', 4 => 'friday', 5 => 'saturday', 6 => 'sunday'];
 
-        $mustDo = [];
-        foreach ($allDays as $course => $weeks) {
-            foreach ($weeks as $weekKey => $weekArray) {
-                //print count($weeks);
-                foreach ($weekArray as $element => $week) {
-                    foreach ($week as $day => $value) {
-                        if ($value == 0 && $weekKey != count($weeks)) {
-                            //print 'Получить общий тест ' . $element . ' за неделю №' . $weekKey . '<br>';
-                            // набивать массив и выводить в конце
-                            $mustDo[$course][$weekKey] = true;
-                            break;
+            $mustDo = [];
+            $allDays = [];
+            foreach ($allDays as $course => $weeks) {
+                foreach ($weeks as $weekKey => $weekArray) {
+                    //print count($weeks);
+                    foreach ($weekArray as $element => $week) {
+                        foreach ($week as $day => $value) {
+                            if ($value == 0 && $weekKey != count($weeks)) {
+                                //print 'Получить общий тест ' . $element . ' за неделю №' . $weekKey . '<br>';
+                                // набивать массив и выводить в конце
+                                $mustDo[$course][$weekKey] = true;
+                                break;
+                            }
+                            if ($value == 0 && $weekKey == count($weeks)) {
+                                //print 'Не заполнен ' . $dayName[$day] . ' ' . $element . ' элемент<br>';
+                                //print 'в неделе '. $weekKey . '<br>';
+                            }
+                            if ($value != 0 && $weekKey == count($weeks)) {
+                                //print 'Заполнен ' . $dayName[$day] . ' ' . $element . ' элемент<br>';
+                                //print 'в неделе ' . $weekKey . '<br>';
+                            }
+
                         }
-                        if ($value == 0 && $weekKey == count($weeks)) {
-                            //print 'Не заполнен ' . $dayName[$day] . ' ' . $element . ' элемент<br>';
-                            //print 'в неделе '. $weekKey . '<br>';
-                        }
-                        if ($value != 0 && $weekKey == count($weeks)) {
-                            //print 'Заполнен ' . $dayName[$day] . ' ' . $element . ' элемент<br>';
-                            //print 'в неделе ' . $weekKey . '<br>';
-                        }
-
                     }
                 }
             }
-        }
-        //\yii\helpers\VarDumper::dump($mustDo, 10, true);
-        //    foreach ($allDaysFeed as $course => $week) {
-        //        foreach ($week as $weekKey => $weekArray) {
-        //            foreach ($weekArray as $day => $value) {
-        //                if ($value == 0) {
-        //                    print $dayName[$day] . '<br>';
-        //                    print 'в неделе '.$weekKey . '<br>';
-        //                }
-        //            }
-        //            //\yii\helpers\VarDumper::dump($week, 10, true);
-        //        }
-        //    }
+            //\yii\helpers\VarDumper::dump($mustDo, 10, true);
+            //    foreach ($allDaysFeed as $course => $week) {
+            //        foreach ($week as $weekKey => $weekArray) {
+            //            foreach ($weekArray as $day => $value) {
+            //                if ($value == 0) {
+            //                    print $dayName[$day] . '<br>';
+            //                    print 'в неделе '.$weekKey . '<br>';
+            //                }
+            //            }
+            //            //\yii\helpers\VarDumper::dump($week, 10, true);
+            //        }
+            //    }
 
-        $lastResult = [];
-        $lastWeeks = [];
-        //$allWeeks = [];
-        foreach ($result as $course => $week) {
-            foreach ($week as $weekKey => $day) {
-                if (isset($lastResult[$weekKey])) {
-                    $lastResult[$weekKey] += $day;
-                } else {
-                    $lastResult[$weekKey] = $day;
+            $lastResult = [];
+            $lastWeeks = [];
+            //$allWeeks = [];
+            foreach ($result as $course => $week) {
+                foreach ($week as $weekKey => $day) {
+                    if (isset($lastResult[$weekKey])) {
+                        $lastResult[$weekKey] += $day;
+                    } else {
+                        $lastResult[$weekKey] = $day;
+                    }
+                    //    echo '<a href="/learn" id="learn-widget">' .
+                    //        '<div class="bar-wrapper-learn"><p>' . $weekKey .'</p><p style="font-size:7px"><strong>'  . '<br>'  . '%</strong></p>' .
+                    //        '<div class="learning-progress-bar-block" style=" background-color:' . $backgroundColor .'">' .
+                    //        '<div class="learning-progress-bar-fill" style="height:' . $heightScaleValue . '%; width:100%;"></div>' .
+                    //        '</div>' .
+                    //        '</div></a>';
+                    //$allWeeks[$weekKey] =
                 }
-                //    echo '<a href="/learn" id="learn-widget">' .
-                //        '<div class="bar-wrapper-learn"><p>' . $weekKey .'</p><p style="font-size:7px"><strong>'  . '<br>'  . '%</strong></p>' .
-                //        '<div class="learning-progress-bar-block" style=" background-color:' . $backgroundColor .'">' .
-                //        '<div class="learning-progress-bar-fill" style="height:' . $heightScaleValue . '%; width:100%;"></div>' .
-                //        '</div>' .
-                //        '</div></a>';
-                //$allWeeks[$weekKey] =
+
+                $lastWeeks[$course]['week'] = count($week);
+                $lastWeeks[$course]['result'] = $week[count($week)];
             }
 
-            $lastWeeks[$course]['week'] = count($week);
-            $lastWeeks[$course]['result'] = $week[count($week)];
-        }
 
-
-
-        $lastValue = 0;
-        foreach ($lastWeeks as $course => $lastWeeksValue){
-            $lastValue += $lastWeeksValue['result'];
-        }
-
-        $heightScaleValue = 100 - $lastValue;
-
-        if ($lastValue <= 10) {
-            $backgroundColor = 'red';
-        } elseif ($lastValue < 100 && $lastValue > 10) {
-            $backgroundColor = 'green';
-        } elseif ($lastValue >= 100) {
-            $backgroundColor = 'blue';
-        }
-
-
-        //echo '<a href="/learn">' . '<div><p style="margin: -5px">Учёба</p></div></a>';
-
-        //   foreach ($lastResult as $weekKey => $value){
-        //       $heightScaleValue = 100 - $value;
-        //       echo '<a href="/learn" id="learn-widget">' .
-        //           '<div class="bar-wrapper-learn"><p>' .'</p><p style="font-size:7px"><strong>' . $weekKey . '<br>' . $value . '%</strong></p>' .
-        //           '<div class="learning-progress-bar-block" style=" background-color:' . $backgroundColor .'">' .
-        //           '<div class="learning-progress-bar-fill" style="height:' . $heightScaleValue . '%; width:100%;"></div>' .
-        //       //    '</div>' .
-        //           '</div></a>';
-
-        //   }
-
-        //print '<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>';
-
-        $all = [];
-        foreach ($lastResult as $weekKey => $value){
-            if (LearnObject::find()->where(['id' => $weekKey])->one()) {
-                $learn = LearnObject::find()->where(['id' => $weekKey])->one();
-               // \yii\helpers\VarDumper::dump($learn->object, 10, true);
-              //  print '<strong>' . $weekKey . '<br>' . $value . '%</strong>';
-              //  print '<br>';
-                $value = $value * 25;
-                $heightScaleValue = 100 - $value;
-
-                $all[$weekKey]['week'] = $weekKey;
-                $all[$weekKey]['object'] = $learn->object;
-                $all[$weekKey]['value'] = $value;
-                $all[$weekKey]['heightScaleValue'] = $heightScaleValue;
-
-            //    echo '<div class="bar-wrapper"><p>' .'</p><p ><strong>' . $weekKey . '<br>' . $value . '%</strong></p>' .
-            //        '<div class="learning-progress-bar-object-block" style="background-image: url(/i/' . $learn->object .'.png); background-repeat: no-repeat">' .
-            //        '<div class="learning-progress-bar-object-fill" style="background-image: url(/i/' . $learn->object .'negative.png); background-repeat: no-repeat; height:' . $heightScaleValue . '%; width:100%;"></div>' .
-            //        '</div>' .
-            //        '</div></a>';
-
+            $lastValue = 0;
+            foreach ($lastWeeks as $course => $lastWeeksValue) {
+                $lastValue += $lastWeeksValue['result'];
             }
-        }
-        //\yii\helpers\VarDumper::dump($all, 10, true);
-        foreach ($lastResult as $weekKey => $value){
-            if ($weekKey == $lastResult[count($weekKey)]) {
-                //print '<strong>' . $weekKey . '<br>' . $value . '%</strong>';
-                //print '<br>';
-                $value = $value * 25;
-                $heightScaleValue = 100 - $value;
 
-            //    echo '<div class="bar-wrapper"><p>' .'</p><p ><strong>' . $weekKey . '<br>' . $value . '%</strong></p>' .
-            //        '<div class="learning-progress-bar-object-block" style="background-image: url(/i/calendar.png); background-repeat: no-repeat">' .
-            //        '<div class="learning-progress-bar-object-fill" style="background-image: url(/i/calendarnegative.png); background-repeat: no-repeat; height:' . $heightScaleValue . '%; width:100%;"></div>' .
-            //        '</div>' .
-            //        '</div></a>';
+            $heightScaleValue = 100 - $lastValue;
 
+            if ($lastValue <= 10) {
+                $backgroundColor = 'red';
+            } elseif ($lastValue < 100 && $lastValue > 10) {
+                $backgroundColor = 'green';
+            } elseif ($lastValue >= 100) {
+                $backgroundColor = 'blue';
             }
-        }
-        //\yii\helpers\VarDumper::dump($lastResult);
-        // массив, в котором все недели по всем курсам
-        // каждая неделя содержит количество выполненных тестов в процентах
-        // каждая прошедшая неделя содержит ссылку на общий тест - и если выполнил, и если не выполнил
 
-        //   //\yii\helpers\VarDumper::dump($lastWeeks, 10, true);
-        //   foreach ($lastWeeks as $course => $lastWeek){
-        //       for ($i = 1; $i < $lastWeek['week']; $i++){
-        //           if (LearnObject::find()->where(['id' => $i])->one()) {
-        //               $learn = LearnObject::find()->where(['id' => $i])->one();
-        //               \yii\helpers\VarDumper::dump($learn->object, 10, true);
-        //               print $course;
-        //               print $i . '<br>';
-        //           }
+
+            //echo '<a href="/learn">' . '<div><p style="margin: -5px">Учёба</p></div></a>';
+
+            //   foreach ($lastResult as $weekKey => $value){
+            //       $heightScaleValue = 100 - $value;
+            //       echo '<a href="/learn" id="learn-widget">' .
+            //           '<div class="bar-wrapper-learn"><p>' .'</p><p style="font-size:7px"><strong>' . $weekKey . '<br>' . $value . '%</strong></p>' .
+            //           '<div class="learning-progress-bar-block" style=" background-color:' . $backgroundColor .'">' .
+            //           '<div class="learning-progress-bar-fill" style="height:' . $heightScaleValue . '%; width:100%;"></div>' .
+            //       //    '</div>' .
+            //           '</div></a>';
+
+            //   }
+
+            //print '<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>';
+
+            $all = [];
+            foreach ($lastResult as $weekKey => $value) {
+                if (LearnObject::find()->where(['id' => $weekKey])->one()) {
+                    $learn = LearnObject::find()->where(['id' => $weekKey])->one();
+                    // \yii\helpers\VarDumper::dump($learn->object, 10, true);
+                    //  print '<strong>' . $weekKey . '<br>' . $value . '%</strong>';
+                    //  print '<br>';
+                   // $value = $value * 25;
+
+                    $assignmentValue = 7 * 2 * count($lastWeeks);
+                    $assignmentValueCost = 100 / $assignmentValue;
+                    $value *= $assignmentValueCost;
+                    //$heightScaleValue = 100 - $value;
+
+                    $heightScaleValue = 100 - $value;
+
+                    $all[$weekKey]['week'] = $weekKey;
+                    $all[$weekKey]['object'] = $learn->object;
+                    $all[$weekKey]['value'] = ceil($value);
+                    $all[$weekKey]['heightScaleValue'] = $heightScaleValue;
+
+                    //    echo '<div class="bar-wrapper"><p>' .'</p><p ><strong>' . $weekKey . '<br>' . $value . '%</strong></p>' .
+                    //        '<div class="learning-progress-bar-object-block" style="background-image: url(/i/' . $learn->object .'.png); background-repeat: no-repeat">' .
+                    //        '<div class="learning-progress-bar-object-fill" style="background-image: url(/i/' . $learn->object .'negative.png); background-repeat: no-repeat; height:' . $heightScaleValue . '%; width:100%;"></div>' .
+                    //        '</div>' .
+                    //        '</div></a>';
+
+                }
+            }
+            //\yii\helpers\VarDumper::dump($all, 10, true);
+        ////   foreach ($lastResult as $weekKey => $value) {
+        //       if ($weekKey == $lastResult[count($weekKey)]) {
+        //           //print '<strong>' . $weekKey . '<br>' . $value . '%</strong>';
+        //           //print '<br>';
+        //           $value = $value * 25;
+        //           $heightScaleValue = 100 - $value;
+
+        //           //    echo '<div class="bar-wrapper"><p>' .'</p><p ><strong>' . $weekKey . '<br>' . $value . '%</strong></p>' .
+        //           //        '<div class="learning-progress-bar-object-block" style="background-image: url(/i/calendar.png); background-repeat: no-repeat">' .
+        //           //        '<div class="learning-progress-bar-object-fill" style="background-image: url(/i/calendarnegative.png); background-repeat: no-repeat; height:' . $heightScaleValue . '%; width:100%;"></div>' .
+        //           //        '</div>' .
+        //           //        '</div></a>';
+
         //       }
         //   }
+            //\yii\helpers\VarDumper::dump($lastResult);
+            // массив, в котором все недели по всем курсам
+            // каждая неделя содержит количество выполненных тестов в процентах
+            // каждая прошедшая неделя содержит ссылку на общий тест - и если выполнил, и если не выполнил
 
-        // таблица learn_object: id, object
-        // связь недель с объектами в шкале и далее в контроллере Учёбы
+            //   //\yii\helpers\VarDumper::dump($lastWeeks, 10, true);
+            //   foreach ($lastWeeks as $course => $lastWeek){
+            //       for ($i = 1; $i < $lastWeek['week']; $i++){
+            //           if (LearnObject::find()->where(['id' => $i])->one()) {
+            //               $learn = LearnObject::find()->where(['id' => $i])->one();
+            //               \yii\helpers\VarDumper::dump($learn->object, 10, true);
+            //               print $course;
+            //               print $i . '<br>';
+            //           }
+            //       }
+            //   }
 
-        //$learn = LearnObject::find()->where(['id' => 1])->one();
-        //\yii\helpers\VarDumper::dump($learn->object, 10, true);
+            // таблица learn_object: id, object
+            // связь недель с объектами в шкале и далее в контроллере Учёбы
+
+            //$learn = LearnObject::find()->where(['id' => 1])->one();
+            //\yii\helpers\VarDumper::dump($learn->object, 10, true);
+            $allCourses = [];
+            $allCourses['number'] = 0;
+            foreach (Course::findSubscribed(Yii::$app->user->id)->all() as $key => $course) {
+                $allCourses['number'] = $allCourses['number'] + 1;
+                $allCourses[$key]['name'] = $course->name;
+                //\yii\helpers\VarDumper::dump($allCourses, 10, true);
+            }
+            //\yii\helpers\VarDumper::dump($learn, 10, true);
+        ////   foreach ($data as $key => $value) {
+        //       \yii\helpers\VarDumper::dump($value, 10, true);
+        //       echo 'Текущая неделя: ' . $value['currentWeek'] . '<br>';
+        //       for ($i = 1; $i <= count($value) - 1; $i++) {
+
+        //           echo 'Курс: ' . $key . '<br>';
+        //           echo 'Неделя: ' . $value[$i]['week'] . '<br>';
+        //           echo 'Тест: ' . $value[$i]['test'] . '<br>';
+        //       }
+        //   }
+        } else { // если нет никаких событий
+            $all = null;
+
+        }
 
         return $this->render('index', [
             'learning' => $learning,
             'challenges' => $challenges,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'all' => $all
+            'all' => $all,
+            'allCourses' => $allCourses,
+            'data' => $data
         ]);
     }
 }

@@ -18,7 +18,7 @@ class CleanWidget extends Widget
         $scaleNumeration = 0;
 
         // если у пользователя существует хотя бы один выполненные тест для "Еды"
-        if (Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 2])->andWhere(['attempt.user_id' => Yii::$app->user->id])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->all()) {
+        if (Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 2])->andWhere(['attempt.user_id' => Yii::$app->user->id])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one()) {
             // получаем последнюю запись о прохождении теста для "Еды"
             $lastCleanAttempt = Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 2])->andWhere(['attempt.user_id' => Yii::$app->user->id])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one();
             // получаем время окончания последнего теста для "Еды"
@@ -32,32 +32,38 @@ class CleanWidget extends Widget
             // достаём шкалу "Еды" текущего пользователя (если есть прохождение, то шкала тоже уже у него есть)
             $scale = ScaleClean::find()->where(['user_id' => Yii::$app->user->id])->one();
 
-            // если от баллов на шкале отнять баллы прошедшего времени и разность будет равна или меньше 0
-            // то на шкале будет 0%
-            if ($scale->points - $roundTime <= 0) {
-                $scale->points = 0;
-                $roundTime = 0;
-            }
+            if ($scale) {
+                // если от баллов на шкале отнять баллы прошедшего времени и разность будет равна или меньше 0
+                // то на шкале будет 0%
+                if ($scale->points - $roundTime <= 0) {
+                    $scale->points = 0;
+                    $roundTime = 0;
+                }
 
-            // если от баллов на шкале отнять баллы прошедшего времени и разность будет равна или больше 100
-            // то на шкале будет 100%
-            if ($scale->points - $roundTime >= 100) {
-                $scale->points = 100;
-                $roundTime = 0;
-            }
 
-            // если от баллов на шкале отнять баллы прошедшего времени и разность будет равна или меньше 10,
-            // то шкала будет красного цвета
-            if ($scale->points - $roundTime <= 10) {
-                $backgroundColor = 'red';
+                // если от баллов на шкале отнять баллы прошедшего времени и разность будет равна или больше 100
+                // то на шкале будет 100%
+                if ($scale->points - $roundTime >= 100) {
+                    $scale->points = 100;
+                    $roundTime = 0;
+                }
+
+                // если от баллов на шкале отнять баллы прошедшего времени и разность будет равна или меньше 10,
+                // то шкала будет красного цвета
+                if ($scale->points - $roundTime <= 10) {
+                    $backgroundColor = 'red';
+                } else {
+                    $backgroundColor = 'green';
+                }
+
+                // значение столбика шкалы в "высоту"
+                $heightScaleValue = 100 - $scale->points + $roundTime;
+                // проценты на самой шкале в цифрах
+                $scaleNumeration = $scale->points - $roundTime;
             } else {
-                $backgroundColor = 'green';
+                $heightScaleValue = 100;
+                $scaleNumeration = 0;
             }
-
-            // значение столбика шкалы в "высоту"
-            $heightScaleValue = 100 - $scale->points + $roundTime;
-            // проценты на самой шкале в цифрах
-            $scaleNumeration = $scale->points - $roundTime;
 
         }
         // если не существует записи в таблице шкалы "Еды" для данного пользователя,
@@ -65,7 +71,7 @@ class CleanWidget extends Widget
         if (!ScaleClean::find()->where(['user_id' => Yii::$app->user->id])->one()) {
             $scale = new ScaleClean();
             $scale->user_id = Yii::$app->user->id;
-            $scale->last_time = 0;
+            $scale->last_time = date("Y-m-d H:i:s");
             $scale->points = 0;
             $scale->step = 0;
             $scale->save();

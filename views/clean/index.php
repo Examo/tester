@@ -75,44 +75,43 @@ $this->params['breadcrumbs'][] = $this->title;
             Рейтинг сложных тем по всем моим курсам
         </h4>
     </div>
-    <div class="learning">
+    <div class="feading">
         <div class="panel-body">
-            <?php ;?>
-                <?php foreach ($newCleanChallenges as $key => $oneSubject): ?>
-                    <?php if ($oneSubject['challenge_clean_item']):?>
-                        <div class="panel panel-default" style="border: normal; border-color: #00a5bb">
-                            <div class="panel-heading">
-                                <div class="item">
-                                    <div class="item-head">
-                                        <a href="/challenge/start?id=<?= $oneSubject['challenge_id']; ?>"><div class="item-name primary-link">
-                                            <strong>Курс: <?= $oneSubject['course_name']; ?><br></strong>
+            <?php foreach ($newCleanChallenges as $key => $oneSubject): ?>
+                <?php if ($oneSubject['challenge_clean_item']):?>
+                    <div class="panel panel-default" style="border: normal; border-color: #00a5bb">
+                        <div class="panel-heading">
+                            <div class="item">
+                                <div class="item-head">
+                                    <a href="/challenge/start?id=<?= $oneSubject['challenge_id']; ?>"><div class="item-name primary-link">
+                                        <strong>Курс: <?= $oneSubject['course_name']; ?><br></strong>
+                                        Тема: <strong><?= $oneSubject['subject_name']; ?></strong><br>
+                                        Место в рейтинге: <strong>№<?= $key + 1; ?></strong> (Количество баллов у темы: <strong><?= $oneSubject['subject_points']; ?></strong>)<br>
+                                        Предмет для уборки:<center><img src="/i/<?= $oneSubject['challenge_clean_item'] ? $oneSubject['challenge_clean_item'] : 'no_image' ?>.png" /></center><br>
+                                        Пройти тест -> Тест №<?= $oneSubject['challenge_id']; ?> по теме <strong><?= $oneSubject['subject_name']; ?></strong> на <?= $cleaningTests->time; ?> минут, прибавляет <?= $cleaningTests->percent; ?> % к шкале "Уборки"
+                                    </div></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php else: ?>
+                    <div class="panel panel-default" style="border: normal; border-color: #00a5bb">
+                        <div class="panel-heading">
+                            <div class="item">
+                                <div class="item-head">
+                                    <div class="item-name primary-link">
+                                        <strong>Курс <?= $oneSubject['course_name']; ?><br>
                                             Тема: <strong><?= $oneSubject['subject_name']; ?></strong><br>
                                             Место в рейтинге: <strong>№<?= $key + 1; ?></strong> (Количество баллов у темы: <strong><?= $oneSubject['subject_points']; ?></strong>)<br>
-                                            Предмет для уборки:<center><img src="/i/<?= $oneSubject['challenge_clean_item'] ? $oneSubject['challenge_clean_item'] : 'no_image' ?>.png" /></center><br>
-                                            Пройти тест -> Тест №<?= $oneSubject['challenge_id']; ?> по теме <strong><?= $oneSubject['subject_name']; ?></strong> на <?= $cleaningTests->time; ?> минут, прибавляет <?= $cleaningTests->percent; ?> % к шкале "Уборки"
-                                        </div></a>
+                                            Нет теста :(
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <?php else: ?>
-                        <div class="panel panel-default" style="border: normal; border-color: #00a5bb">
-                            <div class="panel-heading">
-                                <div class="item">
-                                    <div class="item-head">
-                                        <div class="item-name primary-link">
-                                            <strong>Курс <?= $oneSubject['course_name']; ?><br>
-                                                Тема: <strong><?= $oneSubject['subject_name']; ?></strong><br>
-                                                Место в рейтинге: <strong>№<?= $key + 1; ?></strong> (Количество баллов у темы: <strong><?= $oneSubject['subject_points']; ?></strong>)<br>
-                                                Нет теста :(
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <?php endif;?>
-                <?php endforeach; ?>
-            </div>
+                    </div>
+                    <?php endif;?>
+            <?php endforeach; ?>
+        </div>
     </div>
 </div>
 <?php else: ?>

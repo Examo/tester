@@ -63,7 +63,7 @@ class FoodWidget extends Widget
         if (!ScaleFeed::find()->where(['user_id' => Yii::$app->user->id])->one()) {
             $scale = new ScaleFeed();
             $scale->user_id = Yii::$app->user->id;
-            $scale->last_time = 0;
+            $scale->last_time = date("Y-m-d H:i:s");
             $scale->points = 0;
             $scale->step = 0;
             $scale->save();

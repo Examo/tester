@@ -5,6 +5,8 @@
 
 use yii\helpers\Html;
 use app\assets\MetronicAsset;
+use app\widgets\MainChallengesBadgeWidget;
+
 
 MetronicAsset::register($this);
 ?>
@@ -80,7 +82,11 @@ MetronicAsset::register($this);
             <!-- BEGIN PAGE TOP -->
             <div class="page-top">
                 <div class="top-menu">
+
                     <?php echo $this->render('@app/views/layouts/metronic/header_'.( Yii::$app->user->isGuest ? 'guest' : 'user' )) ?>
+
+                    <?= MainChallengesBadgeWidget::widget(); ?>
+
                 </div>
             </div>
             <!-- END PAGE TOP -->

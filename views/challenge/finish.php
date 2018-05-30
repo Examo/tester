@@ -12,6 +12,13 @@
 <div class="panel panel-default" xmlns="http://www.w3.org/1999/html">
     <div class="panel-heading" role="tab">
         <h4 class="panel-title">Общие результаты</h4>
+        <?php if( Yii::$app->session->hasFlash('success') ): ?>
+            <br>
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <?php echo Yii::$app->session->getFlash('success'); ?>
+            </div>
+        <?php endif;?>
     </div>
     <div role="tabpanel">
         <div class="panel-body">

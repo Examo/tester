@@ -17,6 +17,7 @@ use app\models\Attempt;
 use app\models\Challenge;
 use app\models\ChallengeHasQuestion;
 use app\models\Course;
+use app\models\Event;
 use app\models\Question;
 use app\models\Subject;
 use Yii;
@@ -122,10 +123,51 @@ class ChallengeController extends Controller
 
         $challengeElementsItem = Challenge::find()->select('elements_item_id')->where(['id' => $id])->one();
         $challengeItem = ElementsItem::find()->select('name')->where(['id' => $challengeElementsItem])->one();
-        $lastFeedAttempt = Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 1])->andWhere(['attempt.user_id' => Yii::$app->user->id])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one();
-        $lastCleanAttempt = Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 2])->andWhere(['attempt.user_id' => Yii::$app->user->id])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one();
+
+
         $challenge = $this->getChallenge($id);
         $session = new ChallengeSession($challenge, Yii::$app->user->id);
+        $course = Course::find()->where(['id' => $challenge->course_id])->one();
+        $days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+        $currentDay = strtolower(date("l"));
+
+        $week = 0;
+        $course = Course::findSubscribed(Yii::$app->user->id)->where(['id' => $challenge->course_id])->one();
+        if (Event::find()->where(['course_id' => $course->id])->andWhere(['title' => 'Начало'])->one()) {
+            $event = Event::find()->where(['course_id' => $course->id])->andWhere(['title' => 'Начало'])->one();
+            //\yii\helpers\VarDumper::dump($events, 10, true);
+            $courseStartTime = Yii::$app->getFormatter()->asTimestamp($event->start);
+            $time = Yii::$app->getFormatter()->asTimestamp(time());
+            // получаем изменение времени с момента начала курса до текущего момента
+            $timeAfterCourseStart = $time - $courseStartTime;
+            $weekTime = 604800;
+            $week = ceil($timeAfterCourseStart / $weekTime);
+            //\yii\helpers\VarDumper::dump($week, 10, true);
+            }
+
+
+        if ($challenge->week == $week){
+            \yii\helpers\VarDumper::dump($challenge->week, 10, true);
+        }
+//        }
+        //\yii\helpers\VarDumper::dump($allEvents, 10, true);
+        //\yii\helpers\VarDumper::dump($allEvents, 10, true);
+        // die();
+
+    ////   if ($allEvents) {
+
+    //       // цикл с разбором всех событий
+    //       foreach ($allEvents as $keyEvent => $event) {
+
+    //           // цикл с перебором всех событий конкретного курса и выбором события "Начало"
+    //           for ($i = 0; $i < count($event); $i++) {
+    //               // если у события курса название "Начало", то...
+    //               if ($event[$i]->title == 'Начало') {
+
+        // получим время начала курса
+        //$courseStartTime = Yii::$app->getFormatter()->asTimestamp($course->start_time);
+        // узнаём текущее время и переводим его в простое число
+
 
         if (!$session->isFinished()) {
             if ($confirm) {
@@ -211,6 +253,8 @@ class ChallengeController extends Controller
                     if (ScaleClean::find()->where(['user_id' => Yii::$app->user->id])->one()) {
                         // получаем шкалу "Еды" ученика
                         $scale = ScaleClean::find()->where(['user_id' => Yii::$app->user->id])->one();
+                        // получаем последний тест для Уборки
+                        $lastCleanAttempt = Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 2])->andWhere(['attempt.user_id' => Yii::$app->user->id])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one();
                         // получаем время окончания предыдущего теста
                         $finishTime = Yii::$app->getFormatter()->asTimestamp($lastCleanAttempt->finish_time);
                         // узнаём текущее время и переводим его в простое число
@@ -218,23 +262,22 @@ class ChallengeController extends Controller
                         // получаем изменение времени с момента окончания предыдущего теста до текущего момента
                         $timeAfterLastFeedChallenge = $time - $finishTime;
                         // округляем изменение времени до 100 и отнимаем 1, чтобы получить то значение, которое нужно отнимать для изменения шкалы с течением времени
-                        $roundTime = ceil($timeAfterLastFeedChallenge/100) - 1;
+                        $roundTime = ceil($timeAfterLastFeedChallenge / 100) - 1;
                         // если в шкале на данный момент баллов меньше или равно 0 (такое логически не возможно), то прибавляем полученные за тест баллы и сохраняем
-                        if ($scale->points <= 0){
+                        if ($scale->points <= 0) {
                             $scale->user_id = Yii::$app->user->id;
                             $scale->points = $allLastChallengeQuestionsCost;
                             $scale->step = 0;
                             $scale->save();
                         }
                         // если в шкале баллов больше 0
-                        if ($scale->points > 0){
+                        if ($scale->points > 0) {
                             // записываем ID ученика
                             $scale->user_id = Yii::$app->user->id;
                             // если разница между баллами и прошедшим временем в баллах равна или меньше 0, то записываем полученные за последний тест баллы
                             if ($scale->points - $roundTime <= 0) {
                                 $scale->points = $allLastChallengeQuestionsCost;
-                            }
-                            // если разница между баллами в шкале и баллами прошедшего времени больше 0, то баллы в шкале делаем такими, каковы они на текущий момент
+                            } // если разница между баллами в шкале и баллами прошедшего времени больше 0, то баллы в шкале делаем такими, каковы они на текущий момент
                             else {
                                 $scale->points = $allLastChallengeQuestionsCost + $scale->points - $roundTime;
                             }
@@ -262,11 +305,13 @@ class ChallengeController extends Controller
 
                 }
                 if ($challengeElementsType->element_id == 1) {
-                    
+
                     // если шкала "Еды" ученика существует
                     if (ScaleFeed::find()->where(['user_id' => Yii::$app->user->id])->one()) {
                         // получаем шкалу "Еды" ученика
                         $scale = ScaleFeed::find()->where(['user_id' => Yii::$app->user->id])->one();
+                        // получаем последний тест для Еды
+                        $lastFeedAttempt = Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 1])->andWhere(['attempt.user_id' => Yii::$app->user->id])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one();
                         // получаем время окончания предыдущего теста
                         $finishTime = Yii::$app->getFormatter()->asTimestamp($lastFeedAttempt->finish_time);
                         // узнаём текущее время и переводим его в простое число
@@ -274,28 +319,27 @@ class ChallengeController extends Controller
                         // получаем изменение времени с момента окончания предыдущего теста до текущего момента
                         $timeAfterLastFeedChallenge = $time - $finishTime;
                         // округляем изменение времени до 100 и отнимаем 1, чтобы получить то значение, которое нужно отнимать для изменения шкалы с течением времени
-                        $roundTime = ceil($timeAfterLastFeedChallenge/100) - 1;
+                        $roundTime = ceil($timeAfterLastFeedChallenge / 100) - 1;
                         // если в шкале на данный момент баллов меньше или равно 0 (такое логически не возможно), то прибавляем полученные за тест баллы и сохраняем 
-                        if ($scale->points <= 0){
+                        if ($scale->points <= 0) {
                             $scale->user_id = Yii::$app->user->id;
                             $scale->points = $allLastChallengeQuestionsCost;
                             $scale->step = 0;
                             $scale->save();
                         }
                         // если в шкале баллов больше 0
-                        if ($scale->points > 0){
+                        if ($scale->points > 0) {
                             // записываем ID ученика
                             $scale->user_id = Yii::$app->user->id;
                             // если разница между баллами и прошедшим временем в баллах равна или меньше 0, то записываем полученные за последний тест баллы
                             if ($scale->points - $roundTime <= 0) {
                                 $scale->points = $allLastChallengeQuestionsCost;
-                            } 
-                            // если разница между баллами в шкале и баллами прошедшего времени больше 0, то баллы в шкале делаем такими, каковы они на текущий момент
+                            } // если разница между баллами в шкале и баллами прошедшего времени больше 0, то баллы в шкале делаем такими, каковы они на текущий момент
                             else {
                                 $scale->points = $allLastChallengeQuestionsCost + $scale->points - $roundTime;
                             }
-                                $scale->step = 0;
-                                $scale->save();
+                            $scale->step = 0;
+                            $scale->save();
                         }
 
                         $lastAttempt = Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 1])->andWhere(['attempt.user_id' => Yii::$app->user->id])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one();
@@ -319,10 +363,10 @@ class ChallengeController extends Controller
                 $challengesWeeks = ChallengesWeeks::find()->where(['course_id' => $challengeNew->course_id])->andWhere(['week_id' => $challengeNew->week])->andWhere(['element_id' => $challengeNew->element_id])->andWhere(['user_id' => Yii::$app->user->id])->one();
 
                 // andWhere(['element_id' => 2])->
-                if ($challengesWeeks){
-                    if ($challengesWeeks->challenges){
+                if ($challengesWeeks) {
+                    if ($challengesWeeks->challenges) {
                         $challengesIds = json_decode($challengesWeeks->challenges, true);
-                        foreach ($challengesIds as $challengesId => $flag){
+                        foreach ($challengesIds as $challengesId => $flag) {
                             if ($challengesId == $id) {
                                 $challengesIds[$challengesId] = 1;
                                 $challengesWeeks->course_id = $challengeNew->course_id;
@@ -336,65 +380,134 @@ class ChallengeController extends Controller
                     }
                 }
 
-                $days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-                $currentDay = strtolower(date("l"));
                 $challengeNew = Challenge::find()->where(['id' => $id])->one();
-                if (ScaleLearn::find()->where(['course_id' => $challengeNew->course_id])->andWhere(['week_id' => $challengeNew->week])->andWhere(['user_id' => Yii::$app->user->id])->one()) {
-                    $learn = ScaleLearn::find()->where(['course_id' => $challengeNew->course_id])->andWhere(['week_id' => $challengeNew->week])->andWhere(['user_id' => Yii::$app->user->id])->one();
-                    //$learn = ScaleLearn::find()->where(['course_id' => $challengeNew->course_id])->andWhere(['week_id' => $challengeNew->week])->andWhere(['element_id' => $challengeNew->element_id])->andWhere(['user_id' => Yii::$app->user->id])->one();
-                    //\yii\helpers\VarDumper::dump($days, 10, true);
-                    //\yii\helpers\VarDumper::dump($learn, 10, true);
-                    foreach ($days as $day){
-                        if ($day == $currentDay){
+
+                if ($challengeNew->week == $week) {
+                    if (ScaleLearn::find()->where(['course_id' => $challengeNew->course_id])->andWhere(['week_id' => $challengeNew->week])->andWhere(['user_id' => Yii::$app->user->id])->one()) {
+                        $learn = ScaleLearn::find()->where(['course_id' => $challengeNew->course_id])->andWhere(['week_id' => $challengeNew->week])->andWhere(['user_id' => Yii::$app->user->id])->one();
+                        //$learn = ScaleLearn::find()->where(['course_id' => $challengeNew->course_id])->andWhere(['week_id' => $challengeNew->week])->andWhere(['element_id' => $challengeNew->element_id])->andWhere(['user_id' => Yii::$app->user->id])->one();
+                        //\yii\helpers\VarDumper::dump($days, 10, true);
+                        //\yii\helpers\VarDumper::dump($learn, 10, true);
+                        foreach ($days as $keyDay => $day) {
                             $data = json_decode($learn->$day, true);
-                            //print $data;
-                            \yii\helpers\VarDumper::dump($data, 10, true);
-                            if ($challengeNew->element_id == 1) {
-                                print 'Feed';
-                                $data['feed'] = 1;
-                                \yii\helpers\VarDumper::dump($data, 10, true);
+                            if ($day == $currentDay && $currentDay == 'monday') {
+                                print 'MONDAY' . $keyDay;
+                                //$data = json_decode($learn->$day, true);
+                                //print $data;
+                                //\yii\helpers\VarDumper::dump($data, 10, true);
+                                if ($challengeNew->element_id == 1) {
+                                    print 'Feed';
+                                    $data['feed'] = 1;
+                                    //\yii\helpers\VarDumper::dump($data, 10, true);
+                                }
+                                if ($challengeNew->element_id == 2) {
+                                    print 'Clean';
+                                    $data['clean'] = 1;
+                                    //\yii\helpers\VarDumper::dump($data, 10, true);
+                                }
+                                $learn->$day = json_encode($data);
+                                $learn->save();
                             }
-                            if ($challengeNew->element_id == 2){
-                                print 'Clean';
-                                $data['clean'] = 1;
-                                \yii\helpers\VarDumper::dump($data, 10, true);
+                            if ($day == $currentDay && $currentDay != 'monday' && $data['feed'] == 0) {
+                                //$data = json_decode($learn->$day, true);
+                                if ($challengeNew->element_id == 1) {
+                                    $data['feed'] = 1;
+                                }
+                                if ($challengeNew->element_id == 2) {
+                                    $data['clean'] = 1;
+                                }
+                                $learn->$day = json_encode($data);
+                                $learn->save();
                             }
-                            $learn->$day = json_encode($data);
-                            $learn->save();
+                            if ($day == $currentDay && $currentDay != 'monday' && $data['feed'] == 1) {
+                                for ($i = 0; $i <= $keyDay; $i++) {
+                                    $day = $days[$i];
+                                    $data = json_decode($learn->$day, true);
+                                    //print $i . ' - день по счёту<br>';
+                                    Yii::$app->session->setFlash('success', "Просто должно всё работать и появиться оповещение, если день не понедельник!");
+                                    if ($challengeNew->element_id == 1 && $data['feed'] == 0) {
+                                        Yii::$app->session->setFlash('success', "Кошка не ела в предыдущий день (" . Yii::t('days', $day) . "), теперь она поела и за него!");
+                                        $data['feed'] = 1;
+                                        break;
+                                    }
+                                    if ($challengeNew->element_id == 2 && $data['clean'] == 0) {
+                                        Yii::$app->session->setFlash('success', "Кошка не делала уборку в предыдущий день (" . Yii::t('days', $day) . "), теперь она поубиралась и за него!");
+                                        $data['clean'] = 1;
+                                        break;
+                                    }
+                                }
+                                $learn->$day = json_encode($data);
+                                $learn->save();
+                            }
                         }
-                    }
-                } else {
-                    $learn = new ScaleLearn();
-                    $learn->user_id = Yii::$app->user->id;
-                    $learn->course_id = $challengeNew->course_id;
-                    $learn->week_id = $challengeNew->week;
-                    foreach ($days as $key => $day) {
-                        if ($day == $currentDay) {
-                            if ($challengeNew->element_id == 1) {
-                                $learn->$currentDay = json_encode(['feed' => 1, 'clean' => 0]);
+                    } else {
+                        $learn = new ScaleLearn();
+                        $learn->user_id = Yii::$app->user->id;
+                        $learn->course_id = $challengeNew->course_id;
+                        $learn->week_id = $challengeNew->week;
+                        foreach ($days as $key => $day) {
+                            if ($day == $currentDay) {
+                                if ($challengeNew->element_id == 1) {
+                                    $learn->$currentDay = json_encode(['feed' => 1, 'clean' => 0]);
+                                }
+                                if ($challengeNew->element_id == 2) {
+                                    $learn->$currentDay = json_encode(['feed' => 0, 'clean' => 1]);
+                                }
+                                unset($days[$key]);
                             }
-                            if ($challengeNew->element_id == 2) {
-                                $learn->$currentDay = json_encode(['feed' => 0, 'clean' => 1]);
-                            }
-                            unset($days[$key]);
                         }
-                    }
 
-                    foreach ($days as $day){
-                        $learn->$day = json_encode(['feed' => 0, 'clean' => 0]);
-                    }
-                    //       $learn->monday = 'Monday';
-                    //       $learn->tuesday = 'Tuesday';
-                    //       $learn->wednesday = 'Wednesday';
-                    //       $learn->thursday = 'Thursday';
-                    //       $learn->friday = 'Friday';
-                    //       $learn->saturday = 'Saturday';
-                    //       $learn->sunday = 'Sunday';
+                        foreach ($days as $day) {
+                            $learn->$day = json_encode(['feed' => 0, 'clean' => 0]);
+                        }
+                        //       $learn->monday = 'Monday';
+                        //       $learn->tuesday = 'Tuesday';
+                        //       $learn->wednesday = 'Wednesday';
+                        //       $learn->thursday = 'Thursday';
+                        //       $learn->friday = 'Friday';
+                        //       $learn->saturday = 'Saturday';
+                        //       $learn->sunday = 'Sunday';
 
-                    $learn->save();
+                        $learn->save();
+                    }
                 }
+                if ($challenge->week < $week) {
+                    print 'Неделя у теста меньше текущей недели';
 
+                    $test = Event::find()->where(['course_id' => $challenge->course_id])->all();
+                    if ($test) {
+                        $regexp = "/(тест)([0-9]*)/ui";
+                        $match = [];
+                        foreach ($test as $key => $oneTest) {
+                            if (preg_match($regexp, $oneTest->title, $match[$key])) {
+                            } else {
+                                unset($match[$key]);
+                            }
+                        }
+                        //\yii\helpers\VarDumper::dump($match, 10, true);
+
+                        foreach ($match as $key => $oneMatch) {
+                            print $oneMatch[2];
+                            if ($oneMatch[2] == $challenge->id) {
+                                print 'В курсе указан тот же тест, который был выполнен';
+                                $learn = ScaleLearn::find()->where(['course_id' => $challenge->course_id])->andWhere(['week_id' => $challenge->week])->andWhere(['user_id' => Yii::$app->user->id])->one();
+                                \yii\helpers\VarDumper::dump($learn, 10, true);
+                                foreach ($days as $day){
+                                    $data = json_decode($learn->$day, true);
+                                    $data['feed'] = 1;
+                                    $data['clean'] = 1;
+                                    $learn->$day = json_encode($data);
+                                    $learn->save();
+                                }
+                                Yii::$app->session->setFlash('success', "Ура, сделан общий тест № ". $challenge->id . " за целую прошедшую неделю № ". $week . "!");
+                            }
+                        }
+                    }
+                }
             }
+
+
+            //\yii\helpers\VarDumper::dump($challenge->challenge_type_id, 10, true);
 
             //$challengeNew = Challenge::find()->where(['id' => $id])->one();
             //$idTest = 'id';
@@ -405,7 +518,7 @@ class ChallengeController extends Controller
             //}
             //$day = strtolower(date("l"));
 
-            \yii\helpers\VarDumper::dump(strtolower(date("l")), 10, true);
+            //\yii\helpers\VarDumper::dump(strtolower(date("l")), 10, true);
 
 
 
