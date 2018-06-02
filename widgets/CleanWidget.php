@@ -17,40 +17,44 @@ class CleanWidget extends Widget
         $heightScaleValue = 0;
         $scaleNumeration = 0;
 
-        // если у пользователя существует хотя бы один выполненные тест для "Еды"
+        // если у пользователя существует хотя бы один выполненные тест для "Уборки"
         if (Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 2])->andWhere(['attempt.user_id' => Yii::$app->user->id])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one()) {
-            // получаем последнюю запись о прохождении теста для "Еды"
+            // получаем последнюю запись о прохождении теста для "Уборки"
             $lastCleanAttempt = Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 2])->andWhere(['attempt.user_id' => Yii::$app->user->id])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one();
-            // получаем время окончания последнего теста для "Еды"
+            // получаем время окончания последнего теста для "Уборки"
             $lastCleanChallengeFinishTime = Yii::$app->getFormatter()->asTimestamp($lastCleanAttempt->finish_time);
             // узнаём текущее время и переводим его в простое число
             $time = Yii::$app->getFormatter()->asTimestamp(time());
             // получаем изменение времени с момента окончания теста до текущего момента
             $timeAfterLastCleanChallengeTest = $time - $lastCleanChallengeFinishTime;
+            // если после крайнего теста прошло больше 10000 секунд, то
+            //if ($timeAfterLastCleanChallengeTest >= 10000){
+            //    $timeAfterLastCleanChallengeTest = 1000;
+            //  }
             // округляем изменение времени до 100 и отнимаем 1, чтобы получить то значение, которое нужно отнимать для изменения шкалы с течением времени
             $roundTime = ceil($timeAfterLastCleanChallengeTest / 100) - 1;
-            // достаём шкалу "Еды" текущего пользователя (если есть прохождение, то шкала тоже уже у него есть)
+            // достаём шкалу "Уборки" текущего пользователя (если есть прохождение, то шкала тоже уже у него есть)
             $scale = ScaleClean::find()->where(['user_id' => Yii::$app->user->id])->one();
 
             if ($scale) {
+                $scalePoints = $scale->points;
                 // если от баллов на шкале отнять баллы прошедшего времени и разность будет равна или меньше 0
                 // то на шкале будет 0%
-                if ($scale->points - $roundTime <= 0) {
+                if ($scalePoints - $roundTime <= 0) {
                     $scale->points = 0;
                     $roundTime = 0;
                 }
 
-
                 // если от баллов на шкале отнять баллы прошедшего времени и разность будет равна или больше 100
                 // то на шкале будет 100%
-                if ($scale->points - $roundTime >= 100) {
+                if ($scalePoints - $roundTime >= 100) {
                     $scale->points = 100;
                     $roundTime = 0;
                 }
 
                 // если от баллов на шкале отнять баллы прошедшего времени и разность будет равна или меньше 10,
                 // то шкала будет красного цвета
-                if ($scale->points - $roundTime <= 10) {
+                if ($scalePoints - $roundTime <= 10) {
                     $backgroundColor = 'red';
                 } else {
                     $backgroundColor = 'green';
@@ -66,7 +70,7 @@ class CleanWidget extends Widget
             }
 
         }
-        // если не существует записи в таблице шкалы "Еды" для данного пользователя,
+        // если не существует записи в таблице шкалы "Уборки" для данного пользователя,
         // то создаём её с нулевыми значениями
         if (!ScaleClean::find()->where(['user_id' => Yii::$app->user->id])->one()) {
             $scale = new ScaleClean();

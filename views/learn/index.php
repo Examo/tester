@@ -177,7 +177,7 @@ use app\widgets\LearnWidget;
                                        Прошедшая неделя: <strong><?= $value[$i]['week']; ?></strong><br>
                                        <strong>Пройти общий тест для недели <?= $value[$i]['week']; ?></strong> на 10 минут
                                        <?php if (isset($value[$i]['realChallengeWeek'])):?>
-                                       (<?= $value[$i]['realChallengeWeek'];?>)
+                                       (Реальная неделя теста: <?= $value[$i]['realChallengeWeek'];?>)
                                        <?php endif; ?>
                                   </div></a>
                             </div>
@@ -198,6 +198,7 @@ use app\widgets\LearnWidget;
                         <?php endforeach; ?>
                     </div>
                 </div>
+                        </div>
                      <?php endfor; ?>
             <?php endforeach; ?>
             <?php endif;?>
