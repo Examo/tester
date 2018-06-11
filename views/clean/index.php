@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <center><img src="/i/bath.jpg" width="600" height="auto" /></center>
 
-    <div class="learning">
+    <div class="cleaning">
 
     </div>
 
@@ -29,6 +29,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             <?= LearnWidget::widget(); ?>
 
+                            <br>
+
                             <?= FoodWidget::widget(); ?>
 
                             <?= CleanWidget::widget(); ?>
@@ -40,8 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 
-</div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-
+</div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <div class="feeding">
 <?php $classes = []; ?>
 <?php $number = 1; ?>
@@ -119,6 +120,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="panel-heading">
         <h4 class="panel-title">
             Нет тестов и рейтинг пропал :(
+            <br>(Скорее всего, тесты для уже опробованных тем в рейтинге не существуют в самой системе!)
         </h4>
     </div>
     <div class="learning">

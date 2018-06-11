@@ -116,10 +116,38 @@ class SubscriptionController extends Controller
         if (!$course) {
             throw new NotFoundHttpException();
         }
+        $searchModel = new CourseSearch();
+        $dataProvider = $searchModel->searchAvailable(
+            Yii::$app->user->id,
+            Yii::$app->request->queryParams
+        );
+        $lecturers = AuthAssignment::find()->select('user_id')->where(['item_name' => 'Lecturer'])->all();
+        $users = [];
+        $lecturersCourses = [];
+        foreach ($lecturers as $lecturer){
+            $users[] = User::find()->where(['id' => $lecturer->user_id])->one();
+            $lecturersCourses[] = CourseLecturer::find()->where(['user_id' => $lecturer->user_id])->all();
+        }
+        $disciplines = Discipline::find()->all();
+        $courses = Course::find()->all();
 
-        return $this->render('view', [
-            'course' => $course,
-        ]);
+        $testLecturer = CourseLecturer::find()->all();
+
+        if (!empty($lecturers)) {
+            return $this->render('view', [
+                'course' => $course,
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'lecturers' => $lecturers,
+                'users' => $users,
+                'courses' => $courses,
+                'disciplines' => $disciplines,
+                'lecturersCourses' => $lecturersCourses,
+                'testLecturer' => $testLecturer
+            ]);
+        } else {
+            throw new NotFoundHttpException('Преподавателя в этом курсе пока ещё не существует!');
+        }
     }
 
     /**

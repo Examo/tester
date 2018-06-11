@@ -256,13 +256,17 @@ class ChallengeController extends Controller
                             //\yii\helpers\VarDumper::dump($testAttempt = Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 2])->andWhere(['attempt.user_id' => Yii::$app->user->id])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one(), 10, true);
                             //\yii\helpers\VarDumper::dump(Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 2])->andWhere(['attempt.user_id' => Yii::$app->user->id])->andWhere(['attempt.points' => 1])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one(), 10, true);
 
-                            // получаем шкалу "Еды" ученика
+                            // получаем шкалу "Уборки" ученика
                             $scale = ScaleClean::find()->where(['user_id' => Yii::$app->user->id])->one();
-                            // получаем последний тест для Уборки
-                            $lastCleanAttempt = Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 2])->andWhere(['attempt.user_id' => Yii::$app->user->id])->andWhere(['attempt.points' => 1])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one();
-                            \yii\helpers\VarDumper::dump($lastCleanAttempt, 10, true);
+                            if (Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 1])->andWhere(['attempt.user_id' => Yii::$app->user->id])->andWhere(['attempt.points' => 1])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one()){
+                                $lastCleanAttempt = Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 1])->andWhere(['attempt.user_id' => Yii::$app->user->id])->andWhere(['attempt.points' => 1])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one();
+                                $lastCleanAttemptFinishTime = $lastCleanAttempt->finish_time;
+                            } else {
+                                // если нет последнего теста, то просто вставляем текущее время
+                                $lastCleanAttemptFinishTime = time();
+                            }
                             // получаем время окончания предыдущего теста
-                            $finishTime = Yii::$app->getFormatter()->asTimestamp($lastCleanAttempt->finish_time);
+                            $finishTime = Yii::$app->getFormatter()->asTimestamp($lastCleanAttemptFinishTime);
                             // узнаём текущее время и переводим его в простое число
                             $time = Yii::$app->getFormatter()->asTimestamp(time());
                             // получаем изменение времени с момента окончания предыдущего теста до текущего момента
@@ -327,10 +331,17 @@ class ChallengeController extends Controller
                         if (ScaleFeed::find()->where(['user_id' => Yii::$app->user->id])->one()) {
                             // получаем шкалу "Еды" ученика
                             $scale = ScaleFeed::find()->where(['user_id' => Yii::$app->user->id])->one();
-                            // получаем последний тест для Еды
-                            $lastFeedAttempt = Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 1])->andWhere(['attempt.user_id' => Yii::$app->user->id])->andWhere(['attempt.points' => 1])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one();
+                            // если имеется последний тест для Еды, то получаем последний тест для Еды
+                            if (Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 1])->andWhere(['attempt.user_id' => Yii::$app->user->id])->andWhere(['attempt.points' => 1])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one()){
+                                $lastFeedAttempt = Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 1])->andWhere(['attempt.user_id' => Yii::$app->user->id])->andWhere(['attempt.points' => 1])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one();
+                                $lastFeedAttemptFinishTime = $lastFeedAttempt->finish_time;
+                            } else {
+                                // если нет последнего теста, то просто вставляем текущее время
+                                $lastFeedAttemptFinishTime = time();
+                            }
+
                             // получаем время окончания предыдущего теста
-                            $finishTime = Yii::$app->getFormatter()->asTimestamp($lastFeedAttempt->finish_time);
+                            $finishTime = Yii::$app->getFormatter()->asTimestamp($lastFeedAttemptFinishTime);
                             // узнаём текущее время и переводим его в простое число
                             $time = Yii::$app->getFormatter()->asTimestamp(time());
                             // получаем изменение времени с момента окончания предыдущего теста до текущего момента

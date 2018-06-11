@@ -24,8 +24,9 @@ $this->title = Yii::t('course', 'My courses');
         <?php foreach( $dataProvider->getModels() as $course ): ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
+                    <a href="<?= \yii\helpers\Url::to(['subscription/view', 'id' => $course->id]) ?>"><img src="/i/testcourse.jpg" style="width: 300px;" />
                     <label>Курс:</label>
-                    <strong><?= $course->name ?></strong>
+                    <strong><?= $course->name ?></strong></a>
                 </div>
                 <div class="panel-body">
                     <?php $progress = $course->getProgress( Yii::$app->user->id ) ?>
@@ -36,10 +37,10 @@ $this->title = Yii::t('course', 'My courses');
                         </div>
                     </div>
                     <div class="pull-left">
-                        <a href="<?= \yii\helpers\Url::to(['subscription/view', 'id' => $course->id]) ?>" class="btn btn-primary">Перейти к тестам</a>
+                        <a href="<?= \yii\helpers\Url::to(['subscription/view', 'id' => $course->id]) ?>" class="btn btn-primary">Перейти к программе курса</a>
                     </div>
                     <div class="pull-right">
-                        <a href="<?= \yii\helpers\Url::to(['subscription/unsubscribe', 'id' => $course->id]) ?>" class="btn btn-default">Не получать новые тесты по курсу</a>
+                        <a href="<?= \yii\helpers\Url::to(['subscription/unsubscribe', 'id' => $course->id]) ?>" class="btn btn-default">Отписка! (Не получать новые тесты по курсу)</a>
                     </div>
                 </div>
             </div>

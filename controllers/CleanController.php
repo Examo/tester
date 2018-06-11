@@ -66,6 +66,7 @@ class CleanController extends Controller
                             $allNewChallenges = [];
                             $challengesTest = ChallengesWeeks::find()->where(['course_id' => $course->id])->andWhere(['element_id' => 2])->andWhere(['week_id' => $week])->andWhere(['user_id' => Yii::$app->user->id])->one();
 
+
                             if (isset($challengesTest->challenges)) {
                                 $challengesWeeks = ChallengesWeeks::find()->where(['course_id' => $course->id])->andWhere(['element_id' => 2])->andWhere(['week_id' => $week])->andWhere(['user_id' => Yii::$app->user->id])->one();
                                 if (json_decode($challengesWeeks->challenges) == []) {
@@ -179,13 +180,14 @@ class CleanController extends Controller
 
             }
 
+
             $allCleanChallenges = [];
             for ($i = 0; $i < count($allPreparedChallenges); $i++) {
                 foreach ($allPreparedChallenges[$i] as $key => $value) {
                     $allCleanChallenges[$key] = $value;
                 }
             }
-            
+
             $cleaningTests = new Clean();
             $challenges = [];
             $cleanChallenges = [];
@@ -216,11 +218,13 @@ class CleanController extends Controller
                     }
                 }
             }
-            
+
             $difficultSubjects = DifficultSubjects::find()->where(['user_id' => Yii::$app->user->id])->all();
+            //\yii\helpers\VarDumper::dump($difficultSubjects, 10, true);
             $newDifficultSubjects = [];
             foreach ($difficultSubjects as $difficultSubject) {
                 $needCourse = Subject::find()->select('course_id')->where(['id' => $difficultSubject->subject_id])->one();
+                //\yii\helpers\VarDumper::dump($needCourse, 10, true);
                 foreach (Course::findSubscribed(Yii::$app->user->id)->all() as $keyCourse => $course) {
                     if ($needCourse->course_id == $course->id) {
                         //print $needCourse->course_id . '<br>';

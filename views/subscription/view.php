@@ -8,10 +8,40 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <label>Курс:</label>
-        <strong><?= $course->name ?></strong>
+        <img src="/i/testcourse.jpg" style="width: 300px; margin-top: -135px; margin-left: -5px" />
+        <label style="padding: 20px">Курс: <strong style="font-size: large"><?= $course->name ?></strong>
+        <br>***** <strong style="font-size: large">(123 оценки)</strong>
+        <br>Учеников: <strong style="font-size: large">321</strong>
+            <br>
+    <?php foreach( $testLecturer as $lecturer ): ?>
+        <?php if ($lecturer->course_id == $course->id):?>
+            <?php foreach ($users as $user): ?>
+                <?php if ($lecturer->user_id == $user->id): ?>
+                    <center>
+                        Преподаватель:
+                        <br><img src="/i/hintemoticon.jpg">
+                        <br><strong><?= $user->username; ?></strong>
+                    </center>
+                <?php endif; ?>
+            <?php endforeach;?>
+        <?php endif; ?>
+    <?php endforeach;?>
+    </label></div>
+        <div class="panel-heading">
+            <center><strong style="font-size: large">Дата начала курса</strong>: <?= $course->start_time; ?>
+            <br><strong style="font-size: large">Программа курса</strong>: <strong>1150</strong> тестов, <strong>35</strong> занятий с преподавателем, <strong>35</strong> домашних работ, <strong>8</strong> экзаменов
+            <br><strong style="font-size: large">Уже учеников</strong>: <strong style="font-size: large">321</strong></center>
+        </div>
+    <div class="panel-heading">
+        <div>
+        <center><a href="<?= \yii\helpers\Url::to(['subscription/subscribe', 'id' => $course->id]) ?>" class="btn btn-success" style="padding: 20px; font-size: large">Подписаться и получать новые тесты</a></center>
+        </div>
     </div>
+
     <div class="panel-body">
+        <div class="panel-heading">
+            <strong style="font-size: large">Полное описание курса</strong>
+        </div>
         <p><?= $course->description ?></p>
         <table class="table table-striped table-hover">
             <tr>
@@ -50,4 +80,5 @@
             </div>
         <?php endif; ?>
     </div>
+
 </div>

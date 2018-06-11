@@ -3,6 +3,10 @@ use app\models\ar\LearnObject;
 use app\widgets\CleanWidget;
 use app\widgets\FoodWidget;
 use app\widgets\LearnWidget;
+
+$this->title = Yii::t('app', 'Learn');
+$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="panel panel-default element-container">
     <div class="panel-heading">
@@ -198,10 +202,14 @@ use app\widgets\LearnWidget;
                         <?php endforeach; ?>
                     </div>
                 </div>
+            <?php endfor; ?>
                         </div>
-                     <?php endfor; ?>
-            <?php endforeach; ?>
-            <?php endif;?>
+                    </div>
+                 </div>
+            </div>
+        </div>
+        <?php endforeach; ?>
+                        <?php endif;?>
     </div>
 </div>
 
