@@ -4,6 +4,8 @@
  * @var \yii\web\View $this
  *
  */
+$this->title = Yii::t('app', 'Program of course') . ' ' . $course->name;
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="panel panel-default">
@@ -11,7 +13,11 @@
         <img src="/i/testcourse.jpg" style="width: 300px; margin-top: -135px; margin-left: -5px" />
         <label style="padding: 20px">Курс: <strong style="font-size: large"><?= $course->name ?></strong>
         <br>***** <strong style="font-size: large">(123 оценки)</strong>
-        <br>Учеников: <strong style="font-size: large">321</strong>
+        <br>Учеников: <strong style="font-size: large"><?php if (isset($numberOfPupils[$course->id])): ?>
+                    <?= $numberOfPupils[$course->id]; ?>
+                <?php else: ?>
+                    <?= 'Пока что 0...'; ?>
+                <?php endif; ?></strong>
             <br>
     <?php foreach( $testLecturer as $lecturer ): ?>
         <?php if ($lecturer->course_id == $course->id):?>
@@ -28,14 +34,36 @@
     <?php endforeach;?>
     </label></div>
         <div class="panel-heading">
-            <center><strong style="font-size: large">Дата начала курса</strong>: <?= $course->start_time; ?>
-            <br><strong style="font-size: large">Программа курса</strong>: <strong>1150</strong> тестов, <strong>35</strong> занятий с преподавателем, <strong>35</strong> домашних работ, <strong>8</strong> экзаменов
-            <br><strong style="font-size: large">Уже учеников</strong>: <strong style="font-size: large">321</strong></center>
+            <center>
+            <?php if (isset($courseTime['courseStartTime'])):?>
+            <strong style="font-size: large">Дата начала курса</strong>: <?= $courseTime['courseStartTime']; ?>,<strong> уже прошло</strong>: <?= $courseTime['daysAfterCourseStart']; ?> д. <?= $courseTime['monthsAfterCourseStart'] ? '(или '. $courseTime['monthsAfterCourseStart'] . 'мес. и приблизительно ' . $courseTime['daysAfterMonthsAfterCourseStart'] . 'д.)': ''; ?>
+            <br>
+            <?php else: ?>
+                <?= '<strong style="font-size: large">Дата начала курса ещё не установлена!</strong><br>';?>
+            <?php endif; ?>
+                <?php if (isset($courseTime['courseEndTime'])):?>
+                    <strong style="font-size: large">Дата конца курса</strong>: <?= $courseTime['courseEndTime']; ?>,<strong> ещё остаётся</strong>: <?= $courseTime['daysBeforeCourseEnd']; ?> д. <?= $courseTime['monthsBeforeCourseEnd'] ? '(или '. $courseTime['monthsBeforeCourseEnd'] . 'мес. и приблизительно ' . $courseTime['daysAfterMonthsBeforeCourseEnd'] . 'д.)': ''; ?>
+                    <br>
+                <?php else: ?>
+                    <?= '<strong style="font-size: large">Дата конца курса ещё не установлена!</strong><br>';?>
+                <?php endif; ?>
+                <strong style="font-size: large">Программа курса</strong>: тестов <strong><?= $challengesCount; ?></strong>, занятий с преподавателем <strong><?= $webinarsCount; ?></strong>, домашних работ <strong><?= $homeworksCount; ?></strong>, экзаменов <strong><?= $examsCount; ?></strong>
+            <br><strong style="font-size: large">Уже учеников</strong>: <strong style="font-size: large"><?php if (isset($numberOfPupils[$course->id])): ?>
+                        <?= $numberOfPupils[$course->id]; ?>
+                    <?php else: ?>
+                        <?= 'Пока что 0...'; ?>
+                <?php endif; ?></strong></center>
         </div>
     <div class="panel-heading">
-        <div>
-        <center><a href="<?= \yii\helpers\Url::to(['subscription/subscribe', 'id' => $course->id]) ?>" class="btn btn-success" style="padding: 20px; font-size: large">Подписаться и получать новые тесты</a></center>
-        </div>
+        <?php if( $course->isSubscribed(Yii::$app->user->id) ): ?>
+            <div>
+                <center><a href="<?= \yii\helpers\Url::to(['subscription/unsubscribe', 'id' => $course->id]) ?>" class="btn btn-default" style="padding: 20px; font-size: large">Отписка! (Не получать новые тесты по курсу)</a></center>
+            </div>
+        <?php else: ?>
+            <div>
+                <center><a href="<?= \yii\helpers\Url::to(['subscription/subscribe', 'id' => $course->id]) ?>" class="btn btn-success" style="padding: 20px; font-size: large">Подписаться и получать новые тесты</a></center>
+            </div>
+        <?php endif; ?>
     </div>
 
     <div class="panel-body">
@@ -82,3 +110,5 @@
     </div>
 
 </div>
+
+<?php //\yii\helpers\VarDumper::dump($courseTime, 10, true); ?>

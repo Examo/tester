@@ -5,6 +5,7 @@ namespace app\controllers\admin;
 use app\components\BaseAdminCrudController;
 use app\helpers\Subset;
 use app\models\AuthAssignment;
+use app\models\Challenge;
 use app\models\Course;
 use app\models\CourseLecturer;
 use app\models\CourseSubscription;
@@ -67,7 +68,7 @@ class CourseController extends BaseAdminCrudController
 
         $users = User::find()->all();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save() && $this->saveModel($model)) {
             $lecturer->user_id = $model->user_id;
             $lecturer->course_id = $model->id;
             $lecturer->save();
@@ -91,11 +92,22 @@ class CourseController extends BaseAdminCrudController
      */
     public function actionUpdate($id)
     {
+        /** @var Course $model */
         $model = $this->findModel($id);
         $lecturer = CourseLecturer::find()->where(['course_id' => $id])->one();
         $users = CourseLecturer::find()->all();
+        $subjects = $model->getSubjects()->all();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            foreach ($subjects as $subject) {
+                /** @var Subject $subject */
+                if (Challenge::find()->where(['subject_id' => $subject->id])->one())
+                {
+                } else {
+                    $subject->delete();
+                }
+            }
+            $this->saveModel($model);
             $lecturer->user_id = $model->user_id;
             $lecturer->course_id = $id;
             $lecturer->save();
@@ -207,5 +219,5 @@ class CourseController extends BaseAdminCrudController
             throw new NotFoundHttpException('Преподавателей пока ещё не существует!');
         }
     }
-    
+
 }

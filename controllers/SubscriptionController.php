@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\AuthAssignment;
 use app\models\Course;
 use app\models\CourseLecturer;
+use app\models\CourseSubscription;
 use app\models\Discipline;
 use app\models\search\CourseSearch;
 use app\models\User;
@@ -47,15 +48,53 @@ class SubscriptionController extends Controller
      */
     public function actionIndex()
     {
+
+        $courseTime = $challengesCount = $webinarsCount = $homeworksCount = $examsCount = [];
+
         $searchModel = new CourseSearch();
         $dataProvider = $searchModel->searchSubscribed(
             Yii::$app->user->id,
             Yii::$app->request->queryParams
         );
 
+        $subscription = CourseSubscription::find()->all();
+
+        $userSubscription = CourseSubscription::find()->where(['user_id' => Yii::$app->user->id])->all();
+        $subscriptionStart = CourseSubscription::find()->one();
+
+        foreach ($userSubscription as $key => $course) {
+            $courseTime[$course->course_id] = $subscriptionStart->getCourseStart($course->course_id);
+            $challengesCount[$course->course_id] = $subscriptionStart->getChallenges($course->course_id);
+            $webinarsCount[$course->course_id] = $subscriptionStart->getWebinarsCount($course->course_id);
+            $homeworksCount[$course->course_id] = $subscriptionStart->getHomeworksCount($course->course_id);
+            $examsCount[$course->course_id] = $subscriptionStart->getExamsCount($course->course_id);
+        }
+
+        $courses = Course::find()->all();
+        $courseSubscription = [];
+        foreach ($subscription as $key => $item) {
+            foreach ($courses as $course) {
+                if ($item->course_id == $course->id) {
+                    $courseSubscription[$item->course_id][] = true;
+                }
+            }
+        }
+        $numberOfPupils = [];
+        foreach ($courseSubscription as $courseNumber => $courses) {
+            $numberOfPupils[$courseNumber] = count($courses);
+        }
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'subscription' => $subscription,
+            'courseSubscription' => $courseSubscription,
+            'numberOfPupils' => $numberOfPupils,
+            'courseTime' => $courseTime,
+            'challengesCount' => $challengesCount,
+            'webinarsCount' => $webinarsCount,
+            'homeworksCount' => $homeworksCount,
+            'examsCount' => $examsCount
         ]);
     }
 
@@ -66,6 +105,19 @@ class SubscriptionController extends Controller
      */
     public function actionAll()
     {
+        $courseTime = $challengesCount = $webinarsCount = $homeworksCount = $examsCount = [];
+
+        $courses = Course::find()->all();
+        $subscriptionStart = new CourseSubscription();
+
+        foreach ($courses as $key => $course) {
+            $courseTime[$course->id] = $subscriptionStart->getCourseStart($course->id);
+            $challengesCount[$course->id] = $subscriptionStart->getChallenges($course->id);
+            $webinarsCount[$course->id] = $subscriptionStart->getWebinarsCount($course->id);
+            $homeworksCount[$course->id] = $subscriptionStart->getHomeworksCount($course->id);
+            $examsCount[$course->id] = $subscriptionStart->getExamsCount($course->id);
+        }
+
         $searchModel = new CourseSearch();
         $dataProvider = $searchModel->searchAvailable(
             Yii::$app->user->id,
@@ -81,9 +133,23 @@ class SubscriptionController extends Controller
             $lecturersCourses[] = CourseLecturer::find()->where(['user_id' => $lecturer->user_id])->all();
         }
         $disciplines = Discipline::find()->all();
-        $courses = Course::find()->all();
-
+        
         $testLecturer = CourseLecturer::find()->all();
+
+        $subscription = CourseSubscription::find()->all();
+        $courses = Course::find()->all();
+        $courseSubscription = [];
+        foreach ($subscription as $key => $item) {
+            foreach ($courses as $course) {
+                if ($item->course_id == $course->id) {
+                    $courseSubscription[$item->course_id][] = true;
+                }
+            }
+        }
+        $numberOfPupils = [];
+        foreach ($courseSubscription as $courseNumber => $courses) {
+            $numberOfPupils[$courseNumber] = count($courses);
+        }
 
         if (!empty($lecturers)) {
             return $this->render('all',
@@ -95,7 +161,13 @@ class SubscriptionController extends Controller
                     'courses' => $courses,
                     'disciplines' => $disciplines,
                     'lecturersCourses' => $lecturersCourses,
-                    'testLecturer' => $testLecturer
+                    'testLecturer' => $testLecturer,
+                    'numberOfPupils' => $numberOfPupils,
+                    'courseTime' => $courseTime,
+                    'challengesCount' => $challengesCount,
+                    'webinarsCount' => $webinarsCount,
+                    'homeworksCount' => $homeworksCount,
+                    'examsCount' => $examsCount
                 ]);
         } else {
             throw new NotFoundHttpException('Преподавателей пока ещё не существует!');
@@ -129,9 +201,30 @@ class SubscriptionController extends Controller
             $lecturersCourses[] = CourseLecturer::find()->where(['user_id' => $lecturer->user_id])->all();
         }
         $disciplines = Discipline::find()->all();
-        $courses = Course::find()->all();
 
         $testLecturer = CourseLecturer::find()->all();
+
+        $subscription = CourseSubscription::find()->all();
+        $subscriptionStart = CourseSubscription::find()->one();
+        $courseTime = $subscriptionStart->getCourseStart($id);
+        $challengesCount = $subscriptionStart->getChallenges($id);
+        $webinarsCount = $subscriptionStart->getWebinarsCount($id);
+        $homeworksCount = $subscriptionStart->getHomeworksCount($id);
+        $examsCount = $subscriptionStart->getExamsCount($id);
+
+        $courses = Course::find()->all();
+        $courseSubscription = [];
+        foreach ($subscription as $key => $item) {
+            foreach ($courses as $courseItem) {
+                if ($item->course_id == $courseItem->id) {
+                    $courseSubscription[$item->course_id][] = true;
+                }
+            }
+        }
+        $numberOfPupils = [];
+        foreach ($courseSubscription as $courseNumber => $courses) {
+            $numberOfPupils[$courseNumber] = count($courses);
+        }
 
         if (!empty($lecturers)) {
             return $this->render('view', [
@@ -143,7 +236,13 @@ class SubscriptionController extends Controller
                 'courses' => $courses,
                 'disciplines' => $disciplines,
                 'lecturersCourses' => $lecturersCourses,
-                'testLecturer' => $testLecturer
+                'testLecturer' => $testLecturer,
+                'numberOfPupils' => $numberOfPupils,
+                'courseTime' => $courseTime,
+                'challengesCount' => $challengesCount,
+                'webinarsCount' => $webinarsCount,
+                'homeworksCount' => $homeworksCount,
+                'examsCount' => $examsCount
             ]);
         } else {
             throw new NotFoundHttpException('Преподавателя в этом курсе пока ещё не существует!');

@@ -18,5 +18,8 @@ return [
     'Feed' => 'Еда',
     'Clean' => 'Уборка',
     'Learn' => 'Учёба',
-    'Game' => 'Игра'
+    'Game' => 'Игра',
+    'Program of course' => 'Программа курса',
+    'All available courses' => 'Все доступные курсы',
+    'My courses' => 'Мои курсы'
 ];
