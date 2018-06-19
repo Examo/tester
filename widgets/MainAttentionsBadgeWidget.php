@@ -153,6 +153,7 @@ class MainAttentionsBadgeWidget extends Widget
                     $points->element_id = 1;
                     $points->points = 0;
                     $points->save();
+                    $feedPoints[$course->id] = $points->points;
                 }
                 if (UserPoints::find()->where(['user_id' => Yii::$app->user->id])->andWhere(['course_id' => $course->id])->andWhere(['element_id' => 2])->one()){
                     $points = UserPoints::find()->where(['user_id' => Yii::$app->user->id])->andWhere(['course_id' => $course->id])->andWhere(['element_id' => 2])->one();
@@ -164,10 +165,11 @@ class MainAttentionsBadgeWidget extends Widget
                     $points->element_id = 2;
                     $points->points = 0;
                     $points->save();
+                    $feedPoints[$course->id] = $points->points;
                 }
-                if ($feedPoints[$course->id] + $cleanPoints[$course->id] < 300 && $feedPoints[$course->id] + $cleanPoints[$course->id] > 0) {
+                if ($feedPoints[$course->id] + $cleanPoints[$course->id] < 100 && $feedPoints[$course->id] + $cleanPoints[$course->id] > 0) {
                     $allPoints = $feedPoints[$course->id] + $cleanPoints[$course->id];
-                    $pointsMessage[$course->id] = "Курс " . $course->id . " Ого, как у тебя много очков! Уже целых " . $allPoints ."!";
+                    $pointsMessage[$course->id] = "Курс " . $course->id . " Неплохо! Очков уже " . $allPoints ."!";
                 }
                 if ($feedPoints[$course->id] + $cleanPoints[$course->id] >= 100 && $feedPoints[$course->id] + $cleanPoints[$course->id] < 300) {
                     $allPoints = $feedPoints[$course->id] + $cleanPoints[$course->id];
@@ -201,7 +203,7 @@ class MainAttentionsBadgeWidget extends Widget
 						</a>
 						<ul class="dropdown-menu">
 							<li class="external">
-								<h3>У тебя <span class="bold">3 новых</span> сообщения</h3>
+								<h3>У тебя <span class="bold">' . $number . ' новых</span> сообщения</h3>
 								<a href="#">*</a>
 							</li>
 							<li>
