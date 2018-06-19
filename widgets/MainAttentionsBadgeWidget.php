@@ -21,8 +21,12 @@ class MainAttentionsBadgeWidget extends Widget
     {
         parent::init();
 
-        $feedPoints = 0;
-        $cleanPoints = 0;
+        $feedPoints = [];
+        $cleanPoints = [];
+        $feedMessage = null;
+        $cleanMessage = null;
+        $number = 0;
+        $pointsMessage = [];
 
         //foreach (Course::findSubscribed(Yii::$app->user->id)->one() as $key => $course) {
             if (Course::findSubscribed(Yii::$app->user->id)->one()) {
@@ -44,32 +48,32 @@ class MainAttentionsBadgeWidget extends Widget
                     //\yii\helpers\VarDumper::dump($roundTime, 10, true);
 
                     if ($roundTime >= 60 && $roundTime < 60 * 3) {
-                       // print 'Прошло больше часа, я кушать хочу!';
-                        Yii::$app->session->setFlash('successFeed', "Прошло больше часа, я кушать хочу!");
+                       $feedMessage = 'Прошло больше часа, я кушать хочу!';
+                        //Yii::$app->session->setFlash('successFeed', "Прошло больше часа, я кушать хочу!");
                     }
                     if ($roundTime >= 60 * 3 && $roundTime < 60 * 12) {
-                       // print 'Прошло три часа, я очень хочу есть!';
-                        Yii::$app->session->setFlash('successFeed', "Прошло три часа, я очень хочу есть!");
+                       $feedMessage = 'Прошло три часа, я очень хочу есть!';
+                        //Yii::$app->session->setFlash('successFeed', "Прошло три часа, я очень хочу есть!");
                     }
                     if ($roundTime >= 60 * 12 && $roundTime < 60 * 24) {
-                       // print 'Прошёл уже день, как я не ела!';
-                        Yii::$app->session->setFlash('successFeed', "Прошёл уже день, как я не ела!");
+                       $feedMessage = 'Прошёл уже день, как я не ела!';
+                        //Yii::$app->session->setFlash('successFeed', "Прошёл уже день, как я не ела!");
                     }
                     if ($roundTime >= 60 * 24 && $roundTime < 60 * 24 * 2) {
-                       // print 'Прошло уже два дня, как я не ела! Ну очень хочется есть!';
-                        Yii::$app->session->setFlash('successFeed', "Прошёл уже день, как я не ела!");
+                       $feedMessage = 'Прошло уже два дня, как я не ела! Ну очень хочется есть!';
+                        //Yii::$app->session->setFlash('successFeed', "Прошёл уже день, как я не ела!");
                     }
                     if ($roundTime >= 60 * 24 * 2 && $roundTime < 60 * 24 * 3) {
-                       // print 'Прошёл уже целых три дня, как я не ела!';
-                        Yii::$app->session->setFlash('successFeed', "Прошёл уже целых три дня, как я не ела!");
+                       $feedMessage = 'Прошёл уже целых три дня, как я не ела!';
+                        //Yii::$app->session->setFlash('successFeed', "Прошёл уже целых три дня, как я не ела!");
                     }
                     if ($roundTime >= 60 * 24 * 3 && $roundTime < 60 * 24 * 7) {
-                       // print 'Прошло уже больше трёх дней, как я не ела!';
-                        Yii::$app->session->setFlash('successFeed', "Прошло уже больше трёх дней, как я не ела!");
+                       $feedMessage = 'Прошло уже больше трёх дней, как я не ела!';
+                        //Yii::$app->session->setFlash('successFeed', "Прошло уже больше трёх дней, как я не ела!");
                     }
                     if ($roundTime >= 60 * 24 * 7) {
-                       // print 'Прошла уже неделя, как я не ела! Прощай!';
-                        Yii::$app->session->setFlash('successFeed', "Прошла уже неделя, как я не ела! Прощай!");
+                       $feedMessage = 'Прошла уже неделя, как я не ела! Прощай!';
+                        //Yii::$app->session->setFlash('successFeed', "Прошла уже неделя, как я не ела! Прощай!");
                     }
                 } else {
                     $scale = new ScaleFeed();
@@ -97,32 +101,32 @@ class MainAttentionsBadgeWidget extends Widget
                     //\yii\helpers\VarDumper::dump($roundTime, 10, true);
 
                     if ($roundTime >= 60 && $roundTime < 60 * 3) {
-                        //print 'Прошло больше часа, я делать уборку хочу!';
-                        Yii::$app->session->setFlash('successClean', "Прошло больше часа, я делать уборку хочу!");
+                         $cleanMessage = 'Прошло больше часа, я делать уборку хочу!';
+                        //Yii::$app->session->setFlash('successClean', "Прошло больше часа, я делать уборку хочу!");
                     }
                     if ($roundTime >= 60 * 3 && $roundTime < 60 * 12) {
-                        //print 'Прошло три часа, я очень хочу сделать уборку!';
-                        Yii::$app->session->setFlash('successClean', "Прошло три часа, я очень хочу сделать уборку!");
+                         $cleanMessage = 'Прошло три часа, я очень хочу сделать уборку!';
+                        //Yii::$app->session->setFlash('successClean', "Прошло три часа, я очень хочу сделать уборку!");
                     }
                     if ($roundTime >= 60 * 12 && $roundTime < 60 * 24) {
-                        //print 'Прошёл уже день, как я не делала уборку!';
-                        Yii::$app->session->setFlash('successClean', "Прошёл уже день, как я не делала уборку!");
+                         $cleanMessage = 'Прошёл уже день, как я не делала уборку!';
+                        //Yii::$app->session->setFlash('successClean', "Прошёл уже день, как я не делала уборку!");
                     }
                     if ($roundTime >= 60 * 24 && $roundTime < 60 * 24 * 2) {
-                       // print 'Прошло уже два дня, как я не делала уборку! Ну очень хочется сделать уборку!';
-                        Yii::$app->session->setFlash('successClean', "Прошёл уже день, как я не делала уборку!");
+                       $cleanMessage = 'Прошло уже два дня, как я не делала уборку! Ну очень хочется сделать уборку!';
+                        //Yii::$app->session->setFlash('successClean', "Прошёл уже день, как я не делала уборку!");
                     }
                     if ($roundTime >= 60 * 24 * 2 && $roundTime < 60 * 24 * 3) {
-                        //print 'Прошёл уже больше двух дней, как я не делала уборку!';
-                        Yii::$app->session->setFlash('successClean', "Прошёл уже больше двух дней, как я не делала уборку!");
+                         $cleanMessage = 'Прошёл уже больше двух дней, как я не делала уборку!';
+                        //Yii::$app->session->setFlash('successClean', "Прошёл уже больше двух дней, как я не делала уборку!");
                     }
                     if ($roundTime >= 60 * 24 * 3 && $roundTime < 60 * 24 * 7) {
-                        //print 'Прошло уже больше трёх дней, как я не делала уборку!';
-                        Yii::$app->session->setFlash('successClean', "Прошло уже больше трёх дней, как я не делала уборку!");
+                         $cleanMessage = 'Прошло уже больше трёх дней, как я не делала уборку!';
+                        //Yii::$app->session->setFlash('successClean', "Прошло уже больше трёх дней, как я не делала уборку!");
                     }
                     if ($roundTime >= 60 * 24 * 7) {
-                        //print 'Прошла уже неделя, как я не делала уборку! До свидания!';
-                        Yii::$app->session->setFlash('successClean', "Прошла уже неделя, как я не делала уборку! До свидания!");
+                         $cleanMessage = 'Прошла уже неделя, как я не делала уборку! До свидания!';
+                        //Yii::$app->session->setFlash('successClean', "Прошла уже неделя, как я не делала уборку! До свидания!");
                     }
                 } else {
                     $scale = new ScaleClean();
@@ -132,12 +136,16 @@ class MainAttentionsBadgeWidget extends Widget
                     $scale->step = 0;
                     $scale->save();
                 }
+            } else {
+                print 'Нет подписки ни на один курс!';
+            }
 
-
+        if (Course::findSubscribed(Yii::$app->user->id)->one()) {
+            foreach (Course::findSubscribed(Yii::$app->user->id)->all() as $key => $course){
                 if (UserPoints::find()->where(['user_id' => Yii::$app->user->id])->andWhere(['course_id' => $course->id])->andWhere(['element_id' => 1])->one()){
                     $points = UserPoints::find()->where(['user_id' => Yii::$app->user->id])->andWhere(['course_id' => $course->id])->andWhere(['element_id' => 1])->one();
                     //\yii\helpers\VarDumper::dump($points->points, 10, true);
-                    $feedPoints = $points->points;
+                    $feedPoints[$course->id] = $points->points;
                 } else {
                     $points = new UserPoints();
                     $points->user_id = Yii::$app->user->id;
@@ -148,7 +156,7 @@ class MainAttentionsBadgeWidget extends Widget
                 }
                 if (UserPoints::find()->where(['user_id' => Yii::$app->user->id])->andWhere(['course_id' => $course->id])->andWhere(['element_id' => 2])->one()){
                     $points = UserPoints::find()->where(['user_id' => Yii::$app->user->id])->andWhere(['course_id' => $course->id])->andWhere(['element_id' => 2])->one();
-                    $cleanPoints = $points->points;
+                    $cleanPoints[$course->id] = $points->points;
                 } else {
                     $points = new UserPoints();
                     $points->user_id = Yii::$app->user->id;
@@ -157,49 +165,31 @@ class MainAttentionsBadgeWidget extends Widget
                     $points->points = 0;
                     $points->save();
                 }
-                if ($feedPoints + $cleanPoints >= 100 && $feedPoints + $cleanPoints < 300) {
-                    $allPoints = $feedPoints + $cleanPoints;
-                    Yii::$app->session->setFlash('successPoints', "Ого, как у тебя много очков! Уже целых " . $allPoints ."!");
+                if ($feedPoints[$course->id] + $cleanPoints[$course->id] < 300 && $feedPoints[$course->id] + $cleanPoints[$course->id] > 0) {
+                    $allPoints = $feedPoints[$course->id] + $cleanPoints[$course->id];
+                    $pointsMessage[$course->id] = "Курс " . $course->id . " Ого, как у тебя много очков! Уже целых " . $allPoints ."!";
                 }
-                if ($feedPoints + $cleanPoints >= 300 && $feedPoints + $cleanPoints < 100) {
-                    $allPoints = $feedPoints + $cleanPoints;
-                    Yii::$app->session->setFlash('successPoints', "Ничего себе! Вот это ты набираешь очки! Уже целых " . $allPoints ."!");
+                if ($feedPoints[$course->id] + $cleanPoints[$course->id] >= 100 && $feedPoints[$course->id] + $cleanPoints[$course->id] < 300) {
+                    $allPoints = $feedPoints[$course->id] + $cleanPoints[$course->id];
+                    $pointsMessage[$course->id] = "Курс " . $course->id . " Ого, как у тебя много очков! Уже целых " . $allPoints ."!";
+                    //Yii::$app->session->setFlash('successPoints', "Ого, как у тебя много очков! Уже целых " . $allPoints ."!");
                 }
-
-
-
-
-                //$allAttempts = Attempt::find()->where(['user_id' => Yii::$app->user->id])->all();
-
-                //print '<br><br><br><br><br><br><br><br><br>';
-                $allQuestionCost = 0;
-               // foreach ($allAttempts as $keyAttempt => $attempt){
-                    //$challenge = ChallengeHasQuestion::find()->innerJoinWith('challenge')->where(['challenge.id' => $attempt->challenge_id])->all();
-                // получить из challenge_has_question то задание, которое
-                    // есть в тесте
-                    // который есть в этой попытке
-                    // достать тест
-               //     $allQuestions[$keyAttempt] = ChallengeHasQuestion::find()->where(['challenge_id' => $attempt->challenge_id])->all();
-
-                 //   for ($i = 0; $i < count($allQuestions); $i++){
-                 //       for ($o = 0; $o < count($allQuestions[$i]); $o++){
-                 //           $questionCost = Question::find()->where(['id' => $allQuestions[$i][$o]->question_id])->one();
-                //            $allQuestionCost += $questionCost->cost;
-                            //\yii\helpers\VarDumper::dump($allQuestionCost, 10, true);
-                //        }
-
-              //      }
-            //    }
-                //foreach ($challenge[0]->challenge as $one){
-                //\yii\helpers\VarDumper::dump($allQuestions, 10, true);
-               // }
-
-
-            } else {
-                print 'Нет подписки ни на один курс!';
+                if ($feedPoints[$course->id] + $cleanPoints[$course->id] >= 300 && $feedPoints[$course->id] + $cleanPoints[$course->id] < 1000) {
+                    $allPoints = $feedPoints[$course->id] + $cleanPoints[$course->id];
+                    $pointsMessage[$course->id] = "Курс " . $course->id . " Ничего себе! Вот это ты набираешь очки! Уже целых " . $allPoints ."!";
+                    //Yii::$app->session->setFlash('successPoints', "Ничего себе! Вот это ты набираешь очки! Уже целых " . $allPoints ."!");
+                }
             }
 
+            if ($feedMessage == true){
+                $number += 1;
+            }
 
+            if ($cleanMessage == true){
+                $number += 1;
+            }
+
+            $number += count($pointsMessage);
 
         echo '<ul class="nav navbar-nav pull-right">
 					<li class="separator hide">
@@ -207,93 +197,48 @@ class MainAttentionsBadgeWidget extends Widget
 					<li class="dropdown dropdown-extended dropdown-dark" id="header_inbox_bar">
 						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">
 						<i class="icon-fire"></i>
-						<span class="badge badge-danger">4</span>
+						<span class="badge badge-danger">' . $number . '</span>
 						</a>
 						<ul class="dropdown-menu">
 							<li class="external">
-								<h3>У тебя <span class="bold">Количество новых</span> Сообщений</h3>
-								<a href="#">посмотреть все</a>
+								<h3>У тебя <span class="bold">3 новых</span> сообщения</h3>
+								<a href="#">*</a>
 							</li>
 							<li>
 								<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 250px;"><ul class="dropdown-menu-list scroller" style="height: 250px; overflow: hidden; width: auto;" data-handle-color="#637283" data-initialized="1">';
-        if( Yii::$app->session->hasFlash('successFeed') ){
+        if(isset($feedMessage)){
             echo '<li>
 			    <a href="#' . '">
-				<span class="time">Курс '  . '</span>
+				
 				<span class="details">
 				<span class="label label-sm label-icon"> ' . '
 				<!--<i class="fa fa-plus"></i>-->
 				</span>
 				';
-            echo Yii::$app->session->getFlash('successFeed');
-            echo '</a>
-                  </li>';
-
-        } else {
-            echo '<li>
-			     <a href="#' . '">
-				 <span class="time">Курс '  . '</span>
-				 <span class="details">
-				 <span class="label label-sm label-icon"> ' . '
-				 <!--<i class="fa fa-plus"></i>-->
-				 </span>';
-            echo 'Ничего тут нет, кошка сыта!';
-            echo '</a>
-                  </li>';
-        }
-        if( Yii::$app->session->hasFlash('successClean') ){
-            echo '<li>
-			    <a href="#' . '">
-				<span class="time">Курс '  . '</span>
-				<span class="details">
-				<span class="label label-sm label-icon"> ' . '
-				<!--<i class="fa fa-plus"></i>-->
-				</span>
-				';
-            echo Yii::$app->session->getFlash('successClean');
-            echo '</a>
-                  </li>';
-
-        }        else {
-            echo '<li>
-			    <a href="#' . '">
-				<span class="time">Курс '  . '</span>
-				<span class="details">
-				<span class="label label-sm label-icon"> ' . '
-				<!--<i class="fa fa-plus"></i>-->
-				</span>
-				';
-            echo 'Ничего тут нет, кошка делала уборку!';
+            echo $feedMessage;
             echo '</a>
                   </li>';
 
         }
-
-        if( Yii::$app->session->hasFlash('successPoints') ){
+        if(isset($cleanMessage)){
             echo '<li>
 			    <a href="#' . '">
-				<span class="time">Курс ' . '</span>
 				<span class="details">
 				<span class="label label-sm label-icon"> ' . '
 				<!--<i class="fa fa-plus"></i>-->
-				</span>
-				';
-            echo Yii::$app->session->getFlash('successPoints');
-            echo '</a>
-                  </li>';
+				</span>';
+            echo $cleanMessage;
+            echo '</a></li>';
+        }
 
-        }        else {
-            echo '<li>
-			    <a href="#' . '">
-				<span class="time">Курс ' . '</span>
-				<span class="details">
-				<span class="label label-sm label-icon"> ' . '
-				<!--<i class="fa fa-plus"></i>-->
-				</span>
-				';
-            echo 'Маловато очков будет!';
-            echo '</a>
-                  </li>';
+            if (isset($pointsMessage)){
+                foreach ($pointsMessage as $courseId => $text) {
+                    echo '<li>
+  			    <a href="#' . '">
+  				<span class="details">' . $text . '</a>
+                   </li>';
+                }
+            }
 
         }
 
