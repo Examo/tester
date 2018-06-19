@@ -3,6 +3,7 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
+use app\widgets\MainAttentionsBadgeWidget;
 use yii\helpers\Html;
 use app\assets\MetronicAsset;
 use app\widgets\MainChallengesBadgeWidget;
@@ -86,6 +87,8 @@ MetronicAsset::register($this);
                     <?php echo $this->render('@app/views/layouts/metronic/header_'.( Yii::$app->user->isGuest ? 'guest' : 'user' )) ?>
 
                     <?= MainChallengesBadgeWidget::widget(); ?>
+                    
+                    <?= MainAttentionsBadgeWidget::widget(); ?>
 
                 </div>
             </div>
