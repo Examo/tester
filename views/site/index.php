@@ -1,5 +1,7 @@
 <?php
 /* @var $this yii\web\View */
+use app\widgets\RatingWidget;
+
 $this->title = \Yii::$app->name;
 ?>
 
@@ -38,5 +40,7 @@ $this->title = \Yii::$app->name;
     </div>
 </div>
 
-<?php $isGuest = Yii::$app->user->id; ?>
-<?php \yii\helpers\VarDumper::dump($isGuest, 10, true); ?>
+<?= RatingWidget::widget(); ?>
+
+<?php //$isGuest = Yii::$app->user->id; ?>
+<?php //\yii\helpers\VarDumper::dump($isGuest, 10, true); ?>

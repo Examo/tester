@@ -542,6 +542,11 @@ class ChallengeController extends Controller
                     if (UserPoints::find()->where(['user_id' => Yii::$app->user->id])->andWhere(['course_id' => $course->id])->andWhere(['element_id' => $challengeElementsType->element_id])->one()) {
                         $points = UserPoints::find()->where(['user_id' => Yii::$app->user->id])->andWhere(['course_id' => $course->id])->andWhere(['element_id' => $challengeElementsType->element_id])->one();
                         \yii\helpers\VarDumper::dump($points, 10, true);
+                        $points->user_id = Yii::$app->user->id;
+                        $points->course_id = $course->id;
+                        $points->element_id = $challengeElementsType->element_id;
+                        $points->points = $points->points + $allLastChallengeQuestionsCost;
+                        $points->save();
                     } else {
                         $points = new UserPoints();
                         $points->user_id = Yii::$app->user->id;

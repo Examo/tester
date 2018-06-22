@@ -66,6 +66,106 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php endif; ?>
     </div>
 
+
+        <div class="portlet-title">
+            <center><div class="caption caption-md">
+                    <i class="icon-bar-chart theme-font-color hide"></i>
+                    <span class="caption-subject theme-font-color bold uppercase"><br>Рейтинг учащихся</span>
+
+                </div></center>
+
+        </div>
+        <div class="portlet-body">
+
+            <div class="table-scrollable table-scrollable-borderless">
+                <table class="table table-hover table-light">
+                    <thead>
+                    <tr class="uppercase">
+                        <th colspan="2">
+                            Учащийся
+                        </th>
+                        <th>
+                            "Еда"
+                        </th>
+                        <th>
+                            "Уборка"
+                        </th>
+                        <th>
+                            "Игра"
+                        </th>
+                        <th>
+                            "Учёба"
+                        </th>
+                        <th>
+                            Всего
+                        </th>
+                        <th>
+                            Место
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($courseRating['rating'] as $userId => $userPoints):?>
+
+                        <tr<?php foreach ($courseRating['data'] as $userData): ?>
+                            <?php if ($userData['isSelf'] == true && $userData['user_id'] == $userId): ?>
+<?= 'style="border-width: thin; border-bottom: dashed; border-top: dashed; border-left: groove; border-color: #26A69A; overflow-x: hidden;"'; ?>
+                                <?php break; ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>>
+                            <td class="fit">
+                                <img class="user-pic" src="/i/hintemoticon.jpg">
+                            </td>
+                            <td>
+                                <?php foreach ($courseRating['data'] as $userData): ?>
+                                    <?php if ($userData['user_id'] == $userId && $userData['element_id'] == 1): ?>
+                                        <?= $userData['username']; ?>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </td>
+                            <td>
+                                <?php foreach ($courseRating['data'] as $userData): ?>
+                                    <?php if ($userData['user_id'] == $userId && $userData['element_id'] == 1): ?>
+                                        <?= $userData['points']; ?>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </td>
+                            <td>
+                                <?php foreach ($courseRating['data'] as $userData): ?>
+                                    <?php if ($userData['user_id'] == $userId && $userData['element_id'] == 2): ?>
+                                        <?= $userData['points']; ?>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </td>
+                            <td>
+                                <?php foreach ($courseRating['data'] as $userData): ?>
+                                    <?php if ($userData['user_id'] == $userId && $userData['element_id'] == 3): ?>
+                                        <?= $userData['points']; ?>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                                -
+                            </td>
+                            <td>
+                              -
+                            </td>
+                            <td>
+                                <?= $userPoints; ?>
+                            </td>
+
+                            <td>
+                                <span class="bold theme-font-color"><?php foreach ($courseRating['data'] as $userData): ?>
+                                        <?php if ($userData['user_id'] == $userId && $userData['element_id'] == 1): ?>
+                                            <?= $userData['position']; ?>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                    <?php endforeach; ?></span>
+                            </td>
+                        </tr>
+
+                    </tbody></table>
+            </div>
+        </div>
+
     <div class="panel-body">
         <div class="panel-heading">
             <strong style="font-size: large">Полное описание курса</strong>
@@ -111,4 +211,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 </div>
 
-<?php //\yii\helpers\VarDumper::dump($courseTime, 10, true); ?>
+<?php //\yii\helpers\VarDumper::dump($courseRating['data'], 10, true); ?>
+
+

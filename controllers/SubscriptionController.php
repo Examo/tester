@@ -226,6 +226,8 @@ class SubscriptionController extends Controller
             $numberOfPupils[$courseNumber] = count($courses);
         }
 
+        $courseRating = $subscriptionStart->getCourseRating($id);
+
         if (!empty($lecturers)) {
             return $this->render('view', [
                 'course' => $course,
@@ -242,7 +244,8 @@ class SubscriptionController extends Controller
                 'challengesCount' => $challengesCount,
                 'webinarsCount' => $webinarsCount,
                 'homeworksCount' => $homeworksCount,
-                'examsCount' => $examsCount
+                'examsCount' => $examsCount,
+                'courseRating' => $courseRating
             ]);
         } else {
             throw new NotFoundHttpException('Преподавателя в этом курсе пока ещё не существует!');

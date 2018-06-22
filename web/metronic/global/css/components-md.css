@@ -4894,7 +4894,7 @@ Portlets
 }
 .portlet.light > .portlet-title {
   padding: 0;
-  min-height: 48px;
+  /*min-height: 48px;*/
 }
 .portlet.light > .portlet-title > .caption {
   color: #666;
@@ -5016,7 +5016,7 @@ Portlets
   padding: 10px;
 }
 .portlet > .portlet-title {
-  border: 0 !important;
+  /*border: 0 !important;*/
   margin-bottom: 0;
 }
 .portlet.light.bordered.form-fit > .portlet-title {

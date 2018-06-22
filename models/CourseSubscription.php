@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\models\ar\UserPoints;
 use Yii;
 
 /**
@@ -137,7 +138,7 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
     }
 
     public function getExamsCount($course_id)
-{
+    {
     $events = Event::find()->where(['course_id' => $course_id])->all();
     $regexp = "/(экзамен)([0-9]*)/ui";
     $match = [];
@@ -155,5 +156,99 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
         }
     }
     return $number;
-}
+    }
+
+    public function getCourseRating($course_id)
+    {
+        $courseRating = UserPoints::find()->where(['course_id' => $course_id])->all();
+
+        // избавляемся от тех, у кого 0 points
+        foreach ($courseRating as $key => $userData) {
+            if ($userData->points == 0 && $userData->user_id != Yii::$app->user->id){
+                unset($courseRating[$key]);
+            }
+        }
+
+        $data = [];
+        foreach ($courseRating as $key => $usersData){
+            if ($usersData->user_id == Yii::$app->user->id){
+                $data[$key]['user_id'] = Yii::$app->user->id;
+                $data[$key]['isSelf'] = true;
+            } else {
+                $data[$key]['user_id'] = $usersData->user_id;
+                $data[$key]['isSelf'] = null;
+            }
+            $data[$key]['element_id'] = $usersData->element_id;
+            $data[$key]['points'] = $usersData->points;
+        }
+
+        //\yii\helpers\VarDumper::dump($data, 10, true);
+
+        $users = [];
+        $allUserPoints = [];
+        foreach ($data as $key => $value){
+            if (isset($users[$value['user_id']])){
+                $allUserPoints[$value['user_id']] = $allUserPoints[$value['user_id']] + $value['points'];
+            } else {
+                $allUserPoints[$value['user_id']] = $value['points'];
+                $users[$value['user_id']] = true;
+            }
+            //unset($data[$key]);
+            //$allUserPoints[$value['user_id']] = $value['user_id'];
+            //if ($data[$key]['user_id'] == $value['user_id']) {
+            //    print $data[$key]['user_id'] . ' === ' . $value['user_id'] . '<br>';
+                //unset($data[$key]);
+            //}
+        }
+
+
+
+       // foreach ($allUserPoints as $key => $row) {
+      //      $sortOnPoints[$key] = $row;
+      //  }
+      //   array_multisort($sortOnPoints, SORT_DESC, $data);
+         arsort($allUserPoints);
+
+        // оставляем только 5 пользователей в рейтинге, остальных удаляем
+        $numberOfItem = 1;
+        $neededUsers = [];
+        foreach ($allUserPoints as $key => $value) {
+            if ($numberOfItem < 6) {
+                $neededUsers[$key] = $numberOfItem;
+            }
+            if ($numberOfItem >= 6){
+                if ($key != Yii::$app->user->id) {
+                    unset($allUserPoints[$key]);
+                }
+                if ($key == Yii::$app->user->id) {
+                    $neededUsers[$key] = $numberOfItem;;
+                }
+            }
+            $numberOfItem++;
+        }
+        //print $numberOfItem;
+        //\yii\helpers\VarDumper::dump($neededUsers, 10, true);
+        foreach ($data as $userKey => $userData) {
+            if ($userData['user_id'] != Yii::$app->user->id && !isset($neededUsers[$userData['user_id']])) {
+                unset($data[$userKey]);
+            } else {
+            }
+        }
+        foreach ($data as $userKey => $userData){
+            foreach ($neededUsers as $userId => $userPosition)
+            if ($userData['user_id'] == $userId){
+                $data[$userKey]['position'] = $userPosition;
+            }
+        }
+
+        foreach ($data as $userKey => $userData){
+             $user = User::find()->where(['id' => $userData['user_id']])->one();
+             $data[$userKey]['username'] = $user->username;
+        }
+        //\yii\helpers\VarDumper::dump($data, 10, true);
+
+        $all['rating'] = $allUserPoints;
+        $all['data'] = $data;
+        return $all;
+    }
 }

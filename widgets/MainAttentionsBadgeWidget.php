@@ -34,10 +34,12 @@ class MainAttentionsBadgeWidget extends Widget
                 if (ScaleFeed::find()->where(['user_id' => Yii::$app->user->id])->one()) {
                     //\yii\helpers\VarDumper::dump(ScaleFeed::find()->where(['user_id' => Yii::$app->user->id])->one(), 10, true);
                     //$scaleFeed = ScaleFeed::find()->where(['user_id' => Yii::$app->user->id])->one();
+                    if (Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 1])->andWhere(['attempt.user_id' => Yii::$app->user->id])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one()){
                     $lastFeedAttempt = Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 1])->andWhere(['attempt.user_id' => Yii::$app->user->id])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one();
                     $lastFeedChallengeFinishTime = Yii::$app->getFormatter()->asTimestamp($lastFeedAttempt->finish_time);
-
-                    // значение шкалы минус время после теста в единицах минутах равно часу, то
+                    } else {
+                        $lastFeedChallengeFinishTime = Yii::$app->getFormatter()->asTimestamp(time());
+                    }
 
                     // узнаём текущее время и переводим его в простое число
                     $time = Yii::$app->getFormatter()->asTimestamp(time());
@@ -86,16 +88,21 @@ class MainAttentionsBadgeWidget extends Widget
 
                 if (ScaleClean::find()->where(['user_id' => Yii::$app->user->id])->one()) {
                     //\yii\helpers\VarDumper::dump(ScaleClean::find()->where(['user_id' => Yii::$app->user->id])->one(), 10, true);
-                    $ScaleClean = ScaleClean::find()->where(['user_id' => Yii::$app->user->id])->one();
-                    $lastFeedAttempt = Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 2])->andWhere(['attempt.user_id' => Yii::$app->user->id])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one();
-                    $lastFeedChallengeFinishTime = Yii::$app->getFormatter()->asTimestamp($lastFeedAttempt->finish_time);
+                    //$ScaleClean = ScaleClean::find()->where(['user_id' => Yii::$app->user->id])->one();
+
+                    if (Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 2])->andWhere(['attempt.user_id' => Yii::$app->user->id])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one()) {
+                        $lastCleanAttempt = Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 2])->andWhere(['attempt.user_id' => Yii::$app->user->id])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one();
+                        $lastCleanChallengeFinishTime = Yii::$app->getFormatter()->asTimestamp($lastCleanAttempt->finish_time);
+                    } else {
+                        $lastCleanChallengeFinishTime = Yii::$app->getFormatter()->asTimestamp(time());
+                    }
 
                     // значение шкалы минус время после теста в единицах минутах равно часу, то
 
                     // узнаём текущее время и переводим его в простое число
                     $time = Yii::$app->getFormatter()->asTimestamp(time());
                     // получаем изменение времени с момента окончания теста до текущего момента
-                    $timeAfterLastFeedChallengeTest = $time - $lastFeedChallengeFinishTime;
+                    $timeAfterLastFeedChallengeTest = $time - $lastCleanChallengeFinishTime;
                     // округляем изменение времени до 100 и отнимаем 1, чтобы получить то значение, которое нужно отнимать для изменения шкалы с течением времени
                     $roundTime = ceil($timeAfterLastFeedChallengeTest / 100) - 1;
                     //\yii\helpers\VarDumper::dump($roundTime, 10, true);
@@ -165,7 +172,7 @@ class MainAttentionsBadgeWidget extends Widget
                     $points->element_id = 2;
                     $points->points = 0;
                     $points->save();
-                    $feedPoints[$course->id] = $points->points;
+                    $cleanPoints[$course->id] = $points->points;
                 }
                 if ($feedPoints[$course->id] + $cleanPoints[$course->id] < 100 && $feedPoints[$course->id] + $cleanPoints[$course->id] > 0) {
                     $allPoints = $feedPoints[$course->id] + $cleanPoints[$course->id];
@@ -203,14 +210,14 @@ class MainAttentionsBadgeWidget extends Widget
 						</a>
 						<ul class="dropdown-menu">
 							<li class="external">
-								<h3>У тебя <span class="bold">' . $number . ' новых</span> сообщения</h3>
+								<h3>У тебя <span class="bold">' . $number . ' новых</span> сообщ.</h3>
 								<a href="#">*</a>
 							</li>
 							<li>
 								<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 250px;"><ul class="dropdown-menu-list scroller" style="height: 250px; overflow: hidden; width: auto;" data-handle-color="#637283" data-initialized="1">';
         if(isset($feedMessage)){
             echo '<li>
-			    <a href="#' . '">
+			    <a href="/feed' . '">
 				
 				<span class="details">
 				<span class="label label-sm label-icon"> ' . '
@@ -224,7 +231,7 @@ class MainAttentionsBadgeWidget extends Widget
         }
         if(isset($cleanMessage)){
             echo '<li>
-			    <a href="#' . '">
+			    <a href="/clean' . '">
 				<span class="details">
 				<span class="label label-sm label-icon"> ' . '
 				<!--<i class="fa fa-plus"></i>-->
