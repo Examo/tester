@@ -71,12 +71,10 @@ $this->params['breadcrumbs'][] = $this->title;
             <center><div class="caption caption-md">
                     <i class="icon-bar-chart theme-font-color hide"></i>
                     <span class="caption-subject theme-font-color bold uppercase"><br>Рейтинг учащихся</span>
-
                 </div></center>
-
         </div>
+    <?php if ($courseRating['rating']): ?>
         <div class="portlet-body">
-
             <div class="table-scrollable table-scrollable-borderless">
                 <table class="table table-hover table-light">
                     <thead>
@@ -84,21 +82,27 @@ $this->params['breadcrumbs'][] = $this->title;
                         <th colspan="2">
                             Учащийся
                         </th>
+
                         <th>
                             "Еда"
                         </th>
+
                         <th>
                             "Уборка"
                         </th>
+
                         <th>
                             "Игра"
                         </th>
+
                         <th>
                             "Учёба"
                         </th>
+
                         <th>
                             Всего
                         </th>
+
                         <th>
                             Место
                         </th>
@@ -106,16 +110,16 @@ $this->params['breadcrumbs'][] = $this->title;
                     </thead>
                     <tbody>
                     <?php foreach ($courseRating['rating'] as $userId => $userPoints):?>
-
                         <tr<?php foreach ($courseRating['data'] as $userData): ?>
                             <?php if ($userData['isSelf'] == true && $userData['user_id'] == $userId): ?>
-<?= 'style="border-width: thin; border-bottom: dashed; border-top: dashed; border-left: groove; border-color: #26A69A; overflow-x: hidden;"'; ?>
+                                <?= 'style="border-width: thin; border-bottom: dashed; border-top: dashed; border-left: groove; border-color: #26A69A; overflow-x: hidden;"'; ?>
                                 <?php break; ?>
                             <?php endif; ?>
                         <?php endforeach; ?>>
                             <td class="fit">
                                 <img class="user-pic" src="/i/hintemoticon.jpg">
                             </td>
+
                             <td>
                                 <?php foreach ($courseRating['data'] as $userData): ?>
                                     <?php if ($userData['user_id'] == $userId && $userData['element_id'] == 1): ?>
@@ -123,6 +127,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <?php endif; ?>
                                 <?php endforeach; ?>
                             </td>
+
                             <td>
                                 <?php foreach ($courseRating['data'] as $userData): ?>
                                     <?php if ($userData['user_id'] == $userId && $userData['element_id'] == 1): ?>
@@ -130,6 +135,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <?php endif; ?>
                                 <?php endforeach; ?>
                             </td>
+
                             <td>
                                 <?php foreach ($courseRating['data'] as $userData): ?>
                                     <?php if ($userData['user_id'] == $userId && $userData['element_id'] == 2): ?>
@@ -137,6 +143,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <?php endif; ?>
                                 <?php endforeach; ?>
                             </td>
+
                             <td>
                                 <?php foreach ($courseRating['data'] as $userData): ?>
                                     <?php if ($userData['user_id'] == $userId && $userData['element_id'] == 3): ?>
@@ -145,9 +152,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <?php endforeach; ?>
                                 -
                             </td>
+
                             <td>
                               -
                             </td>
+
                             <td>
                                 <?= $userPoints; ?>
                             </td>
@@ -161,10 +170,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <?php endforeach; ?></span>
                             </td>
                         </tr>
-
                     </tbody></table>
             </div>
         </div>
+    <?php else: ?>
+    <div class="portlet-body">
+        <center><strong>Никто не выполнял тесты по курсу, поэтому нет и рейтинга!</strong></center>
+    </div>
+    <?php endif; ?>
 
     <div class="panel-body">
         <div class="panel-heading">
@@ -198,15 +211,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 </tr>
             <?php endforeach; ?>
         </table>
-        <?php if( $course->isSubscribed(Yii::$app->user->id) ): ?>
-            <div class="pull-right">
-                <p><a href="<?= \yii\helpers\Url::to(['subscription/unsubscribe', 'id' => $course->id]) ?>" class="btn btn-default">Отписаться и не получать новые тесты по курсу</a></p>
-            </div>
-        <?php else: ?>
-            <div class="pull-left">
-                <p><a href="<?= \yii\helpers\Url::to(['subscription/subscribe', 'id' => $course->id]) ?>" class="btn btn-primary">Подписаться и получать новые тесты</a></p>
-            </div>
-        <?php endif; ?>
+        <div class="panel-heading">
+            <?php if( $course->isSubscribed(Yii::$app->user->id) ): ?>
+                <div>
+                    <center><a href="<?= \yii\helpers\Url::to(['subscription/unsubscribe', 'id' => $course->id]) ?>" class="btn btn-default" style="padding: 20px; font-size: large">Отписка! (Не получать новые тесты по курсу)</a></center>
+                </div>
+            <?php else: ?>
+                <div>
+                    <center><a href="<?= \yii\helpers\Url::to(['subscription/subscribe', 'id' => $course->id]) ?>" class="btn btn-success" style="padding: 20px; font-size: large">Подписаться и получать новые тесты</a></center>
+                </div>
+            <?php endif; ?>
+        </div>
     </div>
 
 </div>

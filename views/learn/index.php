@@ -152,66 +152,70 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 <div class="panel panel-default element-container" xmlns="http://www.w3.org/1999/html">
-    <div class="panel-heading">
-        <h4 class="panel-title">
-            Прошедшие недели и обязательные тесты за целые недели
-        </h4>
-    </div>
-    <div class="feading">
-        <?php if (isset($data)):?>
+<div class="panel-heading">
+    <h4 class="panel-title">
+        Прошедшие недели и обязательные тесты за целые недели
+    </h4>
+</div>
+<div class="feading">
+    <?php if (isset($lastData)):?>
+
+        <div class="panel-heading">
+            <div class="item">
+                <div class="item-head">
+                    <div class="item-name primary-link">
+                        <?php foreach ($coursesBegin as $courseBeginId => $currentWeek):?>
+                            <?= 'Текущая неделя по курсу ' . $courseBeginId . ': <strong>' . $currentWeek['currentWeek'] . '</strong><br>'; ?>
+                        <?php endforeach; ?>
+                   </div>
+               </div>
+            </div>
+        </div>
 
         <?php $learn = new \app\models\Learn();?>
-        <?php foreach ($data as $key => $value): ?>
-        <div class="panel-body">
-            <div class="panel panel-default" style="border: normal; border-color: #00a5bb">
-                 <div class="panel-heading">
-                    <div class="item">
-                        <div class="item-head">
-                            <div class="item-name primary-link">
-                            <strong>Курс: <?= $key; ?><br></strong>
-                            Текущая неделя: <?= $data[$key]['currentWeek']; ?><br><br>
-                                </div>
-            <?php for ($i = 0; $i <= count($value) - 2; $i++): ?>
-                <div class="panel panel-default" style="border: normal; border-color: #00a5bb">
+        <?php foreach ($lastData as $weeks => $courses): ?>
+            <div class="panel-body">
+                <div class="panel panel-default" style="border: normal; border-color: #00a5bb; margin-top: -15px; margin-bottom: 0px">
                     <div class="panel-heading">
                         <div class="item">
                             <div class="item-head">
-                                <a href="/challenge/start?id=<?= $value[$i]['test']; ?>">
-                                   <div class="item-name primary-link">
-                                       Прошедшая неделя: <strong><?= $value[$i]['week']; ?></strong><br>
-                                       <strong>Пройти общий тест для недели <?= $value[$i]['week']; ?></strong> на 10 минут
-                                       <?php if (isset($value[$i]['realChallengeWeek'])):?>
-                                       (Реальная неделя теста: <?= $value[$i]['realChallengeWeek'];?>)
-                                       <?php endif; ?>
-                                  </div></a>
+                                <div class="panel-heading">
+                                    <?php foreach ($courses as $courseId => $challengeData): ?>
+                                    <div class="item">
+                                         <div class="item-head">
+                                            <a href="/challenge/start?id=<?= $challengeData['test']; ?>">
+                                                <div class="item-name primary-link">
+                                                    Курс: <strong><?= $courseId?></strong><br>
+                                                    Прошедшая неделя: <strong><?= $challengeData['week']; ?></strong><br>
+                                                    <strong>Пройти общий тест для недели <?= $challengeData['week']; ?></strong> на 10 минут
+                                                    <?php if (isset($challengeData['realChallengeWeek'])):?>
+                                                        (Реальная неделя теста: <?= $challengeData['realChallengeWeek'];?>)
+                                                    <?php endif; ?>
+                                                    <div style="color: <?= $challengeData['isAttempt'] ? 'green' : 'red';?>; margin: 10px; "><center><strong><?= $challengeData['isAttempt'] ? 'Тест УЖЕ ВЫПОЛНЕН!' : 'Тест ЕЩЁ НЕ ВЫПОЛНЕН!';?></strong></center></div>
+                                                </div></a>
+                                        </div>
+                                    </div>
+                                    <?php endforeach; ?>
+
+                                    <?php foreach ($all as $week):?>
+                                        <?php $object = $learn->getObjectClass($week) ?>
+                                        <?php $span = $learn->getTopLeftStyleNumber($week); ?>
+                                        <?php if ($object):?>
+                                            <?php if ($week['week'] == $challengeData['week']):?>
+                                                <p><center><strong><?= Yii::t('learnObjects', $week['object']);?></strong></center></p>
+                                                <span style="font-size:11px" title="<?= $week['week']?>-я неделя (<?= Yii::t('learnObjects', $week['object']);?>)"><center><strong>Заполнено:<br><?= $week['value']?>%</strong></center></span>
+
+                                                <center><img src="/i/<?= $challengeData['object'] ? $challengeData['object'] : 'no_image' ?>.png" /></center><br>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                     <?php endforeach; ?>
+                               </div>
                             </div>
                         </div>
-
-                        <?php //\yii\helpers\VarDumper::dump($all, 10, true); ?>
-                        <?php foreach ($all as $week):?>
-                            <?php $object = $learn->getObjectClass($week) ?>
-                            <?php $span = $learn->getTopLeftStyleNumber($week); ?>
-                            <?php if ($object):?>
-                                <?php if ($week['week'] == $value[$i]['week']):?>
-                                    <p><center><strong><?= Yii::t('learnObjects', $week['object']);?></strong></center></p>
-                                <span style="font-size:11px" title="<?= $week['week']?>-я неделя (<?= Yii::t('learnObjects', $week['object']);?>)"><center><strong>Заполнено:<br><?= $week['value']?>%</strong></center></span>
-                                    <div style="color: <?= $value[$i]['isAttempt'] ? 'green' : 'red';?>; margin: 10px; "><center><strong><?= $value[$i]['isAttempt'] ? 'Тест УЖЕ ВЫПОЛНЕН!' : 'Тест ЕЩЁ НЕ ВЫПОЛНЕН!';?></strong></center></div>
-                                <center><img src="/i/<?= $value[$i]['object'] ? $value[$i]['object'] : 'no_image' ?>.png" /></center><br>
-                                <?php endif; ?>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
                     </div>
                 </div>
-            <?php endfor; ?>
-                        </div>
-                    </div>
-                 </div>
             </div>
-        </div>
         <?php endforeach; ?>
-                        <?php endif;?>
-    </div>
+    <?php endif;?>
 </div>
-
-<?php// \yii\helpers\VarDumper::dump($all, 10, true); ?>
-
+</div>

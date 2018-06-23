@@ -236,7 +236,7 @@ class CleanController extends Controller
             $difficultSubjects = $newDifficultSubjects;
 
             $mainChallenges = $cleanChallenges;
-
+            \yii\helpers\VarDumper::dump($difficultSubjects, 10, true);
             if ($mainChallenges) {
                 if ($difficultSubjects) {
                     foreach ($difficultSubjects as $difficultSubject) {
