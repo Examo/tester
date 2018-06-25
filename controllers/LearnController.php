@@ -201,8 +201,10 @@ class LearnController extends Controller
                 }
                 $coursesBegin[$courseId]['currentWeek'] = $challengesData['currentWeek'];
             }
-            unset($lastData['']);asort($lastData);
+            unset($lastData['']);
 
+            ksort($lastData);
+            
             $result = [];
             $weekResult = 0;
             foreach ($allDaysFeed as $courseFeed => $weekFeed) {
