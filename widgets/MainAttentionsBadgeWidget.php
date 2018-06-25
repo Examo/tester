@@ -148,8 +148,8 @@ class MainAttentionsBadgeWidget extends Widget
             }
 
         if (Course::findSubscribed(Yii::$app->user->id)->one()) {
-            foreach (Course::findSubscribed(Yii::$app->user->id)->all() as $key => $course){
-                if (UserPoints::find()->where(['user_id' => Yii::$app->user->id])->andWhere(['course_id' => $course->id])->andWhere(['element_id' => 1])->one()){
+            foreach (Course::findSubscribed(Yii::$app->user->id)->all() as $key => $course) {
+                if (UserPoints::find()->where(['user_id' => Yii::$app->user->id])->andWhere(['course_id' => $course->id])->andWhere(['element_id' => 1])->one()) {
                     $points = UserPoints::find()->where(['user_id' => Yii::$app->user->id])->andWhere(['course_id' => $course->id])->andWhere(['element_id' => 1])->one();
                     //\yii\helpers\VarDumper::dump($points->points, 10, true);
                     $feedPoints[$course->id] = $points->points;
@@ -162,7 +162,7 @@ class MainAttentionsBadgeWidget extends Widget
                     $points->save();
                     $feedPoints[$course->id] = $points->points;
                 }
-                if (UserPoints::find()->where(['user_id' => Yii::$app->user->id])->andWhere(['course_id' => $course->id])->andWhere(['element_id' => 2])->one()){
+                if (UserPoints::find()->where(['user_id' => Yii::$app->user->id])->andWhere(['course_id' => $course->id])->andWhere(['element_id' => 2])->one()) {
                     $points = UserPoints::find()->where(['user_id' => Yii::$app->user->id])->andWhere(['course_id' => $course->id])->andWhere(['element_id' => 2])->one();
                     $cleanPoints[$course->id] = $points->points;
                 } else {
@@ -176,47 +176,57 @@ class MainAttentionsBadgeWidget extends Widget
                 }
                 if ($feedPoints[$course->id] + $cleanPoints[$course->id] < 100 && $feedPoints[$course->id] + $cleanPoints[$course->id] > 0) {
                     $allPoints = $feedPoints[$course->id] + $cleanPoints[$course->id];
-                    $pointsMessage[$course->id] = "Курс " . $course->id . " Неплохо! Очков уже " . $allPoints ."!";
+                    $pointsMessage[$course->id] = "Курс " . $course->id . " Неплохо! Очков уже " . $allPoints . "!";
                 }
                 if ($feedPoints[$course->id] + $cleanPoints[$course->id] >= 100 && $feedPoints[$course->id] + $cleanPoints[$course->id] < 300) {
                     $allPoints = $feedPoints[$course->id] + $cleanPoints[$course->id];
-                    $pointsMessage[$course->id] = "Курс " . $course->id . " Ого, как у тебя много очков! Уже целых " . $allPoints ."!";
+                    $pointsMessage[$course->id] = "Курс " . $course->id . " Ого, как у тебя много очков! Уже целых " . $allPoints . "!";
                     //Yii::$app->session->setFlash('successPoints', "Ого, как у тебя много очков! Уже целых " . $allPoints ."!");
                 }
                 if ($feedPoints[$course->id] + $cleanPoints[$course->id] >= 300 && $feedPoints[$course->id] + $cleanPoints[$course->id] < 1000) {
                     $allPoints = $feedPoints[$course->id] + $cleanPoints[$course->id];
-                    $pointsMessage[$course->id] = "Курс " . $course->id . " Ничего себе! Вот это ты набираешь очки! Уже целых " . $allPoints ."!";
+                    $pointsMessage[$course->id] = "Курс " . $course->id . " Ничего себе! Вот это ты набираешь очки! Уже целых " . $allPoints . "!";
                     //Yii::$app->session->setFlash('successPoints', "Ничего себе! Вот это ты набираешь очки! Уже целых " . $allPoints ."!");
                 }
             }
 
-            if ($feedMessage == true){
+            if ($feedMessage == true) {
                 $number += 1;
             }
 
-            if ($cleanMessage == true){
+            if ($cleanMessage == true) {
                 $number += 1;
             }
 
             $number += count($pointsMessage);
 
-        echo '<ul class="nav navbar-nav pull-right">
+            if ($number == 0) {
+                $badgeBackgroundColor = 'white';
+                $badgeColor = 'grey';
+            } else {
+                $badgeBackgroundColor = '#F3565D';
+                $badgeColor = 'white';
+            }
+
+            echo '<ul class="nav navbar-nav pull-right">
 					<li class="separator hide">
 					</li>
 					<li class="dropdown dropdown-extended dropdown-dark" id="header_inbox_bar">
 						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">
 						<i class="icon-fire"></i>
-						<span class="badge badge-danger">' . $number . '</span>
-						</a>
-						<ul class="dropdown-menu">
+						<span class="badge badge-danger" style="background-color: ' . $badgeBackgroundColor . '; color: ' . $badgeColor . '">' . $number . '</span>
+						</a>';
+
+            if ($number != 0) {
+                echo '<ul class="dropdown-menu">
 							<li class="external">
 								<h3>У тебя <span class="bold">' . $number . ' новых</span> сообщ.</h3>
 								<a href="#">*</a>
 							</li>
 							<li>
 								<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 250px;"><ul class="dropdown-menu-list scroller" style="height: 250px; overflow: hidden; width: auto;" data-handle-color="#637283" data-initialized="1">';
-        if(isset($feedMessage)){
-            echo '<li>
+                if (isset($feedMessage)) {
+                    echo '<li>
 			    <a href="/feed' . '">
 				
 				<span class="details">
@@ -224,31 +234,32 @@ class MainAttentionsBadgeWidget extends Widget
 				<!--<i class="fa fa-plus"></i>-->
 				</span>
 				';
-            echo $feedMessage;
-            echo '</a>
+                    echo $feedMessage;
+                    echo '</a>
                   </li>';
 
-        }
-        if(isset($cleanMessage)){
-            echo '<li>
+                }
+                if (isset($cleanMessage)) {
+                    echo '<li>
 			    <a href="/clean' . '">
 				<span class="details">
 				<span class="label label-sm label-icon"> ' . '
 				<!--<i class="fa fa-plus"></i>-->
 				</span>';
-            echo $cleanMessage;
-            echo '</a></li>';
-        }
+                    echo $cleanMessage;
+                    echo '</a></li>';
+                }
 
-            if (isset($pointsMessage)){
-                foreach ($pointsMessage as $courseId => $text) {
-                    echo '<li>
+                if (isset($pointsMessage)) {
+                    foreach ($pointsMessage as $courseId => $text) {
+                        echo '<li>
   			    <a href="#' . '">
   				<span class="details">' . $text . '</a>
                    </li>';
+                    }
                 }
-            }
 
+            }
         }
 
 		echo '</ul><div class="slimScrollBar" style="background: rgb(99, 114, 131); width: 7px; position: absolute; top: 114px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 160.904px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(234, 234, 234); opacity: 0.2; z-index: 90; right: 1px;"></div></div>

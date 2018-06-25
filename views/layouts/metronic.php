@@ -3,6 +3,7 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
+use app\widgets\DailyQuestWidget;
 use app\widgets\MainAttentionsBadgeWidget;
 use yii\helpers\Html;
 use app\assets\MetronicAsset;
@@ -89,6 +90,8 @@ MetronicAsset::register($this);
                     <?= MainChallengesBadgeWidget::widget(); ?>
                     
                     <?= MainAttentionsBadgeWidget::widget(); ?>
+
+                    <?= DailyQuestWidget::widget(); ?>
 
                 </div>
             </div>

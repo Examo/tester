@@ -196,14 +196,6 @@ class MainChallengesBadgeWidget extends Widget
             }
         }
 
-        //$challengesWeeks = ChallengesWeeks::find()->where(['course_id' => 1])->andWhere(['element_id' => 2])->andWhere(['week_id' => 35])->andWhere(['user_id' => Yii::$app->user->id])->one();
-        //$challenges = json_decode($challengesWeeks->challenges, true);
-
-       // print '<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>';
-        //\yii\helpers\VarDumper::dump($all, 10, true);
-       // \yii\helpers\VarDumper::dump($chain, 10, true);
-        //\yii\helpers\VarDumper::dump($allDays, 10, true);
-
         $allPassedWeeks = [];
         $allElementsValue = 0;
         if (isset($allDays)) {
@@ -223,45 +215,14 @@ class MainChallengesBadgeWidget extends Widget
             }
         }
         $allValue = $allElementsValue / 2 + $allValue;
-       // \yii\helpers\VarDumper::dump($allPassedWeeks, 10, true);
-        //\yii\helpers\VarDumper::dump($challenges[61], 10, true);
-    ////   $challengesWeeks = ChallengesWeeks::find()->where(['course_id' => 1])->andWhere(['element_id' => 2])->andWhere(['week_id' => 35])->andWhere(['user_id' => Yii::$app->user->id])->one();
-    //   $challenges = json_decode($challengesWeeks->challenges, true);
-    //   $notAll = [];
-    //   foreach ($all as $course => $days){
-    //       foreach ($days as $day => $values){
-    //           foreach ($values as $element => $value) {
-    //               foreach ($challenges as $number => $valueChallenge) {
-    //                   if ($valueChallenge == 0 && $element == 'clean'){
-    //                       //\yii\helpers\VarDumper::dump($number, 10, true);
-    //                       //\yii\helpers\VarDumper::dump(, 10, true);;//[] = $number;
-    //                       $notAll[$course][$day][$element][] = $number;
-    //                       unset($challenges[$number]);
-    //                       break;
-    //                   }
-    //               }
-    //           }
-    //       }
-    //   }
-    //   \yii\helpers\VarDumper::dump($notAll, 10, true);
 
-    //    $some = [];
-    //    foreach ($all as $course => $days){
-    //        foreach ($notAll as $notCourse => $notDays){
-    //            foreach ($notDays as $day => $challenge){
-    //                if ($day){
-    //                    $some[$course][$day] = $challenge;
-//
-    //                    foreach ($challenge as $clean => $challengeNumber) {
-    //                        print $course . ' - курс, ' . $day . ' - день, ' . $clean . ' - уборка, ' . $challengeNumber[0] .' - номер теста';
-    //                        \yii\helpers\VarDumper::dump($challengeNumber, 10, true);
-    //                    }
-    //                    unset($notAll[$notCourse]);
-    //                }
-    //            }
-    //        }
-    //    }
-    //    \yii\helpers\VarDumper::dump($some, 10, true);
+        if ($allValue == 0){
+            $badgeBackgroundColor = 'white';
+            $badgeColor = 'grey';
+        } else {
+            $badgeBackgroundColor = '#26A69A';
+            $badgeColor = 'white';
+        }
         if (isset($all)) {
             print '<ul class="nav navbar-nav pull-right">
 					<li class="separator hide">
@@ -271,10 +232,12 @@ class MainChallengesBadgeWidget extends Widget
 					<li class="dropdown dropdown-extended dropdown-notification dropdown-dark" id="header_notification_bar">
 						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">
 						<i class="icon-bell"></i>
-						<span class="badge badge-success">' .
-                $allValue . '</span>
-						</a>
-						<ul class="dropdown-menu">
+						<span class="badge badge-success" style="background-color: ' . $badgeBackgroundColor . '; color: ' . $badgeColor . '">' . $allValue . '</span>
+						</a>';
+
+
+        if ($allValue != 0) {
+            print                '<ul class="dropdown-menu">
 							<li class="external">
 								<h3>Пропущено: <span class="bold">' . $allValue . '</span></h3>
 								<!--<a href="extra_profile.html">view all</a>-->
@@ -408,7 +371,11 @@ class MainChallengesBadgeWidget extends Widget
 										Storage server failed. </span>
 										</a>
 									</li>-->
-								</ul><div class="slimScrollBar" style="background: rgb(99, 114, 131); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 121.359px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(234, 234, 234); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
+								</ul>';
+        }
+
+
+		print						'<div class="slimScrollBar" style="background: rgb(99, 114, 131); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 121.359px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(234, 234, 234); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
 							</li>
 						</ul>
 					</li>

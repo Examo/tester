@@ -68,7 +68,7 @@ $this->title = Yii::t('app', 'My courses');
 
                     </div>
                     <div class="portlet-body">
-
+        <?php if ($courseRating['rating']): ?>
                         <div class="table-scrollable table-scrollable-borderless">
                             <table class="table table-hover table-light">
                                 <thead>
@@ -76,21 +76,27 @@ $this->title = Yii::t('app', 'My courses');
                                     <th colspan="2">
                                         Учащийся
                                     </th>
+                                    
                                     <th>
                                         "Еда"
                                     </th>
+
                                     <th>
                                         "Уборка"
                                     </th>
+
                                     <th>
                                         "Игра"
                                     </th>
+
                                     <th>
                                         "Учёба"
                                     </th>
+
                                     <th>
                                         Всего
                                     </th>
+
                                     <th>
                                         Место
                                     </th>
@@ -107,6 +113,7 @@ $this->title = Yii::t('app', 'My courses');
                                         <td class="fit">
                                             <img class="user-pic" src="/i/hintemoticon.jpg">
                                         </td>
+
                                         <td>
                                             <a href="javascript:;" class="primary-link"><?php foreach ($courseRating['data'] as $userData): ?>
                                                     <?php if ($userData['user_id'] == $userId && $userData['element_id'] == 1): ?>
@@ -114,6 +121,7 @@ $this->title = Yii::t('app', 'My courses');
                                                     <?php endif; ?>
                                                 <?php endforeach; ?></a>
                                         </td>
+
                                         <td>
                                             <?php foreach ($courseRating['data'] as $userData): ?>
                                                 <?php if ($userData['user_id'] == $userId && $userData['element_id'] == 1): ?>
@@ -121,6 +129,7 @@ $this->title = Yii::t('app', 'My courses');
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
                                         </td>
+
                                         <td>
                                             <?php foreach ($courseRating['data'] as $userData): ?>
                                                 <?php if ($userData['user_id'] == $userId && $userData['element_id'] == 2): ?>
@@ -129,6 +138,7 @@ $this->title = Yii::t('app', 'My courses');
                                             <?php endforeach; ?>
 
                                         </td>
+
                                         <td>
                                             <?php foreach ($courseRating['data'] as $userData): ?>
                                                 <?php if ($userData['user_id'] == $userId && $userData['element_id'] == 3): ?>
@@ -137,9 +147,11 @@ $this->title = Yii::t('app', 'My courses');
                                             <?php endforeach; ?>
                                             -
                                         </td>
+
                                         <td>
                                             -
                                         </td>
+
                                         <td>
                                             <?= $userPoints; ?>
                                         </td>
@@ -159,7 +171,11 @@ $this->title = Yii::t('app', 'My courses');
                                 </tbody></table>
                         </div>
                     </div>
-
+        <?php else: ?>
+            <div class="portlet-body">
+                <center><strong>Никто не выполнял тесты по курсу, поэтому нет и рейтинга!</strong></center>
+            </div>
+        <?php endif; ?>
                     <div class="pull-left">
                         <a href="<?= \yii\helpers\Url::to(['subscription/view', 'id' => $course->id]) ?>" class="btn btn-primary">Посмотреть программу курса</a>
                     </div>
@@ -168,6 +184,7 @@ $this->title = Yii::t('app', 'My courses');
                     </div>
                 </div>
             </div>
+
         <?php endforeach;?>
     <?php endif; ?>
     </div>
