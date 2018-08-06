@@ -223,20 +223,23 @@ class CleanController extends Controller
             //\yii\helpers\VarDumper::dump($difficultSubjects, 10, true);
             $newDifficultSubjects = [];
             foreach ($difficultSubjects as $difficultSubject) {
-                $needCourse = Subject::find()->select('course_id')->where(['id' => $difficultSubject->subject_id])->one();
+                $needCourses = Subject::find()->select('course_id')->where(['id' => $difficultSubject->subject_id])->all();
                 //\yii\helpers\VarDumper::dump($needCourse, 10, true);
                 foreach (Course::findSubscribed(Yii::$app->user->id)->all() as $keyCourse => $course) {
-                    if ($needCourse->course_id == $course->id) {
-                        //print $needCourse->course_id . '<br>';
+                    foreach ($needCourses as $eachNeedCourse)
+                    if ($eachNeedCourse->course_id == $course->id) {
+                        //print $eachNeedCourse->course_id . '<br>';
                         $newDifficultSubjects[] = $difficultSubject;
+                    } else {
+                       // print 'Тема' . $needCourse->course_id . 'не попадает!<br>';
                     }
                 }
             }
-
+            //\yii\helpers\VarDumper::dump($newDifficultSubjects, 10, true);
             $difficultSubjects = $newDifficultSubjects;
 
             $mainChallenges = $cleanChallenges;
-            \yii\helpers\VarDumper::dump($difficultSubjects, 10, true);
+            //\yii\helpers\VarDumper::dump($difficultSubjects, 10, true);
             if ($mainChallenges) {
                 if ($difficultSubjects) {
                     foreach ($difficultSubjects as $difficultSubject) {

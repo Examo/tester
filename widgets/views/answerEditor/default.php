@@ -16,7 +16,6 @@ $id = uniqid('ae');
        type="hidden"
        name="<?= $name ?>"
 />
-
 <script>
     $(function () {
         $('#<?= $id ?>').answerEditor({
@@ -26,7 +25,8 @@ $id = uniqid('ae');
             data: <?= Json::encode($data) ?>,
             current: '<?= $current ?>',
             answer: '<?= $answer ?>',
-            immediate_result: '<?= $immediate_result ?>'
+            immediate_result: '<?= $immediate_result ?>',
+            comment: <?php if (json_decode($comment)) { ?> JSON.parse('<?= $comment ?>') <?php } else { ?> '<?= $comment ?? '' ?>' <?php } ?>
         });
     });
 </script>

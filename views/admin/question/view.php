@@ -26,16 +26,23 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
-
+    <?php if ($model->question_type_id === \app\models\QuestionType::TYPE_THREE_QUESTION) {
+        $data = \yii\helpers\Json::decode($model->data);
+        $question = $data['question'] ? implode('<br>', $data['question']) : '';
+        $answer = $data['answer'] ? implode('<br>', $data['answer']) : '';
+        $model->data = '<b>Задания:</b> <br>' . $question . '<br> <b>Ответы:</b> <br>' . $answer;
+        $model->hint = implode('<br>', \yii\helpers\Json::decode($model->hint));
+        $model->comment = implode('<br>', \yii\helpers\Json::decode($model->comment));
+    }?>
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
             'id',
             'question_type_id',
             'text:ntext',
-            'data:ntext',
-            'hint:ntext',
-            'comment:ntext',
+            'data:raw',
+            'hint:raw',
+            'comment:raw',
             'cost',
         ],
     ]) ?>

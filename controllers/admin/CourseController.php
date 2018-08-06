@@ -5,17 +5,15 @@ namespace app\controllers\admin;
 use app\components\BaseAdminCrudController;
 use app\helpers\Subset;
 use app\models\AuthAssignment;
-use app\models\Challenge;
 use app\models\Course;
 use app\models\CourseLecturer;
-use app\models\CourseSubscription;
 use app\models\Discipline;
 use app\models\search\CourseSearch;
 use app\models\Subject;
+use app\models\Challenge;
 use dektrium\user\models\User;
 use dektrium\user\models\UserSearch;
 use Yii;
-use yii\data\ActiveDataProvider;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 

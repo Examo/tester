@@ -7,7 +7,8 @@
             input: '',
             types: {},
             type: '',
-            data: {}
+            data: {},
+            comment: {}
         };
 
     // The actual plugin constructor
@@ -29,8 +30,7 @@
         // INIT
         init: function () {
             this.findExtensions();
-
-            this.setType(this.settings.type, this.settings.data);
+            this.setType(this.settings.type, this.settings.data, this.settings.comment);
         },
 
         // EXTENSIONS
@@ -58,7 +58,7 @@
         getType: function () {
             return this.type;
         },
-        setType: function (type, data) {
+        setType: function (type, data, comment) {
             if (this.type == type || !this.hasType(type)) {
                 return;
             }
@@ -68,9 +68,8 @@
             }
 
             if (type in this.extensions) {
-                this.extensions[type].show(data);
+                this.extensions[type].show(data, comment);
             }
-
             this.type = type;
             this.data = data;
         },

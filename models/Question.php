@@ -117,6 +117,9 @@ class Question extends \app\models\ar\Question
                 $data = $this->getData();
                 return count($data['options']);
 
+            case 'three_question':
+                return 3;
+
             default:
                 return 1;
         }
@@ -169,9 +172,19 @@ class Question extends \app\models\ar\Question
 
     /**
      * @param bool $html
-     * @return string
+     * @return string|array
      */
     public function getHint($html = false) {
+        $hints = Json::decode($this->hint) ? Json::decode($this->hint) : $this->hint;
+
+        if (is_array($hints)) {
+            $res = [];
+            foreach ($hints as $hint) {
+                $res[] = $html ? nl2br(rtrim(Markdown::convert($hint), "\r\n")) : $hint;
+            }
+            return $res;
+        }
+
         return $html ? nl2br(rtrim(Markdown::convert($this->hint), "\r\n")) : $this->hint;
     }
 
@@ -180,7 +193,11 @@ class Question extends \app\models\ar\Question
      * @return int
      */
     public function getCost() {
-        return $this->cost ? $this->cost : $this->getMaxMistakes();
+        if ($this->question_type_id === \app\models\QuestionType::TYPE_THREE_QUESTION) {
+            return $this->cost ? $this->cost*3 : $this->getMaxMistakes();
+        } else {
+            return $this->cost ? $this->cost : $this->getMaxMistakes();
+        }
     }
 
     /**
@@ -188,11 +205,26 @@ class Question extends \app\models\ar\Question
      */
     public function getPoints($answer) {
         $mistakes = QuestionChecker::check($this, $answer);
-        $mistakes = is_array($mistakes) ? count($mistakes) : (int)(!$mistakes);
-
         $maxMistakes = $this->getMaxMistakes();
-        $mistakeCost = $maxMistakes ? $this->getCost() / $maxMistakes : 0;
 
+        if ($this->question_type_id === \app\models\QuestionType::TYPE_THREE_QUESTION) {
+            $mistakes = Json::decode($mistakes) ?? 3;
+            $mistakesCount = 0;
+
+            if (is_array($mistakes)) {
+                foreach ($mistakes as $miss) {
+                    if ($miss === 0) {
+                        $mistakesCount += 1;
+                    }
+                }
+            }
+
+            $mistakes = $mistakesCount;
+        } else {
+            $mistakes = is_array($mistakes) ? count($mistakes) : (int)(!$mistakes);
+        }
+
+        $mistakeCost = $maxMistakes ? $this->getCost() / $maxMistakes : 0;
         return $this->getCost() - ( $mistakes * $mistakeCost );
     }
 

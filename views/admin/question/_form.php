@@ -28,6 +28,90 @@ use kartik\markdown\MarkdownEditor;
         });
     </script>
 
+<?php
+$comment = yii\helpers\Json::encode($model['comment']);
+$hint = yii\helpers\Json::encode($model['hint']);
+$script = <<< JS
+            var comments = JSON.parse($comment);
+            var hints = JSON.parse($hint);
+            var id = $('#question_type_id').children('option:selected').val();
+            if (id === '8') {
+                $("div[id^='question-comment-container']").each(function (i) {
+                    $(this).show();
+                    try {
+                        $(this).find('textarea').val(comments[i]);
+                    } catch {}
+                });
+                $("div[id^='question-hint-container']").each(function (i) {
+                    $(this).show();
+                    try {
+                        $(this).find('textarea').val(hints[i]);
+                    } catch {}
+                });
+                $("label[for=question-comment]").show();
+            } else if (id === '7') {
+                $("div[id^='question-comment-container']:visible").each(function () {
+                    $(this).hide();
+                });
+                $("div[id^='question-hint-container']:visible").each(function () {
+                    $(this).hide();
+                });
+                $("label[for=question-comment]").hide();
+                $('#question-hint-container').show();
+                $('#question-hint-container').find('textarea').val(hints);
+            } else {
+                $("div[id^='question-comment-container']:visible").each(function () {
+                    $(this).hide();
+                });
+                $("div[id^='question-hint-container']:visible").each(function () {
+                    $(this).hide();
+                });
+                $('#question-comment-container').show();
+                $('#question-comment-container').find('textarea').val(comments);
+                $('#question-hint-container').show();
+                $('#question-hint-container').find('textarea').val(hints);
+                $("label[for=question-comment]").show();
+            }
+JS;
+
+$this->registerJs($script, yii\web\View::POS_READY);
+?>
+    <script>
+        $(function () {
+            $('#question_type_id').on('change', function () {
+                var id = $(this).children('option:selected').val();
+                if (id === '7') {
+                    $("div[id^='question-comment-container']:visible").each(function () {
+                        $(this).hide();
+                    });
+                    $("div[id^='question-hint-container']:visible").each(function () {
+                        $(this).hide();
+                    });
+                    $("label[for=question-comment]").hide();
+                    $('#question-hint-container').show();
+                } else if (id === '8') {
+                    $("div[id^='question-comment-container']:hidden").each(function () {
+                       $(this).show();
+                    });
+                    $("div[id^='question-hint-container']:hidden").each(function () {
+                        $(this).show();
+                    });
+                    $("label[for=question-comment]").show();
+                } else {
+                    $("div[id^='question-comment-container']:visible").each(function () {
+                        $(this).hide();
+                    });
+                    $("div[id^='question-hint-container']:visible").each(function () {
+                        $(this).hide();
+                    });
+                    $('#question-comment-container').show();
+                    $('#question-hint-container').show();
+                    $("label[for=question-comment]").show();
+                }
+            });
+        });
+    </script>
+
     <ul class="nav nav-tabs" id="tabs">
         <li role="presentation" class="active"><a href="#question"><?= Yii::t('question', 'Question') ?></a></li>
         <li role="presentation"><a href="#settings"><?= Yii::t('question', 'Settings') ?></a></li>
@@ -54,24 +138,45 @@ use kartik\markdown\MarkdownEditor;
 
             <?= $form->field($model, 'data')->widget(QuestionEditor::className()) ?>
 
-            <?php
-                /**
-                 * Убираем коментарий для таблицы ассоциаций
-                 */
-            ?>
-            <?php if ($model->question_type_id !== 7) { ?>
-                <?= $form->field($model, 'comment', ['template' => '{label}']) ?>
-                <?= MarkdownEditor::widget([
-                    'model' => $model,
-                    'attribute' => 'comment',
-                ]) ?>
-                <br />
-            <?php } ?>
+            <?= $form->field($model, 'comment', ['template' => '{label}']) ?>
+            <?= MarkdownEditor::widget([
+                'model' => $model,
+                'attribute' => 'comment[]',
+            ]) ?>
+            <br />
+
+            <?= MarkdownEditor::widget([
+                'model' => $model,
+                'attribute' => 'comment[]',
+                'containerOptions' => ['style' => ['display' => 'none']]
+            ]) ?>
+            <br />
+
+            <?= MarkdownEditor::widget([
+                'model' => $model,
+                'attribute' => 'comment[]',
+                'containerOptions' => ['style' => ['display' => 'none']]
+            ]) ?>
+            <br />
 
             <?= $form->field($model, 'hint', ['template' => '{label}']) ?>
             <?= MarkdownEditor::widget([
                 'model' => $model,
-                'attribute' => 'hint',
+                'attribute' => 'hint[]',
+            ]) ?>
+            <br />
+
+            <?= MarkdownEditor::widget([
+                'model' => $model,
+                'attribute' => 'hint[]',
+                'containerOptions' => ['style' => ['display' => 'none']]
+            ]) ?>
+            <br />
+
+            <?= MarkdownEditor::widget([
+                'model' => $model,
+                'attribute' => 'hint[]',
+                'containerOptions' => ['style' => ['display' => 'none']]
             ]) ?>
             <br />
         </div>

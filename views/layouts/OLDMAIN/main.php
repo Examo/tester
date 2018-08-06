@@ -4,11 +4,11 @@
 /* @var $content string */
 
 use yii\helpers\Html;
-use app\controllers;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use app\widgets\AlertWidget;
 
 AppAsset::register($this);
 ?>
@@ -65,6 +65,7 @@ AppAsset::register($this);
     ?>
 
     <div class="container">
+        <?= AlertWidget::widget() ?>
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>

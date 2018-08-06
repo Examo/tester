@@ -59,7 +59,6 @@
     <div class="panel-body">
         <?= $question->getText() ?>
         <?php if (!empty($_SESSION['pre'])) { ?>
-            <?= ($question->check($_SESSION['pre'])) ?>
 
         <?php } ?>
           <?php $form = ActiveForm::begin([
@@ -97,8 +96,8 @@
                 'answer' => $_SESSION['pre'],
                 'immediate_result' => $challenge->settings->immediate_result,
             ]) ?>
-            <strong>Твой ответ <?= $question->check($_SESSION['pre']) ? 'ПРАВИЛЬНЫЙ!' : 'НЕПРАВИЛЬНЫЙ...' ?></strong><br><br>
-            <?php if ($question->question_type_id !== 7) { ?>
+            <?php if ($question->question_type_id !== \app\models\QuestionType::TYPE_ASSOC_TABLE && $question->question_type_id !== \app\models\QuestionType::TYPE_THREE_QUESTION) { ?>
+                <strong>Твой ответ <?= $question->check($_SESSION['pre']) ? 'ПРАВИЛЬНЫЙ!' : 'НЕПРАВИЛЬНЫЙ...' ?></strong><br><br>
                 <div class="comment-content">
                     <div class="panel panel-default" style="border: solid; border-color: <?= $question->check($_SESSION['pre']) ? '#219187' : '#F3565D'?>">
                         <div class="panel-heading">
@@ -110,7 +109,7 @@
                                             <div class="item-name primary-link"><strong>Кошка объясняет:</strong></div>
                                         </div>
                                     </div>
-                                    <span><?= $question->comment ?></span>
+                                    <span><?= json_decode($question->comment) ? implode("<br>", yii\helpers\Json::decode($question->comment)) : $question->comment ?></span>
                                 </div>
                             </div>
                         </div>
@@ -120,28 +119,28 @@
 
         <?php } ?>
 
-
-
-          <div class="row question-buttons">
-              <div class="col-xs-6 col-md-6 text-left">
+            <div class="row question-buttons">
+               <div class="col-xs-6 col-md-6 text-left">
                   <?php if (empty($_SESSION['pre'])) { ?>
                     <input type="submit" class="btn btn-success" value="Ответить">
                   <?php } else { ?>
-                     <a href="<?= \yii\helpers\Url::toRoute(['challenge/continue', 'id' => $challenge->id]) ?>" class="btn btn-success ">Продолжить</a>
+                    <a href="<?= \yii\helpers\Url::toRoute(['challenge/continue', 'id' => $challenge->id]) ?>" class="btn btn-success ">Продолжить</a>
                   <?php } ?>
-              </div>
-              <div class="col-xs-6 col-md-6 text-right">
+               </div>
+               <div class="col-xs-6 col-md-6 text-right">
                   <?php if (empty($_SESSION['pre'])) { ?>
-                  <a href="#" class="btn btn-primary hint-button">Подсказать</a>
+                      <?php if ($question->question_type_id !== \app\models\QuestionType::TYPE_THREE_QUESTION) { ?>
+                          <a href="#" class="btn btn-primary hint-button">Подсказать</a>
+                      <?php } ?>
                       <?php if( $session->getCurrentQuestionNumber() < $challenge->getQuestionsCount() - 1 ): ?>
                           <a href="<?= \yii\helpers\Url::toRoute(['challenge/skip', 'id' => $challenge->id]) ?>" class="btn btn-warning ">Пропустить</a>
                       <?php endif; ?>
                   <?php } ?>
                   <a href="<?= \yii\helpers\Url::toRoute(['challenge/finish', 'id' => $challenge->id]) ?>" class="btn btn-danger">Завершить</a>
-              </div>
-          </div>
+               </div>
+            </div>
 
-          <?php ActiveForm::end(); ?>
+        <?php ActiveForm::end(); ?>
 
     </div>
 </div>
@@ -149,22 +148,40 @@
 <script>
     $(function() {
 
-        function showHint(hint) {
+        function showHint(hint, hide=true) {
             $('.hint-content span').html(hint);
             $('.hint-content').show();
-            $('.hint-button').hide();
+            if (hide) {
+                $('.hint-button').hide();
+            }
         }
 
         $('.hint-button').click( function() {
-            $.get('<?= \yii\helpers\Url::to(['challenge/hint', 'id' => $challenge->id]) ?>', function(data) {
-                showHint(data);
-            });
-
+            var type = <?= $question->question_type_id ?>;
+            var id = $(this).data('id');
+            if (type === <?= \app\models\QuestionType::TYPE_THREE_QUESTION ?>) {
+                $.get('<?= \yii\helpers\Url::to(['challenge/hint', 'id' => $challenge->id]) ?>', function(data) {
+                    var hints = JSON.parse(data);
+                    sessionStorage.setItem('quest_num', id);
+                    showHint(hints[id], false);
+                });
+            } else {
+                $.get('<?= \yii\helpers\Url::to(['challenge/hint', 'id' => $challenge->id]) ?>', function(data) {
+                    showHint(data);
+                });
+            }
             return false;
-        } );
+        });
 
         <?php if( $session->isHintUsed() ): ?>
-        showHint(<?= \yii\helpers\Json::encode( $session->hint() ) ?>);
+            var type = <?= $question->question_type_id ?>;
+            if (type === <?= \app\models\QuestionType::TYPE_THREE_QUESTION ?>) {
+                var id = sessionStorage.getItem('quest_num');
+                var hints = JSON.parse(<?= \yii\helpers\Json::encode( $session->hint()) ?>);
+                showHint(hints[id], false);
+            } else {
+                showHint(<?= \yii\helpers\Json::encode( $session->hint()) ?>);
+            }
         <?php endif;?>
 
         <?php if($challenge->settings->immediate_result ): ?>

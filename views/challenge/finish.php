@@ -69,18 +69,33 @@
                                 <td class="text-left"><?= $question->text ?></td>
                                 <!-- Варианты ответа -->
                                 <td class="text-left">
-                                    <?php if ($question->question_type_id == 7): ?>
+                                    <?php if ($question->question_type_id == \app\models\QuestionType::TYPE_ASSOC_TABLE): ?>
                                         <i class="fa options-text" data-id="options<?= $number?>"></i>
+                                    <?php elseif ($question->question_type_id == \app\models\QuestionType::TYPE_THREE_QUESTION): ?>
+                                        <?php
+                                            $qData = yii\helpers\Json::decode($question->data);
+                                            foreach ($qData['question'] as $q) {
+                                                echo \yii\helpers\Html::encode($q) . '<br>';
+                                            }
+                                        ?>
                                     <?php else: ?>
                                         <ul>
-                                        <?php $question->getOptionsFinish($question->data); ?>
+                                            <?php $question->getOptionsFinish($question->data); ?>
                                         </ul>
                                     <?php endif;?>
                                 </td>
                                 <!-- Твой ответ -->
                                 <td class="<?= $results[$question->id] ? 'success' : 'danger' ?> text-left">
-                                    <?php if ($question->question_type_id == 7): ?>
+                                    <?php if ($question->question_type_id == \app\models\QuestionType::TYPE_ASSOC_TABLE): ?>
                                         <i class="fa answer-text" data-id="answer<?= $number?>"></i>
+                                    <?php elseif ($question->question_type_id == \app\models\QuestionType::TYPE_THREE_QUESTION): ?>
+                                        <?php
+                                        $qResults = yii\helpers\Json::decode($results[$question->id]);
+                                        foreach ($qResults as $q) {
+                                           echo $q ? 'Верно' : 'Неверно';
+                                           echo '<br>';
+                                        }
+                                        ?>
                                     <?php else: ?>
                                         <?php $summary->getAnswersFinish($question->data, $question->id, $question->question_type_id, $summary->answers, $question); ?>
                                     <?php ?>
@@ -88,10 +103,10 @@
                                 </td>
                                 <!-- Объяснение ответа -->
                                 <td class="text-left">
-                                    <?php if ($question->question_type_id == 7): ?>
+                                    <?php if ($question->question_type_id == \app\models\QuestionType::TYPE_ASSOC_TABLE): ?>
                                         <i class="fa explanation-text" data-id="explanation<?= $number?>"></i>
                                     <?php else: ?>
-                                        <?= $question->comment ?>
+                                        <?= json_decode($question->comment) ? implode("<br>", yii\helpers\Json::decode($question->comment)) : $question->comment ?>
                                     <?php endif;?>
                                 </td>
                                 <!-- Подсказка была? -->

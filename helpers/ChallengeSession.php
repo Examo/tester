@@ -85,6 +85,33 @@ class ChallengeSession
     {
         if (!$this->isFinished()) {
             if($pre) {
+                $question = $this->getCurrentQuestion();
+
+                if ($question->question_type_id === \app\models\QuestionType::TYPE_THREE_QUESTION) {
+                    $mistakes = $question->check($answer);
+                    $answers = \yii\helpers\Json::decode($answer) ?? ['', '', ''];
+
+                    if ($mistakes === true) {
+                        foreach ($answers as $key => $ans) {
+                            $arr = [$ans, 1];
+                            $answers[$key] = $arr;
+                        }
+                    } else if (\yii\helpers\Json::decode($mistakes)) {
+                        $mistakes = \yii\helpers\Json::decode($mistakes);
+                        foreach ($answers as $key => $ans) {
+                            $arr = [$ans, $mistakes[$key] ? 0 : 1];
+                            $answers[$key] = $arr;
+                        }
+                    } else {
+                        foreach ($answers as $key => $ans) {
+                            $arr = [$ans, 0];
+                            $answers[$key] = $arr;
+                        }
+                    }
+
+                    $answer = \yii\helpers\Json::encode($answers);
+                }
+
                 $_SESSION['pre'] = $answer;
                 $this->setCurrentQuestionNumber($this->getCurrentQuestionNumber());
             } else {
@@ -106,7 +133,12 @@ class ChallengeSession
     public function hint()
     {
         $this->useHint();
-        return $this->getCurrentQuestion()->getHint( true );
+        $hints = $this->getCurrentQuestion()->getHint( true );
+
+        if (is_array($hints)) {
+            return \yii\helpers\Json::encode($hints);
+        }
+        return $hints;
     }
 
     /**

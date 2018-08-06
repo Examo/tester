@@ -57,6 +57,39 @@ $this->title = Yii::t('app', 'My courses');
                         </div>
                     </div>
 
+
+                    <div class="portlet-body">
+                        <?php $attemptNumber = 0; ?>
+                        <?php $feedNumber = 0; ?>
+                        <?php $cleanNumber = 0; ?>
+                        <?php foreach( $course->getChallenges()->all() as $challenge ): ?>
+                            <?php $attemptNumber += $challenge->getAttemptsCount(Yii::$app->user->id) ?>
+                            <?php $feedNumber += $challenge->getAttemptsElementsCount(1, $challenge->id, $challenge->element_id); ?>
+                            <?php $cleanNumber += $challenge->getAttemptsElementsCount(2, $challenge->id, $challenge->element_id); ?>
+                        <?php endforeach; ?>
+                        <div class="portlet-title text-center"><strong style="font-size: large">Сделано / Обязательных:</strong><br><br></div>
+                        <table class="table table-striped table-hover">
+
+                            <tr>
+                                <th class="col-md-2 text-center">Тестов для "Еды"</th>
+                                <th class="col-md-2 text-center">Тестов для "Уборки"</th>
+                                <th class="col-md-2 text-center">Всего "Игр"</th>
+                                <th class="col-md-2 text-center">Домашних заданий</th>
+                                <th class="col-md-2 text-center">Экзаменов</th>
+                                <th class="col-md-2 text-center">Вебинаров</th>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><strong style="font-size: large"><?= $feedNumber; ?> / <?= $challenge->getElementChallengesCount($course->id, 1); ?></strong></td>
+                                <td class="text-center"><strong style="font-size: large"><?= $cleanNumber; ?> / <?= $challenge->getElementChallengesCount($course->id, 2); ?></strong></td>
+                                <td class="text-center"><strong style="font-size: large">-</td>
+                                <td class="text-center"><strong style="font-size: large">_ / <?= $homeworksCount[$course->id]; ?></strong></td>
+                                <td class="text-center"><strong style="font-size: large">_ / <?= $examsCount[$course->id]; ?></strong></td>
+                                <td class="text-center"><strong style="font-size: large">_ / <?= $webinarsCount[$course->id]; ?></strong></td>
+                            </tr>
+                        </table>
+                    </div>
+
+
                     <?php $courseRating = $ratingData->getCourseRating($course->id); ?>
 
                     <div class="portlet-title" style="margin-top: -13px">
@@ -176,6 +209,7 @@ $this->title = Yii::t('app', 'My courses');
                 <center><strong>Никто не выполнял тесты по курсу, поэтому нет и рейтинга!</strong></center>
             </div>
         <?php endif; ?>
+
                     <div class="pull-left">
                         <a href="<?= \yii\helpers\Url::to(['subscription/view', 'id' => $course->id]) ?>" class="btn btn-primary">Посмотреть программу курса</a>
                     </div>

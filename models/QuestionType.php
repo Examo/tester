@@ -20,6 +20,7 @@ class QuestionType extends \app\models\ar\QuestionType
     const TYPE_DICTATION        = 5;
     const TYPE_ASSOC            = 6;
     const TYPE_ASSOC_TABLE      = 7;
+    const TYPE_THREE_QUESTION   = 8;
 
     public function attributeLabels()
     {

@@ -145,9 +145,29 @@ class Clean extends \yii\db\ActiveRecord
     {
         $classes = [];
         switch ($class){
+            case 'cat':
+                $classes['top'] = 120;
+                $classes['left'] = 330;
+                break;
+            case 'catontoilet':
+                $classes['top'] = 120;
+                $classes['left'] = 330;
+                break;
+            case 'bath':
+                $classes['top'] = 290;
+                $classes['left'] = 670;
+                break;
+            case 'bucket':
+                $classes['top'] = 420;
+                $classes['left'] = 550;
+                break;
+            case 'mop':
+                $classes['top'] = 240;
+                $classes['left'] = 520;
+                break;
             case 'broom':
-            $classes['top'] = 120;
-            $classes['left'] = 330;
+            $classes['top'] = 340;
+            $classes['left'] = 530;
                 break;
             case 'broom_2':
                 $classes['top'] = 140;
@@ -170,8 +190,8 @@ class Clean extends \yii\db\ActiveRecord
                 $classes['left'] = 330;
                 break;
             case 'wisp':
-                $classes['top'] = 220;
-                $classes['left'] = 390;
+                $classes['top'] = 340;
+                $classes['left'] = 590;
                 break;
             case 'wisp_2':
                 $classes['top'] = 240;
@@ -218,6 +238,154 @@ class Clean extends \yii\db\ActiveRecord
                 $classes['left'] = 420;
                 break;
             case 'brush_7':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+
+
+
+
+
+
+
+
+
+
+
+
+            case 'catstoilet':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'toiletbrush':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'petshovel':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'urn':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'toiletpaper':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'scoop':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'scoopbrush':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'washer':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'towel':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'bowl':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'bathsponge':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'chlorinepurifier':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'freshener':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'washingpowder':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'cleaningagentbottle':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'cleaningagentbank':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'cleaningagentbox':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'bathspongeforbody':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'bathbrush':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'metalwoolcloth':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'wetwipes':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'latexgloves':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'rubberbrush':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'jug':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'toothpaste':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'toothbrush':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'toothpicks':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'dentalfloss':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'soap':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'massagecomb':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'tubecream':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'twotowels':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'vacuumcleaner':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'massager':
                 $classes['top'] = 150;
                 $classes['left'] = 420;
                 break;

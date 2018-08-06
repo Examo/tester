@@ -247,7 +247,6 @@ class ChallengeSummarizer
         $result = [];
         foreach ($this->getQuestions() as $question) {
             $points = (int)$question->getPoints($this->answers[$question->id]);
-
             // if hint used, decrease points amount
             if ( $this->hints[$question->id] ) {
                 $points /= 2;
@@ -329,7 +328,12 @@ class ChallengeSummarizer
         $allPoints = 0;
         foreach ($questions as $key => $question){
             $allPoints += $points[$question->id];
-            $numberOfPoints += $question->cost;
+
+            if ($question->question_type_id == \app\models\QuestionType::TYPE_THREE_QUESTION) {
+                $numberOfPoints += $question->cost*3;
+            } else {
+                $numberOfPoints += $question->cost;
+            }
         }
         return [
             'allPoints' => $allPoints,

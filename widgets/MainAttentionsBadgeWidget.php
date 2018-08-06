@@ -54,19 +54,19 @@ class MainAttentionsBadgeWidget extends Widget
                         //Yii::$app->session->setFlash('successFeed', "Прошло больше часа, я кушать хочу!");
                     }
                     if ($roundTime >= 60 * 3 && $roundTime < 60 * 12) {
-                       $feedMessage = 'Прошло три часа, я очень хочу есть!';
-                        //Yii::$app->session->setFlash('successFeed', "Прошло три часа, я очень хочу есть!");
+                       $feedMessage = 'Прошло больше трёх часов, я очень хочу есть!';
+                        //Yii::$app->session->setFlash('successFeed', "Прошло больше трёх часов, я очень хочу есть!");
                     }
                     if ($roundTime >= 60 * 12 && $roundTime < 60 * 24) {
                        $feedMessage = 'Прошёл уже день, как я не ела!';
                         //Yii::$app->session->setFlash('successFeed', "Прошёл уже день, как я не ела!");
                     }
                     if ($roundTime >= 60 * 24 && $roundTime < 60 * 24 * 2) {
-                       $feedMessage = 'Прошло уже два дня, как я не ела! Ну очень хочется есть!';
+                       $feedMessage = 'Прошло уже почти два дня, как я не ела! Ну очень хочется есть!';
                         //Yii::$app->session->setFlash('successFeed', "Прошёл уже день, как я не ела!");
                     }
                     if ($roundTime >= 60 * 24 * 2 && $roundTime < 60 * 24 * 3) {
-                       $feedMessage = 'Прошёл уже целых три дня, как я не ела!';
+                       $feedMessage = 'Прошло уже почти целых три дня, как я не ела!';
                         //Yii::$app->session->setFlash('successFeed', "Прошёл уже целых три дня, как я не ела!");
                     }
                     if ($roundTime >= 60 * 24 * 3 && $roundTime < 60 * 24 * 7) {
@@ -112,20 +112,20 @@ class MainAttentionsBadgeWidget extends Widget
                         //Yii::$app->session->setFlash('successClean', "Прошло больше часа, я делать уборку хочу!");
                     }
                     if ($roundTime >= 60 * 3 && $roundTime < 60 * 12) {
-                         $cleanMessage = 'Прошло три часа, я очень хочу сделать уборку!';
-                        //Yii::$app->session->setFlash('successClean', "Прошло три часа, я очень хочу сделать уборку!");
+                         $cleanMessage = 'Прошло больше трёх часов, я очень хочу сделать уборку!';
+                        //Yii::$app->session->setFlash('successClean', "Прошло больше трёх часов, я очень хочу сделать уборку!");
                     }
                     if ($roundTime >= 60 * 12 && $roundTime < 60 * 24) {
                          $cleanMessage = 'Прошёл уже день, как я не делала уборку!';
                         //Yii::$app->session->setFlash('successClean', "Прошёл уже день, как я не делала уборку!");
                     }
                     if ($roundTime >= 60 * 24 && $roundTime < 60 * 24 * 2) {
-                       $cleanMessage = 'Прошло уже два дня, как я не делала уборку! Ну очень хочется сделать уборку!';
-                        //Yii::$app->session->setFlash('successClean', "Прошёл уже день, как я не делала уборку!");
+                       $cleanMessage = 'Прошло уже больше дня, как я не делала уборку! Ну очень хочется сделать уборку!';
+                        //Yii::$app->session->setFlash('successClean', "Прошло уже больше дня, как я не делала уборку!");
                     }
                     if ($roundTime >= 60 * 24 * 2 && $roundTime < 60 * 24 * 3) {
-                         $cleanMessage = 'Прошёл уже больше двух дней, как я не делала уборку!';
-                        //Yii::$app->session->setFlash('successClean', "Прошёл уже больше двух дней, как я не делала уборку!");
+                         $cleanMessage = 'Прошло уже больше двух дней, как я не делала уборку!';
+                        //Yii::$app->session->setFlash('successClean', "Прошло уже больше двух дней, как я не делала уборку!");
                     }
                     if ($roundTime >= 60 * 24 * 3 && $roundTime < 60 * 24 * 7) {
                          $cleanMessage = 'Прошло уже больше трёх дней, как я не делала уборку!';

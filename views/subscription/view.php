@@ -48,11 +48,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= '<strong style="font-size: large">Дата конца курса ещё не установлена!</strong><br>';?>
                 <?php endif; ?>
                 <strong style="font-size: large">Программа курса</strong>: тестов <strong><?= $challengesCount; ?></strong>, занятий с преподавателем <strong><?= $webinarsCount; ?></strong>, домашних работ <strong><?= $homeworksCount; ?></strong>, экзаменов <strong><?= $examsCount; ?></strong>
-            <br><strong style="font-size: large">Уже учеников</strong>: <strong style="font-size: large"><?php if (isset($numberOfPupils[$course->id])): ?>
+            <br><strong style="font-size: large">Уже учеников</strong>: <strong style="font-size: large">
+                    <?php if (isset($numberOfPupils[$course->id])): ?>
                         <?= $numberOfPupils[$course->id]; ?>
                     <?php else: ?>
                         <?= 'Пока что 0...'; ?>
-                <?php endif; ?></strong></center>
+                    <?php endif; ?></strong></center>
         </div>
     <div class="panel-heading">
         <?php if( $course->isSubscribed(Yii::$app->user->id) ): ?>
@@ -178,12 +179,45 @@ $this->params['breadcrumbs'][] = $this->title;
         <center><strong>Никто не выполнял тесты по курсу, поэтому нет и рейтинга!</strong></center>
     </div>
     <?php endif; ?>
+    <div class="portlet-body">
+        <?php $attemptNumber = 0; ?>
+        <?php $feedNumber = 0; ?>
+        <?php $cleanNumber = 0; ?>
+        <?php foreach( $course->getChallenges()->all() as $challenge ): ?>
+            <?php $attemptNumber += $challenge->getAttemptsCount(Yii::$app->user->id) ?>
+            <?php $feedNumber += $challenge->getAttemptsElementsCount(1, $challenge->id, $challenge->element_id); ?>
+            <?php $cleanNumber += $challenge->getAttemptsElementsCount(2, $challenge->id, $challenge->element_id); ?>
+        <?php endforeach; ?>
+        
+        <div class="portlet-title text-center"><strong style="font-size: large">Сделано / Обязательных:</strong><br><br></div>
+        <table class="table table-striped table-hover">
 
+            <tr>
+                <th class="col-md-2 text-center">Тестов для "Еды"</th>
+                <th class="col-md-2 text-center">Тестов для "Уборки"</th>
+                <th class="col-md-2 text-center">Всего "Игр"</th>
+                <th class="col-md-2 text-center">Домашних заданий</th>
+                <th class="col-md-2 text-center">Экзаменов</th>
+                <th class="col-md-2 text-center">Вебинаров</th>
+            </tr>
+            <tr>
+            <td class="text-center"><strong style="font-size: large"><?= $feedNumber; ?> / <?= $challenge->getElementChallengesCount($course->id, 1); ?></strong></td>
+            <td class="text-center"><strong style="font-size: large"><?= $cleanNumber; ?> / <?= $challenge->getElementChallengesCount($course->id, 2); ?></strong></td>
+            <td class="text-center"><strong style="font-size: large">-</td>
+            <td class="text-center"><strong style="font-size: large">_ / <?= $homeworksCount; ?></strong></td>
+            <td class="text-center"><strong style="font-size: large">_ / <?= $examsCount; ?></strong></td>
+            <td class="text-center"><strong style="font-size: large">_ / <?= $webinarsCount; ?></strong></td>
+            </tr>
+            </table>
+    </div>
     <div class="panel-body">
         <div class="panel-heading">
             <strong style="font-size: large">Полное описание курса</strong>
         </div>
         <p><?= $course->description ?></p>
+
+        <div class="portlet-title text-center"><strong style="font-size: large">Все выполненные тесты:</strong><br><br></div>
+
         <table class="table table-striped table-hover">
             <tr>
                 <th class="col-md-5 text-left">Тест</th>

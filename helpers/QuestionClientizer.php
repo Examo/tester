@@ -47,6 +47,11 @@ class QuestionClientizer
                     unset($data['answer']);
                 }
                 break;
+            case 'three_question':
+                if (isset($data['answer'])) {
+                    unset($data['answer']);
+                }
+                break;
         }
 
         return $data;

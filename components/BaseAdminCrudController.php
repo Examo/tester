@@ -60,7 +60,7 @@ abstract class BaseAdminCrudController extends BaseAdminController
      * @param ActiveRecord $model
      * @return bool
      */
-    protected  function saveModel( $model) {
+    protected  function saveModel($model) {
         return true;
     }
 
@@ -114,12 +114,19 @@ abstract class BaseAdminCrudController extends BaseAdminController
     public function actionCreate()
     {
         $class = $this->getModelClass();
-
+        /** @var yii\base\Model $model */
         $model = new $class();
 
         if ($model->load(Yii::$app->request->post()) && $model->save() && $this->saveModel($model)) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
+            foreach ($model->errors as $error) {
+                Yii::$app->session->setFlash(
+                    'error',
+                    $error[0]
+                );
+            }
+
             return $this->render('create', [
                 'model' => $model,
             ]);

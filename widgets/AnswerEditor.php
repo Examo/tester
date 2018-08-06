@@ -76,6 +76,7 @@ class AnswerEditor extends \yii\base\Widget
             'types' => $types,
             'type' => $this->question->questionType->sysname,
             'data' => QuestionClientizer::prepare($this->question),
+            'comment' => $this->answer ? $this->question->getComment() : null,
             'current' => $this->question->id,
             'answer' => $this->answer,
             'immediate_result' => $this->immediate_result,

@@ -51,7 +51,7 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
 .element-container {position: absolute; width: 700px; height: auto;  z-index: 1;  }
 .required-container {position: relative; width: 77%; height: auto; margin-top: 555px;   z-index: 1;  }
 .passed-container {position: relative; width: 77%; height: auto;    z-index: 1;  }
-.feeding IMG { position: absolute; }
+
 
 .orange { width: 70px; top: 150px; left: 300px; z-index: 3; }
 .orange_2 { width: 65px; top: 155px; left: 315px; z-index: 1; }
@@ -130,71 +130,7 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
 .coffee_9 { width: 70px; top: 320px; left: 380px; z-index: 1; }
 .coffee_10 { width: 70px; top: 320px; left: 380px; z-index: 1; }
 
-.broom { width: 100px; top: 150px; left: 300px; z-index: 3; }
-.broom_2 { width: 100px; top: 175px; left: 315px; z-index: 1; }
-.broom_3 { width: 60px; top: 160px; left: 330px; z-index: 1; }
-.broom_4 { width: 55px; top: 147px; left: 315px; z-index: 1; }
-.broom_5 { width: 50px; top: 146px; left: 320px; z-index: 1; }
-.broom_6 { width: 45px; top: 145px; left: 325px; z-index: 1; }
-.broom_7 { width: 40px; top: 144px; left: 330px; z-index: 1; }
-.broom_8 { width: 35px; top: 143px; left: 335px; z-index: 1; }
-.broom_9 { width: 30px; top: 142px; left: 340px; z-index: 1; }
-.broom_10 { width: 25px; top: 141px; left: 345px; z-index: 1; }
 
-.brush { width: 70px; top: 160px; left: 380px; z-index: 2; }
-.brush_2 { width: 60px; top: 175px; left: 395px; z-index: 1; }
-.brush_3 { width: 70px; top: 160px; left: 380px; z-index: 1; }
-.brush_4 { width: 70px; top: 160px; left: 380px; z-index: 1; }
-.brush_5 { width: 70px; top: 160px; left: 380px; z-index: 1; }
-.brush_6 { width: 70px; top: 160px; left: 380px; z-index: 1; }
-.brush_7 { width: 70px; top: 160px; left: 380px; z-index: 1; }
-.brush_8 { width: 70px; top: 160px; left: 380px; z-index: 1; }
-.brush_9 { width: 70px; top: 160px; left: 380px; z-index: 1; }
-.brush_10 { width: 70px; top: 160px; left: 380px; z-index: 1; }
-
-.sponge { width: 70px; top: 240px; left: 300px; z-index: 1; }
-.sponge_2 { width: 65px; top: 240px; left: 325px; z-index: 1; }
-.sponge_3 { width: 70px; top: 240px; left: 300px; z-index: 1; }
-.sponge_4 { width: 70px; top: 240px; left: 300px; z-index: 1; }
-.sponge_5 { width: 70px; top: 240px; left: 300px; z-index: 1; }
-.sponge_6 { width: 70px; top: 240px; left: 300px; z-index: 1; }
-.sponge_7 { width: 70px; top: 240px; left: 300px; z-index: 1; }
-.sponge_8 { width: 70px; top: 240px; left: 300px; z-index: 1; }
-.sponge_9 { width: 70px; top: 240px; left: 300px; z-index: 1; }
-.sponge_10 { width: 70px; top: 240px; left: 300px; z-index: 1; }
-
-.wisp { width: 70px; top: 250px; left: 380px; z-index:1; }
-.wisp_2 { width: 70px; top: 270px; left: 400px; z-index:1; }
-.wisp_3 { width: 70px; top: 250px; left: 380px; z-index:1; }
-.wisp_4 { width: 70px; top: 250px; left: 380px; z-index:1; }
-.wisp_5 { width: 70px; top: 250px; left: 380px; z-index:1; }
-.wisp_6 { width: 70px; top: 250px; left: 380px; z-index:1; }
-.wisp_7 { width: 70px; top: 250px; left: 380px; z-index:1; }
-.wisp_8 { width: 70px; top: 250px; left: 380px; z-index:1; }
-.wisp_9 { width: 70px; top: 250px; left: 380px; z-index:1; }
-.wisp_10 { width: 70px; top: 250px; left: 380px; z-index:1; }
-
-.vacuum-cleaner { width: 70px; top: 320px; left: 300px; z-index: 1; }
-.vacuum-cleaner_2 { width: 70px; top: 320px; left: 300px; z-index: 1; }
-.vacuum-cleaner_3 { width: 70px; top: 320px; left: 300px; z-index: 1; }
-.vacuum-cleaner_4 { width: 70px; top: 320px; left: 300px; z-index: 1; }
-.vacuum-cleaner_5 { width: 70px; top: 320px; left: 300px; z-index: 1; }
-.vacuum-cleaner_6 { width: 70px; top: 320px; left: 300px; z-index: 1; }
-.vacuum-cleaner_7 { width: 70px; top: 320px; left: 300px; z-index: 1; }
-.vacuum-cleaner_8 { width: 70px; top: 320px; left: 300px; z-index: 1; }
-.vacuum-cleaner_9 { width: 70px; top: 320px; left: 300px; z-index: 1; }
-.vacuum-cleaner_10 { width: 70px; top: 320px; left: 300px; z-index: 1; }
-
-.pet-shovel { width: 70px; top: 320px; left: 380px; z-index: 1; }
-.pet-shovel_2 { width: 70px; top: 320px; left: 380px; z-index: 1; }
-.pet-shovel_3 { width: 70px; top: 320px; left: 380px; z-index: 1; }
-.pet-shovel_4 { width: 70px; top: 320px; left: 380px; z-index: 1; }
-.pet-shovel_5 { width: 70px; top: 320px; left: 380px; z-index: 1; }
-.pet-shovel_6 { width: 70px; top: 320px; left: 380px; z-index: 1; }
-.pet-shovel_7 { width: 70px; top: 320px; left: 380px; z-index: 1; }
-.pet-shovel_8 { width: 70px; top: 320px; left: 380px; z-index: 1; }
-.pet-shovel_9 { width: 70px; top: 320px; left: 380px; z-index: 1; }
-.pet-shovel_10 { width: 70px; top: 320px; left: 380px; z-index: 1; }
 /*
 
 '/i/chocolate.png',
@@ -208,6 +144,8 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
 .four { width: 70px; top: 250px; left: 380px; z-index:1; }
 .five { width: 70px; top: 320px; left: 300px; z-index: 1; }
 .six { width: 70px; top: 320px; left: 380px; z-index: 1; }*/
+
+.feeding IMG { position: absolute; }
 
 .feeding IMG:hover { z-index:2;
  -webkit-transform: scale(1.02);
@@ -290,6 +228,142 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
 
 }
 
+.cleaning {
+    width: 850px;
+    height: 950px;
+}
+.cleaning IMG { position: absolute; }
+
+.cleaning IMG:hover {z-index: 7;
+    -webkit-transform: scale(1.02);
+    -moz-transform: scale(1.02);
+    -o-transform: scale(1.02);}
+
+.cleaning span {
+    z-index:5;
+    position: absolute;
+    width: 50px;
+    /*top:100px;
+    left: 300px;*/
+
+    /* Оформление текста */
+    color: black;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:20px;
+
+    /* Фон */
+    background-color:rgba(0,0,0,.1);
+    padding:1px 10px;
+}
+
+.cleancat { top: 90px; left: 800px; z-index: 5; }
+
+.bath { width: 400px; top: 300px; left: 550px; z-index: 1; }
+.bucket {width: 70px; top: 450px; left: 550px; z-index: 3;}
+.mop {width: 100px; top: 270px; left: 540px; z-index: 4;}
+.toilet {top: 90px; left: 500px; z-index: 3;}
+
+
+.catstoilet {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.toiletbrush {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.petshovel {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.urn {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.toiletpaper {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.scoop {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.scoopbrush {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.washer {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.towel {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.bowl {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.bathsponge {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.chlorinepurifier {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.freshener {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.washingpowder {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.cleaningagentbottle {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.cleaningagentbank {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.cleaningagentbox {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.bathspongeforbody {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.bathbrush {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.metalwoolcloth {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.wetwipes {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.latexgloves {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.rubberbrush {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.jug {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.toothpaste {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.toothbrush {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.toothpicks {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.dentalfloss {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.soap {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.massagecomb {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.tubecream {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.twotowels {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.vacuumcleaner {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.massager {width: 400px; top: 300px; left: 550px; z-index: 1;}
+
+.broom { width: 70px; top: 370px; left: 520px; z-index: 1; }
+.broom_2 { width: 100px; top: 175px; left: 315px; z-index: 1; }
+.broom_3 { width: 60px; top: 160px; left: 330px; z-index: 1; }
+.broom_4 { width: 55px; top: 147px; left: 315px; z-index: 1; }
+.broom_5 { width: 50px; top: 146px; left: 320px; z-index: 1; }
+.broom_6 { width: 45px; top: 145px; left: 325px; z-index: 1; }
+.broom_7 { width: 40px; top: 144px; left: 330px; z-index: 1; }
+.broom_8 { width: 35px; top: 143px; left: 335px; z-index: 1; }
+.broom_9 { width: 30px; top: 142px; left: 340px; z-index: 1; }
+.broom_10 { width: 25px; top: 141px; left: 345px; z-index: 1; }
+
+.brush { width: 70px; top: 160px; left: 380px; z-index: 2; }
+.brush_2 { width: 60px; top: 175px; left: 395px; z-index: 1; }
+.brush_3 { width: 70px; top: 160px; left: 380px; z-index: 1; }
+.brush_4 { width: 70px; top: 160px; left: 380px; z-index: 1; }
+.brush_5 { width: 70px; top: 160px; left: 380px; z-index: 1; }
+.brush_6 { width: 70px; top: 160px; left: 380px; z-index: 1; }
+.brush_7 { width: 70px; top: 160px; left: 380px; z-index: 1; }
+.brush_8 { width: 70px; top: 160px; left: 380px; z-index: 1; }
+.brush_9 { width: 70px; top: 160px; left: 380px; z-index: 1; }
+.brush_10 { width: 70px; top: 160px; left: 380px; z-index: 1; }
+
+.sponge { width: 70px; top: 240px; left: 300px; z-index: 1; }
+.sponge_2 { width: 65px; top: 240px; left: 325px; z-index: 1; }
+.sponge_3 { width: 70px; top: 240px; left: 300px; z-index: 1; }
+.sponge_4 { width: 70px; top: 240px; left: 300px; z-index: 1; }
+.sponge_5 { width: 70px; top: 240px; left: 300px; z-index: 1; }
+.sponge_6 { width: 70px; top: 240px; left: 300px; z-index: 1; }
+.sponge_7 { width: 70px; top: 240px; left: 300px; z-index: 1; }
+.sponge_8 { width: 70px; top: 240px; left: 300px; z-index: 1; }
+.sponge_9 { width: 70px; top: 240px; left: 300px; z-index: 1; }
+.sponge_10 { width: 70px; top: 240px; left: 300px; z-index: 1; }
+
+.wisp { width: 70px; top: 370px; left: 580px; z-index:1; }
+.wisp_2 { width: 70px; top: 270px; left: 400px; z-index:1; }
+.wisp_3 { width: 70px; top: 250px; left: 380px; z-index:1; }
+.wisp_4 { width: 70px; top: 250px; left: 380px; z-index:1; }
+.wisp_5 { width: 70px; top: 250px; left: 380px; z-index:1; }
+.wisp_6 { width: 70px; top: 250px; left: 380px; z-index:1; }
+.wisp_7 { width: 70px; top: 250px; left: 380px; z-index:1; }
+.wisp_8 { width: 70px; top: 250px; left: 380px; z-index:1; }
+.wisp_9 { width: 70px; top: 250px; left: 380px; z-index:1; }
+.wisp_10 { width: 70px; top: 250px; left: 380px; z-index:1; }
+
+.vacuum-cleaner { width: 70px; top: 320px; left: 300px; z-index: 1; }
+.vacuum-cleaner_2 { width: 70px; top: 320px; left: 300px; z-index: 1; }
+.vacuum-cleaner_3 { width: 70px; top: 320px; left: 300px; z-index: 1; }
+.vacuum-cleaner_4 { width: 70px; top: 320px; left: 300px; z-index: 1; }
+.vacuum-cleaner_5 { width: 70px; top: 320px; left: 300px; z-index: 1; }
+.vacuum-cleaner_6 { width: 70px; top: 320px; left: 300px; z-index: 1; }
+.vacuum-cleaner_7 { width: 70px; top: 320px; left: 300px; z-index: 1; }
+.vacuum-cleaner_8 { width: 70px; top: 320px; left: 300px; z-index: 1; }
+.vacuum-cleaner_9 { width: 70px; top: 320px; left: 300px; z-index: 1; }
+.vacuum-cleaner_10 { width: 70px; top: 320px; left: 300px; z-index: 1; }
+
+.pet-shovel { width: 70px; top: 320px; left: 380px; z-index: 1; }
+.pet-shovel_2 { width: 70px; top: 320px; left: 380px; z-index: 1; }
+.pet-shovel_3 { width: 70px; top: 320px; left: 380px; z-index: 1; }
+.pet-shovel_4 { width: 70px; top: 320px; left: 380px; z-index: 1; }
+.pet-shovel_5 { width: 70px; top: 320px; left: 380px; z-index: 1; }
+.pet-shovel_6 { width: 70px; top: 320px; left: 380px; z-index: 1; }
+.pet-shovel_7 { width: 70px; top: 320px; left: 380px; z-index: 1; }
+.pet-shovel_8 { width: 70px; top: 320px; left: 380px; z-index: 1; }
+.pet-shovel_9 { width: 70px; top: 320px; left: 380px; z-index: 1; }
+.pet-shovel_10 { width: 70px; top: 320px; left: 380px; z-index: 1; }
 .sign {
     /* width: 100px; top: 150px; left: 300px;
      /*float: right;  Выравнивание по правому краю */

@@ -23,6 +23,9 @@ class QuestionChecker
             case 'text_short':
                 return self::checkTextShort($data['answer'], $answer);
 
+            case 'three_question':
+                return self::checkThreeQuestion($data['answer'], $answer);
+
             case 'text_long':
                 return false;
 
@@ -68,6 +71,36 @@ class QuestionChecker
         $correct = str_replace('ё', 'е', mb_strtolower(trim($correct)));
         $answer = str_replace('ё', 'е', mb_strtolower(trim($answer)));
         return strcasecmp($correct, $answer) == 0;
+    }
+
+    /**
+     * @param $correct
+     * @param $answer
+     * @return array|bool
+     */
+    protected static function checkThreeQuestion($correct, $answer)
+    {
+        if (!is_array($answer) || !count($answer)) {
+            return false;
+        }
+        $mistakes = [];
+
+        // if already check
+        if (count($answer[0]) === 2) {
+            foreach ($answer as $i => $val) {
+                $mistakes[$i] = $val[1];
+            }
+        } else {
+            foreach ($answer as $i => $value) {
+                if (strcasecmp($correct[$i], $value) === 0) {
+                    $mistakes[$i] = 0;
+                } else {
+                    $mistakes[$i] = 1;
+                }
+            }
+        }
+
+        return count($mistakes) ? \yii\helpers\Json::encode($mistakes) : true;
     }
 
     /**
