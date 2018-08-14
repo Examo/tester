@@ -289,7 +289,16 @@ class ChallengeSummarizer
      */
     public function getMark()
     {
-        if ( $this->challenge->getQuestionsCount() > count($this->getQuestions()) ) {
+        $questions = 0;
+        foreach ($this->getQuestions() as $question) {
+            if ($question->question_type_id === \app\models\QuestionType::TYPE_THREE_QUESTION) {
+                $questions += 3;
+            } else {
+                $questions++;
+            }
+        }
+
+        if ( $this->challenge->getQuestionsCount() > $questions ) {
             return false;
         }
 
