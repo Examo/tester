@@ -157,6 +157,7 @@ class Question extends \app\models\ar\Question
     /**
      * @param bool $html
      * @return string
+     * @throws \yii\base\InvalidConfigException
      */
     public function getComment($html = false) {
         return $html ? nl2br(rtrim(Markdown::convert($this->comment), "\r\n")) : $this->comment;
@@ -165,6 +166,7 @@ class Question extends \app\models\ar\Question
     /**
      * @param bool $html
      * @return string
+     * @throws \yii\base\InvalidConfigException
      */
     public function getText($html = false) {
         return $html ? nl2br(rtrim(Markdown::convert($this->text), "\r\n")) : $this->text;
@@ -173,9 +175,10 @@ class Question extends \app\models\ar\Question
     /**
      * @param bool $html
      * @return string|array
+     * @throws \yii\base\InvalidConfigException
      */
     public function getHint($html = false) {
-        $hints = Json::decode($this->hint) ? Json::decode($this->hint) : $this->hint;
+        $hints = json_decode($this->hint) ? Json::decode($this->hint) : $this->hint;
 
         if (is_array($hints)) {
             $res = [];
@@ -202,6 +205,7 @@ class Question extends \app\models\ar\Question
 
     /**
      * @param $answer
+     * @return float|int
      */
     public function getPoints($answer) {
         $mistakes = QuestionChecker::check($this, $answer);

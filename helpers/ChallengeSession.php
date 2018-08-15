@@ -96,7 +96,7 @@ class ChallengeSession
                             $arr = [$ans, 1];
                             $answers[$key] = $arr;
                         }
-                    } else if (\yii\helpers\Json::decode($mistakes)) {
+                    } elseif (json_decode($mistakes)) {
                         $mistakes = \yii\helpers\Json::decode($mistakes);
                         foreach ($answers as $key => $ans) {
                             $arr = [$ans, $mistakes[$key] ? 0 : 1];

@@ -32,8 +32,14 @@ use kartik\markdown\MarkdownEditor;
 $comment = yii\helpers\Json::encode($model['comment']);
 $hint = yii\helpers\Json::encode($model['hint']);
 $script = <<< JS
-            var comments = JSON.parse($comment);
-            var hints = JSON.parse($hint);
+            if (id === '8' || id === '7') {
+                var comments = JSON.parse($comment);
+                var hints = JSON.parse($hint);
+            } else {
+                var comments = $comment;
+                var hints = $hint;
+            }
+            
             var id = $('#question_type_id').children('option:selected').val();
             if (id === '8') {
                 $("div[id^='question-comment-container']").each(function (i) {
