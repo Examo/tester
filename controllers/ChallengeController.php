@@ -13,6 +13,7 @@ use app\models\ar\QuestionHasSubject;
 use app\models\ar\ScaleClean;
 use app\models\ar\ScaleFeed;
 use app\models\ar\ScaleLearn;
+use app\models\ar\UserPoints;
 use app\models\Attempt;
 use app\models\Challenge;
 use app\models\ChallengeHasQuestion;
@@ -538,6 +539,22 @@ class ChallengeController extends Controller
                             }
                         }
                     }
+                    if (UserPoints::find()->where(['user_id' => Yii::$app->user->id])->andWhere(['course_id' => $course->id])->andWhere(['element_id' => $challengeElementsType->element_id])->one()) {
+                        $points = UserPoints::find()->where(['user_id' => Yii::$app->user->id])->andWhere(['course_id' => $course->id])->andWhere(['element_id' => $challengeElementsType->element_id])->one();
+                        //\yii\helpers\VarDumper::dump($points, 10, true);
+                        $points->user_id = Yii::$app->user->id;
+                        $points->course_id = $course->id;
+                        $points->element_id = $challengeElementsType->element_id;
+                        $points->points = $points->points + $allLastChallengeQuestionsCost;
+                        $points->save();
+                    } else {
+                        $points = new UserPoints();
+                        $points->user_id = Yii::$app->user->id;
+                        $points->course_id = $course->id;
+                        $points->element_id = $challengeElementsType->element_id;
+                        $points->points = $allLastChallengeQuestionsCost;
+                        $points->save();
+                    }
                 }
             }
 
@@ -657,19 +674,24 @@ class ChallengeController extends Controller
     /**
      * Get question hint
      * @param int $id
+     * @param int $num
+     * @return string
+     * @throws NotFoundHttpException
      */
-    public function actionHint($id = 0)
+    public function actionHint($id = 0, $num = null)
     {
         $challenge = $this->getChallenge($id);
         $session = new ChallengeSession($challenge, Yii::$app->user->id);
 
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        return $session->hint();
+        return $session->hint($num);
     }
 
     /**
      * Skip current question
      * @param int $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
      */
     public function actionSkip($id = 0)
     {

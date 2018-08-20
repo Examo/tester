@@ -118,7 +118,7 @@ class Question extends \app\models\ar\Question
                 return count($data['options']);
 
             case 'three_question':
-                return 3;
+                return 4;
 
             default:
                 return 1;
@@ -157,6 +157,7 @@ class Question extends \app\models\ar\Question
     /**
      * @param bool $html
      * @return string
+     * @throws \yii\base\InvalidConfigException
      */
     public function getComment($html = false) {
         return $html ? nl2br(rtrim(Markdown::convert($this->comment), "\r\n")) : $this->comment;
@@ -165,6 +166,7 @@ class Question extends \app\models\ar\Question
     /**
      * @param bool $html
      * @return string
+     * @throws \yii\base\InvalidConfigException
      */
     public function getText($html = false) {
         return $html ? nl2br(rtrim(Markdown::convert($this->text), "\r\n")) : $this->text;
@@ -173,9 +175,10 @@ class Question extends \app\models\ar\Question
     /**
      * @param bool $html
      * @return string|array
+     * @throws \yii\base\InvalidConfigException
      */
     public function getHint($html = false) {
-        $hints = Json::decode($this->hint) ? Json::decode($this->hint) : $this->hint;
+        $hints = json_decode($this->hint) ? Json::decode($this->hint) : $this->hint;
 
         if (is_array($hints)) {
             $res = [];
@@ -194,7 +197,7 @@ class Question extends \app\models\ar\Question
      */
     public function getCost() {
         if ($this->question_type_id === \app\models\QuestionType::TYPE_THREE_QUESTION) {
-            return $this->cost ? $this->cost*3 : $this->getMaxMistakes();
+            return $this->cost ? $this->cost*4 : $this->getMaxMistakes();
         } else {
             return $this->cost ? $this->cost : $this->getMaxMistakes();
         }
@@ -202,30 +205,34 @@ class Question extends \app\models\ar\Question
 
     /**
      * @param $answer
+     * @return float|int
      */
     public function getPoints($answer) {
         $mistakes = QuestionChecker::check($this, $answer);
         $maxMistakes = $this->getMaxMistakes();
 
         if ($this->question_type_id === \app\models\QuestionType::TYPE_THREE_QUESTION) {
-            $mistakes = Json::decode($mistakes) ?? 3;
+            $mistakes = Json::decode($mistakes) ?? 4;
             $mistakesCount = 0;
 
             if (is_array($mistakes)) {
-                foreach ($mistakes as $miss) {
-                    if ($miss === 0) {
+                foreach ($mistakes as $key => $rightAnswer) {
+                    if ($rightAnswer === 0 && $key === 0) {
+                        $mistakesCount += 2;
+                    } elseif ($rightAnswer === 0) {
                         $mistakesCount += 1;
                     }
                 }
             }
 
             $mistakes = $mistakesCount;
+            $mistakeCost = $maxMistakes ? $this->getCost() / $maxMistakes : 0;
+            return round($this->getCost() - ( $mistakes * $mistakeCost ));
         } else {
             $mistakes = is_array($mistakes) ? count($mistakes) : (int)(!$mistakes);
+            $mistakeCost = $maxMistakes ? $this->getCost() / $maxMistakes : 0;
+            return $this->getCost() - ( $mistakes * $mistakeCost );
         }
-
-        $mistakeCost = $maxMistakes ? $this->getCost() / $maxMistakes : 0;
-        return $this->getCost() - ( $mistakes * $mistakeCost );
     }
 
     public function getOptionsFinish($data)

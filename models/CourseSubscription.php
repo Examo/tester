@@ -1,10 +1,8 @@
 <?php
-
 namespace app\models;
-
 use app\models\ar\UserPoints;
+use app\models\Challenge;
 use Yii;
-
 /**
  * @inheritdoc
  */
@@ -20,13 +18,11 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
             'course_id' => Yii::t('course', 'Course'),
         ];
     }
-
     public function getAllCourses($course_id)
     {
         return CourseSubscription::find()
             ->with('courses')->where(['user_id' => $course_id]);
     }
-
     public function getCourseStart($course_id)
     {
         $events = Event::find()->where(['course_id' => $course_id])->all();
@@ -35,12 +31,9 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
         if ($events != []) {
             $allEvents[$course_id] = $events;
         }
-
         if (isset($allEvents)) {
-
             // цикл с разбором всех событий
             foreach ($allEvents as $keyEvent => $event) {
-
                 // цикл с перебором всех событий конкретного курса и выбором события "Начало"
                 for ($i = 0; $i < count($event); $i++) {
                     // если у события курса название "Начало", то...
@@ -84,17 +77,13 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
                 }
             }
         }
-
         return $result;
     }
-
     public function getChallenges($course_id)
     {
         $challenges = Challenge::find()->where(['course_id' => $course_id])->all();
-
         return count($challenges);
     }
-
     public function getWebinarsCount($course_id)
     {
         $events = Event::find()->where(['course_id' => $course_id])->all();
@@ -110,12 +99,11 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
         $number = 0;
         foreach ($match as $item){
             if (count($item) > 0){
-                    $number++;
+                $number++;
             }
         }
         return $number;
     }
-
     public function getHomeworksCount($course_id)
     {
         $events = Event::find()->where(['course_id' => $course_id])->all();
@@ -136,39 +124,35 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
         }
         return $number;
     }
-
     public function getExamsCount($course_id)
     {
-    $events = Event::find()->where(['course_id' => $course_id])->all();
-    $regexp = "/(экзамен)([0-9]*)/ui";
-    $match = [];
-    if (isset($events)) {
-        foreach ($events as $key => $oneEvent) {
-            if (preg_match($regexp, $oneEvent->title, $match[$key])) {
-                preg_match($regexp, $oneEvent->title, $match[$key]);
+        $events = Event::find()->where(['course_id' => $course_id])->all();
+        $regexp = "/(экзамен)([0-9]*)/ui";
+        $match = [];
+        if (isset($events)) {
+            foreach ($events as $key => $oneEvent) {
+                if (preg_match($regexp, $oneEvent->title, $match[$key])) {
+                    preg_match($regexp, $oneEvent->title, $match[$key]);
+                }
             }
         }
-    }
-    $number = 0;
-    foreach ($match as $item){
-        if (count($item) > 0){
-            $number++;
+        $number = 0;
+        foreach ($match as $item){
+            if (count($item) > 0){
+                $number++;
+            }
         }
+        return $number;
     }
-    return $number;
-    }
-
     public function getCourseRating($course_id)
     {
         $courseRating = UserPoints::find()->where(['course_id' => $course_id])->all();
-
         // избавляемся от тех, у кого 0 points
         foreach ($courseRating as $key => $userData) {
             if ($userData->points == 0 && $userData->user_id != Yii::$app->user->id){
                 unset($courseRating[$key]);
             }
         }
-
         $data = [];
         foreach ($courseRating as $key => $usersData){
             if ($usersData->user_id == Yii::$app->user->id){
@@ -181,9 +165,7 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
             $data[$key]['element_id'] = $usersData->element_id;
             $data[$key]['points'] = $usersData->points;
         }
-
         //\yii\helpers\VarDumper::dump($data, 10, true);
-
         $users = [];
         $allUserPoints = [];
         foreach ($data as $key => $value){
@@ -197,18 +179,14 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
             //$allUserPoints[$value['user_id']] = $value['user_id'];
             //if ($data[$key]['user_id'] == $value['user_id']) {
             //    print $data[$key]['user_id'] . ' === ' . $value['user_id'] . '<br>';
-                //unset($data[$key]);
+            //unset($data[$key]);
             //}
         }
-
-
-
-       // foreach ($allUserPoints as $key => $row) {
-      //      $sortOnPoints[$key] = $row;
-      //  }
-      //   array_multisort($sortOnPoints, SORT_DESC, $data);
-         arsort($allUserPoints);
-
+        // foreach ($allUserPoints as $key => $row) {
+        //      $sortOnPoints[$key] = $row;
+        //  }
+        //   array_multisort($sortOnPoints, SORT_DESC, $data);
+        arsort($allUserPoints);
         // оставляем только 5 пользователей в рейтинге, остальных удаляем
         $numberOfItem = 1;
         $neededUsers = [];
@@ -236,17 +214,15 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
         }
         foreach ($data as $userKey => $userData){
             foreach ($neededUsers as $userId => $userPosition)
-            if ($userData['user_id'] == $userId){
-                $data[$userKey]['position'] = $userPosition;
-            }
+                if ($userData['user_id'] == $userId){
+                    $data[$userKey]['position'] = $userPosition;
+                }
         }
-
         foreach ($data as $userKey => $userData){
-             $user = User::find()->where(['id' => $userData['user_id']])->one();
-             $data[$userKey]['username'] = $user->username;
+            $user = User::find()->where(['id' => $userData['user_id']])->one();
+            $data[$userKey]['username'] = $user->username;
         }
         //\yii\helpers\VarDumper::dump($data, 10, true);
-
         $all['rating'] = $allUserPoints;
         $all['data'] = $data;
         return $all;

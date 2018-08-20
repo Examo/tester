@@ -3,6 +3,8 @@
 namespace app\models;
 
 use app\helpers\Subset;
+use app\models\ar\ChallengeFood;
+use app\models\ar\Food;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -70,44 +72,11 @@ class Challenge extends \app\models\ar\Challenge
     }
 
     /**
-     * @return int
+     * @return \yii\db\ActiveQuery
      */
-    public function getChallengeGenerationsCount()
+    public function getChallengeHasQuestions()
     {
-        $count = 0;
-        $questions = parent::getChallengeGenerations()->all();
-        foreach ($questions as $question) {
-            /** @var ChallengeHasQuestion $question */
-            $q = $question->getQuestion()->one();
-            /** @var \app\models\ar\Question $q */
-            if ($q->question_type_id === QuestionType::TYPE_THREE_QUESTION) {
-                $count += 3;
-            } else {
-                $count ++;
-            }
-        }
-
-        return $count;
-    }
-
-    /**
-     * @return int
-     */
-    public function getChallengeHasQuestionsCount()
-    {
-        $count = 0;
-        $questions = parent::getChallengeHasQuestions()->orderBy(['position' => SORT_ASC])->all();
-        foreach ($questions as $question) {
-            /** @var ChallengeHasQuestion $question */
-            $q = $question->getQuestion()->one();
-            /** @var \app\models\ar\Question $q */
-            if ($q->question_type_id === QuestionType::TYPE_THREE_QUESTION) {
-                $count += 3;
-            } else {
-                $count ++;
-            }
-        }
-        return $count;
+        return parent::getChallengeHasQuestions()->orderBy(['position' => SORT_ASC]);
     }
 
     /**
@@ -139,8 +108,8 @@ class Challenge extends \app\models\ar\Challenge
      */
     public function getMode()
     {
-        $questions = $this->getChallengeHasQuestionsCount();
-        $rules = $this->getChallengeGenerationsCount();
+        $questions = $this->getChallengeHasQuestions()->count();
+        $rules = $this->getChallengeGenerations()->count();
 
         if ($questions && $rules) {
             return self::MODE_DYNAMIC;
@@ -202,16 +171,12 @@ class Challenge extends \app\models\ar\Challenge
         switch ($this->getMode()) {
             case self::MODE_STATIC:
             case self::MODE_DYNAMIC:
-                return $this->getChallengeHasQuestionsCount();
+                return $this->getChallengeHasQuestions()->count();
 
             case self::MODE_RANDOM:
                 $result = 0;
                 foreach ($this->getChallengeGenerations() as $rule) {
-                    try {
-                        $result += $rule->question_count;
-                    } catch (\Exception $e) {
-                        $result += 0;
-                    }
+                    $result += $rule->question_count;
                 }
                 return $result;
 
@@ -223,6 +188,23 @@ class Challenge extends \app\models\ar\Challenge
     public function getAttemptsCount($user)
     {
         return $this->getAttempts()->where(['user_id' => is_object($user) ? $user->id : $user])->count();
+    }
+
+    public function getAttemptsElementsCount($element_id, $challenge_id, $challenge_element_id)
+    {
+        $attempts = [];
+        if ($element_id == 1 && $challenge_element_id == 1) {
+            $attempts = Attempt::find()->where(['challenge_id' => $challenge_id])->andWhere(['user_id' =>  Yii::$app->user->id])->all();
+        }
+        if ($element_id == 2 && $challenge_element_id == 2) {
+            $attempts = Attempt::find()->where(['challenge_id' => $challenge_id])->andWhere(['user_id' =>  Yii::$app->user->id])->all();
+        }
+        return count($attempts);
+    }
+
+    public function getElementChallengesCount($course_id, $element_id){
+        $challenges = Challenge::find()->where(['course_id' => $course_id])->andWhere(['element_id' => $element_id])->all();
+        return count($challenges);
     }
 
     public function getChallengesByWeeks($courseChallenges) {

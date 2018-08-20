@@ -55,13 +55,20 @@
                         <?php  if ($realQuestionId == $question['id']):?>
                             <tr>
                                 <th class="text-left">№ в тесте<br>[№ в системе]</th>
-                                <th class="text-left">Вопрос</th>
-                                <th class="text-left">Варианты ответа</th>
+                                <?php if ($question->question_type_id !== \app\models\QuestionType::TYPE_THREE_QUESTION): ?>
+                                    <th class="text-left">Вопрос</th>
+                                    <th class="text-left">Варианты ответа</th>
+                                <?php else: ?>
+                                    <!--<th class="text-left">Текст</th>-->
+                                    <th colspan="2" class="text-left">Вопросы</th>
+                                <?php endif;?>
                                 <th class="text-left">Твой ответ</th>
                                 <th class="text-left">Объяснение ответа</th>
                                 <th class="text-left">Подсказка была?</th>
                                 <th class="text-left">Получаешь балл</th>
                             </tr>
+
+                            <?php if ($question->question_type_id !== \app\models\QuestionType::TYPE_THREE_QUESTION): ?>
                             <tr>
                                 <!-- № -->
                                 <td class="text-center"><strong><?= $number ?><?php $number++?></strong><br>[<?= $question->id ?>]</td>
@@ -71,13 +78,6 @@
                                 <td class="text-left">
                                     <?php if ($question->question_type_id == \app\models\QuestionType::TYPE_ASSOC_TABLE): ?>
                                         <i class="fa options-text" data-id="options<?= $number?>"></i>
-                                    <?php elseif ($question->question_type_id == \app\models\QuestionType::TYPE_THREE_QUESTION): ?>
-                                        <?php
-                                            $qData = yii\helpers\Json::decode($question->data);
-                                            foreach ($qData['question'] as $q) {
-                                                echo \yii\helpers\Html::encode($q) . '<br>';
-                                            }
-                                        ?>
                                     <?php else: ?>
                                         <ul>
                                             <?php $question->getOptionsFinish($question->data); ?>
@@ -88,14 +88,6 @@
                                 <td class="<?= $results[$question->id] ? 'success' : 'danger' ?> text-left">
                                     <?php if ($question->question_type_id == \app\models\QuestionType::TYPE_ASSOC_TABLE): ?>
                                         <i class="fa answer-text" data-id="answer<?= $number?>"></i>
-                                    <?php elseif ($question->question_type_id == \app\models\QuestionType::TYPE_THREE_QUESTION): ?>
-                                        <?php
-                                        $qResults = yii\helpers\Json::decode($results[$question->id]);
-                                        foreach ($qResults as $q) {
-                                           echo $q ? 'Верно' : 'Неверно';
-                                           echo '<br>';
-                                        }
-                                        ?>
                                     <?php else: ?>
                                         <?php $summary->getAnswersFinish($question->data, $question->id, $question->question_type_id, $summary->answers, $question); ?>
                                     <?php ?>
@@ -135,7 +127,48 @@
                                     <p class="text-center"><center><?= $question->getCommentFinish($question->data) ?></center></p>
                                 </td>
                             </tr>
-                        <?php endif;?>
+                            <?php else: ?>
+                                <!-- 3 Вопроса -->
+                                <?php $qData = yii\helpers\Json::decode($question->data);
+                                      $qResults = yii\helpers\Json::decode($results[$question->id]);
+                                      $qComments = json_decode($question->comment) ? yii\helpers\Json::decode($question->comment) : [$question->comment, $question->comment, $question->comment];
+                                      $qAnswers = json_decode($summary->answers[$question->id]) ? yii\helpers\Json::decode($summary->answers[$question->id]) : [$summary->answers[$question->id], $summary->answers[$question->id], $summary->answers[$question->id]];
+                                      $qHints = $hints[$question->id];
+                                      $qIter = 0;
+                                ?>
+                                <tr>
+                                    <td colspan="7" class="text-center"><?= $question->text ?> </td>
+
+                                </tr>
+                                <?php foreach ($qData['question'] as $qDataQuestion): ?>
+
+                                    <tr>
+                                        <td class="text-center"><strong><?= $number ?><?php $number++?></strong><br>[<?= $question->id ?>]</td>
+                                        <!-- Текст -->
+                                        <!--<td class="text-left"><?php// $question->text ?> </td>-->
+                                        <!-- Вопросы -->
+                                        <td colspan="2" class="text-left">
+                                            <?= \yii\helpers\Html::encode($qDataQuestion) ?>
+                                        </td>
+                                        <!-- Твой ответ -->
+                                        <td class="<?= $qResults[$qIter] ? 'success' : 'danger' ?> text-left">
+                                            <?= \yii\helpers\Html::encode($qAnswers[$qIter][0]) ?>
+                                        </td>
+                                        <!-- Объяснение ответа -->
+                                        <td class="text-left">
+                                            <?= $qComments[$qIter] ?>
+                                        </td>
+                                        <!-- Подсказка была? -->
+                                        <td class="<?= isset($qHints[$qIter]) && $qHints[$qIter]  ? 'danger' : 'success' ?>"></td>
+                                        <?php if ($qIter === 0): ?>
+                                        <!-- Получаешь балл -->
+                                        <td rowspan="3" class="text-center" style="vertical-align: middle;"><strong><?= $points[$question->id] ?> </strong></td>
+                                        <?php endif;?>
+                                    </tr>
+                                    <?php $qIter++; ?>
+                                <?php endforeach; ?>
+                            <?php endif;?>
+                <?php endif;?>
                     <?php endforeach; ?>
                 <?php endforeach; ?>
                 <tr>

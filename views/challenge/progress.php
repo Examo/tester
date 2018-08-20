@@ -160,7 +160,7 @@
             var type = <?= $question->question_type_id ?>;
             var id = $(this).data('id');
             if (type === <?= \app\models\QuestionType::TYPE_THREE_QUESTION ?>) {
-                $.get('<?= \yii\helpers\Url::to(['challenge/hint', 'id' => $challenge->id]) ?>', function(data) {
+                $.get('<?= \yii\helpers\Url::to(['challenge/hint', 'id' => $challenge->id]) ?>'+'&num='+id, function(data) {
                     var hints = JSON.parse(data);
                     sessionStorage.setItem('quest_num', id);
                     showHint(hints[id], false);
@@ -174,14 +174,19 @@
         });
 
         <?php if( $session->isHintUsed() ): ?>
-            var type = <?= $question->question_type_id ?>;
-            if (type === <?= \app\models\QuestionType::TYPE_THREE_QUESTION ?>) {
+            <?php if( $question->question_type_id === \app\models\QuestionType::TYPE_THREE_QUESTION): ?>
                 var id = sessionStorage.getItem('quest_num');
-                var hints = JSON.parse(<?= \yii\helpers\Json::encode( $session->hint()) ?>);
+                <?php $qHints = $session->getHints(); ?>
+                <?php if (isset($qHints[$question->id])): ?>
+                    <?php $qUsedHint = array_keys($qHints[$question->id]); ?>
+                    var hints = JSON.parse(<?= \yii\helpers\Json::encode( $session->hint($qUsedHint[0])) ?>);
+                <?php else: ?>
+                    var hints = [];
+                <?php endif ?>
                 showHint(hints[id], false);
-            } else {
+            <?php else: ?>
                 showHint(<?= \yii\helpers\Json::encode( $session->hint()) ?>);
-            }
+            <?php endif;?>
         <?php endif;?>
 
         <?php if($challenge->settings->immediate_result ): ?>
