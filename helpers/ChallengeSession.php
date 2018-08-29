@@ -4,6 +4,7 @@ namespace app\helpers;
 
 use app\models\Challenge;
 use app\models\Question;
+use yii\helpers\Json;
 
 /**
  * Challenge Session Manager
@@ -128,11 +129,12 @@ class ChallengeSession
 
     /**
      * Get current question hint
+     * @param int $num
      * @return string
      */
-    public function hint()
+    public function hint($num = null)
     {
-        $this->useHint();
+        $this->useHint($num);
         $hints = $this->getCurrentQuestion()->getHint( true );
 
         if (is_array($hints)) {
@@ -147,8 +149,9 @@ class ChallengeSession
     public function skip()
     {
         $queue = $this->getQueue();
+        $array = array_splice($queue, $this->getCurrentQuestionNumber(), 1);
 
-        $queue[] = reset(array_splice($queue, $this->getCurrentQuestionNumber(), 1));
+        $queue[] = reset($array);
 
         $this->setQueue($queue);
     }
@@ -214,14 +217,19 @@ class ChallengeSession
 
     /**
      * Remember hint usage for current question
+     * @param int $num
      */
-    protected function useHint()
+    protected function useHint($num = null)
     {
         $queue = $this->getQueue();
         $question = $queue[$this->getCurrentQuestionNumber()];
 
         $hints = $this->getHints();
-        $hints[$question] = true;
+        if (isset($num)) {
+            $hints[$question][$num] = true;
+        } else {
+            $hints[$question] = true;
+        }
 
         \Yii::$app->session->set($this->getSessionKey('hints'), $hints);
     }

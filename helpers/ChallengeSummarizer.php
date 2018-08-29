@@ -73,8 +73,14 @@ class ChallengeSummarizer
         $inst->setFinishTime($session->getFinishTime());
 
         $hints = $session->getHints();
+
         foreach ($session->getAnswers() as $question => $answer) {
-            $hint = isset($hints[$question]) && $hints[$question];
+            if (isset($hints[$question])) {
+                $hint = is_array($hints[$question]) ? $hints[$question] : (isset($hints[$question]) && $hints[$question]);
+            } else {
+                $hint = (isset($hints[$question]) && $hints[$question]);
+            }
+
             $inst->addAnswer($question, $answer, null, $hint);
         }
 
@@ -123,8 +129,9 @@ class ChallengeSummarizer
      * @param $question
      * @param $answer
      * @param null|bool $correct If null answer will be checked automaticaly
+     * @param null $hintUsed
      */
-    public function addAnswer($question, $answer, $correct = null, $hintUsed = false)
+    public function addAnswer($question, $answer, $correct = null, $hintUsed = null)
     {
         $this->answers[$question] = $answer;
         $this->hints[$question] = $hintUsed;
@@ -247,9 +254,22 @@ class ChallengeSummarizer
         $result = [];
         foreach ($this->getQuestions() as $question) {
             $points = (int)$question->getPoints($this->answers[$question->id]);
-            // if hint used, decrease points amount
-            if ( $this->hints[$question->id] ) {
-                $points /= 2;
+            if ($question->question_type_id === \app\models\QuestionType::TYPE_THREE_QUESTION) {
+                $cost = $question->cost;
+                $hints = $this->hints[$question->id];
+
+                foreach ($hints as $key => $useHint) {
+                    if ($key === 0) {
+                        $useHint ? $points -= $cost : '';
+                    } else {
+                        $useHint ? $points -= $cost/2 : '';
+                    }
+                }
+            } else {
+                // if hint used, decrease points amount
+                if ( $this->hints[$question->id] ) {
+                    $points /= 2;
+                }
             }
 
             $result[$question->id] = $points;
@@ -339,7 +359,7 @@ class ChallengeSummarizer
             $allPoints += $points[$question->id];
 
             if ($question->question_type_id == \app\models\QuestionType::TYPE_THREE_QUESTION) {
-                $numberOfPoints += $question->cost*3;
+                $numberOfPoints += $question->cost*4;
             } else {
                 $numberOfPoints += $question->cost;
             }
@@ -452,6 +472,9 @@ class ChallengeSummarizer
                [2]=> array(2) { [0]=> int(2) [1]=> int(4) }
                [3]=> array(2) { [0]=> int(3) [1]=> int(3) }
                [4]=> array(2) { [0]=> int(4) [1]=> int(0) } }*/
+                break;
+            case QuestionType::TYPE_THREE_QUESTION:
+                echo $answers[$questionId];
                 break;
         }
     }

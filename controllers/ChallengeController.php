@@ -657,19 +657,24 @@ class ChallengeController extends Controller
     /**
      * Get question hint
      * @param int $id
+     * @param int $num
+     * @return string
+     * @throws NotFoundHttpException
      */
-    public function actionHint($id = 0)
+    public function actionHint($id = 0, $num = null)
     {
         $challenge = $this->getChallenge($id);
         $session = new ChallengeSession($challenge, Yii::$app->user->id);
 
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        return $session->hint();
+        return $session->hint($num);
     }
 
     /**
      * Skip current question
      * @param int $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
      */
     public function actionSkip($id = 0)
     {
