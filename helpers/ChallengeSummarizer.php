@@ -256,14 +256,16 @@ class ChallengeSummarizer
             $points = (int)$question->getPoints($this->answers[$question->id]);
             if ($question->question_type_id === \app\models\QuestionType::TYPE_THREE_QUESTION) {
                 $cost = $question->cost;
+                $answersCheck = \yii\helpers\Json::decode($this->answers[$question->id]) ?? '';
                 $hints = $this->hints[$question->id];
 
                 if ($hints) {
                     foreach ($hints as $key => $useHint) {
+                        $correct = $answersCheck[$key][1];
                         if ($key === 0) {
-                            $useHint ? $points -= $cost : '';
+                            $useHint && $correct ? $points -= $cost : '';
                         } else {
-                            $useHint ? $points -= $cost / 2 : '';
+                            $useHint && $correct ? $points -= $cost / 2 : '';
                         }
                     }
                 }

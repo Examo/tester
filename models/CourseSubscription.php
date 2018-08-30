@@ -87,7 +87,7 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
     public function getWebinarsCount($course_id)
     {
         $events = Event::find()->where(['course_id' => $course_id])->all();
-        $regexp = "/(вебинар)([0-9]*)/ui";
+        $regexp = "/(вебинар)([0-9]*)( )(ссылка)(\S*)( )(описание)([\S\s]*)/ui";
         $match = [];
         if (isset($events)) {
             foreach ($events as $key => $oneEvent) {
