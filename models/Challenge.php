@@ -225,6 +225,23 @@ class Challenge extends \app\models\ar\Challenge
         return $this->getAttempts()->where(['user_id' => is_object($user) ? $user->id : $user])->count();
     }
 
+    public function getAttemptsElementsCount($element_id, $challenge_id, $challenge_element_id)
+    {
+        $attempts = [];
+        if ($element_id == 1 && $challenge_element_id == 1) {
+            $attempts = Attempt::find()->where(['challenge_id' => $challenge_id])->andWhere(['user_id' =>  Yii::$app->user->id])->all();
+        }
+        if ($element_id == 2 && $challenge_element_id == 2) {
+            $attempts = Attempt::find()->where(['challenge_id' => $challenge_id])->andWhere(['user_id' =>  Yii::$app->user->id])->all();
+        }
+        return count($attempts);
+    }
+
+    public function getElementChallengesCount($course_id, $element_id){
+        $challenges = Challenge::find()->where(['course_id' => $course_id])->andWhere(['element_id' => $element_id])->all();
+        return count($challenges);
+    }
+    
     public function getChallengesByWeeks($courseChallenges) {
         $testByWeeks = [];
         foreach ($courseChallenges as $number => $challenge) {

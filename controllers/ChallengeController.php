@@ -555,6 +555,42 @@ class ChallengeController extends Controller
                         $points->points = $allLastChallengeQuestionsCost;
                         $points->save();
                     }
+
+                    foreach ($testResults as $testId => $testResult){
+                        if ($testResult == true) {
+                            if (is_string($testResult)) {
+                                print $testResult;
+                                $regexpRight = "/(\[1,1,1\])/ui";
+                                $wrongMatch = [];
+                                if (preg_match($regexpRight, $testResult, $wrongMatch)) {
+                                   // print $testId . ' успешная строка с ответом!<br>';
+                                    $question = Question::find()->where(['id' => $testId])->one();
+                                    //\yii\helpers\VarDumper::dump($question->right_points, 10, true);
+                                    $question->right_points = $question->right_points + 1;
+                                    $question->save();
+                                } else {
+                                    //print $testId . ' неуспешная строка с ответом...<br>';
+                                    $question = Question::find()->where(['id' => $testId])->one();
+                                    //\yii\helpers\VarDumper::dump($question->wrong_points, 10, true);
+                                    $question->wrong_points = $question->wrong_points + 1;
+                                    $question->save();
+                                }
+                            } else {
+                                //print $testId . ' успешен!<br>';
+                                $question = Question::find()->where(['id' => $testId])->one();
+                                //\yii\helpers\VarDumper::dump($question->right_points, 10, true);
+                                $question->right_points = $question->right_points + 1;
+                                $question->save();
+                            }
+                        }
+                        if ($testResult == false) {
+                            //print $testId . ' не успешен...<br>';
+                            $question = Question::find()->where(['id' => $testId])->one();
+                            //\yii\helpers\VarDumper::dump($question->wrong_points, 10, true);
+                            $question->wrong_points = $question->wrong_points + 1;
+                            $question->save();
+                        }
+                    }
                 }
             }
 
