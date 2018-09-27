@@ -43,9 +43,9 @@ class Question extends \app\components\ActiveRecord
     {
         return [
             [['question_type_id'], 'required'],
-            [['question_type_id', 'cost'], 'integer'],
+            [['question_type_id', 'cost', 'right_points', 'wrong_points'], 'integer'],
             [['text', 'data', 'hint', 'comment'], 'string'],
-            [['question_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => QuestionType::className(), 'targetAttribute' => ['question_type_id' => 'id']],
+            [['question_type_id', 'right_points', 'wrong_points'], 'exist', 'skipOnError' => true, 'targetClass' => QuestionType::className(), 'targetAttribute' => ['question_type_id' => 'id']],
         ];
     }
 
@@ -62,6 +62,8 @@ class Question extends \app\components\ActiveRecord
             'hint' => 'Hint',
             'comment' => 'Comment',
             'cost' => 'Cost',
+            'right_points' => 'Right Points',
+            'wrong_points' => 'Wrong Points',
         ];
     }
 

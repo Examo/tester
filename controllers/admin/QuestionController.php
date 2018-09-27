@@ -43,8 +43,10 @@ class QuestionController extends BaseAdminCrudController
     public function actionCreate()
     {
         $class = $this->getModelClass();
-        /** @var yii\base\Model $model */
+       
         $model = new $class();
+        $model->right_points = 0;
+        $model->wrong_points = 0;
 
         $data = Yii::$app->request->post();
         if ($data) {

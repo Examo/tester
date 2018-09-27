@@ -55,7 +55,8 @@ class Question extends \app\models\ar\Question
             'hint' => Yii::t('question', 'Hint'),
             'comment' => Yii::t('question', 'Comment'),
             'cost' => Yii::t('question', 'Cost'),
-
+            'right_points' => Yii::t('question', 'Right Points'),
+            'wrong_points' => Yii::t('question', 'Wrong Points'),
             'courses_ids' => Yii::t('question', 'Courses'),
             'subjects_ids' => Yii::t('question', 'Subjects'),
             'challengeTypes_ids' => Yii::t('question', 'Challenge Types')
