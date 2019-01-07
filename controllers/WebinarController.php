@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\models\Attempt;
+use app\models\Challenge;
 use app\models\Course;
 use app\models\Webinar;
 use dektrium\user\models\UserSearch;
@@ -25,7 +27,7 @@ class WebinarController extends \yii\web\Controller
 
         $events = Event::find()->all();
 
-        $regexp = "/(вебинар)([0-9]*)( )(ссылка)(\S*)( )(описание)([\S\s]*)/ui";
+        $regexp = "/(вебинар)([0-9]*)( )(занятие)([0-9]*)( )(ссылка)(\S*)( )(описание)([\S\s]*)/ui";
         $match = [];
         $data = [];
         foreach ($events as $key => $event) {
@@ -36,8 +38,9 @@ class WebinarController extends \yii\web\Controller
                     $courseName = Course::find()->select('name')->where(['id' => $event->course_id])->one();
                     $data['course_name'] = $courseName->name;
                     $data['webinar_id'] = $match[$key][2];
-                    $data['webinar_link'] = $match[$key][5];
-                    $data['webinar_description'] = $match[$key][8];
+                    $data['webinar_exercise_id'] = intval($match[$key][5]);
+                    $data['webinar_link'] = $match[$key][8];
+                    $data['webinar_description'] = $match[$key][11];
                     $data['webinar_start'] = $event->start;
                     $data['webinar_end'] = $event->end;
                 }
@@ -69,7 +72,31 @@ class WebinarController extends \yii\web\Controller
                 $data['webinar_week'] = ceil($timeBeforeWebinarStart / $weekTime);
             }
         }
-        \yii\helpers\VarDumper::dump($data['webinar_week'], 10, true);
+       // \yii\helpers\VarDumper::dump($data['webinar_id'], 10, true);
+       // \yii\helpers\VarDumper::dump($data['course_id'], 10, true);
+
+        $challenges = Challenge::find()->where(['course_id' => $data['course_id']])->andWhere(['challenge_type_id' => 3])->andWhere(['week' => $data['webinar_week']])->andWhere(['exercise_number' => $data['webinar_exercise_id']])->all();
+        //\yii\helpers\VarDumper::dump($challenges, 10, true);
+
+        $cleanWebinarChallenges = [];
+        foreach ($challenges as $challenge) {
+            if (intval($data['webinar_exercise_id']) == $challenge->exercise_number) {
+                $cleanWebinarChallenges['challenge'][$challenge->id] = $challenge;
+                $challengeChecked = Attempt::find()->where(['user_id' => Yii::$app->user->id])->andWhere(['challenge_id' => $challenge->id])->one();
+                if (!$challengeChecked){
+                    $cleanWebinarChallenges['isDone'][$challenge->id] = 0;
+                } else {
+                    $cleanWebinarChallenges['isDone'][$challenge->id] = 1;
+                }
+
+            } else {
+                //print 'NEUSPESHEN';
+            }
+        }
+
+       // \yii\helpers\VarDumper::dump($cleanWebinarChallenges, 10, true);
+
+        //\yii\helpers\VarDumper::dump($webinar->getChallengesStatistic(3), 10, true);
         if (!isset($data)){
 
         }
@@ -80,7 +107,8 @@ class WebinarController extends \yii\web\Controller
             return $this->render('webinar',
                 [
                     'webinar' => $webinar,
-                    'data' => $data
+                    'data' => $data,
+                    'cleanWebinarChallenges' => $cleanWebinarChallenges
 
                 ]);
         } else {

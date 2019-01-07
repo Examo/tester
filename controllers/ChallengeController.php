@@ -21,6 +21,7 @@ use app\models\Course;
 use app\models\Event;
 use app\models\Question;
 use app\models\Subject;
+use app\models\WebinarAnswers;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
@@ -591,7 +592,45 @@ class ChallengeController extends Controller
                             $question->save();
                         }
                     }
+
+                    //-- в finish запись: если тип теста "Вебинарный"
+                    //--- если неделя соответствует
+                    //--- если занятие в тесте соответствует
+                    //--- если подписка на курс есть (?)
+                    //, то
+                    //--- запись в таблицу webinar_answers
                 }
+
+               // \yii\helpers\VarDumper::dump($challenge, 10, true);
+
+                //\yii\helpers\VarDumper::dump($testResults, 10, true);
+                //\yii\helpers\VarDumper::dump($testQuestions, 10, true);
+                //\yii\helpers\VarDumper::dump($summary->answers, 10, true);
+
+                if ($challenge->challenge_type_id == 3 && $challenge->week >= $week)
+                {
+
+                    foreach ($summary->answers as $questionNumber => $answer){
+                        //print $answer;
+                        $webinarAnswers = new WebinarAnswers();
+                        $webinarAnswers->user_id = Yii::$app->user->id;
+                        $webinarAnswers->webinar_exercise_id = $challenge->exercise_number;
+                        $webinarAnswers->challenge_id = $challenge->id;
+                        $webinarAnswers->question_id = $questionNumber;
+                        $answerCorrectness = $testResults[$questionNumber];
+                        if ($answerCorrectness == true){
+                            $answerCorrectness = 'true';
+                        }
+                        if ($answerCorrectness == false){
+                            $answerCorrectness = 'false';
+                        }
+                        $webinarAnswers->answer_correctness = $answerCorrectness;
+                        $webinarAnswers->answer_indicator = $answer;
+                        $webinarAnswers->save();
+                    }
+
+                }
+
             }
 
             if (Yii::$app->user->isGuest) {

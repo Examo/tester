@@ -320,4 +320,10 @@ class Challenge extends \app\models\ar\Challenge
         return $challengeClean;
     }
 
+    public function getWebinar()
+    {
+        //$webinar = Webinar::findOne(Yii::$app->request->get('id'));
+        //\yii\helpers\VarDumper::dump($webinar, 10, true);
+    }
+
 }
