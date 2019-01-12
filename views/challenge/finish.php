@@ -2,11 +2,13 @@
 /**
  * @var \app\helpers\ChallengeSummarizer $summary
  */
-    $questions = $summary->getQuestions();
-    $results = $summary->getCorrectness();
-    $hints = $summary->getHints();
-    $points = $summary->getPoints();
-    $number = 1;
+use app\models\Question;
+
+$questions = $summary->getQuestions();
+$results = $summary->getCorrectness();
+$hints = $summary->getHints();
+$points = $summary->getPoints();
+$number = 1;
 ?>
 
 <div class="panel panel-default" xmlns="http://www.w3.org/1999/html">
@@ -30,15 +32,24 @@
     <div role="tabpanel">
         <div class="panel-body">
             <center><p class="lead"><?= $challenge->name ?></p>
-            <p><strong>Оценка: <?= $summary->getMark() ? $summary->getTextMark($summary->getMark()) : 'не доступно - слишком мало было дано ответов' ?></strong></p>
-            <p><?php $summary->getEmoticon($summary->getMark());?></p>
-            <?php if($challengeItem): ?>
-                <p><center><img src="/i/<?= $challengeItem->name ? $challengeItem->name : "no_image" ; ?>.png" /></center></p>
-            <?php endif; ?>
-            <p><strong>Всего набрано баллов: <?= $summary->getAllPoints($questions, $points)['allPoints']; ?> из <?=$summary->getAllPoints($questions, $points)['numberOfPoints']?></strong></p>
-            <p>Время выполнения: <?= round($summary->getTime() / 60) ?> мин.</p>
-            <p><a class="btn btn-lg btn-success" href="<?= \yii\helpers\Url::to(['start', 'id' => $challenge->id, 'confirm' => true]) ?>">Повторить этот тест</a></p>
-            <p><a class="btn btn-lg btn-success" href="<?= \yii\helpers\Url::to(['/feed']) ?>">Продолжить кушать</a></p></center>
+                <p><strong>Оценка: <?= $summary->getMark() ? $summary->getTextMark($summary->getMark()) : 'не доступно - слишком мало было дано ответов' ?></strong></p>
+                <p><?php $summary->getEmoticon($summary->getMark());?></p>
+                <?php if($challengeItem): ?>
+                    <p><center><img src="/i/<?= $challengeItem->name ? $challengeItem->name : "no_image" ; ?>.png" /></center></p>
+                <?php endif; ?>
+                <p><strong>Всего набрано баллов: <?= $summary->getAllPoints($questions, $points)['allPoints']; ?> из <?=$summary->getAllPoints($questions, $points)['numberOfPoints']?></strong></p>
+                <p>Время выполнения: <?= round($summary->getTime() / 60) ?> мин.</p>
+
+                <p><a class="btn btn-lg btn-success" href="<?= \yii\helpers\Url::to(['start', 'id' => $challenge->id, 'confirm' => true]) ?>">Повторить этот тест</a></p>
+                <?php if ($challenge->element_id == 1): ?>
+                    <p><a class="btn btn-lg btn-success" href="<?= \yii\helpers\Url::to(['/feed']) ?>">Продолжить кушать</a></p>
+                    <p><a class="btn btn-lg btn-success" href="<?= \yii\helpers\Url::to(['/clean']) ?>">Или сделать уборку</a></p>
+                <?php endif; ?>
+                <?php if ($challenge->element_id == 2): ?>
+                    <p><a class="btn btn-lg btn-success" href="<?= \yii\helpers\Url::to(['/clean']) ?>">Продолжить уборку</a></p>
+                    <p><a class="btn btn-lg btn-success" href="<?= \yii\helpers\Url::to(['/feed']) ?>">Или покушать</a></p>
+                <?php endif; ?>
+            </center>
         </div>
     </div>
 </div>
@@ -69,72 +80,72 @@
                             </tr>
 
                             <?php if ($question->question_type_id !== \app\models\QuestionType::TYPE_THREE_QUESTION): ?>
-                            <tr>
-                                <!-- № -->
-                                <td class="text-center"><strong><?= $number ?><?php $number++?></strong><br>[<?= $question->id ?>]</td>
-                                <!-- Вопрос -->
-                                <td class="text-left"><?= $question->text ?></td>
-                                <!-- Варианты ответа -->
-                                <td class="text-left">
-                                    <?php if ($question->question_type_id == \app\models\QuestionType::TYPE_ASSOC_TABLE): ?>
-                                        <i class="fa options-text" data-id="options<?= $number?>"></i>
-                                    <?php else: ?>
-                                        <ul>
-                                            <?php $question->getOptionsFinish($question->data); ?>
-                                        </ul>
-                                    <?php endif;?>
-                                </td>
-                                <!-- Твой ответ -->
-                                <td class="<?= $results[$question->id] ? 'success' : 'danger' ?> text-left">
-                                    <?php if ($question->question_type_id == \app\models\QuestionType::TYPE_ASSOC_TABLE): ?>
-                                        <i class="fa answer-text" data-id="answer<?= $number?>"></i>
-                                    <?php else: ?>
-                                        <?php $summary->getAnswersFinish($question->data, $question->id, $question->question_type_id, $summary->answers, $question); ?>
-                                    <?php ?>
-                                    <?php endif;?>
-                                </td>
-                                <!-- Объяснение ответа -->
-                                <td class="text-left">
-                                    <?php if ($question->question_type_id == \app\models\QuestionType::TYPE_ASSOC_TABLE): ?>
-                                        <i class="fa explanation-text" data-id="explanation<?= $number?>"></i>
-                                    <?php else: ?>
-                                        <?= json_decode($question->comment) ? implode("<br>", yii\helpers\Json::decode($question->comment)) : $question->comment ?>
-                                    <?php endif;?>
-                                </td>
-                                <!-- Подсказка была? -->
-                                <td class="<?= !$hints[$question->id] ? 'success' : 'danger' ?>"><center><?= $question->getRightHintText($hints[$question->id], $results[$question->id], $question->question_type_id) ?></center></td>
-                                <!-- Получаешь балл -->
-                                <td class="text-center"> <strong><?= $points[$question->id] ?> </strong></td>
-                            </tr>
-                            <!-- Вставка блока с опциями при 7-м задании -->
-                            <tr id="options<?= $number?>" style="display: none;">
-                                <td colspan="8">
-                                    <center><i class="fa options-text" data-id="options<?= $number?>"></i><strong>Варианты ответа:</strong></center>
-                                    <p class="text-center"><center><?php $question->getOptionsFinish($question->data); ?></center></p>
-                                </td>
-                            </tr>
-                            <!-- Вставка блока с ответом при 7-м задании -->
-                            <tr id="answer<?= $number?>" style="display: none;">
-                                <td colspan="8">
-                                    <center><i class="fa answer-text" data-id="answer<?= $number?>"></i><strong>Твой ответ:</strong></center>
-                                    <p class="text-center"><center><?php $summary->getAnswersFinish($question->data, $question->id, $question->question_type_id, $summary->answers, $question); ?></center></p>
-                                </td>
-                            </tr>
-                            <!-- Вставка блока с объяснением при 7-м задании -->
-                            <tr id="explanation<?= $number?>" style="display: none;">
-                                <td colspan="8">
-                                    <center><i class="fa explanation-text" data-id="explanation<?= $number?>"></i><strong>Объяснение ответа:</strong></center>
-                                    <p class="text-center"><center><?= $question->getCommentFinish($question->data) ?></center></p>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <!-- № -->
+                                    <td class="text-center"><strong><?= $number ?><?php $number++?></strong><br>[<?= $question->id ?>]</td>
+                                    <!-- Вопрос -->
+                                    <td class="text-left"><?= $question->text ?></td>
+                                    <!-- Варианты ответа -->
+                                    <td class="text-left">
+                                        <?php if ($question->question_type_id == \app\models\QuestionType::TYPE_ASSOC_TABLE): ?>
+                                            <i class="fa options-text" data-id="options<?= $number?>"></i>
+                                        <?php else: ?>
+                                            <ul>
+                                                <?php $question->getOptionsFinish($question->data); ?>
+                                            </ul>
+                                        <?php endif;?>
+                                    </td>
+                                    <!-- Твой ответ -->
+                                    <td class="<?= $results[$question->id] ? 'success' : 'danger' ?> text-left">
+                                        <?php if ($question->question_type_id == \app\models\QuestionType::TYPE_ASSOC_TABLE): ?>
+                                            <i class="fa answer-text" data-id="answer<?= $number?>"></i>
+                                        <?php else: ?>
+                                            <?php $summary->getAnswersFinish($question->data, $question->id, $question->question_type_id, $summary->answers, $question); ?>
+                                            <?php ?>
+                                        <?php endif;?>
+                                    </td>
+                                    <!-- Объяснение ответа -->
+                                    <td class="text-left">
+                                        <?php if ($question->question_type_id == \app\models\QuestionType::TYPE_ASSOC_TABLE): ?>
+                                            <i class="fa explanation-text" data-id="explanation<?= $number?>"></i>
+                                        <?php else: ?>
+                                            <?= json_decode($question->comment) ? implode("<br>", yii\helpers\Json::decode($question->comment)) : $question->comment ?>
+                                        <?php endif;?>
+                                    </td>
+                                    <!-- Подсказка была? -->
+                                    <td class="<?= !$hints[$question->id] ? 'success' : 'danger' ?>"><center><?= $question->getRightHintText($hints[$question->id], $results[$question->id], $question->question_type_id) ?></center></td>
+                                    <!-- Получаешь балл -->
+                                    <td class="text-center"> <strong><?= $points[$question->id] ?> </strong></td>
+                                </tr>
+                                <!-- Вставка блока с опциями при 7-м задании -->
+                                <tr id="options<?= $number?>" style="display: none;">
+                                    <td colspan="8">
+                                        <center><i class="fa options-text" data-id="options<?= $number?>"></i><strong>Варианты ответа:</strong></center>
+                                        <p class="text-center"><center><?php $question->getOptionsFinish($question->data); ?></center></p>
+                                    </td>
+                                </tr>
+                                <!-- Вставка блока с ответом при 7-м задании -->
+                                <tr id="answer<?= $number?>" style="display: none;">
+                                    <td colspan="8">
+                                        <center><i class="fa answer-text" data-id="answer<?= $number?>"></i><strong>Твой ответ:</strong></center>
+                                        <p class="text-center"><center><?php $summary->getAnswersFinish($question->data, $question->id, $question->question_type_id, $summary->answers, $question); ?></center></p>
+                                    </td>
+                                </tr>
+                                <!-- Вставка блока с объяснением при 7-м задании -->
+                                <tr id="explanation<?= $number?>" style="display: none;">
+                                    <td colspan="8">
+                                        <center><i class="fa explanation-text" data-id="explanation<?= $number?>"></i><strong>Объяснение ответа:</strong></center>
+                                        <p class="text-center"><center><?= $question->getCommentFinish($question->data) ?></center></p>
+                                    </td>
+                                </tr>
                             <?php else: ?>
                                 <!-- 3 Вопроса -->
                                 <?php $qData = yii\helpers\Json::decode($question->data);
-                                      $qResults = yii\helpers\Json::decode($results[$question->id]);
-                                      $qComments = json_decode($question->comment) ? yii\helpers\Json::decode($question->comment) : [$question->comment, $question->comment, $question->comment];
-                                      $qAnswers = json_decode($summary->answers[$question->id]) ? yii\helpers\Json::decode($summary->answers[$question->id]) : [$summary->answers[$question->id], $summary->answers[$question->id], $summary->answers[$question->id]];
-                                      $qHints = $hints[$question->id];
-                                      $qIter = 0;
+                                $qResults = yii\helpers\Json::decode($results[$question->id]);
+                                $qComments = json_decode($question->comment) ? yii\helpers\Json::decode($question->comment) : [$question->comment, $question->comment, $question->comment];
+                                $qAnswers = json_decode($summary->answers[$question->id]) ? yii\helpers\Json::decode($summary->answers[$question->id]) : [$summary->answers[$question->id], $summary->answers[$question->id], $summary->answers[$question->id]];
+                                $qHints = $hints[$question->id];
+                                $qIter = 0;
                                 ?>
                                 <tr>
                                     <td colspan="7" class="text-center"><?= $question->text ?> </td>
@@ -161,14 +172,41 @@
                                         <!-- Подсказка была? -->
                                         <td class="<?= isset($qHints[$qIter]) && $qHints[$qIter]  ? 'danger' : 'success' ?>"></td>
                                         <?php if ($qIter === 0): ?>
-                                        <!-- Получаешь балл -->
-                                        <td rowspan="3" class="text-center" style="vertical-align: middle;"><strong><?= $points[$question->id] ?> </strong></td>
+                                            <!-- Получаешь балл -->
+                                            <td rowspan="3" class="text-center" style="vertical-align: middle;"><strong><?= $points[$question->id] ?> </strong></td>
                                         <?php endif;?>
                                     </tr>
                                     <?php $qIter++; ?>
                                 <?php endforeach; ?>
                             <?php endif;?>
-                <?php endif;?>
+                            <tr>
+                            <th colspan="7">
+                                <?php // $numberOfPupils = 0; ?>
+                                <?php $questionData = Question::find()->where(['id' => $question->id])->one()?>
+                                <?php $numberOfPupils = $questionData->right_points + $questionData->wrong_points; ?>
+                                <?php
+                                if ($questionData->right_points !== 0) {
+                                    $numberOfRightPointsCoefficient = ($questionData->right_points + $questionData->wrong_points) / $questionData->right_points;
+                                    $numberOfRightPoints = 100 / $numberOfRightPointsCoefficient;
+                                } else {
+                                    $numberOfRightPoints = 0;
+                                }
+                                ?>
+                                <?php $numberOfWrongPoints = 100 - $numberOfRightPoints; ?>
+                                <?php //\yii\helpers\VarDumper::dump($numberOfRightPoints, 10, true); ?>
+                                <center>Выполняли задание раз: <strong><?= $numberOfPupils; ?></center>
+                                <center><label>Неправильно: <strong><?= $questionData->wrong_points; ?></strong>
+                                        / Правильно: <strong><?= $questionData->right_points; ?></strong></label></center>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-info progress-bar-danger" role="progressbar" aria-valuenow="25.9" aria-valuemin="10" style="width: <?= $numberOfWrongPoints; ?>%">
+                                    </div>
+                                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="74.1" aria-valuemin="10" style="width: <?= $numberOfRightPoints; ?>%">
+                                    </div>
+                                </div>
+                                <br>
+                            </th>
+                            </tr>
+                        <?php endif;?>
                     <?php endforeach; ?>
                 <?php endforeach; ?>
                 <tr>

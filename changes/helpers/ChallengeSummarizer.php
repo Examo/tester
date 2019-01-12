@@ -5,6 +5,7 @@ namespace app\helpers;
 use app\models\Answer;
 use app\models\Attempt;
 use app\models\Challenge;
+use app\models\ChallengeHasQuestion;
 use app\models\Question;
 use app\models\QuestionType;
 use app\widgets\AnswerEditor;
@@ -206,6 +207,15 @@ class ChallengeSummarizer
         }
 
         return $this->questions;
+    }
+
+    public function getQuestionsByChallengeId($challengeId)
+    {
+//        $questions = Question::find()->innerJoinWith('challenge_has_question')->where(['challenge_has_question.challenge_id' => $challengeId])->all();
+
+        $questions = ChallengeHasQuestion::find()->where(['challenge_id' => $challengeId])->all();
+
+        return $questions;
     }
 
     /**

@@ -260,7 +260,7 @@ class ChallengeController extends Controller
 
                             // получаем шкалу "Уборки" ученика
                             $scale = ScaleClean::find()->where(['user_id' => Yii::$app->user->id])->one();
-                            if (Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 1])->andWhere(['attempt.user_id' => Yii::$app->user->id])->andWhere(['attempt.points' => 1])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one()){
+                            if (Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 1])->andWhere(['attempt.user_id' => Yii::$app->user->id])->andWhere(['attempt.points' => 1])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one()) {
                                 $lastCleanAttempt = Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 1])->andWhere(['attempt.user_id' => Yii::$app->user->id])->andWhere(['attempt.points' => 1])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one();
                                 $lastCleanAttemptFinishTime = $lastCleanAttempt->finish_time;
                             } else {
@@ -273,9 +273,9 @@ class ChallengeController extends Controller
                             $time = Yii::$app->getFormatter()->asTimestamp(time());
                             // получаем изменение времени с момента окончания предыдущего теста до текущего момента
                             $timeAfterLastCleanChallengeTest = $time - $finishTime;
-                           // if ($timeAfterLastCleanChallengeTest >= 10000){
-                           //     $timeAfterLastCleanChallengeTest = 1000;
-                           // }
+                            // if ($timeAfterLastCleanChallengeTest >= 10000){
+                            //     $timeAfterLastCleanChallengeTest = 1000;
+                            // }
                             // округляем изменение времени до 100 и отнимаем 1, чтобы получить то значение, которое нужно отнимать для изменения шкалы с течением времени
                             $roundTime = ceil($timeAfterLastCleanChallengeTest / 100) - 1;
 
@@ -293,7 +293,7 @@ class ChallengeController extends Controller
                             if ($scalePoints > 0) {
                                 // записываем ID ученика
                                 $scale->user_id = Yii::$app->user->id;
-                                 // если разница между баллами в шкале и баллами прошедшего времени больше 0, то баллы в шкале делаем такими, каковы они на текущий момент
+                                // если разница между баллами в шкале и баллами прошедшего времени больше 0, то баллы в шкале делаем такими, каковы они на текущий момент
                                 if ($scalePoints - $roundTime > 0) {
                                     print '<br>$scale->points - $roundTime > 0 (или всё по-прежнему не работает, если прошло много времени, а тест перезаписал имевшиеся баллы в шкале)';
                                     $scale->points = $allLastChallengeQuestionsCost + $scalePoints - $roundTime;
@@ -334,7 +334,7 @@ class ChallengeController extends Controller
                             // получаем шкалу "Еды" ученика
                             $scale = ScaleFeed::find()->where(['user_id' => Yii::$app->user->id])->one();
                             // если имеется последний тест для Еды, то получаем последний тест для Еды
-                            if (Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 1])->andWhere(['attempt.user_id' => Yii::$app->user->id])->andWhere(['attempt.points' => 1])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one()){
+                            if (Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 1])->andWhere(['attempt.user_id' => Yii::$app->user->id])->andWhere(['attempt.points' => 1])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one()) {
                                 $lastFeedAttempt = Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 1])->andWhere(['attempt.user_id' => Yii::$app->user->id])->andWhere(['attempt.points' => 1])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one();
                                 $lastFeedAttemptFinishTime = $lastFeedAttempt->finish_time;
                             } else {
@@ -349,9 +349,9 @@ class ChallengeController extends Controller
                             // получаем изменение времени с момента окончания предыдущего теста до текущего момента
                             $timeAfterLastFeedChallenge = $time - $finishTime;
                             // если после крайнего теста прошло больше 10000 секунд, то
-                         //   if ($timeAfterLastFeedChallenge >= 10000){
-                         //       $timeAfterLastFeedChallenge = 1000;
-                         //   }
+                            //   if ($timeAfterLastFeedChallenge >= 10000){
+                            //       $timeAfterLastFeedChallenge = 1000;
+                            //   }
                             // округляем изменение времени до 100 и отнимаем 1, чтобы получить то значение, которое нужно отнимать для изменения шкалы с течением времени
                             $roundTime = ceil($timeAfterLastFeedChallenge / 100) - 1;
                             // если в шкале на данный момент баллов меньше или равно 0 (такое логически не возможно), то прибавляем полученные за тест баллы и сохраняем
@@ -525,7 +525,7 @@ class ChallengeController extends Controller
                             foreach ($match as $key => $oneMatch) {
                                 print $oneMatch[2];
                                 if ($oneMatch[2] == $challenge->id) {
-                                   // print 'В курсе указан тот же тест, который был выполнен';
+                                    // print 'В курсе указан тот же тест, который был выполнен';
                                     $learn = ScaleLearn::find()->where(['course_id' => $challenge->course_id])->andWhere(['week_id' => $challenge->week])->andWhere(['user_id' => Yii::$app->user->id])->one();
                                     //\yii\helpers\VarDumper::dump($learn, 10, true);
                                     foreach ($days as $day) {
@@ -557,14 +557,14 @@ class ChallengeController extends Controller
                         $points->save();
                     }
 
-                    foreach ($testResults as $testId => $testResult){
+                    foreach ($testResults as $testId => $testResult) {
                         if ($testResult == true) {
                             if (is_string($testResult)) {
                                 print $testResult;
                                 $regexpRight = "/(\[1,1,1\])/ui";
                                 $wrongMatch = [];
                                 if (preg_match($regexpRight, $testResult, $wrongMatch)) {
-                                   // print $testId . ' успешная строка с ответом!<br>';
+                                    // print $testId . ' успешная строка с ответом!<br>';
                                     $question = Question::find()->where(['id' => $testId])->one();
                                     //\yii\helpers\VarDumper::dump($question->right_points, 10, true);
                                     $question->right_points = $question->right_points + 1;
@@ -599,38 +599,72 @@ class ChallengeController extends Controller
                     //--- если подписка на курс есть (?)
                     //, то
                     //--- запись в таблицу webinar_answers
-                }
 
-               // \yii\helpers\VarDumper::dump($challenge, 10, true);
 
-                //\yii\helpers\VarDumper::dump($testResults, 10, true);
-                //\yii\helpers\VarDumper::dump($testQuestions, 10, true);
-                //\yii\helpers\VarDumper::dump($summary->answers, 10, true);
+                    // \yii\helpers\VarDumper::dump($challenge, 10, true);
 
-                if ($challenge->challenge_type_id == 3 && $challenge->week >= $week)
-                {
+                    ////       //\yii\helpers\VarDumper::dump($testResults, 10, true);
+                    //       //\yii\helpers\VarDumper::dump($testQuestions, 10, true);
+                    //       //\yii\helpers\VarDumper::dump($summary->answers, 10, true);
+                    //       $questions = $summary->getQuestions();
+                    //      // $questions = json_encode($questions);
+                    //      // $questions = json_decode($questions);
 
-                    foreach ($summary->answers as $questionNumber => $answer){
+                    //       $results = json_encode($results);
+                    //       $results = json_decode($results, true);
+                    $hints = $summary->getHints();
+                    $points = $summary->getPoints();
+                    $mark = intval($summary->getMark());
+                    //$textMark = $summary->getTextMark($summary->getMark());
+                    //$emoticon = $summary->getEmoticon($mark);
+                    $newQuestions = $summary->getQuestions();
+                    $allPoints = $summary->getAllPoints($newQuestions, $points)['allPoints'];
+                    $numberOfPoints = $summary->getAllPoints($newQuestions, $points)['numberOfPoints'];
+                    $challengeTime = round($summary->getTime() / 60);
+                    //       $questions = $summary->getQuestions();
+                    //       $answerOnFinish = $summary->getAnswersFinish($questions[0]->data, $questions[0]->id, $questions[0]->question_type_id, $summary->answers, $questions[0]);
+                    //       $challengeElementsItem = Challenge::find()->select('elements_item_id')->where(['id' => $id])->one();
+                    //       $challengeItem = ElementsItem::find()->select('name')->where(['id' => $challengeElementsItem])->one();
+                    $results = $summary->getCorrectness();
+                    $hints = $summary->getHints();
+                    $points = $summary->getPoints();
+                    $mark = intval($summary->getMark());
+                    $newQuestions = $summary->getQuestions();
+                    $allPoints = $summary->getAllPoints($newQuestions, $points)['allPoints'];
+                    $numberOfPoints = $summary->getAllPoints($newQuestions, $points)['numberOfPoints'];
+                    $challengeTime = round($summary->getTime() / 60);
+                    if ($challenge->challenge_type_id == 3 && $challenge->week <= $week) {
+
+                        //foreach ($summary->answers as $questionNumber => $answer){
                         //print $answer;
                         $webinarAnswers = new WebinarAnswers();
                         $webinarAnswers->user_id = Yii::$app->user->id;
                         $webinarAnswers->webinar_exercise_id = $challenge->exercise_number;
                         $webinarAnswers->challenge_id = $challenge->id;
-                        $webinarAnswers->question_id = $questionNumber;
-                        $answerCorrectness = $testResults[$questionNumber];
-                        if ($answerCorrectness == true){
-                            $answerCorrectness = 'true';
-                        }
-                        if ($answerCorrectness == false){
-                            $answerCorrectness = 'false';
-                        }
-                        $webinarAnswers->answer_correctness = $answerCorrectness;
-                        $webinarAnswers->answer_indicator = $answer;
+                        $webinarAnswers->answers = json_encode($summary->answers);
+                        $webinarAnswers->hints = json_encode($summary->getHints());
+                        $webinarAnswers->result = json_encode($summary->getCorrectness());
+                        $webinarAnswers->mark = intval($summary->getMark());
+                        $webinarAnswers->time = intval($summary->getMark());
+                        $webinarAnswers->all_user_points = $summary->getAllPoints($newQuestions, $points)['allPoints'];
+                        $webinarAnswers->all_points = $summary->getAllPoints($newQuestions, $points)['numberOfPoints'];
+                        $webinarAnswers->time = round($summary->getTime() / 60);
+                        //    $webinarAnswers->question_id = $questionNumber;
+                        //     $answerCorrectness = $testResults[$questionNumber];
+                        //     if ($answerCorrectness == true){
+                        //         $answerCorrectness = 'true';
+                        //     }
+                        //     if ($answerCorrectness == false){
+                        //         $answerCorrectness = 'false';
+                        //     }
+                        //     //$webinarAnswers->answer_correctness = $answerCorrectness;
+                        //$webinarAnswers->answer_indicator = $answer;
                         $webinarAnswers->save();
+                        //}
+
                     }
 
                 }
-
             }
 
             if (Yii::$app->user->isGuest) {
@@ -665,7 +699,21 @@ class ChallengeController extends Controller
                 'challengeElementsType' => $challengeElementsType,
                 'testQuestions' => $testQuestions,
                 'difficultSubjects' => $difficultSubjects,
-                'allSubjects' => $allSubjects
+                'allSubjects' => $allSubjects,
+
+        ////       'results' => $results,
+        //       'points' => $points,
+        //       'hints' => $hints,
+        //       'mark' => $mark,
+        //       //'textMark' => $textMark,
+        //       //'emoticon' => $emoticon,
+        //       'allPoints' => $allPoints,
+        //       'numberOfPoints' => $numberOfPoints,
+        //       'challengeTime' => $challengeTime,
+
+        //       'webinarAnswers' => $webinarAnswers
+
+
             ]);
         } else {
             // It looks like session wasn't even started

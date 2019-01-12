@@ -146,4 +146,47 @@ class Question extends \app\components\ActiveRecord
     {
         return $this->hasMany(Subject::className(), ['id' => 'subject_id'])->viaTable('question_has_subject', ['question_id' => 'id']);
     }
+
+    public function getRightHintText($hint, $answer, $type)
+    {
+        if ($type == 1 || $type == 2 || $type == 3 || $type == 4 || $type == 5 || $type == 6) {
+            if ($hint == true && $answer == true) {
+                echo 'Подсказка была, увы, балл делится пополам';
+            } elseif ($hint == true && $answer == false) {
+                echo 'Подсказка была, но это не важно';
+            } elseif ($hint == false && $answer == false) {
+                echo 'Подсказки не было, но это не важно';
+            } elseif ($hint == false && $answer == true) {
+                echo 'Подсказки не было, ура!';
+            }
+        }
+        if ($type == 7){
+            if ($hint == true && $answer == true) {
+                echo 'Подсказка была, увы, общий балл делится пополам';
+            } elseif ($hint == true && $answer == false) {
+                echo 'Подсказка была';
+            } elseif ($hint == false && $answer == false) {
+                echo 'Подсказки не было';
+            } elseif ($hint == false && $answer == true) {
+                echo 'Подсказки не было, великолепно!';
+            }
+        }
+    }
+
+    public function getOptionsFinish($data)
+    {
+        if (isset(json_decode($data, true)['associations'])) {
+            $i = 1;
+            foreach (json_decode($data, true)['associations'] as $key => $item){
+                echo '<strong>'.$i.'-я пара:</strong><br>'.json_decode($data, true)['options'][$key].'<br><center><strong><=></strong></center>'.$item.'</li><br><br>';
+                $i++;
+            }
+        } else {
+            if (isset(json_decode($data, true)['options'])) {
+                foreach (json_decode($data, true)['options'] as $option) {
+                    echo "<li>" . $option . "</li>";
+                }
+            }
+        }
+    }
 }

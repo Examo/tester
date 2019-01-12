@@ -11,11 +11,13 @@ use Yii;
  * @property integer $user_id
  * @property integer $webinar_exercise_id
  * @property integer $challenge_id
- * @property integer $question_id
- * @property string $answer_correctness
- * @property string $answer_indicator
- *
- * @property User $user
+ * @property string $answers
+ * @property string $hints
+ * @property string $result
+ * @property integer $all_user_points
+ * @property integer $all_points
+ * @property integer $mark
+ * @property integer $time
  */
 class WebinarAnswers extends \yii\db\ActiveRecord
 {
@@ -33,10 +35,9 @@ class WebinarAnswers extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'webinar_exercise_id', 'challenge_id', 'question_id', 'answer_correctness', 'answer_indicator'], 'required'],
-            [['user_id', 'webinar_exercise_id', 'challenge_id', 'question_id'], 'integer'],
-            [['answer_correctness', 'answer_indicator'], 'string'],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['user_id', 'webinar_exercise_id', 'challenge_id', 'answers', 'hints', 'result', 'all_user_points', 'all_points', 'mark', 'time'], 'required'],
+            [['user_id', 'webinar_exercise_id', 'challenge_id', 'all_user_points', 'all_points', 'mark', 'time'], 'integer'],
+            [['answers', 'hints', 'result'], 'string'],
         ];
     }
 
@@ -50,17 +51,13 @@ class WebinarAnswers extends \yii\db\ActiveRecord
             'user_id' => 'User ID',
             'webinar_exercise_id' => 'Webinar Exercise ID',
             'challenge_id' => 'Challenge ID',
-            'question_id' => 'Question ID',
-            'answer_correctness' => 'Answer Correctness',
-            'answer_indicator' => 'Answer Indicator',
+            'answers' => 'Answers',
+            'hints' => 'Hints',
+            'result' => 'Result',
+            'all_user_points' => 'All User Points',
+            'all_points' => 'All Points',
+            'mark' => 'Mark',
+            'time' => 'Time',
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUser()
-    {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 }
