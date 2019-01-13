@@ -95,7 +95,9 @@ $this->title = 'Вебинар';
                     <div role="tabpanel">
                         <div class="panel-body">
                             <center><p class="lead"><?= $cleanWebinarChallenge->name ?></p>
-
+                                <?php $challengeAttempts = \app\models\Attempt::find()->where(['challenge_id' => $cleanWebinarChallenge->id])->all();
+                                $challengeAttempts = count($challengeAttempts); ?>
+                                <p>Всего выполняли раз: <?= $challengeAttempts; ?></p>
                                 <p><a class="btn btn-lg btn-success" href="<?= \yii\helpers\Url::to(['challenge/start', 'id' => $cleanWebinarChallengeNumber, 'confirm' => true]) ?>" target="_blank">Начать тест №<?= $numberOfChallenge ?></a></p>
                             </center>
                         </div>
@@ -112,6 +114,9 @@ $this->title = 'Вебинар';
                 if ($webinarAnswers) {
                     $challenge = \app\models\Challenge::find()->where(['id' => $webinarAnswers->challenge_id])->one();
                     $questions = $challenge->getQuestionsByChallengeId($webinarAnswers->challenge_id);
+                    $challengeAttempts = \app\models\Attempt::find()->where(['challenge_id' => $webinarAnswers->challenge_id])->all();
+                    $challengeAttempts = count($challengeAttempts);
+                    //\yii\helpers\VarDumper::dump($challengeAttempts, 10, true);
                     $newQuestion = [];
                     foreach ($questions as $q) {
                         $newQuestion[] = $q['question'];
@@ -133,6 +138,7 @@ $this->title = 'Вебинар';
                     <div role="tabpanel">
                         <div class="panel-body">
                             <center><p class="lead"><?= $challenge->name ?></p>
+                                <p>Всего выполняли раз: <?= $challengeAttempts; ?></p>
                                 <p><strong>Твоя оценка: <?= $webinarAnswers->mark ? $challenge->getTextMark($webinarAnswers->mark) : 'не доступно - слишком мало было дано ответов' ?></strong></p>
                                 <p><strong>Набрано баллов: <?= $webinarAnswers->all_user_points; ?> из <?= $webinarAnswers->all_points; ?></strong></p>
                                 <p>Время выполнения: <?= $webinarAnswers->time ?> мин.</p>
