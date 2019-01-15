@@ -31,7 +31,8 @@ class EventCalendarWidget extends Widget
             $time = Yii::$app->getFormatter()->asTimestamp(time());
             foreach (Course::findSubscribed(Yii::$app->user->id)->all() as $keyEvent => $course) {
                 $events = Event::find()->where(['course_id' => $course->id])->all();
-                $regexp = "/(вебинар)([0-9]*)( )(ссылка)(\S*)( )(описание)([\S\s]*)/ui";
+                //$regexp = "/(вебинар)([0-9]*)( )(ссылка)(\S*)( )(описание)([\S\s]*)/ui";
+                $regexp = "/(вебинар в системе)([0-9]*)( )(вебинар по порядку)([0-9]*)( )(занятие)([0-9]*)( )(ссылка)(\S*)( )(описание)([\S\s]*)/ui";
                 $match = [];
                 if (Event::find()->where(['course_id' => $course->id])->andWhere(['title' => 'Начало'])->one()) {
                     $begining = Event::find()->where(['course_id' => $course->id])->andWhere(['title' => 'Начало'])->one();
@@ -51,8 +52,8 @@ class EventCalendarWidget extends Widget
                                 $courseName = Course::find()->select('name')->where(['id' => $event->course_id])->one();
                                 $data[$course->id][$key]['course_name'] = $courseName->name;
                                 $data[$course->id][$key]['webinar_id'] = $match[$course->id][$key][2];
-                                $data[$course->id][$key]['webinar_link'] = $match[$course->id][$key][5];
-                                $data[$course->id][$key]['webinar_description'] = $match[$course->id][$key][8];
+                                $data[$course->id][$key]['webinar_link'] = $match[$course->id][$key][11];
+                                $data[$course->id][$key]['webinar_description'] = $match[$course->id][$key][14];
                                 $data[$course->id][$key]['webinar_start'] = $event->start;
                                 $data[$course->id][$key]['webinar_end'] = $event->end;
                                 //print 'Будет вебинар! На неделе ' . ceil($timeBeforeWebinarStart / $weekTime) . ' по курсу ' . $course->id;

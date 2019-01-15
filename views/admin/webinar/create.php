@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Webinar */
 
-$this->title = 'Create Webinar';
-$this->params['breadcrumbs'][] = ['label' => 'Webinars', 'url' => ['index']];
+$this->title = 'Создать вебинар';
+$this->params['breadcrumbs'][] = ['label' => 'Вебинары', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="webinar-create">

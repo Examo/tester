@@ -25,6 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <th class="col-md-1 text-center">Название</th>
         <th class="col-md-1 text-center">Описание</th>
+        <th class="col-md-1 text-center">Класс</th>
         <th class="col-md-1 text-center">Всего баллов</th>
         <th class="col-md-1 text-center">Неделя в курсе</th>
         <th class="col-md-1 text-center">Тип теста</th>
@@ -42,9 +43,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $challenge->description ?>
             </td>
 
-            <!-- Всего баллов -->
+            <!-- Класс -->
             <td class="text-center">
                 <?= $challenge->grade_number ?>
+            </td>
+
+            <!-- Всего баллов -->
+            <td class="text-center">
+                <?php $cost = 0; ?>
+                <?php foreach ($questions as $question): ?>
+                    <?php $cost += $question['question']->cost; ?>
+                <?php endforeach; ?>
+                <?= $cost ?>
             </td>
 
             <!-- Неделя в курсе -->
@@ -86,7 +96,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
-                <a data-toggle="collapse" href="#common">Распространённые ошибки</a>
+                <a data-toggle="collapse" href="#common">Рейтинг сложных заданий</a>
             </h4>
         </div>
         <div id="common" class="collapse">
@@ -115,7 +125,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?php $numberOfWrongPoints = 100 - $numberOfRightPoints; ?>
                     <?php //\yii\helpers\VarDumper::dump($numberOfRightPoints, 10, true); ?>
                     <?php //\yii\helpers\VarDumper::dump($question['question'], 10, true); ?>
-                            <p><strong>№</strong>: <?= $question['question']->id; ?></p>
+                            <p><strong>№ задания</strong>: <?= $question['question']->id; ?></p>
                     <p><strong>Вопрос</strong>: <?= $question['question']->text; ?></p>
                             <?php if ($question['question']->question_type_id == 7): ?>
                     <p><center><strong>Варианты ответа</strong>: <?= $question['question']->getOptionsFinish($question['question']->data)?></center></p>

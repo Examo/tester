@@ -18,6 +18,7 @@ use Yii;
  * @property integer $all_points
  * @property integer $mark
  * @property integer $time
+ * @property string $points
  */
 class WebinarAnswers extends \yii\db\ActiveRecord
 {
@@ -35,9 +36,9 @@ class WebinarAnswers extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'webinar_exercise_id', 'challenge_id', 'answers', 'hints', 'result', 'all_user_points', 'all_points', 'mark', 'time'], 'required'],
+            [['user_id', 'webinar_exercise_id', 'challenge_id', 'answers', 'hints', 'result', 'all_user_points', 'all_points', 'mark', 'time', 'points'], 'required'],
             [['user_id', 'webinar_exercise_id', 'challenge_id', 'all_user_points', 'all_points', 'mark', 'time'], 'integer'],
-            [['answers', 'hints', 'result'], 'string'],
+            [['answers', 'hints', 'result', 'points'], 'string'],
         ];
     }
 
@@ -58,6 +59,7 @@ class WebinarAnswers extends \yii\db\ActiveRecord
             'all_points' => 'All Points',
             'mark' => 'Mark',
             'time' => 'Time',
+            'points' => 'Points',
         ];
     }
 }

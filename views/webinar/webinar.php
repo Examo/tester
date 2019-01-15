@@ -60,6 +60,7 @@ $this->title = 'Вебинар';
                 <?php if ($data):?>
                     <p>
                         <strong><?= $data['webinar_description']; ?></strong><br>
+                        Номер вебинара в курсе: <strong><?= $data['webinar_number']; ?></strong><br>
                         Неделя в курсе: <strong><?= $data['webinar_week']; ?></strong><br>
                         Начало: <?= $data['webinar_start']; ?><br>
                         Окончание: <?= $data['webinar_end']; ?><br>
@@ -69,7 +70,7 @@ $this->title = 'Вебинар';
                     </p>
                 <?php else: ?>
                     <p>
-                        Такого вебинара пока что нет!
+                        Страница для вебинара создана, а сам вебинар пока что нет! Либо имеется ошибка в его оформлении!
                     </p>
                 <?php endif; ?>
 
@@ -110,7 +111,6 @@ $this->title = 'Вебинар';
                 * @var \app\helpers\ChallengeSummarizer $summary
                 */
                 $webinarAnswers = \app\models\WebinarAnswers::find()->where(['challenge_id' => $cleanWebinarChallengeNumber])->andWhere(['user_id' => Yii::$app->user->id])->one();
-
                 if ($webinarAnswers) {
                     $challenge = \app\models\Challenge::find()->where(['id' => $webinarAnswers->challenge_id])->one();
                     $questions = $challenge->getQuestionsByChallengeId($webinarAnswers->challenge_id);
@@ -154,6 +154,10 @@ $this->title = 'Вебинар';
                         <div aria-labelledby="summaryHead">
                             <div class="panel-body">
                                 <table class="table table-finish table-hover table_results">
+                                    <?php $results = json_decode($webinarAnswers->result, true); ?>
+                                    <?php $hints = json_decode($webinarAnswers->hints, true); ?>
+                                    <?php $points = json_decode($webinarAnswers->points, true); ?>
+                                    <?php //\yii\helpers\VarDumper::dump($points, 10, true); ?>
                                     <?php foreach (json_decode($webinarAnswers->answers, true) as $realQuestionId => $answer):?>
                                         <?php foreach( $questions as $i => $question ): ?>
                                             <?php  if ($realQuestionId == $question['id']):?>
@@ -189,7 +193,7 @@ $this->title = 'Вебинар';
                                                             <?php endif;?>
                                                         </td>
                                                         <!-- Твой ответ -->
-                                                        <td class="<?= $webinarAnswers->result[$question->id] ? 'success' : 'danger' ?> text-left">
+                                                        <td class="<?= $results[$question->id] ? 'success' : 'danger' ?> text-left">
                                                             <?php if ($question->question_type_id == \app\models\QuestionType::TYPE_ASSOC_TABLE): ?>
                                                                 <i class="fa answer-text" data-id="answer<?= $number; ?>"></i>
                                                             <?php else: ?>
@@ -206,9 +210,9 @@ $this->title = 'Вебинар';
                                                             <?php endif;?>
                                                         </td>
                                                         <!-- Подсказка была? -->
-                                                        <td class="<?= !$webinarAnswers->hints[$question->id] ? 'success' : 'danger' ?>"><center><?php $question->getRightHintText($webinarAnswers->hints[$question->id], $webinarAnswers->result[$question->id], $question->question_type_id) ?></center></td>
+                                                        <td class="<?= !$hints[$question->id] ? 'success' : 'danger' ?>"><center><?php $question->getRightHintText($hints[$question->id], $results[$question->id], $question->question_type_id) ?></center></td>
                                                         <!-- Получаешь балл -->
-                                                        <td class="text-center"> <strong><?php // тормоз не  вписал конкретные ответы в таблицу $webinarAnswers->points[$question->id] ?> </strong></td>
+                                                        <td class="text-center"> <strong><?= $points[$question->id] ?> </strong></td>
                                                     </tr>
                                                     <!-- Вставка блока с опциями при 7-м задании -->
                                                     <tr id="options<?= $number?>" style="display: none;">
@@ -331,30 +335,12 @@ $this->title = 'Вебинар';
                             },500);
                         </script>
                     </div>
-
-
-
-
                 <?php else: ?>
-                    НЕУСПЕШЕН
+                    Данные о тесте были удалены из базы! Увы :(
                 <?php endif; ?>
-
-
-
             <?php endif; ?>
         </div>
     <?php endforeach; ?>
         <?php endif; ?>
-
     </div>
 </div>
-
-<?php //\yii\helpers\VarDumper::dump($data, 10, true) ?>
-
-<?php //\yii\helpers\VarDumper::dump($webinar->getChallengesStatistic(3), 10, true); ?>
-<?php
-//$webinars = $webinar->getWebinarChallenges($data['webinar_week'], $data['webinar_exercise_id']);
-//$webinars = $webinar->getChallengesStatistic($webinars);
-
-//\yii\helpers\VarDumper::dump($cleanWebinarChallenges, 10, true);
-?>

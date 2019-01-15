@@ -20,6 +20,7 @@ class m190111_190401_create_webinar_answers_table extends Migration
             'answers' => $this->text()->notNull(),
             'hints' => $this->text()->notNull(),
             'result' => $this->text()->notNull(),
+            'points' => $this->text()->notNull(),
             'all_user_points' => $this->integer()->notNull(),
             'all_points' => $this->integer()->notNull(),
             'mark' => $this->integer()->notNull(),

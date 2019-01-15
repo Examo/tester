@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\WebinarSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Webinars';
+$this->title = 'Вебинары';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="webinar-index">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Webinar', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Создать вебинар', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
