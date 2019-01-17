@@ -2,6 +2,7 @@
 
 /* @var $this yii\web\View */
 
+use app\models\ChallengeHasQuestion;
 use yii\helpers\Html;
 use app\models\Question;
 
@@ -147,10 +148,13 @@ $this->title = 'Вебинар';
                     </div>
                 </div>
 
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">Твои подробные результаты</h4>
-                        </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" href="#results">Твои подробные результаты</a>
+                    </h4>
+                </div>
+                <div id="results" class="collapse">
                         <div aria-labelledby="summaryHead">
                             <div class="panel-body">
                                 <table class="table table-finish table-hover table_results">
@@ -335,10 +339,71 @@ $this->title = 'Вебинар';
                             },500);
                         </script>
                     </div>
+            </div>
+
                 <?php else: ?>
                     Данные о тесте были удалены из базы! Увы :(
                 <?php endif; ?>
+
+
+
             <?php endif; ?>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" href="#<?= $cleanWebinarChallenge->id ?>">Рейтинг сложных заданий</a>
+                    </h4>
+                </div>
+                <div id="<?= $cleanWebinarChallenge->id ?>" class="collapse">
+                    <div class="panel-body">
+                        <?php $questions = ChallengeHasQuestion::find()->innerJoinWith('question')->where(['challenge_has_question.challenge_id' => $cleanWebinarChallenge->id])->all(); ?>
+                        <?php $rangeQuestions = []; ?>
+                        <?php foreach ($questions as $key => $question): ?>
+                            <?php $rangeQuestions[$question['question']->id][] = $question['question']->wrong_points; ?>
+                        <?php endforeach; ?>
+
+                        <?php array_multisort($rangeQuestions, SORT_DESC, $questions); ?>
+
+                        <?php //\yii\helpers\VarDumper::dump($rangeQuestions, 10, true); ?>
+
+                        <?php foreach ($questions as $question): ?>
+                            <div class="panel panel-info">
+                                <div class="panel-body">
+                                    <?php $numberOfPupils =$question['question']->right_points + $question['question']->wrong_points; ?>
+                                    <?php
+                                    if ($question['question']->right_points !== 0) {
+                                        $numberOfRightPointsCoefficient = ($question['question']->right_points + $question['question']->wrong_points) / $question['question']->right_points;
+                                        $numberOfRightPoints = 100 / $numberOfRightPointsCoefficient;
+                                    } else {
+                                        $numberOfRightPoints = 0;
+                                    }
+                                    ?>
+                                    <?php $numberOfWrongPoints = 100 - $numberOfRightPoints; ?>
+                                    <?php //\yii\helpers\VarDumper::dump($numberOfRightPoints, 10, true); ?>
+                                    <?php //\yii\helpers\VarDumper::dump($question['question'], 10, true); ?>
+                                    <p><strong>№ задания</strong>: <?= $question['question']->id; ?></p>
+                                    <p><strong>Вопрос</strong>: <?= $question['question']->text; ?></p>
+                                    <?php if ($question['question']->question_type_id == 7): ?>
+                                        <p><center><strong>Варианты ответа</strong>: <?= $question['question']->getOptionsFinish($question['question']->data)?></center></p>
+                                    <?php else: ?>
+                                        <p><strong>Варианты ответа</strong>: <?= $question['question']->getOptionsFinish($question['question']->data)?></p>
+                                    <?php endif; ?>
+                                    <center>Выполняли задание раз: <strong><?= $numberOfPupils; ?></strong></center>
+                                    <center><label>Неправильно: <strong><?= $question['question']->wrong_points; ?></strong>
+                                            / Правильно: <strong><?= $question['question']->right_points; ?></strong></label></center>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-info progress-bar-danger" role="progressbar" aria-valuenow="25.9" aria-valuemin="10" style="width: <?= $numberOfWrongPoints; ?>%">
+                                        </div>
+                                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="74.1" aria-valuemin="10" style="width: <?= $numberOfRightPoints; ?>%">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+
+                    </div>
+                </div>
+            </div>
         </div>
     <?php endforeach; ?>
         <?php endif; ?>

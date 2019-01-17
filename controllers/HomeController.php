@@ -74,8 +74,9 @@ class HomeController extends Controller
                             $webinarStartTime = Yii::$app->getFormatter()->asTimestamp($event->start);
                             $timeAfterCourseStart = $time - $courseStartTime;
                             $timeBeforeWebinarStart = $webinarStartTime - $courseStartTime;
+                            $webinarEndTime = Yii::$app->getFormatter()->asTimestamp($event->end);
+                            $timeBeforeWebinarEnd = $webinarEndTime - $time;
                             $weekTime = 604800;
-                            //$week = ceil($timeAfterCourseStart / $weekTime);
 
                             if ($time < $webinarStartTime) {
                                 $data[$course->id][$key]['course_week'] = ceil($timeAfterCourseStart / $weekTime);
@@ -84,11 +85,29 @@ class HomeController extends Controller
                                 $courseName = Course::find()->select('name')->where(['id' => $event->course_id])->one();
                                 $data[$course->id][$key]['course_name'] = $courseName->name;
                                 $data[$course->id][$key]['webinar_id'] = $match[$course->id][$key][2];
-                                $data[$course->id][$key]['webinar_link'] = $match[$course->id][$key][11];
+                                $data[$course->id][$key]['webinar_link'] = $match[$course->id][$key][2];
                                 $data[$course->id][$key]['webinar_description'] = $match[$course->id][$key][14];
                                 $data[$course->id][$key]['webinar_start'] = $event->start;
                                 $data[$course->id][$key]['webinar_end'] = $event->end;
+                                $data[$course->id][$key]['webinar_before_end'] = $timeBeforeWebinarEnd;
+                                $data[$course->id][$key]['webinar_begining'] = 0;
                                 //print 'Будет вебинар! На неделе ' . ceil($timeBeforeWebinarStart / $weekTime) . ' по курсу ' . $course->id;
+                            }
+
+                            if ($time >= $webinarStartTime && $time < $webinarEndTime) {
+                                $data[$course->id][$key]['course_week'] = ceil($timeAfterCourseStart / $weekTime);
+                                $data[$course->id][$key]['webinarWeek'] = ceil($timeBeforeWebinarStart / $weekTime);
+                                $data[$course->id][$key]['course_id'] = $event->course_id;
+                                $courseName = Course::find()->select('name')->where(['id' => $event->course_id])->one();
+                                $data[$course->id][$key]['course_name'] = $courseName->name;
+                                $data[$course->id][$key]['webinar_id'] = $match[$course->id][$key][2];
+                                $data[$course->id][$key]['webinar_link'] = $match[$course->id][$key][2];
+                                $data[$course->id][$key]['webinar_description'] = $match[$course->id][$key][14];
+                                $data[$course->id][$key]['webinar_start'] = $event->start;
+                                $data[$course->id][$key]['webinar_end'] = $event->end;
+                                $data[$course->id][$key]['webinar_before_end'] = $timeBeforeWebinarEnd;
+                                $data[$course->id][$key]['webinar_begining'] = 1;
+                                //print 'USPESHEN Начался вебинар';
                             }
                         }
                     }
@@ -110,10 +129,16 @@ class HomeController extends Controller
                     $daysToWait = floor($waiting / (60 * 60 * 24));
                     $lastPartOfDayToWait = $waiting / (60 * 60 * 24) - $daysToWait;
 
+                    $waitingBeforeDisappear = Yii::$app->getFormatter()->asTimestamp($webinarData['webinar_end']) - $currentTime;
+
+                    $beforeDisappearHours = $waitingBeforeDisappear / (60 * 60);
+                    //print $beforeDisappearHours . '<br>';
+                    $beforeDisappearMinutes = $beforeDisappearHours - floor($beforeDisappearHours);
+                    $beforeDisappearHours = floor($beforeDisappearHours);
+                    $beforeDisappearMinutes = ceil($beforeDisappearMinutes * 60);
+
                     $lastHoursInSeconds = $lastPartOfDayToWait * (60 * 60 * 24);
-
                     $lastHours = $lastHoursInSeconds / (60 * 60);
-
                     $lastMinutes = $lastHours - floor($lastHours);
                     $lastMinutes = ceil($lastMinutes * 60);
 
@@ -138,13 +163,16 @@ class HomeController extends Controller
                     $allWebinars[$courseId][$eventKey]['webinar_description'] = $data[$courseId][$eventKey]['webinar_description'];
                     $allWebinars[$courseId][$eventKey]['webinar_start'] = $webinarStart;
                     $allWebinars[$courseId][$eventKey]['webinar_end'] = $webinarEnd;
+                    $allWebinars[$courseId][$eventKey]['webinar_hours_before_end'] = $beforeDisappearHours;
+                    $allWebinars[$courseId][$eventKey]['webinar_minutes_before_end'] = $beforeDisappearMinutes;
+                    $allWebinars[$courseId][$eventKey]['webinar_begining'] = $data[$courseId][$eventKey]['webinar_begining'];
                 }
             }
 
             $all = [];
 
-            foreach ($allWebinars as $courseId => $allWebinars) {
-                foreach ($allWebinars as $eventKey => $webinar) {
+            foreach ($allWebinars as $courseId => $allWebinar) {
+                foreach ($allWebinar as $eventKey => $webinar) {
                     if ($webinar['course_week'] == $webinar['webinar_week']) {
                         //print 'Совпадение: ' . $eventKey;
                         $all[$courseId] = $webinar;
@@ -161,13 +189,15 @@ class HomeController extends Controller
             $countEvent = count($all);
 
         } else {
+            $countEvent = 0;
         }
 
         return $this->render('index', [
             'challenges' => $challenges,
             'badgeColor' => $badgeColor,
             'badgeBackgroundColor' => $badgeBackgroundColor,
-            'countEvent' => $countEvent
+            'countEvent' => $countEvent,
+            'all' => $all
 
         ]);
     }
