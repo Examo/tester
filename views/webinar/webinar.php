@@ -97,9 +97,19 @@ $this->title = 'Вебинар';
                     <div role="tabpanel">
                         <div class="panel-body">
                             <center><p class="lead"><?= $cleanWebinarChallenge->name ?></p>
-                                <?php $challengeAttempts = \app\models\Attempt::find()->where(['challenge_id' => $cleanWebinarChallenge->id])->all();
-                                $challengeAttempts = count($challengeAttempts); ?>
-                                <p>Всего выполняли раз: <?= $challengeAttempts; ?></p>
+                                <?php $challengeAttempts = \app\models\Attempt::find()->where(['challenge_id' => $cleanWebinarChallenge->id])->all();?>
+                                <?php $marks = 0;
+                                foreach ($challengeAttempts as $challengeAttempt){
+                                    $marks += intval($challengeAttempt->mark);
+                                }
+                                if (count($challengeAttempts) != 0) {
+                                    $averageMark = $marks / count($challengeAttempts);
+                                } else {
+                                    $averageMark = 0;
+                                }
+                                ?>
+                                <p>Всего выполняли раз: <?= count($challengeAttempts); ?></p>
+                                <p>Средняя оценка: <?= round($averageMark); ?></p>
                                 <p><a class="btn btn-lg btn-success" href="<?= \yii\helpers\Url::to(['challenge/start', 'id' => $cleanWebinarChallengeNumber, 'confirm' => true]) ?>" target="_blank">Начать тест №<?= $numberOfChallenge ?></a></p>
                             </center>
                         </div>
@@ -112,12 +122,22 @@ $this->title = 'Вебинар';
                 * @var \app\helpers\ChallengeSummarizer $summary
                 */
                 $webinarAnswers = \app\models\WebinarAnswers::find()->where(['challenge_id' => $cleanWebinarChallengeNumber])->andWhere(['user_id' => Yii::$app->user->id])->one();
+
                 if ($webinarAnswers) {
                     $challenge = \app\models\Challenge::find()->where(['id' => $webinarAnswers->challenge_id])->one();
                     $questions = $challenge->getQuestionsByChallengeId($webinarAnswers->challenge_id);
                     $challengeAttempts = \app\models\Attempt::find()->where(['challenge_id' => $webinarAnswers->challenge_id])->all();
+                    $marks = 0;
+                    foreach ($challengeAttempts as $challengeAttempt){
+                        $marks += intval($challengeAttempt->mark);
+                    }
+                    if (count($challengeAttempts) != 0) {
+                        $averageMark = $marks / count($challengeAttempts);
+                    } else {
+                        $averageMark = 0;
+                    }
                     $challengeAttempts = count($challengeAttempts);
-                    //\yii\helpers\VarDumper::dump($challengeAttempts, 10, true);
+
                     $newQuestion = [];
                     foreach ($questions as $q) {
                         $newQuestion[] = $q['question'];
@@ -140,6 +160,7 @@ $this->title = 'Вебинар';
                         <div class="panel-body">
                             <center><p class="lead"><?= $challenge->name ?></p>
                                 <p>Всего выполняли раз: <?= $challengeAttempts; ?></p>
+                                <p>Средняя оценка: <?= round($averageMark); ?></p>
                                 <p><strong>Твоя оценка: <?= $webinarAnswers->mark ? $challenge->getTextMark($webinarAnswers->mark) : 'не доступно - слишком мало было дано ответов' ?></strong></p>
                                 <p><strong>Набрано баллов: <?= $webinarAnswers->all_user_points; ?> из <?= $webinarAnswers->all_points; ?></strong></p>
                                 <p>Время выполнения: <?= $webinarAnswers->time ?> мин.</p>
@@ -342,7 +363,35 @@ $this->title = 'Вебинар';
             </div>
 
                 <?php else: ?>
-                    Данные о тесте были удалены из базы! Увы :(
+                    <br>
+            <h4 class="panel-title" style="font-weight: bold">Данные о твоём тесте были удалены из базы! Увы :(</h4>
+                    <br>
+                    <div class="panel panel-default" xmlns="http://www.w3.org/1999/html">
+                        <div class="panel-heading" role="tab">
+                            <h4 class="panel-title">Тест №<?= $numberOfChallenge ?> (В системе №<?= $cleanWebinarChallengeNumber ?>)</h4>
+                        </div>
+                        <div role="tabpanel">
+                            <div class="panel-body">
+                                <center><p class="lead"><?= $cleanWebinarChallenge->name ?></p>
+                                    <?php $challengeAttempts = \app\models\Attempt::find()->where(['challenge_id' => $cleanWebinarChallenge->id])->all();?>
+                                    <?php $marks = 0;
+                                    foreach ($challengeAttempts as $challengeAttempt){
+                                        $marks += intval($challengeAttempt->mark);
+                                    }
+                                    if (count($challengeAttempts) != 0) {
+                                        $averageMark = $marks / count($challengeAttempts);
+                                    } else {
+                                        $averageMark = 0;
+                                    }
+                                    ?>
+                                    <p>Всего выполняли раз: <?= count($challengeAttempts); ?></p>
+                                    <p>Средняя оценка: <?= round($averageMark); ?></p>
+                                    <p><a class="btn btn-lg btn-success" href="<?= \yii\helpers\Url::to(['challenge/start', 'id' => $cleanWebinarChallengeNumber, 'confirm' => true]) ?>" target="_blank">Попробовать повторно пройти тест №<?= $numberOfChallenge ?></a></p>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+
                 <?php endif; ?>
 
 

@@ -87,7 +87,7 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
     public function getWebinarsCount($course_id)
     {
         $events = Event::find()->where(['course_id' => $course_id])->all();
-        $regexp = "/(вебинар)([0-9]*)( )(ссылка)(\S*)( )(описание)([\S\s]*)/ui";
+        $regexp = $regexp = "/(вебинар в системе)([0-9]*)( )(вебинар по порядку)([0-9]*)( )(занятие)([0-9]*)( )(ссылка)(\S*)( )(описание)([\S\s]*)/ui";
         $match = [];
         if (isset($events)) {
             foreach ($events as $key => $oneEvent) {
@@ -227,4 +227,88 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
         $all['data'] = $data;
         return $all;
     }
+
+    public function getWebinarChallengesCheck($course_id)
+    {
+        $webinarChallenges = [];
+        $regexp = "/(вебинар в системе)([0-9]*)( )(вебинар по порядку)([0-9]*)( )(занятие)([0-9]*)( )(ссылка)(\S*)( )(описание)([\S\s]*)/ui";
+        $events = Event::find()->where(['course_id' => $course_id])->all();
+        $match = [];
+        $data = [];
+        $cleanWebinarChallenges = [];
+        foreach ($events as $key => $event) {
+            if (preg_match($regexp, $event->title, $match[$key])) {
+
+               // if (isset($webinar)) {
+                //    if ($webinar->id == intval($match[$key][2])) {
+                        $data[$key]['course_id'] = $event->course_id;
+                        $courseName = Course::find()->select('name')->where(['id' => $event->course_id])->one();
+                        $data[$key]['course_name'] = $courseName->name;
+                        $data[$key]['webinar_id'] = $match[$key][2];
+                        $data[$key]['webinar_number'] = $match[$key][5];
+                        $data[$key]['webinar_exercise_id'] = intval($match[$key][8]);
+                        $data[$key]['webinar_link'] = $match[$key][11];
+                        $data[$key]['webinar_description'] = $match[$key][14];
+                        $data[$key]['webinar_start'] = $event->start;
+                        $data[$key]['webinar_end'] = $event->end;
+               //     }
+              //  }
+            }
+        }
+        //if (isset($data)) {
+        foreach ($data as $key => $webinarData) {
+            if (Event::find()->where(['course_id' => $data[$key]['course_id']])->andWhere(['title' => 'Начало'])->one()) {
+                $event = Event::find()->where(['course_id' => $data[$key]['course_id']])->andWhere(['title' => 'Начало'])->one();
+                $courseStartTime = Yii::$app->getFormatter()->asTimestamp($event->start);
+                $webinarWeekTime = Yii::$app->getFormatter()->asTimestamp($data[$key]['webinar_start']);
+                $time = Yii::$app->getFormatter()->asTimestamp(time());
+                // получаем изменение времени с момента начала курса до текущего момента
+                $timeAfterCourseStart = $time - $courseStartTime;
+                $timeBeforeWebinarStart = $webinarWeekTime - $courseStartTime;
+                $weekTime = 604800;
+                $week = ceil($timeAfterCourseStart / $weekTime);
+                $data[$key]['webinar_week'] = ceil($timeBeforeWebinarStart / $weekTime);
+            }
+            //}
+        }
+
+
+        foreach ($data as $key => $webinarData) {
+
+            $challenges = Challenge::find()->where(['course_id' => $webinarData['course_id']])->andWhere(['challenge_type_id' => 3])->andWhere(['week' => $webinarData['webinar_week']])->andWhere(['exercise_number' => $webinarData['webinar_exercise_id']])->all();
+
+            foreach ($challenges as $challenge) {
+                if (intval($webinarData['webinar_exercise_id']) == $challenge->exercise_number) {
+                    //$cleanWebinarChallenges['challenge'][$challenge->id] = $challenge;
+                    $challengeChecked = Attempt::find()->where(['user_id' => Yii::$app->user->id])->andWhere(['challenge_id' => $challenge->id])->one();
+                    if (!$challengeChecked) {
+                        $cleanWebinarChallenges[$webinarData['webinar_week']][$challenge->id] = 0;
+                    } else {
+                        $cleanWebinarChallenges[$webinarData['webinar_week']][$challenge->id] = 1;
+                    }
+
+                } else {
+                    print 'NEUSPESHEN';
+                }
+            }
+        }
+
+        $webinarChallengesResult = [];
+
+        foreach ($cleanWebinarChallenges as $weekId => $results){
+            foreach ($results as $challengeId => $result) {
+                if ($result == 0) {
+                    $webinarChallengesResult[$weekId] = 1;
+                }
+            }
+        }
+        $result = count($cleanWebinarChallenges) - count($webinarChallengesResult);
+
+        //\yii\helpers\VarDumper::dump($data, 10, true);
+        //\yii\helpers\VarDumper::dump($cleanWebinarChallenges, 10, true);
+        //\yii\helpers\VarDumper::dump($webinarChallengesResult, 10, true);
+        
+        return $result;
+    }
+
 }

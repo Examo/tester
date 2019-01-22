@@ -25,6 +25,8 @@ class CleanController extends Controller
         $allCurrentWeeksChallenges = [];
         $allPreparedChallenges = [];
 
+        $allNewChallenges = [];
+
         // если существуют события "Начало" в каком-либо курсе, на который подписан ученик
         if (isset($allEvents)) {
 
