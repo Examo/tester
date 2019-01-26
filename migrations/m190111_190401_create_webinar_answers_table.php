@@ -27,8 +27,8 @@ class m190111_190401_create_webinar_answers_table extends Migration
             'time' => $this->integer()->notNull()
         ]);
 
-        //$this->createIndex('idx_webinar_answers_user', 'webinar_answers', 'user_id');
-        //$this->addForeignKey('fk_webinar_answers_user', 'webinar_answers', 'user_id', 'user', 'id', 'CASCADE');
+        $this->createIndex('idx_webinar_answers_user', 'webinar_answers', 'user_id');
+        $this->addForeignKey('fk_webinar_answers_user', 'webinar_answers', 'user_id', 'user', 'id', 'CASCADE');
 
     }
 

@@ -20,6 +20,7 @@ use app\models\ChallengeHasQuestion;
 use app\models\Course;
 use app\models\Event;
 use app\models\Question;
+use app\models\SavedResults;
 use app\models\Subject;
 use app\models\WebinarAnswers;
 use Yii;
@@ -596,13 +597,26 @@ class ChallengeController extends Controller
                         $webinarAnswers->hints = json_encode($summary->getHints());
                         $webinarAnswers->result = json_encode($summary->getCorrectness());
                         $webinarAnswers->mark = intval($summary->getMark());
-                        $webinarAnswers->time = intval($summary->getMark());
+                        //$webinarAnswers->time = intval($summary->getMark());
                         $webinarAnswers->all_user_points = $summary->getAllPoints($newQuestions, $points)['allPoints'];
                         $webinarAnswers->points = json_encode($summary->getPoints());
                         $webinarAnswers->all_points = $summary->getAllPoints($newQuestions, $points)['numberOfPoints'];
                         $webinarAnswers->time = round($summary->getTime() / 60);
                         $webinarAnswers->save();
                     }
+
+                    $_SESSION['user_id'] = Yii::$app->user->id;
+                    $_SESSION['course_id'] = $challenge->course_id;
+                    $_SESSION['exercise_id'] = $challenge->exercise_number;
+                    $_SESSION['challenge_id'] = $challenge->id;
+                    $_SESSION['answers'] = json_encode($summary->answers);
+                    $_SESSION['hints'] = json_encode($summary->getHints());
+                    $_SESSION['result'] = json_encode($summary->getCorrectness());
+                    $_SESSION['mark'] = intval($summary->getMark());
+                    $_SESSION['all_user_points'] = $summary->getAllPoints($newQuestions, $points)['allPoints'];
+                    $_SESSION['points'] = json_encode($summary->getPoints());
+                    $_SESSION['all_points'] = $summary->getAllPoints($newQuestions, $points)['numberOfPoints'];
+                    $_SESSION['time'] = round($summary->getTime() / 60);
                 }
             }
 
@@ -778,6 +792,49 @@ class ChallengeController extends Controller
         } else {
             throw new NotFoundHttpException(Yii::t('challenge', 'Not found'));
         }
+    }
+    
+    public function actionSave($id){
+        print 'USPESHEN SAVE';
+        //\yii\helpers\VarDumper::dump($_SESSION, 10, true);
+        //$data = '';
+        // строка, которую будем записывать
+        //$text = "Какой-то простой текст новый чтобы дадада текст";
+        $file = 'C:/Apache24/htdocs/tester/web/challenges/text/layout.txt';
+        $current = file_get_contents($file);
+        // открываем файл, если файл не существует,
+        //делается попытка создать его
+        $link = 'user' . Yii::$app->user->id . 'challenge' . $id . 'timestamp' . Yii::$app->getFormatter()->asTimestamp(time());
+        file_put_contents('C:/Apache24/htdocs/tester/web/challenges/user' . Yii::$app->user->id . 'challenge' . $id . 'timestamp' . Yii::$app->getFormatter()->asTimestamp(time()) . '.txt', $current);
+        //return $this->redirect(Url::to(['challenge/progress', 'id' => $id]));
+
+        \yii\helpers\VarDumper::dump($_SESSION['user_id'], 10, true);;
+        \yii\helpers\VarDumper::dump($_SESSION['exercise_id'], 10, true);
+        \yii\helpers\VarDumper::dump($_SESSION['challenge_id'], 10, true);
+        \yii\helpers\VarDumper::dump($_SESSION['answers'], 10, true);
+        \yii\helpers\VarDumper::dump($_SESSION['hints'], 10, true);
+        \yii\helpers\VarDumper::dump($_SESSION['result'], 10, true);
+        \yii\helpers\VarDumper::dump($_SESSION['mark'], 10, true);
+        \yii\helpers\VarDumper::dump($_SESSION['all_user_points'], 10, true);
+        \yii\helpers\VarDumper::dump($_SESSION['points'], 10, true);
+        \yii\helpers\VarDumper::dump($_SESSION['all_points'], 10, true);
+        \yii\helpers\VarDumper::dump($_SESSION['time'], 10, true);
+
+        $savedResults = new SavedResults();
+        $savedResults->user_id = $_SESSION['user_id'];
+        $savedResults->course_id = $_SESSION['course_id'];
+        $savedResults->exercise_id = $_SESSION['exercise_id'];
+        $savedResults->challenge_id = $_SESSION['challenge_id'];
+        $savedResults->answers = $_SESSION['answers'];
+        $savedResults->hints = $_SESSION['hints'];
+        $savedResults->result = $_SESSION['result'];
+        $savedResults->mark = $_SESSION['mark'];
+        $savedResults->all_user_points = $_SESSION['all_user_points'];
+        $savedResults->points = $_SESSION['points'];
+        $savedResults->all_points = $_SESSION['all_points'];
+        $savedResults->time = $_SESSION['time'];
+        $savedResults->link = $link;
+        $savedResults->save();
     }
 
 }
