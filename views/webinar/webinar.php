@@ -172,10 +172,10 @@ $this->title = 'Вебинар';
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" href="#results">Твои подробные результаты</a>
+                        <a data-toggle="collapse" href="#result<?= $cleanWebinarChallenge->id; ?>">Твои подробные результаты</a>
                     </h4>
                 </div>
-                <div id="results" class="collapse">
+                <div id="result<?= $cleanWebinarChallenge->id; ?>" class="collapse">
                         <div aria-labelledby="summaryHead">
                             <div class="panel-body">
                                 <table class="table table-finish table-hover table_results">
@@ -204,13 +204,14 @@ $this->title = 'Вебинар';
                                                 <?php if ($question->question_type_id !== \app\models\QuestionType::TYPE_THREE_QUESTION): ?>
                                                     <tr>
                                                         <!-- № -->
+                                                        <?php $identity = strval($challenge->id) . strval($number); ?>
                                                         <td class="text-center"><strong><?= $number ?><?php $number++?></strong><br>[<?= $question->id ?>]</td>
                                                         <!-- Вопрос -->
                                                         <td class="text-left"><?= $question->text ?></td>
                                                         <!-- Варианты ответа -->
                                                         <td class="text-left">
                                                             <?php if ($question->question_type_id == \app\models\QuestionType::TYPE_ASSOC_TABLE): ?>
-                                                                <i class="fa options-text" data-id="options<?= $number ?>"></i>
+                                                                <i class="fa options-text" data-id="options<?= $identity; ?>"></i>
                                                             <?php else: ?>
                                                                 <ul>
                                                                     <?php $question->getOptionsFinish($question->data); ?>
@@ -220,7 +221,7 @@ $this->title = 'Вебинар';
                                                         <!-- Твой ответ -->
                                                         <td class="<?= $results[$question->id] ? 'success' : 'danger' ?> text-left">
                                                             <?php if ($question->question_type_id == \app\models\QuestionType::TYPE_ASSOC_TABLE): ?>
-                                                                <i class="fa answer-text" data-id="answer<?= $number; ?>"></i>
+                                                                <i class="fa answer-text" data-id="answer<?= $identity; ?>"></i>
                                                             <?php else: ?>
                                                                 <?php $challenge->getAnswersFinish($question->data, $question->id, $question->question_type_id, json_decode($webinarAnswers->answers, true), $question); ?>
                                                                 <?php ?>
@@ -229,7 +230,7 @@ $this->title = 'Вебинар';
                                                         <!-- Объяснение ответа -->
                                                         <td class="text-left">
                                                             <?php if ($question->question_type_id == \app\models\QuestionType::TYPE_ASSOC_TABLE): ?>
-                                                                <i class="fa explanation-text" data-id="explanation<?= $number?>"></i>
+                                                                <i class="fa explanation-text" data-id="explanation<?= $identity; ?>"></i>
                                                             <?php else: ?>
                                                                 <?= json_decode($question->comment) ? implode("<br>", yii\helpers\Json::decode($question->comment)) : $question->comment ?>
                                                             <?php endif;?>
@@ -240,23 +241,24 @@ $this->title = 'Вебинар';
                                                         <td class="text-center"> <strong><?= $points[$question->id] ?> </strong></td>
                                                     </tr>
                                                     <!-- Вставка блока с опциями при 7-м задании -->
-                                                    <tr id="options<?= $number?>" style="display: none;">
+
+                                                    <tr id="options<?= $identity; ?>" style="display: none;">
                                                         <td colspan="8">
-                                                            <center><i class="fa options-text" data-id="options<?= $number?>"></i><strong>Варианты ответа:</strong></center>
+                                                            <center><i class="fa options-text" data-id="options<?= $identity; ?>"></i><strong>Варианты ответа:</strong></center>
                                                             <p class="text-center"><center><?php $question->getOptionsFinish($question->data); ?></center></p>
                                                         </td>
                                                     </tr>
                                                     <!-- Вставка блока с ответом при 7-м задании -->
-                                                    <tr id="answer<?= $number?>" style="display: none;">
+                                                    <tr id="answer<?= $identity; ?>" style="display: none;">
                                                         <td colspan="8">
-                                                            <center><i class="fa answer-text" data-id="answer<?= $number?>"></i><strong>Твой ответ:</strong></center>
+                                                            <center><i class="fa answer-text" data-id="answer<?= $identity; ?>"></i><strong>Твой ответ:</strong></center>
                                                             <p class="text-center"><center><?php// $summary->getAnswersFinish($question->data, $question->id, $question->question_type_id, $summary->answers, $question); ?></center></p>
                                                         </td>
                                                     </tr>
                                                     <!-- Вставка блока с объяснением при 7-м задании -->
-                                                    <tr id="explanation<?= $number?>" style="display: none;">
+                                                    <tr id="explanation<?= $identity; ?>" style="display: none;">
                                                         <td colspan="8">
-                                                            <center><i class="fa explanation-text" data-id="explanation<?= $number?>"></i><strong>Объяснение ответа:</strong></center>
+                                                            <center><i class="fa explanation-text" data-id="explanation<?= $identity; ?>"></i><strong>Объяснение ответа:</strong></center>
                                                             <p class="text-center"><center><?php// $question->getCommentFinish($question->data) ?></center></p>
                                                         </td>
                                                     </tr>
@@ -315,14 +317,7 @@ $this->title = 'Вебинар';
                                                         $numberOfRightPoints = 0;
                                                     }
                                                     ?>
-                                                    <?php
-                                                    //    if ($questionData->wrong_points !== 0) {
-                                                    //        $numberOfWrongPointsCoefficient = ($questionData->right_points + $questionData->wrong_points) / $questionData->wrong_points;
-                                                    //        $numberOfWrongPoints = 100 / $numberOfWrongPointsCoefficient;
-                                                    //    } else {
-                                                    //        $numberOfWrongPoints = 0;
-                                                    //    }
-                                                    ?>
+
                                                     <?php $numberOfWrongPoints = 100 - $numberOfRightPoints; ?>
                                                     <?php //\yii\helpers\VarDumper::dump($numberOfRightPoints, 10, true); ?>
                                                     <center>Выполняли задание раз: <strong><?= $numberOfPupils; ?></center>
@@ -350,16 +345,7 @@ $this->title = 'Вебинар';
                                 </table>
                             </div>
                         </div>
-                        <script style="opacity: 1;">
-                            $(".table_results td .options-text, .table_results td .answer-text, .table_results td .correct-answer-text, .table_results td .explanation-text").click(function(){
-                                var $tr_id = $(this).attr('data-id');
-                                $('#'+$tr_id).toggle('slow');
-                            });
-                            setTimeout(function(){
-                                anim_ball(10);
-                            },500);
-                        </script>
-                    </div>
+                </div>
             </div>
 
                 <?php else: ?>
@@ -458,3 +444,13 @@ $this->title = 'Вебинар';
         <?php endif; ?>
     </div>
 </div>
+
+<script style="opacity: 1;">
+    $(".table_results td .options-text, .table_results td .answer-text, .table_results td .correct-answer-text, .table_results td .explanation-text").click(function(){
+        var $tr_id = $(this).attr('data-id');
+        $('#'+$tr_id).toggle('slow');
+    });
+    setTimeout(function(){
+        anim_ball(10);
+    },500);
+</script>
