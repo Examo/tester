@@ -43,9 +43,9 @@ class Question extends \app\components\ActiveRecord
     {
         return [
             [['question_type_id'], 'required'],
-            [['question_type_id', 'cost'], 'integer'],
+            [['question_type_id', 'cost', 'right_points', 'wrong_points'], 'integer'],
             [['text', 'data', 'hint', 'comment'], 'string'],
-            [['question_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => QuestionType::className(), 'targetAttribute' => ['question_type_id' => 'id']],
+            [['question_type_id', 'right_points', 'wrong_points'], 'exist', 'skipOnError' => true, 'targetClass' => QuestionType::className(), 'targetAttribute' => ['question_type_id' => 'id']],
         ];
     }
 
@@ -62,6 +62,8 @@ class Question extends \app\components\ActiveRecord
             'hint' => 'Hint',
             'comment' => 'Comment',
             'cost' => 'Cost',
+            'right_points' => 'Right Points',
+            'wrong_points' => 'Wrong Points',
         ];
     }
 
@@ -143,5 +145,48 @@ class Question extends \app\components\ActiveRecord
     public function getSubjects()
     {
         return $this->hasMany(Subject::className(), ['id' => 'subject_id'])->viaTable('question_has_subject', ['question_id' => 'id']);
+    }
+
+    public function getRightHintText($hint, $answer, $type)
+    {
+        if ($type == 1 || $type == 2 || $type == 3 || $type == 4 || $type == 5 || $type == 6) {
+            if ($hint == true && $answer == true) {
+                echo 'Подсказка была, увы, балл делится пополам';
+            } elseif ($hint == true && $answer == false) {
+                echo 'Подсказка была, но это не важно';
+            } elseif ($hint == false && $answer == false) {
+                echo 'Подсказки не было, но это не важно';
+            } elseif ($hint == false && $answer == true) {
+                echo 'Подсказки не было, ура!';
+            }
+        }
+        if ($type == 7){
+            if ($hint == true && $answer == true) {
+                echo 'Подсказка была, увы, общий балл делится пополам';
+            } elseif ($hint == true && $answer == false) {
+                echo 'Подсказка была';
+            } elseif ($hint == false && $answer == false) {
+                echo 'Подсказки не было';
+            } elseif ($hint == false && $answer == true) {
+                echo 'Подсказки не было, великолепно!';
+            }
+        }
+    }
+
+    public function getOptionsFinish($data)
+    {
+        if (isset(json_decode($data, true)['associations'])) {
+            $i = 1;
+            foreach (json_decode($data, true)['associations'] as $key => $item){
+                echo '<strong>'.$i.'-я пара:</strong><br>'.json_decode($data, true)['options'][$key].'<br><center><strong><=></strong></center>'.$item.'</li><br><br>';
+                $i++;
+            }
+        } else {
+            if (isset(json_decode($data, true)['options'])) {
+                foreach (json_decode($data, true)['options'] as $option) {
+                    echo "<li>" . $option . "</li>";
+                }
+            }
+        }
     }
 }

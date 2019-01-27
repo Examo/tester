@@ -6384,9 +6384,9 @@ Tiles(new in v1.1.1)
   clear: both;
 }
 .tiles .tile {
-  display: block;
+  /***display: block;***/
   letter-spacing: 0.02em;
-  float: left;
+  float: none;
   height: 135px;
   width: 135px !important;
   cursor: pointer;
@@ -6406,16 +6406,16 @@ Tiles(new in v1.1.1)
   float: left;
 }
 .tiles .tile.double {
-  width: 280px !important;
+  width: 345px !important;
 }
 .tiles .tile.double-down {
-  height: 280px !important;
+  height: 345px !important;
 }
 .tiles .tile.double-down i {
   margin-top: 95px;
 }
 .tiles .tile:hover {
-  border-color: #aaa !important;
+  border-color: #9abfa9 !important;
 }
 .tiles .tile:active, .tiles .tile.selected {
   border-color: #ccc !important;

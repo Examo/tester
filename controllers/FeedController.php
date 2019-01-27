@@ -67,6 +67,8 @@ class FeedController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $feedingTests = new Feed();
 
+        $allNewChallenges = [];
+
         $challenges = [];
         foreach (Course::findSubscribed(Yii::$app->user->id)->all() as $course) {
             $challenges = array_merge($challenges, $course->getNewChallenges(Yii::$app->user->id)->all());

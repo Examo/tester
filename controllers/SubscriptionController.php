@@ -49,7 +49,7 @@ class SubscriptionController extends Controller
     public function actionIndex()
     {
 
-        $courseTime = $challengesCount = $webinarsCount = $homeworksCount = $examsCount = [];
+        $courseTime = $challengesCount = $webinarsCount = $homeworksCount = $examsCount = $webinarsDone = [];
 
         $searchModel = new CourseSearch();
         $dataProvider = $searchModel->searchSubscribed(
@@ -66,6 +66,7 @@ class SubscriptionController extends Controller
             $courseTime[$course->course_id] = $subscriptionStart->getCourseStart($course->course_id);
             $challengesCount[$course->course_id] = $subscriptionStart->getChallenges($course->course_id);
             $webinarsCount[$course->course_id] = $subscriptionStart->getWebinarsCount($course->course_id);
+            $webinarsDone[$course->course_id] = $subscriptionStart->getWebinarChallengesCheck($course->course_id);
             $homeworksCount[$course->course_id] = $subscriptionStart->getHomeworksCount($course->course_id);
             $examsCount[$course->course_id] = $subscriptionStart->getExamsCount($course->course_id);
         }
@@ -93,6 +94,7 @@ class SubscriptionController extends Controller
             'courseTime' => $courseTime,
             'challengesCount' => $challengesCount,
             'webinarsCount' => $webinarsCount,
+            'webinarsDone' => $webinarsDone,
             'homeworksCount' => $homeworksCount,
             'examsCount' => $examsCount
         ]);

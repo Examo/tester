@@ -25,6 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <th class="col-md-1 text-center">Название</th>
         <th class="col-md-1 text-center">Описание</th>
+        <th class="col-md-1 text-center">Класс</th>
         <th class="col-md-1 text-center">Всего баллов</th>
         <th class="col-md-1 text-center">Неделя в курсе</th>
         <th class="col-md-1 text-center">Тип теста</th>
@@ -42,9 +43,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $challenge->description ?>
             </td>
 
-            <!-- Всего баллов -->
+            <!-- Класс -->
             <td class="text-center">
                 <?= $challenge->grade_number ?>
+            </td>
+
+            <!-- Всего баллов -->
+            <td class="text-center">
+                <?php $cost = 0; ?>
+                <?php foreach ($questions as $question): ?>
+                    <?php $cost += $question['question']->cost; ?>
+                <?php endforeach; ?>
+                <?= $cost ?>
             </td>
 
             <!-- Неделя в курсе -->
@@ -86,11 +96,55 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
-                <a data-toggle="collapse" href="#common">Распространённые ошибки</a>
+                <a data-toggle="collapse" href="#common">Рейтинг сложных заданий</a>
             </h4>
         </div>
         <div id="common" class="collapse">
             <div class="panel-body">
+                <?php $rangeQuestions = []; ?>
+                <?php foreach ($questions as $key => $question): ?>
+                    <?php $rangeQuestions[$question['question']->id][] = $question['question']->wrong_points; ?>
+                <?php endforeach; ?>
+
+                <?php array_multisort($rangeQuestions, SORT_DESC, $questions); ?>
+
+                <?php //\yii\helpers\VarDumper::dump($rangeQuestions, 10, true); ?>
+
+                <?php foreach ($questions as $question): ?>
+                    <div class="panel panel-info">
+                        <div class="panel-body">
+                    <?php $numberOfPupils =$question['question']->right_points + $question['question']->wrong_points; ?>
+                    <?php
+                    if ($question['question']->right_points !== 0) {
+                        $numberOfRightPointsCoefficient = ($question['question']->right_points + $question['question']->wrong_points) / $question['question']->right_points;
+                        $numberOfRightPoints = 100 / $numberOfRightPointsCoefficient;
+                    } else {
+                        $numberOfRightPoints = 0;
+                    }
+                    ?>
+                    <?php $numberOfWrongPoints = 100 - $numberOfRightPoints; ?>
+                    <?php //\yii\helpers\VarDumper::dump($numberOfRightPoints, 10, true); ?>
+                    <?php //\yii\helpers\VarDumper::dump($question['question'], 10, true); ?>
+                            <p><strong>№ задания</strong>: <?= $question['question']->id; ?></p>
+                    <p><strong>Вопрос</strong>: <?= $question['question']->text; ?></p>
+                            <?php if ($question['question']->question_type_id == 7): ?>
+                    <p><center><strong>Варианты ответа</strong>: <?= $question['question']->getOptionsFinish($question['question']->data)?></center></p>
+                        <?php else: ?>
+                        <p><strong>Варианты ответа</strong>: <?= $question['question']->getOptionsFinish($question['question']->data)?></p>
+                        <?php endif; ?>
+                    <center>Выполняли задание раз: <strong><?= $numberOfPupils; ?></strong></center>
+                    <center><label>Неправильно: <strong><?= $question['question']->wrong_points; ?></strong>
+                            / Правильно: <strong><?= $question['question']->right_points; ?></strong></label></center>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-info progress-bar-danger" role="progressbar" aria-valuenow="25.9" aria-valuemin="10" style="width: <?= $numberOfWrongPoints; ?>%">
+                        </div>
+                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="74.1" aria-valuemin="10" style="width: <?= $numberOfRightPoints; ?>%">
+                        </div>
+                    </div>
+                </div>
+                        </div>
+                <?php endforeach; ?>
+
             </div>
         </div>
     </div>

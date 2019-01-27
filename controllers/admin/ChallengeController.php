@@ -5,6 +5,7 @@ namespace app\controllers\admin;
 use app\components\BaseAdminCrudController;
 use app\helpers\QuestionChooser;
 use app\helpers\Subset;
+use app\models\ChallengeHasQuestion;
 use yii\helpers\Json;
 use app\models\ar\ChallengeFood;
 use app\models\ar\Food;
@@ -180,12 +181,16 @@ class ChallengeController extends BaseAdminCrudController
         $challenge = Challenge::findOne(Yii::$app->request->get('challenge_id'));
         $usernames = \dektrium\user\models\User::find()->all();
 
+        $questions = ChallengeHasQuestion::find()->innerJoinWith('question')->where(['challenge_has_question.challenge_id' => $challenge->id])->all();
+        //\yii\helpers\VarDumper::dump($questions[0]['question'], 10, true);
+
         if (!empty($challenge)) {
             return $this->render('stat',
                 [
                     'course' => $course,
                     'challenge' => $challenge,
-                    'usernames' => $usernames
+                    'usernames' => $usernames,
+                    'questions' => $questions
                 ]);
         } else {
             throw new NotFoundHttpException('Теста с указанным ID не существует!');

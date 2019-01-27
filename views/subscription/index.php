@@ -28,7 +28,7 @@ $this->title = Yii::t('app', 'My courses');
         <?php foreach( $dataProvider->getModels() as $course ): ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <center><a href="<?= \yii\helpers\Url::to(['subscription/view', 'id' => $course->id]) ?>"><img src="/i/testcourse.jpg" style="width: 300px;" /></a>
+                    <center><a href="<?= \yii\helpers\Url::to(['subscription/view', 'id' => $course->id]) ?>"><img src="/i/course<?= $course->id; ?>.jpg" style="width: 300px;" /></a>
                         <label style="padding: 20px">Курс: <strong style="font-size: large"><?= $course->name ?></strong>
                             <br>***** <strong style="font-size: large">(123 оценки)</strong>
                             <br><strong style="font-size: large">Уже учеников</strong>: <strong style="font-size: large"><?= $numberOfPupils[$course->id] ?></strong>
@@ -45,7 +45,7 @@ $this->title = Yii::t('app', 'My courses');
                             <?php else: ?>
                                 <?= '<strong style="font-size: large">Дата конца курса ещё не установлена!</strong><br>';?>
                             <?php endif; ?>
-                            <strong style="font-size: large">Программа курса</strong>: тестов <strong><?= $challengesCount[$course->id]; ?></strong>, занятий с преподавателем <strong><?= $webinarsCount[$course->id]; ?></strong>, домашних работ <strong><?= $homeworksCount[$course->id]; ?></strong>, экзаменов <strong><?= $examsCount[$course->id]; ?></strong>
+                            <strong style="font-size: large">Программа курса</strong>: тестов <strong><?= $challengesCount[$course->id]; ?></strong>, занятий с преподавателем (вебинаров) <strong><?= $webinarsCount[$course->id]; ?></strong>, домашних работ <strong><?= $homeworksCount[$course->id]; ?></strong>, экзаменов <strong><?= $examsCount[$course->id]; ?></strong>
                             </label></center>
                 </div>
                 <div class="panel-body">
@@ -84,7 +84,7 @@ $this->title = Yii::t('app', 'My courses');
                                 <td class="text-center"><strong style="font-size: large">-</td>
                                 <td class="text-center"><strong style="font-size: large">_ / <?= $homeworksCount[$course->id]; ?></strong></td>
                                 <td class="text-center"><strong style="font-size: large">_ / <?= $examsCount[$course->id]; ?></strong></td>
-                                <td class="text-center"><strong style="font-size: large">_ / <?= $webinarsCount[$course->id]; ?></strong></td>
+                                <td class="text-center"><strong style="font-size: large"><?= $webinarsDone[$course->id] ?> / <?= $webinarsCount[$course->id]; ?></strong></td>
                             </tr>
                         </table>
                     </div>
@@ -192,8 +192,10 @@ $this->title = Yii::t('app', 'My courses');
                                         <td>
                                             <span class="bold theme-font-color">
                                                 <?php foreach ($courseRating['data'] as $userData): ?>
-                                                    <?php if ($userData['user_id'] == $userId && $userData['element_id'] == 2): ?>
+                                                    <?php //\yii\helpers\VarDumper::dump($userData, 10, true); ?>
+                                                    <?php if ($userData['user_id'] == $userId): ?> <!--&& $userData['element_id'] == 2): ?>-->
                                                         <?= $userData['position']; ?>
+                                                        <?php break; ?>
                                                     <?php endif; ?>
                                                 <?php endforeach; ?></span>
                                         </td>
@@ -224,4 +226,15 @@ $this->title = Yii::t('app', 'My courses');
     </div>
 </div>
 
-<?php //\yii\helpers\VarDumper::dump($homeworksCount[1], 10, true); ?>
+<?php
+// строка, которую будем записывать
+//$text = "Какой-то простой текст новый чтобы дадада текст";
+//$file = 'C:/Apache24/htdocs/tester/views/subscription/file.txt';
+//$current = file_get_contents($file);
+// открываем файл, если файл не существует,
+//делается попытка создать его
+//file_put_contents("C:/Apache24/htdocs/tester/views/subscription/newfile.txt", $current);
+?>
+
+<?php $model = new \app\models\CourseSubscription(); ?>
+<?php $model->getWebinarChallengesCheck(1); ?>

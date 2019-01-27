@@ -4,6 +4,7 @@
 /* @var $content string */
 
 use app\widgets\DailyQuestWidget;
+use app\widgets\EventCalendarWidget;
 use app\widgets\MainAttentionsBadgeWidget;
 use yii\helpers\Html;
 use app\assets\MetronicAsset;
@@ -87,11 +88,15 @@ MetronicAsset::register($this);
 
                     <?php echo $this->render('@app/views/layouts/metronic/header_'.( Yii::$app->user->isGuest ? 'guest' : 'user' )) ?>
 
+                    <?= EventCalendarWidget::widget(); ?>
+
                     <?= MainChallengesBadgeWidget::widget(); ?>
-                    
+
                     <?= MainAttentionsBadgeWidget::widget(); ?>
 
                     <?= DailyQuestWidget::widget(); ?>
+                    
+
 
                 </div>
             </div>

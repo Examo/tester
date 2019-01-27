@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\helpers\Subset;
+use app\widgets\AnswerEditor;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -122,6 +123,12 @@ class Challenge extends \app\models\ar\Challenge
             });
     }
 
+    public function getQuestionsByChallengeId($challengeId)
+    {
+        $questions = ChallengeHasQuestion::find()->innerJoinWith('question')->where(['challenge_has_question.challenge_id' => $challengeId])->all();
+        return $questions;
+    }
+
     /**
      * @return ChallengeSettings
      */
@@ -225,6 +232,23 @@ class Challenge extends \app\models\ar\Challenge
         return $this->getAttempts()->where(['user_id' => is_object($user) ? $user->id : $user])->count();
     }
 
+    public function getAttemptsElementsCount($element_id, $challenge_id, $challenge_element_id)
+    {
+        $attempts = [];
+        if ($element_id == 1 && $challenge_element_id == 1) {
+            $attempts = Attempt::find()->where(['challenge_id' => $challenge_id])->andWhere(['user_id' =>  Yii::$app->user->id])->all();
+        }
+        if ($element_id == 2 && $challenge_element_id == 2) {
+            $attempts = Attempt::find()->where(['challenge_id' => $challenge_id])->andWhere(['user_id' =>  Yii::$app->user->id])->all();
+        }
+        return count($attempts);
+    }
+
+    public function getElementChallengesCount($course_id, $element_id){
+        $challenges = Challenge::find()->where(['course_id' => $course_id])->andWhere(['element_id' => $element_id])->all();
+        return count($challenges);
+    }
+    
     public function getChallengesByWeeks($courseChallenges) {
         $testByWeeks = [];
         foreach ($courseChallenges as $number => $challenge) {
@@ -301,6 +325,153 @@ class Challenge extends \app\models\ar\Challenge
         $challengeElementsItem = Challenge::find()->select('elements_item_id')->where(['id' => $id])->one();
         $challengeClean = ElementsItem::find()->select('name')->where(['id' => $challengeElementsItem])->one();
         return $challengeClean;
+    }
+
+    public function getWebinar()
+    {
+        //$webinar = Webinar::findOne(Yii::$app->request->get('id'));
+        //\yii\helpers\VarDumper::dump($webinar, 10, true);
+    }
+
+    public function getTextMark($numberMark)
+    {
+        switch ($numberMark) {
+            case 2:
+                echo '2 — "ДВОЙКА"';
+                break;
+            case 3:
+                echo '3 — "ТРОЙКА"';
+                break;
+            case 4:
+                echo '4 — "ЧЕТВЁРКА"';
+                break;
+            case 5:
+                echo '5 — "ПЯТЁРКА"';
+                break;
+        }
+    }
+
+    public function getEmoticon($mark)
+    {
+        $emoticonExcellent = ['catemoticonexcellent1.png', 'catemoticonexcellent2.png', 'catemoticonexcellent3.png', 'catemoticonexcellent4.png', 'catemoticonexcellent5.png', 'catemoticonexcellent6.png'];
+        $emoticonGood = ['catemoticongood1.png', 'catemoticongood2.png', 'catemoticongood3.png', 'catemoticongood4.png', 'catemoticongood5.png', 'catemoticongood6.png'];
+        $emoticonSatisfactory = ['catemoticonsatisfactory1.png', 'catemoticonsatisfactory2.png', 'catemoticonsatisfactory3.png', 'catemoticonsatisfactory4.png', 'catemoticonsatisfactory5.png', 'catemoticonsatisfactory6.png'];
+        $emoticonBad = ['catemoticonbad1.png', 'catemoticonbad2.png', 'catemoticonbad3.png', 'catemoticonbad4.png', 'catemoticonbad5.png', 'catemoticonbad6.png'];
+        switch ($mark){
+            case 2: echo '<img src="/i/'.$emoticonBad[mt_rand(0, count($emoticonBad) - 1)].'" />';
+                break;
+            case 3: echo '<img src="/i/'.$emoticonSatisfactory[mt_rand(0, count($emoticonSatisfactory) - 1)].'" />';
+                break;
+            case 4: echo '<img src="/i/'.$emoticonGood[mt_rand(0, count($emoticonGood) - 1)].'" />';
+                break;
+            case 5: echo '<img src="/i/'.$emoticonExcellent[mt_rand(0, count($emoticonExcellent) - 1)].'" />';
+                break;
+        }
+    }
+
+    public function getAllPoints($questions, $points)
+    {
+        $numberOfPoints = 0;
+        $allPoints = 0;
+        foreach ($questions as $key => $question){
+            $allPoints += $points[$question->id];
+            $numberOfPoints += $question->cost;
+        }
+        return [
+            'allPoints' => $allPoints,
+            'numberOfPoints' => $numberOfPoints
+        ];
+    }
+
+    public function getAnswersFinish($data, $questionId, $questionTypeId, $answers, $question=null)
+    {
+        switch ($questionTypeId){
+            case 1:
+                foreach (json_decode($data, true)['options'] as $key => $option) {
+                    $rightOption = '[' . $key . ']';
+                    if ($rightOption == $answers[$questionId]) {
+                        echo '<center>'.mb_strtoupper($option).'</center>';
+                    }
+                }
+                break;
+            case 2:
+                for ($i = 0; $i < count(json_decode($answers[$questionId], true)); $i++) {
+                    if (json_decode($data, true)['options'][json_decode($answers[$questionId], true)[$i]]) {
+                        echo '<li>'.mb_strtoupper(json_decode($data, true)['options'][json_decode($answers[$questionId], true)[$i]]).'</li>';
+                    }
+                }
+                break;
+            case 3:
+                echo '<center>'.mb_strtoupper($answers[$questionId]).'</center>';
+                break;
+            case 4:
+                echo 'type 4';
+                break;
+            case 5:
+                echo 'type 5';
+                break;
+            case 6:
+                echo 'type 6';
+                break;
+            case QuestionType::TYPE_ASSOC_TABLE:
+
+                echo AnswerEditor::widget([
+                    'name' => 'answer',
+                    'question' => $question,
+                    'answer' => $answers[$questionId],
+                    'immediate_result' => '1',
+                ]);
+//                $number = 0;
+//                for ($i = 0; $i < count(json_decode($answers[$questionId])); $i++) {
+//                    $number++;
+//                    foreach (json_decode($answers[$questionId])[$i] as $key => $item) {
+//                        if ($key == 0){
+//                            echo  '<strong>'.$number.'-я пара:</strong> <br>'.json_decode($data, true)['options'][$item].'<br><strong><=></strong><br>';
+//                        } elseif ($key == 1){
+//                            echo json_decode($data, true)['associations'][$item].'<br><br>';
+//                        }
+//                    }
+//                }
+
+
+                /*
+                *var_dump(json_decode($data, true));
+                * array(3) {
+                * ["options"]=> array(5) {
+                * [0]=> string(16) "1 задание" [1]=> string(16) "2 задание" [2]=> string(16) "3 задание" [3]=> string(16) "4 задание" [4]=> string(16) "5 задание" }
+                * ["associations"]=> array(5) {
+                * [0]=> string(22) "А к 1 заданию" [1]=> string(22) "Б к 2 задание" [2]=> string(22) "В к 3 заданию" [3]=> string(23) "Г к 4 заданию " [4]=> string(22) "Д к 5 заданию" }
+                * ["comments"]=> array(5) {
+                * [0]=> string(29) "Комментарий к 1А" [1]=> string(29) "Комментарий к 2Б" [2]=> string(29) "Комментарий к 3В" [3]=> string(29) "Комментарий к 4Г" [4]=> string(29) "Комментарий к 5Д" } }
+                *
+                * var_dump(json_decode($data, true)['associations']);
+                * array(5) {
+                * [0]=> string(22) "А к 1 заданию"
+                * [1]=> string(22) "Б к 2 задание"
+                * [2]=> string(22) "В к 3 заданию"
+                * [3]=> string(23) "Г к 4 заданию "
+                * [4]=> string(22) "Д к 5 заданию" }
+                *
+                * var_dump(json_decode($data, true)['options']);
+                * array(5) {
+                * [0]=> string(16) "1 задание"
+                * [1]=> string(16) "2 задание"
+                * [2]=> string(16) "3 задание"
+                * [3]=> string(16) "4 задание"
+                * [4]=> string(16) "5 задание" }
+                *
+                * var_dump(json_decode($answers[$questionId]));
+                * array(5) {
+               [0]=> array(2) { [0]=> int(0) [1]=> int(1) }
+               [1]=> array(2) { [0]=> int(1) [1]=> int(2) }
+               [2]=> array(2) { [0]=> int(2) [1]=> int(4) }
+               [3]=> array(2) { [0]=> int(3) [1]=> int(3) }
+               [4]=> array(2) { [0]=> int(4) [1]=> int(0) } }*/
+                break;
+            case QuestionType::TYPE_THREE_QUESTION:
+                echo $answers[$questionId];
+                break;
+        }
     }
 
 }
