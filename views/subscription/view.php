@@ -10,7 +10,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <img src="/i/testcourse.jpg" style="width: 300px; margin-top: -135px; margin-left: -5px" />
+        <img src="/i/course<?= $course->id; ?>.jpg" style="width: 300px; margin-top: -135px; margin-left: -5px" />
         <label style="padding: 20px">Курс: <strong style="font-size: large"><?= $course->name ?></strong>
         <br>***** <strong style="font-size: large">(123 оценки)</strong>
         <br>Учеников: <strong style="font-size: large"><?php if (isset($numberOfPupils[$course->id])): ?>
@@ -201,12 +201,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 <th class="col-md-2 text-center">Вебинаров</th>
             </tr>
             <tr>
-            <td class="text-center"><strong style="font-size: large"><?= $feedNumber; ?> / <?= $challenge->getElementChallengesCount($course->id, 1); ?></strong></td>
-            <td class="text-center"><strong style="font-size: large"><?= $cleanNumber; ?> / <?= $challenge->getElementChallengesCount($course->id, 2); ?></strong></td>
+            <td class="text-center"><strong style="font-size: large"><?= $feedNumber; ?> / <?php if (isset($challenge)):?><?= $challenge->getElementChallengesCount($course->id, 1); ?><?php else: ?>0<?php endif; ?></strong></td>
+            <td class="text-center"><strong style="font-size: large"><?= $cleanNumber; ?> / <?php if (isset($challenge)):?><?= $challenge->getElementChallengesCount($course->id, 2); ?><?php else: ?>0<?php endif; ?></strong></td>
             <td class="text-center"><strong style="font-size: large">-</td>
             <td class="text-center"><strong style="font-size: large">_ / <?= $homeworksCount; ?></strong></td>
             <td class="text-center"><strong style="font-size: large">_ / <?= $examsCount; ?></strong></td>
-            <td class="text-center"><strong style="font-size: large">_ / <?= $webinarsCount; ?></strong></td>
+            <td class="text-center"><strong style="font-size: large"><?= $webinarsDone['counted']; ?> / <?= $webinarsCount; ?></strong></td>
             </tr>
             </table>
     </div>

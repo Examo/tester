@@ -88,6 +88,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             </div></a>-->
 
                         <?= LearnWidget::widget(); ?>
+
+                        <br>
                         
                         <?= FoodWidget::widget(); ?>
 

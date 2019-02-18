@@ -107,7 +107,7 @@ class SubscriptionController extends Controller
      */
     public function actionAll()
     {
-        $courseTime = $challengesCount = $webinarsCount = $homeworksCount = $examsCount = [];
+        $courseTime = $challengesCount = $webinarsCount = $homeworksCount = $examsCount = $webinarsDone = [];
 
         $courses = Course::find()->all();
         $subscriptionStart = new CourseSubscription();
@@ -116,6 +116,7 @@ class SubscriptionController extends Controller
             $courseTime[$course->id] = $subscriptionStart->getCourseStart($course->id);
             $challengesCount[$course->id] = $subscriptionStart->getChallenges($course->id);
             $webinarsCount[$course->id] = $subscriptionStart->getWebinarsCount($course->id);
+            $webinarsDone[$course->id] = $subscriptionStart->getWebinarChallengesCheck($course->id);
             $homeworksCount[$course->id] = $subscriptionStart->getHomeworksCount($course->id);
             $examsCount[$course->id] = $subscriptionStart->getExamsCount($course->id);
         }
@@ -168,6 +169,7 @@ class SubscriptionController extends Controller
                     'courseTime' => $courseTime,
                     'challengesCount' => $challengesCount,
                     'webinarsCount' => $webinarsCount,
+                    'webinarsDone' => $webinarsDone,
                     'homeworksCount' => $homeworksCount,
                     'examsCount' => $examsCount
                 ]);
@@ -211,6 +213,7 @@ class SubscriptionController extends Controller
         $courseTime = $subscriptionStart->getCourseStart($id);
         $challengesCount = $subscriptionStart->getChallenges($id);
         $webinarsCount = $subscriptionStart->getWebinarsCount($id);
+        $webinarsDone = $subscriptionStart->getWebinarChallengesCheck($id);
         $homeworksCount = $subscriptionStart->getHomeworksCount($id);
         $examsCount = $subscriptionStart->getExamsCount($id);
 
@@ -245,6 +248,7 @@ class SubscriptionController extends Controller
                 'courseTime' => $courseTime,
                 'challengesCount' => $challengesCount,
                 'webinarsCount' => $webinarsCount,
+                'webinarsDone' => $webinarsDone,
                 'homeworksCount' => $homeworksCount,
                 'examsCount' => $examsCount,
                 'courseRating' => $courseRating

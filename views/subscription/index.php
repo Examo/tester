@@ -84,7 +84,7 @@ $this->title = Yii::t('app', 'My courses');
                                 <td class="text-center"><strong style="font-size: large">-</td>
                                 <td class="text-center"><strong style="font-size: large">_ / <?= $homeworksCount[$course->id]; ?></strong></td>
                                 <td class="text-center"><strong style="font-size: large">_ / <?= $examsCount[$course->id]; ?></strong></td>
-                                <td class="text-center"><strong style="font-size: large"><?= $webinarsDone[$course->id] ?> / <?= $webinarsCount[$course->id]; ?></strong></td>
+                                <td class="text-center"><strong style="font-size: large"><?= $webinarsDone[$course->id]['counted'] ?> / <?= $webinarsCount[$course->id]; ?></strong></td>
                             </tr>
                         </table>
                     </div>

@@ -302,13 +302,15 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
                 }
             }
         }
-        $result = count($cleanWebinarChallenges) - count($webinarChallengesResult);
+        $allData = [];
+        $allData['counted'] = count($cleanWebinarChallenges) - count($webinarChallengesResult);
 
-        //\yii\helpers\VarDumper::dump($data, 10, true);
+        $allData['webinarChallenges'] = $cleanWebinarChallenges;
+        //\yii\helpers\VarDumper::dump($cleanWebinarChallenges, 10, true);
         //\yii\helpers\VarDumper::dump($cleanWebinarChallenges, 10, true);
         //\yii\helpers\VarDumper::dump($webinarChallengesResult, 10, true);
         
-        return $result;
+        return $allData;
     }
 
 }
