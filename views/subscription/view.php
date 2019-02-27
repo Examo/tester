@@ -8,7 +8,7 @@ $this->title = Yii::t('app', 'Program of course') . ' ' . $course->name;
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="panel panel-default">
+<div class="panel panel-default" xmlns="http://www.w3.org/1999/html">
     <div class="panel-heading">
         <img src="/i/course<?= $course->id; ?>.jpg" style="width: 300px; margin-top: -135px; margin-left: -5px" />
         <label style="padding: 20px">Курс: <strong style="font-size: large"><?= $course->name ?></strong>
@@ -216,8 +216,45 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <p><?= $course->description ?></p>
 
-        <div class="portlet-title text-center"><strong style="font-size: large">Все выполненные тесты:</strong><br><br></div>
+        <div class="portlet-title text-center"><strong style="font-size: large">Все вебинары:</strong><br><br></div>
+        <div class="todo-tasklist">
+        <?php foreach ($latestData['data'] as $key => $webinar): ?>
 
+                <?php if (isset($webinar['webinar_done']) && $webinar['webinar_done'] == 1):?>
+                    <?php $borderColor = 'green'; ?>
+                <?php endif; ?>
+                <?php if (isset($webinar['webinar_done']) && $webinar['webinar_done'] == 0):?>
+                    <?php $borderColor = 'red'; ?>
+                <?php endif; ?>
+                <?php if (!isset($webinar['webinar_done'])):?>
+                    <?php $borderColor = 'yellow'; ?>
+                <?php endif; ?>
+
+            <div class="todo-tasklist-item todo-tasklist-item-border-<?= $borderColor; ?>">
+                <img class="todo-userpic pull-left" src="/i/hintemoticon.jpg" width="27px" height="27px">
+                <div class="todo-tasklist-item-title">
+                    Вебинар №<?= $webinar['webinar_number']; ?>
+                </div>
+                <div class="todo-tasklist-item-text">
+                    <?= $webinar['webinar_description']; ?>
+                </div>
+                <div class="todo-tasklist-controls pull-left">
+                    <span class="todo-tasklist-date"><i class="fa fa-calendar"></i> <?= $webinar['webinar_start']; ?>, неделя №<?= $webinar['webinar_week']; ?></span>
+                    <?php if (isset($webinar['webinar_done']) && $webinar['webinar_done'] == 1):?>
+                    <a href="<?= \yii\helpers\Url::to(['webinar/webinar', 'id' => $webinar['webinar_number']])?>"<button type="button" class="btn green">Вебинар пройден, все тесты выполнены</button></a>
+                    <?php endif; ?>
+                    <?php if (isset($webinar['webinar_done']) && $webinar['webinar_done'] == 0):?>
+                    <a href="<?= \yii\helpers\Url::to(['webinar/webinar', 'id' => $webinar['webinar_number']])?>"<button type="button" class="btn red-sunglo">Вебинар не пройден! Выполни тесты!</button></a>
+                    <?php endif; ?>
+                    <?php if (!isset($webinar['webinar_done'])):?>
+                        <button type="button" class="btn yellow">Вебинар ещё не проводился</button>
+                    <?php endif; ?>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+        <br>
+        <div class="portlet-title text-center"><strong style="font-size: large">Все выполненные тесты:</strong><br><br></div>
         <table class="table table-striped table-hover">
             <tr>
                 <th class="col-md-5 text-left">Тест</th>
@@ -260,6 +297,60 @@ $this->params['breadcrumbs'][] = $this->title;
 
 </div>
 
-<?php //\yii\helpers\VarDumper::dump($courseRating['data'], 10, true); ?>
+<?php \yii\helpers\VarDumper::dump($latestData, 10, true); ?>
+
+
+<div class="todo-tasklist">
+    <div class="todo-tasklist-item todo-tasklist-item-border-green">
+        <img class="todo-userpic pull-left" src="/i/hintemoticon.jpg" width="27px" height="27px">
+        <div class="todo-tasklist-item-title">
+            Slider Redesign
+        </div>
+        <div class="todo-tasklist-item-text">
+            Lorem dolor sit amet ipsum dolor sit consectetuer dolore.
+        </div>
+        <div class="todo-tasklist-controls pull-left">
+            <span class="todo-tasklist-date"><i class="fa fa-calendar"></i> 21 Sep 2014 </span>
+            <span class="todo-tasklist-badge badge badge-roundless">Urgent</span>
+        </div>
+    </div>
+    <div class="todo-tasklist-item todo-tasklist-item-border-red">
+        <img class="todo-userpic pull-left" src="/i/hintemoticon.jpg" width="27px" height="27px">
+        <div class="todo-tasklist-item-title">
+            Homepage Alignments to adjust
+        </div>
+        <div class="todo-tasklist-item-text">
+            Lorem ipsum dolor sit amet, consectetuer dolore dolor sit amet.
+        </div>
+        <div class="todo-tasklist-controls pull-left">
+            <span class="todo-tasklist-date"><i class="fa fa-calendar"></i> 14 Sep 2014 </span>
+            <span class="todo-tasklist-badge badge badge-roundless">Important</span>
+        </div>
+    </div>
+    <div class="todo-tasklist-item todo-tasklist-item-border-green">
+        <img class="todo-userpic pull-left" src="/i/hintemoticon.jpg" width="27px" height="27px">
+        <div class="todo-tasklist-item-title">
+            Slider Redesign
+        </div>
+        <div class="todo-tasklist-controls pull-left">
+            <span class="todo-tasklist-date"><i class="fa fa-calendar"></i> 10 Feb 2015 </span>
+            <span class="todo-tasklist-badge badge badge-roundless">Important</span>&nbsp;
+        </div>
+    </div>
+    <div class="todo-tasklist-item todo-tasklist-item-border-blue">
+        <img class="todo-userpic pull-left" src="/i/hintemoticon.jpg" width="27px" height="27px">
+        <div class="todo-tasklist-item-title">
+            Contact Us Map Location changes
+        </div>
+        <div class="todo-tasklist-item-text">
+            Lorem ipsum amet, consectetuer dolore dolor sit amet.
+        </div>
+        <div class="todo-tasklist-controls pull-left">
+            <span class="todo-tasklist-date"><i class="fa fa-calendar"></i> 04 Oct 2014 </span>
+            <span class="todo-tasklist-badge badge badge-roundless">Postponed</span>&nbsp; <span class="todo-tasklist-badge badge badge-roundless">Test</span>
+        </div>
+    </div>
+
+</div>
 
 

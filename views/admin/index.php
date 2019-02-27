@@ -54,6 +54,14 @@ $this->title = \Yii::$app->name;
                     <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/elements-item/index') ?>">Предметы</a>
                 </p>
             </div>
+            <div class="col-lg-4">
+                <h2>Вебинары</h2>
+                <p>Создание страниц для вебинаров</p>
+                <p>
+                    <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/webinar/index') ?>">Все вебинары</a>
+                    <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/webinar/create') ?>">Создать вебинар</a>
+                </p>
+            </div>
         </div>
             <hr>
             <div class="row">

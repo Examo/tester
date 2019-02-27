@@ -21,16 +21,17 @@ class EventChecker
         $month = date("n");
         setlocale(LC_ALL, 'ru_RU');
         $today = strftime("%A, %e %b.", mktime(0, 0, 0, $month, $day, $year));
-
+        $allWebinars = [];
         if (Course::findSubscribed(Yii::$app->user->id)->one()) {
             $time = Yii::$app->getFormatter()->asTimestamp(time());
             foreach (Course::findSubscribed(Yii::$app->user->id)->all() as $keyEvent => $course) {
                 $data = EventChecker::getEvents($course->id);
+                //\yii\helpers\VarDumper::dump($data, 10, true);
             }
 
             $currentTime = Yii::$app->getFormatter()->asTimestamp(time());
 
-            $allWebinars = [];
+            
             foreach ($data as $courseId => $coursesData) {
 
                 foreach ($coursesData as $eventKey => $webinarData) {
@@ -102,13 +103,13 @@ class EventChecker
         }
 
         $countEvent = count($all);
-        $data['badgeColor'] = $badgeColor;
-        $data['badgeBackgroundColor'] = $badgeBackgroundColor;
-        $data['countEvent'] = $countEvent;
-        $data['today'] = $today;
-        $data['all'] = $all;
+        $newData['badgeColor'] = $badgeColor;
+        $newData['badgeBackgroundColor'] = $badgeBackgroundColor;
+        $newData['countEvent'] = $countEvent;
+        $newData['today'] = $today;
+        $newData['all'] = $all;
 
-        return $data;
+        return $newData;
 
     }
 

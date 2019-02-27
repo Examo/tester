@@ -49,6 +49,7 @@ MetronicAsset::register($this);
         <link href="/metronic/global/css/plugins-md.css" rel="stylesheet" type="text/css"/>
         <link href="/metronic/admin/layout4/css/layout.css" rel="stylesheet" type="text/css"/>
         <link id="style_color" href="/metronic/admin/layout4/css/themes/light.css" rel="stylesheet" type="text/css"/>
+        <link id="style_color" href="/metronic/admin/pages/css/todo.css" rel="stylesheet" type="text/css"/>
         <link href="/metronic/admin/layout4/css/custom.css" rel="stylesheet" type="text/css"/>
         <!-- END THEME STYLES -->
         <link rel="shortcut icon" href="favicon.ico"/>

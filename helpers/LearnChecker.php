@@ -170,6 +170,7 @@ class LearnChecker
             $lastData['lastWeeks'] = $lastWeeks;
             $lastData['lastResult'] = $lastResult;
             $lastData['lastValue'] = $lastValue;
+            $lastData['webinars'] = $webinars;
 
         }
            

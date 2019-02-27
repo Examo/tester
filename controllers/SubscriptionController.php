@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\helpers\EventChecker;
+use app\helpers\LearnChecker;
 use app\models\AuthAssignment;
 use app\models\Course;
 use app\models\CourseLecturer;
@@ -233,6 +235,8 @@ class SubscriptionController extends Controller
 
         $courseRating = $subscriptionStart->getCourseRating($id);
 
+        $latestData = CourseSubscription::getAllWebinars(1);
+
         if (!empty($lecturers)) {
             return $this->render('view', [
                 'course' => $course,
@@ -251,7 +255,8 @@ class SubscriptionController extends Controller
                 'webinarsDone' => $webinarsDone,
                 'homeworksCount' => $homeworksCount,
                 'examsCount' => $examsCount,
-                'courseRating' => $courseRating
+                'courseRating' => $courseRating,
+                'latestData' => $latestData
             ]);
         } else {
             throw new NotFoundHttpException('Преподавателя в этом курсе пока ещё не существует!');
