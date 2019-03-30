@@ -349,6 +349,9 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
                 $weekTime = 604800;
                 $week = ceil($timeAfterCourseStart / $weekTime);
                 $data[$key]['webinar_week'] = ceil($timeBeforeWebinarStart / $weekTime);
+                setlocale(LC_ALL, 'ru_RU');
+                $data[$key]['webinar_start'] = strftime('%A, %e %b %Y', strtotime($data[$key]['webinar_start']));
+                $data[$key]['webinar_end'] = strftime('%A, %e %b %Y', strtotime($data[$key]['webinar_end']));
             }
         }
 
@@ -383,7 +386,7 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
         }
 
         //\yii\helpers\VarDumper::dump($webinarChallengesResult, 10, true);
-
+        $newData = [];
         foreach ($data as $key => $row) {
             $newData[$key] = $row['webinar_week'];
         }
@@ -405,15 +408,12 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
             }
         }
 
-
-
         $allData = [];
         $allData['counted'] = count($cleanWebinarChallenges) - count($webinarChallengesResult);
         $allData['webinarChallenges'] = $cleanWebinarChallenges;
         $allData['data'] = $data;
 
         return $allData;
-
     }
 
 }

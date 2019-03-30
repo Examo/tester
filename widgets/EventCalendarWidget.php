@@ -26,7 +26,7 @@ class EventCalendarWidget extends Widget
         $today = $data['today'];
         $all = $data['all'];
 
-
+        if (isset($all) && !Yii::$app->user->isGuest){
             echo '<ul class="nav navbar-nav pull-right">
 					<li class="separator hide">
 					</li>
@@ -40,14 +40,12 @@ class EventCalendarWidget extends Widget
 							<li class="external">
 							    <h3>Сегодня <span class="bold">' . $today . '</span></h3><br>
 								<h3>Событий на неделе: <span class="bold">' . $countEvent .  '</span></h3>
-								<a href="#">*</a>
+								<a href="#"></a>
 							</li>
 							<li>
 								<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 250px;"><ul class="dropdown-menu-list scroller" style="height: 250px; overflow: hidden; width: auto;" data-handle-color="#637283" data-initialized="1">';
 
-
-        if (isset($all)){
-        foreach ($all as $course => $webinar) {
+            foreach ($all as $course => $webinar) {
             echo '<li>';
             if ($webinar['webinar_begining'] == 0) {
 
@@ -74,9 +72,35 @@ class EventCalendarWidget extends Widget
 
         }
 
+        } else {
+
+            echo '<ul class="nav navbar-nav pull-right">
+					<li class="separator hide">
+					</li>
+					<li class="dropdown dropdown-extended dropdown-dark" id="header_inbox_bar">
+						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">
+						<i class="icon-calendar"></i>
+						<span class="badge badge-danger" style="background-color: ' . $badgeBackgroundColor . '; color: ' . $badgeColor . '">' . $countEvent .  '</span>
+						</a>';
+
+            echo '<ul class="dropdown-menu">
+							<li class="external">
+							    <h3>Сегодня <span class="bold">' . $today . '</span></h3><br>
+								<h3>События на неделе: <span class="bold"><br><br>Ожидаются!<br>Заходи, авторизуйся!<br>Или зарегистрируйся!</span></h3>
+							</li>
+							<li>
+								<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 250px;"><ul class="dropdown-menu-list scroller" style="height: 250px; overflow: hidden; width: auto;" data-handle-color="#637283" data-initialized="1">';
 
 
+            echo '<li>';
+
+                echo '<center>
+                <p style="color: white"><br>У нас есть
+				<br>курс</p>';
+                echo '<p  style="color: white"><br>Подготовка к ЕГЭ по русскому языку</p>';
+                echo '</center>';
         }
+
         echo '</ul><div class="slimScrollBar" style="background: rgb(99, 114, 131); width: 7px; position: absolute; top: 114px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 160.904px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(234, 234, 234); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
 							</li>
 						</ul>

@@ -92,7 +92,12 @@ class CourseController extends BaseAdminCrudController
     {
         /** @var Course $model */
         $model = $this->findModel($id);
-        $lecturer = CourseLecturer::find()->where(['course_id' => $id])->one();
+        if (CourseLecturer::find()->where(['course_id' => $id])->one()){
+            $lecturer = CourseLecturer::find()->where(['course_id' => $id])->one();
+        } else {
+            $lecturer = new CourseLecturer();
+        }
+
         $users = CourseLecturer::find()->all();
         $subjects = $model->getSubjects()->all();
 
@@ -102,7 +107,7 @@ class CourseController extends BaseAdminCrudController
                 if (Challenge::find()->where(['subject_id' => $subject->id])->one())
                 {
                 } else {
-                    $subject->delete();
+                    //$subject->delete();
                 }
             }
             $this->saveModel($model);

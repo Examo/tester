@@ -235,7 +235,7 @@ class SubscriptionController extends Controller
 
         $courseRating = $subscriptionStart->getCourseRating($id);
 
-        $latestData = CourseSubscription::getAllWebinars(1);
+        $latestData = CourseSubscription::getAllWebinars($id);
 
         if (!empty($lecturers)) {
             return $this->render('view', [

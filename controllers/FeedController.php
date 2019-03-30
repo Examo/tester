@@ -104,13 +104,13 @@ class FeedController extends Controller
                         // если курс ещё не начался
                         if ($timeAfterCourseStart < 0) {
                             $timeAfterCourseStart /= 60;
-                            print 'Курс ' . $course->name . ' ещё не начался!<br> До начала курса осталось ' . $timeAfterCourseStart . ' секунд.<br>';
+                            //print 'Курс ' . $course->name . ' ещё не начался!<br> До начала курса осталось ' . $timeAfterCourseStart . ' секунд.<br>';
                         } // если курс уже начался
                         else {
-                            print 'Курс ' . $course->name . ' уже начался!<br> С момента начала курса прошло ' . $timeAfterCourseStart . ' секунд.<br>';
+                            //print 'Курс ' . $course->name . ' уже начался!<br> С момента начала курса прошло ' . $timeAfterCourseStart . ' секунд.<br>';
                             $weekTime = 604800;
                             $week = ceil($timeAfterCourseStart / $weekTime);
-                            print 'Идёт ' . $week . '-я неделя курса<br>';
+                            //print 'Идёт ' . $week . '-я неделя курса<br>';
                             $currentWeeksChallenges = Challenge::find()->where(['course_id' => $course->id])->andWhere(['week' => $week])->andWhere(['element_id' => 1])->all();
                             // соберём все тесты в массив, в котором ключи будут id тестов
                             foreach ($currentWeeksChallenges as $weekChallenge) {
@@ -127,7 +127,7 @@ class FeedController extends Controller
                                 if (json_decode($challengesWeeks->challenges) == []) {
                                     $allNewChallenges = [];
                                     foreach (json_decode($challengesWeeks->challenges) as $challengesWeek){
-                                        print $challengesWeek . '<br>';
+                                        //print $challengesWeek . '<br>';
                                     }
                                     $currentWeeksChallenges = Challenge::find()->where(['course_id' => $course->id])->andWhere(['week' => $week])->andWhere(['element_id' => 1])->all();
                                     // соберём все тесты в массив, в котором ключи будут id тестов

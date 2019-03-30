@@ -20,6 +20,7 @@ $today = strftime("%A, %e %b.", mktime(0, 0, 0, $month, $day, $year));
 
 
 <?php if ($all){
+    foreach ($all as $course => $webinar) {
     echo '<center>';
     echo '<div class="tiles">
                 <div class="tile double-down double bg-red-sunglo">
@@ -29,7 +30,7 @@ $today = strftime("%A, %e %b.", mktime(0, 0, 0, $month, $day, $year));
                     </div>
                     <div class="tile-object">
                         <div class="name">';
-                                        foreach ($all as $course => $webinar) {
+
                                             echo 'Сегодня <span class="bold">' . $today . '</span>';
                                             echo '<h4 class="">';
                                             if ($webinar['webinar_begining'] == 0) {
@@ -48,13 +49,12 @@ $today = strftime("%A, %e %b.", mktime(0, 0, 0, $month, $day, $year));
                                                 echo '<br>уже начался!<br>До конца остаётся <span class="bold">' . $webinar['webinar_hours_before_end']. ' ч. ' . $webinar['webinar_minutes_before_end']. ' мин.</span>';
                                                 echo '<br><br><center><a href="' . \yii\helpers\Url::to(['webinar/webinar', 'id' => $webinar['webinar_id']]) . '" class="btn btn-success" style="font-size: large">Скорее!</a></center></h4>';
                                             }
-                                        }
-
                    echo '</div>
                     </div>
                 </div>
             </div>
             </center>';
+    }
     }
 ?>
     </div>
