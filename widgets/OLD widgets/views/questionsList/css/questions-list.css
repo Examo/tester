@@ -1,0 +1,10 @@
+.template {display: none;}
+
+.questions-list .item {
+    border: 1px solid #ddd;
+    padding: 5px 5px 6px 20px;
+    margin-top: 5px;
+    list-style-type: none;
+    cursor: move;
+    background: #fff url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4AgWETQkBV8swQAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAArSURBVEjHY2AYVuDMmTP/CbFJBUy0dvSoBaMWjFowasGoBaMWDA8Lhj4AAF5uClDK3jGHAAAAAElFTkSuQmCC) left center no-repeat;
+}

@@ -8,7 +8,7 @@ $this->title = Yii::t('home', 'Home');
 $day = date("d");
 $year = date("Y");
 $month = date("n");
-setlocale(LC_ALL, 'ru_RU');
+setlocale(LC_ALL, 'ru_RU.UTF8');
 $today = strftime("%A, %e %b.", mktime(0, 0, 0, $month, $day, $year));
 ?>
 

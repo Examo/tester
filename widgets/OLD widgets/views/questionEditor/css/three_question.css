@@ -1,0 +1,17 @@
+textarea {
+    height: auto;
+    width: 100%;
+    resize: none;
+}
+
+.content label {
+    display: block !important;
+}
+
+.well {
+    display: flow-root !important;
+}
+
+.col-md-12 {
+    margin-bottom: 10px;
+}

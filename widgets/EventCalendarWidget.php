@@ -19,7 +19,9 @@ class EventCalendarWidget extends Widget
         parent::init();
 
         $data = EventChecker::getEventsData();
-
+        //echo '<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>';
+       // echo time();
+        //\yii\helpers\VarDumper::dump($data, 10, true);
         $badgeColor = $data['badgeColor'];
         $badgeBackgroundColor = $data['badgeBackgroundColor'];
         $countEvent = $data['countEvent'];

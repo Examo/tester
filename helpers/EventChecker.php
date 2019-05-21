@@ -15,11 +15,15 @@ class EventChecker
         $badgeBackgroundColor = 'white';
         $badgeColor = 'grey';
         $all = [];
-
+        //$date = date_create('2000-01-01', timezone_open('Europe/Moscow'));
+        date_default_timezone_set('Europe/Moscow');
+        $timeCorrectness = 60 * 60 * 3;
         $day = date("d");
         $year = date("Y");
         $month = date("n");
-        setlocale(LC_ALL, 'ru_RU');
+        //setlocale(LC_ALL, 'ru_RU');
+        //setlocale(LC_ALL, 'ru_RU.cp1251');
+        setlocale(LC_ALL, 'ru_RU.UTF8');
         $today = strftime("%A, %e %b.", mktime(0, 0, 0, $month, $day, $year));
         $allWebinars = [];
         if (Course::findSubscribed(Yii::$app->user->id)->one()) {
@@ -37,13 +41,13 @@ class EventChecker
 
                     foreach ($coursesData as $eventKey => $webinarData) {
 
-                        $start = Yii::$app->getFormatter()->asTimestamp($webinarData['webinar_start']);
+                        $start = Yii::$app->getFormatter()->asTimestamp($webinarData['webinar_start'])  - $timeCorrectness;
                         $waiting = $start - $currentTime;
 
                         $daysToWait = floor($waiting / (60 * 60 * 24));
                         $lastPartOfDayToWait = $waiting / (60 * 60 * 24) - $daysToWait;
 
-                        $waitingBeforeDisappear = Yii::$app->getFormatter()->asTimestamp($webinarData['webinar_end']) - $currentTime;
+                        $waitingBeforeDisappear = Yii::$app->getFormatter()->asTimestamp($webinarData['webinar_end']) - $currentTime  - $timeCorrectness;
 
                         $beforeDisappearHours = $waitingBeforeDisappear / (60 * 60);
                         //print $beforeDisappearHours . '<br>';
@@ -118,7 +122,12 @@ class EventChecker
 
     static function getEvents($course_id) {
         $data = [];
+        $date = date_create('2000-01-01', timezone_open('Europe/Moscow'));
+        date_default_timezone_set('Europe/Moscow');
+        $timeCorrectness = (60 * 60 * 3);
         $time = Yii::$app->getFormatter()->asTimestamp(time());
+        //$time = date_create($time, timezone_open('Europe/Moscow'));
+        //\yii\helpers\VarDumper::dump($time, 10, true);
         $events = Event::find()->where(['course_id' => $course_id])->all();
         //$regexp = "/(вебинар)([0-9]*)( )(ссылка)(\S*)( )(описание)([\S\s]*)/ui";
         $regexp = "/(вебинар в системе)([0-9]*)( )(вебинар по порядку)([0-9]*)( )(занятие)([0-9]*)( )(ссылка)(\S*)( )(описание)([\S\s]*)/ui";
@@ -127,11 +136,12 @@ class EventChecker
             $begining = Event::find()->where(['course_id' => $course_id])->andWhere(['title' => 'Начало'])->one();
             foreach ($events as $key => $event) {
                 if (preg_match($regexp, $event->title, $match[$course_id][$key])) {
-                    $courseStartTime = Yii::$app->getFormatter()->asTimestamp($begining->start);
-                    $webinarStartTime = Yii::$app->getFormatter()->asTimestamp($event->start);
+                    $courseStartTime = Yii::$app->getFormatter()->asTimestamp($begining->start) - $timeCorrectness;
+                    //\yii\helpers\VarDumper::dump(date("d.m.Y года в H:i:s", $courseStartTime), 10, true);
+                    $webinarStartTime = Yii::$app->getFormatter()->asTimestamp($event->start)  - $timeCorrectness;
                     $timeAfterCourseStart = $time - $courseStartTime;
                     $timeBeforeWebinarStart = $webinarStartTime - $courseStartTime;
-                    $webinarEndTime = Yii::$app->getFormatter()->asTimestamp($event->end);
+                    $webinarEndTime = Yii::$app->getFormatter()->asTimestamp($event->end) - $timeCorrectness;
                     $timeBeforeWebinarEnd = $webinarEndTime - $time;
                     $weekTime = 604800;
 
