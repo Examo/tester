@@ -53,7 +53,7 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
 .passed-container {position: relative; width: 77%; height: auto;    z-index: 1;  }
 
 
-.orange { width: 70px; top: 150px; left: 300px; z-index: 3; }
+.orange { width: 25px; top: 245px; left: 300px; z-index: 3; }
 .orange_2 { width: 65px; top: 155px; left: 315px; z-index: 1; }
 .orange_3 { width: 60px; top: 160px; left: 330px; z-index: 1; }
 .orange_4 { width: 55px; top: 147px; left: 315px; z-index: 1; }
@@ -64,7 +64,7 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
 .orange_9 { width: 30px; top: 142px; left: 340px; z-index: 1; }
 .orange_10 { width: 25px; top: 141px; left: 345px; z-index: 1; }
 
-.milk_carton { width: 25px; top: 150px; left: 360px; z-index: 2; }
+.milk_carton { width: 25px; top: 190px; left: 360px; z-index: 2; }
 .milk_carton_2 { width: 22px; top: 153px; left: 375px; z-index: 1; }
 .milk_carton_3 { width: 22px; top: 153px; left: 375px; z-index: 1; /*width: 25px; top: 150px; left: 380px; z-index: 1;*/ }
 .milk_carton_4 { width: 22px; top: 153px; left: 375px; z-index: 1; /*width: 22px; top: 153px; left: 395px; z-index: 1;*/ }
@@ -75,8 +75,7 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
 .milk_carton_9 { width: 70px; top: 160px; left: 380px; z-index: 1; }
 .milk_carton_10 { width: 70px; top: 160px; left: 380px; z-index: 1; }
 
-.sandwich { width: 40px; top: 350px; left: 390px; z-index: 1; }
-.sandwich_2 { width: 35px; top: 350px; left: 405px; z-index: 1; }
+.sandwich { width: 40px; top: 340px; left: 415px; z-index: 1; }
 .sandwich_3 { width: 30px; top: 355px; left: 410px; z-index: 1; }
 .sandwich_4 { width: 30px; top: 355px; left: 410px; z-index: 1; }
 .sandwich_5 { width: 30px; top: 355px; left: 410px; z-index: 1; }
@@ -86,7 +85,7 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
 .sandwich_9 { width: 30px; top: 355px; left: 410px; z-index: 1; }
 .sandwich_10 { width: 30px; top: 355px; left: 410px; z-index: 1; }
 
-.meat { width: 60px; top: 115px; left: 240px; z-index: 1; }
+.meat { width: 60px; top: 200px; left: 240px; z-index: 2; }
 .meat_2 { width: 80px; top: 320px; left: 300px; z-index: 1; }
 .meat_3 { width: 60px; top: 330px; left: 300px; z-index: 2; }
 .meat_4 { width: 60px; top: 330px; left: 300px; z-index: 2; }
@@ -119,7 +118,7 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
 .hot_dog_9 { width: 70px; top: 250px; left: 380px; z-index:1; }
 .hot_dog_10 { width: 70px; top: 250px; left: 380px; z-index:1; }
 
-.coffee { width: 70px; top: 320px; left: 380px; z-index: 1; }
+.coffee { width: 50px; top: 320px; left: 370px; z-index: 2; }
 .coffee_2 { width: 70px; top: 320px; left: 380px; z-index: 1; }
 .coffee_3 { width: 70px; top: 320px; left: 380px; z-index: 1; }
 .coffee_4 { width: 70px; top: 320px; left: 380px; z-index: 1; }
@@ -130,6 +129,30 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
 .coffee_9 { width: 70px; top: 320px; left: 380px; z-index: 1; }
 .coffee_10 { width: 70px; top: 320px; left: 380px; z-index: 1; }
 
+.jam { width: 30px; top: 45px; left: 290px; z-index: 1; }
+.pan { width: 80px; top: 310px; left: 320px; z-index: 2; }
+.bread { width: 70px; top: 330px; left: 280px; z-index: 2; }
+.cake { width: 50px; top: 310px; left: 260px; z-index: 1; }
+.bisquit { width: 60px; top: 40px; left: 220px; z-index: 1; }
+.coke_pear { width: 20px; top: 275px; left: 375px; z-index: 1; }
+.coke_apple { width: 20px; top: 275px; left: 355px; z-index: 1; }
+.condenced_milk { width: 35px; top: 180px; left: 390px; z-index: 2; }
+.coke_orange { width: 35px; top: 150px; left: 400px; z-index: 1; }
+.greens { width: 50px; top: 150px; left: 350px; z-index: 1; }
+.condenced_milk_bag { width: 40px; top: 90px; left: 390px; z-index: 1; }
+.egg1 { width: 10px; top: 100px; left: 355px; z-index: 1; }
+.egg2 { width: 10px; top: 100px; left: 365px; z-index: 1; }
+.egg3 { width: 10px; top: 100px; left: 375px; z-index: 1; }
+.egg4 { width: 10px; top: 110px; left: 350px; z-index: 1; }
+.egg5 { width: 10px; top: 110px; left: 360px; z-index: 1; }
+.egg6 { width: 10px; top: 110px; left: 370px; z-index: 1; }
+.sausages { width: 73px; top: 150px; left: 260px; z-index: 2; }
+.cheese_head { width: 55px; top: 150px; left: 240px; z-index: 1; }
+.cheese { width: 30px; top: 150px; left: 290px; z-index: 2; }
+.soup { width: 65px; top: 190px; left: 270px; z-index: 1; }
+.hen { width: 100px; top: 95px; left: 240px; z-index: 1; }
+.banana { width: 52px; top: 230px; left: 245px; z-index: 3; }
+.carrot { width: 70px; top: 350px; left: 345px; z-index: 3; }
 
 /*
 
@@ -256,48 +279,70 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
     padding:1px 10px;
 }
 
-.cleancat { top: 90px; left: 800px; z-index: 5; }
+.cleancat {
+    position: absolute;
+    pointer-events: none;
+    }
+
+.cleancat IMG:hover {}
+
+.cleancat span {
+    z-index:5;
+    position: absolute;
+    width: 50px;
+    /*top:100px;
+    left: 300px;*/
+
+    /* Оформление текста */
+    color: black;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:20px;
+
+    /* Фон */
+    background-color:rgba(0,0,0,.1);
+    padding:1px 10px;
+}
 
 .bath { width: 400px; top: 300px; left: 550px; z-index: 1; }
-.bucket {width: 70px; top: 450px; left: 550px; z-index: 3;}
+.bucket {width: 70px; top: 450px; left: 550px; z-index: 3; }
 .mop {width: 100px; top: 270px; left: 540px; z-index: 4;}
 .toilet {top: 90px; left: 500px; z-index: 3;}
+.catstoilet {width: 150px; top: 530px; left: 850px; z-index: 7;}
+.toiletbrush {width: 60px; top: 430px; left: 920px; z-index: 6;}
+.petshovel {width: 100px; top: 450px; left: 700px; z-index: 1;}
+.urn {width: 70px; top: 460px; left: 980px; z-index: 6;}
+.toiletpaper {width: 50px; top: 325px; left: 900px; z-index: 7;}
+.scoop {width: 100px; top: 460px; left: 660px; z-index: 7;}
+.scoopbrush {width: 80px; top: 460px; left: 660px; z-index: 8;}
+.washer {width: 170px; top: 330px; left: 360px; z-index: 5;}
+.towel {width: 80px; top: 450px; left: 410px; z-index: 7;}
+.bowl {width: 100px; top: 300px; left: 550px; z-index: 1;} /* не используется в системе */
+.bathsponge {width: 50px; top: 220px; left: 600px; z-index: 5;}
+.chlorinepurifier {width: 40px; top: 220px; left: 430px; z-index: 5;}
+.freshener {width: 25px; top: 220px; left: 400px; z-index: 4;}
+.washingpowder {width: 70px; top: 210px; left: 450px; z-index: 3;}
+.cleaningagentbottle {width: 35px; top: 180px; left: 510px; z-index: 2;}
+.cleaningagentbank {width: 40px; top: 190px; left: 540px; z-index: 2;}
+.cleaningagentbox {width: 70px; top: 75px; left: 630px; z-index: 1;}
+.bathspongeforbody {width: 50px; top: 320px; left: 400px; z-index: 7;}
+.bathbrush {width: 50px; top: 240px; left: 570px; z-index: 1;}
+.metalwoolcloth {width: 50px; top: 140px; left: 460px; z-index: 1;}
+.wetwipes {width: 90px; top: 120px; left: 500px; z-index: 2;}
+.latexgloves {width: 80px; top: 100px; left: 560px; z-index: 2;}
 
+.rubberbrush {width: 100px; top: 300px; left: 550px; z-index: 1;}
 
-.catstoilet {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.toiletbrush {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.petshovel {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.urn {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.toiletpaper {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.scoop {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.scoopbrush {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.washer {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.towel {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.bowl {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.bathsponge {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.chlorinepurifier {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.freshener {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.washingpowder {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.cleaningagentbottle {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.cleaningagentbank {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.cleaningagentbox {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.bathspongeforbody {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.bathbrush {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.metalwoolcloth {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.wetwipes {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.latexgloves {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.rubberbrush {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.jug {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.toothpaste {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.toothbrush {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.toothpicks {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.dentalfloss {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.soap {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.massagecomb {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.tubecream {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.twotowels {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.vacuumcleaner {width: 400px; top: 300px; left: 550px; z-index: 1;}
-.massager {width: 400px; top: 300px; left: 550px; z-index: 1;}
+.jug {width: 100px; top: 300px; left: 550px; z-index: 1;}
+.toothpaste {width: 100px; top: 300px; left: 550px; z-index: 1;}
+.toothbrush {width: 100px; top: 300px; left: 550px; z-index: 1;}
+.toothpicks {width: 100px; top: 300px; left: 550px; z-index: 1;}
+.dentalfloss {width: 100px; top: 300px; left: 550px; z-index: 1;}
+.soap {width: 100px; top: 300px; left: 550px; z-index: 1;}
+.massagecomb {width: 100px; top: 300px; left: 550px; z-index: 1;}
+.tubecream {width: 100px; top: 300px; left: 550px; z-index: 1;}
+.twotowels {width: 100px; top: 300px; left: 550px; z-index: 1;}
+.vacuumcleaner {width: 100px; top: 300px; left: 550px; z-index: 1;}
+.massager {width: 100px; top: 300px; left: 550px; z-index: 1;}
 
 .broom { width: 70px; top: 370px; left: 520px; z-index: 1; }
 .broom_2 { width: 100px; top: 175px; left: 315px; z-index: 1; }

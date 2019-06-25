@@ -241,21 +241,33 @@ class Clean extends \yii\db\ActiveRecord
                 $classes['top'] = 150;
                 $classes['left'] = 420;
                 break;
-
-
-
-
-
-
-
-
-
-
-
-
             case 'catstoilet':
                 $classes['top'] = 150;
                 $classes['left'] = 420;
+                break;
+            case 'catstoilet_2':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'catstoilet_3':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'catstoilet_4':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'catstoilet_5':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'catstoilet_6':
+            $classes['top'] = 150;
+            $classes['left'] = 420;
+                break;
+            case 'catstoilet_7':
+            $classes['top'] = 150;
+            $classes['left'] = 420;
                 break;
             case 'toiletbrush':
                 $classes['top'] = 150;
@@ -322,6 +334,10 @@ class Clean extends \yii\db\ActiveRecord
                 $classes['left'] = 420;
                 break;
             case 'bathspongeforbody':
+                $classes['top'] = 150;
+                $classes['left'] = 420;
+                break;
+            case 'bathspongeforbody_2':
                 $classes['top'] = 150;
                 $classes['left'] = 420;
                 break;

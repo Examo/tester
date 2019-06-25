@@ -6,6 +6,7 @@
  */
 $this->title = Yii::t('app', 'Program of course') . ' ' . $course->name;
 $this->params['breadcrumbs'][] = $this->title;
+setlocale(LC_ALL, 'ru_RU.UTF8');
 ?>
 
 <div class="panel panel-default" xmlns="http://www.w3.org/1999/html">

@@ -41,7 +41,7 @@ $number = 1;
                 <p><strong>Всего набрано баллов: <?= $summary->getAllPoints($questions, $points)['allPoints']; ?> из <?=$summary->getAllPoints($questions, $points)['numberOfPoints']?></strong></p>
                 <p>Время выполнения: <?= round($summary->getTime() / 60) ?> мин.</p>
 
-                <p><a class="btn btn-lg btn-success" href="<?= \yii\helpers\Url::toRoute(['challenge/save', 'id' => $challenge->id]) ?>">Кинуть на стену в VK</a></p>
+                <!--<p><a class="btn btn-lg btn-success" href="<?php // \yii\helpers\Url::toRoute(['challenge/save', 'id' => $challenge->id]) ?>">Кинуть на стену в VK</a></p>-->
                 <p><a class="btn btn-lg btn-success" href="<?= \yii\helpers\Url::to(['start', 'id' => $challenge->id, 'confirm' => true]) ?>">Повторить этот тест</a></p>
                 <?php if ($challenge->element_id == 1): ?>
                     <p><a class="btn btn-lg btn-success" href="<?= \yii\helpers\Url::to(['/feed']) ?>">Продолжить кушать</a></p>

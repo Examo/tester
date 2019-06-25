@@ -16,13 +16,14 @@ class CleanWidget extends Widget
         $backgroundColor = 'grey';
         $heightScaleValue = 0;
         $scaleNumeration = 0;
+        $timeCorrectness = 60 * 60 * 3;
 
         // если у пользователя существует хотя бы один выполненные тест для "Уборки"
         if (Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 2])->andWhere(['attempt.user_id' => Yii::$app->user->id])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one()) {
             // получаем последнюю запись о прохождении теста для "Уборки"
             $lastCleanAttempt = Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 2])->andWhere(['attempt.user_id' => Yii::$app->user->id])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one();
             // получаем время окончания последнего теста для "Уборки"
-            $lastCleanChallengeFinishTime = Yii::$app->getFormatter()->asTimestamp($lastCleanAttempt->finish_time);
+            $lastCleanChallengeFinishTime = Yii::$app->getFormatter()->asTimestamp($lastCleanAttempt->finish_time) - $timeCorrectness;
             // узнаём текущее время и переводим его в простое число
             $time = Yii::$app->getFormatter()->asTimestamp(time());
             // получаем изменение времени с момента окончания теста до текущего момента
@@ -36,6 +37,7 @@ class CleanWidget extends Widget
             // достаём шкалу "Уборки" текущего пользователя (если есть прохождение, то шкала тоже уже у него есть)
             $scale = ScaleClean::find()->where(['user_id' => Yii::$app->user->id])->one();
 
+            //\yii\helpers\VarDumper::dump($scale, 10, true);
             if ($scale) {
                 $scalePoints = $scale->points;
                 // если от баллов на шкале отнять баллы прошедшего времени и разность будет равна или меньше 0
@@ -61,7 +63,7 @@ class CleanWidget extends Widget
                 }
 
                 // значение столбика шкалы в "высоту"
-                $heightScaleValue = 100 - $scale->points + $roundTime;
+                $heightScaleValue = $scale->points + $roundTime;
                 // проценты на самой шкале в цифрах
                 $scaleNumeration = $scale->points - $roundTime;
             } else {
@@ -81,6 +83,13 @@ class CleanWidget extends Widget
             $scale->save();
         }
 
+        $heightScaleValue = 100 - $heightScaleValue;
+        //$scaleNumeration = 10;
+        $backgroundColor = 'green';
+        if ($heightScaleValue <= 0){
+            $heightScaleValue = 100;
+            $scaleNumeration = 0;
+        }
         echo '<a href="/clean" id="clean-widget">' .
             '<div class="bar-wrapper"><p>Уборка</p>' .
             '<div class="feeding-progress-bar-block" style=" background-color:' . $backgroundColor .'">' .

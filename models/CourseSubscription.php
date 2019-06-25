@@ -321,6 +321,7 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
         $events = Event::find()->where(['course_id' => $course_id])->all();
         $match = [];
         $data = [];
+        setlocale(LC_ALL, 'ru_RU.UTF8');
         $cleanWebinarChallenges = [];
         foreach ($events as $key => $event) {
             if (preg_match($regexp, $event->title, $match[$key])) {
@@ -349,9 +350,9 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
                 $weekTime = 604800;
                 $week = ceil($timeAfterCourseStart / $weekTime);
                 $data[$key]['webinar_week'] = ceil($timeBeforeWebinarStart / $weekTime);
-                setlocale(LC_ALL, 'ru_RU');
-                $data[$key]['webinar_start'] = strftime('%A, %e %b %Y', strtotime($data[$key]['webinar_start']));
-                $data[$key]['webinar_end'] = strftime('%A, %e %b %Y', strtotime($data[$key]['webinar_end']));
+                setlocale(LC_ALL, 'ru_RU.UTF8');
+                $data[$key]['webinar_start'] = strftime('%A, %e-е, %b %Y', strtotime($data[$key]['webinar_start']));
+                $data[$key]['webinar_end'] = strftime('%A, %e, %b %Y', strtotime($data[$key]['webinar_end']));
             }
         }
 

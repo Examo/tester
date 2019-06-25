@@ -1,6 +1,6 @@
 <?php
 return [
     'class' => 'yii\swiftmailer\Mailer',
-    'useFileTransport' => false,
+    'useFileTransport' => true,
 
 ];
