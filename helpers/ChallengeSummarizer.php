@@ -102,11 +102,15 @@ class ChallengeSummarizer
         $inst->setStartTime(strtotime($attempt->start_time));
         $inst->setFinishTime(strtotime($attempt->finish_time));
 
-        foreach ($attempt->getAnswers() as $answer) {
+        foreach ($attempt->getAnswers()->all() as $answer) {
             $inst->addAnswer($answer->question_id, $answer->data, $answer->correct, $answer->hint);
         }
 
-        foreach ($attempt->getChallenge()->getChallengeMarks()->all() as $range) {
+        $challenge = $attempt->getChallenge()->one();
+//        var_dump($challenge);
+//        exit();
+
+        foreach ($challenge->getChallengeMarks()->all() as $range) {
             $inst->addMarkRange($range->value_from, $range->value_to, $range->mark);
         }
 
@@ -423,7 +427,6 @@ class ChallengeSummarizer
                 echo 'type 6';
                 break;
             case QuestionType::TYPE_ASSOC_TABLE:
-
                 echo AnswerEditor::widget([
                     'name' => 'answer',
                     'question' => $question,
