@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\helpers\EventChecker;
+use app\helpers\LearnChecker;
 use app\models\AuthAssignment;
 use app\models\Course;
 use app\models\CourseLecturer;
@@ -107,7 +109,7 @@ class SubscriptionController extends Controller
      */
     public function actionAll()
     {
-        $courseTime = $challengesCount = $webinarsCount = $homeworksCount = $examsCount = [];
+        $courseTime = $challengesCount = $webinarsCount = $homeworksCount = $examsCount = $webinarsDone = [];
 
         $courses = Course::find()->all();
         $subscriptionStart = new CourseSubscription();
@@ -116,6 +118,7 @@ class SubscriptionController extends Controller
             $courseTime[$course->id] = $subscriptionStart->getCourseStart($course->id);
             $challengesCount[$course->id] = $subscriptionStart->getChallenges($course->id);
             $webinarsCount[$course->id] = $subscriptionStart->getWebinarsCount($course->id);
+            $webinarsDone[$course->id] = $subscriptionStart->getWebinarChallengesCheck($course->id);
             $homeworksCount[$course->id] = $subscriptionStart->getHomeworksCount($course->id);
             $examsCount[$course->id] = $subscriptionStart->getExamsCount($course->id);
         }
@@ -168,6 +171,7 @@ class SubscriptionController extends Controller
                     'courseTime' => $courseTime,
                     'challengesCount' => $challengesCount,
                     'webinarsCount' => $webinarsCount,
+                    'webinarsDone' => $webinarsDone,
                     'homeworksCount' => $homeworksCount,
                     'examsCount' => $examsCount
                 ]);
@@ -211,6 +215,7 @@ class SubscriptionController extends Controller
         $courseTime = $subscriptionStart->getCourseStart($id);
         $challengesCount = $subscriptionStart->getChallenges($id);
         $webinarsCount = $subscriptionStart->getWebinarsCount($id);
+        $webinarsDone = $subscriptionStart->getWebinarChallengesCheck($id);
         $homeworksCount = $subscriptionStart->getHomeworksCount($id);
         $examsCount = $subscriptionStart->getExamsCount($id);
 
@@ -230,6 +235,8 @@ class SubscriptionController extends Controller
 
         $courseRating = $subscriptionStart->getCourseRating($id);
 
+        $latestData = CourseSubscription::getAllWebinars($id);
+
         if (!empty($lecturers)) {
             return $this->render('view', [
                 'course' => $course,
@@ -245,9 +252,11 @@ class SubscriptionController extends Controller
                 'courseTime' => $courseTime,
                 'challengesCount' => $challengesCount,
                 'webinarsCount' => $webinarsCount,
+                'webinarsDone' => $webinarsDone,
                 'homeworksCount' => $homeworksCount,
                 'examsCount' => $examsCount,
-                'courseRating' => $courseRating
+                'courseRating' => $courseRating,
+                'latestData' => $latestData
             ]);
         } else {
             throw new NotFoundHttpException('Преподавателя в этом курсе пока ещё не существует!');

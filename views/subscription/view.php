@@ -6,13 +6,14 @@
  */
 $this->title = Yii::t('app', 'Program of course') . ' ' . $course->name;
 $this->params['breadcrumbs'][] = $this->title;
+setlocale(LC_ALL, 'ru_RU.UTF8');
 ?>
 
-<div class="panel panel-default">
+<div class="panel panel-default" xmlns="http://www.w3.org/1999/html">
     <div class="panel-heading">
-        <img src="/i/testcourse.jpg" style="width: 300px; margin-top: -135px; margin-left: -5px" />
+        <img src="/i/course<?= $course->id; ?>.jpg" style="width: 300px; margin-top: -135px; margin-left: -5px" />
         <label style="padding: 20px">Курс: <strong style="font-size: large"><?= $course->name ?></strong>
-        <br>***** <strong style="font-size: large">(123 оценки)</strong>
+        <br><!--***** <strong style="font-size: large">(123 оценки)</strong>-->
         <br>Учеников: <strong style="font-size: large"><?php if (isset($numberOfPupils[$course->id])): ?>
                     <?= $numberOfPupils[$course->id]; ?>
                 <?php else: ?>
@@ -201,12 +202,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 <th class="col-md-2 text-center">Вебинаров</th>
             </tr>
             <tr>
-            <td class="text-center"><strong style="font-size: large"><?= $feedNumber; ?> / <?= $challenge->getElementChallengesCount($course->id, 1); ?></strong></td>
-            <td class="text-center"><strong style="font-size: large"><?= $cleanNumber; ?> / <?= $challenge->getElementChallengesCount($course->id, 2); ?></strong></td>
+            <td class="text-center"><strong style="font-size: large"><?= $feedNumber; ?> / <?php if (isset($challenge)):?><?= $challenge->getElementChallengesCount($course->id, 1); ?><?php else: ?>0<?php endif; ?></strong></td>
+            <td class="text-center"><strong style="font-size: large"><?= $cleanNumber; ?> / <?php if (isset($challenge)):?><?= $challenge->getElementChallengesCount($course->id, 2); ?><?php else: ?>0<?php endif; ?></strong></td>
             <td class="text-center"><strong style="font-size: large">-</td>
             <td class="text-center"><strong style="font-size: large">_ / <?= $homeworksCount; ?></strong></td>
             <td class="text-center"><strong style="font-size: large">_ / <?= $examsCount; ?></strong></td>
-            <td class="text-center"><strong style="font-size: large">_ / <?= $webinarsCount; ?></strong></td>
+            <td class="text-center"><strong style="font-size: large"><?= $webinarsDone['counted']; ?> / <?= $webinarsCount; ?></strong></td>
             </tr>
             </table>
     </div>
@@ -216,8 +217,66 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <p><?= $course->description ?></p>
 
-        <div class="portlet-title text-center"><strong style="font-size: large">Все выполненные тесты:</strong><br><br></div>
+        <div class="portlet-title text-center"><strong style="font-size: large">Все вебинары по этому курсу:</strong><br><br></div>
 
+        <center><label>Выполнено вебинаров <strong><?= $latestData['counted']; ?> из <?= count($latestData['data']) ?></label></center>
+        <?php
+        if (isset($latestData['data']) && $latestData['data'] != []) {
+            $oneWebinarPercents = 100 / count($latestData['data']);
+            $doneWebinars = $latestData['counted'] * $oneWebinarPercents;
+            $notDoneWebinars = 100 - $doneWebinars;
+        } else {
+            $doneWebinars = $notDoneWebinars = 0;
+        }
+        ?>
+        <div class="progress">
+            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="74.1" aria-valuemin="10" style="width: <?= $doneWebinars; ?>%">
+            </div>
+            <div class="progress-bar progress-bar-info progress-bar-danger" role="progressbar" aria-valuenow="25.9" aria-valuemin="10" style="width: <?= $notDoneWebinars; ?>%">
+            </div>
+        </div>
+        <br>
+        <div class="todo-tasklist">
+        <?php foreach ($latestData['data'] as $key => $webinar): ?>
+                <?php if (isset($webinar['webinar_done']) && $webinar['webinar_done'] == 1):?>
+                    <?php $borderColor = 'green'; ?>
+                <?php endif; ?>
+                <?php if (isset($webinar['webinar_done']) && $webinar['webinar_done'] == 0):?>
+                    <?php $borderColor = 'red'; ?>
+                <?php endif; ?>
+                <?php if (!isset($webinar['webinar_done'])):?>
+                    <?php $borderColor = 'yellow'; ?>
+                <?php endif; ?>
+            <div class="todo-tasklist-item todo-tasklist-item-border-<?= $borderColor; ?>">
+                <img class="todo-userpic pull-left" src="/i/hintemoticon.jpg" width="27px" height="27px">
+                <div class="todo-tasklist-item-title">
+                    Вебинар №<?= $webinar['webinar_number']; ?>
+                </div>
+                <div class="todo-tasklist-item-text">
+                    <strong><?= $webinar['webinar_description']; ?></strong>
+                </div>
+                <div class="todo-tasklist-item-text">
+                    <?= $webinar['webinar_week']; ?>-я неделя курса
+                </div>
+                <div class="todo-tasklist-controls">
+                    <span class="todo-tasklist-date"><i class="fa fa-calendar"></i> <?= $webinar['webinar_start']; ?></span>
+                    <p>
+                    <?php if (isset($webinar['webinar_done']) && $webinar['webinar_done'] == 1):?>
+                    <center><a href="<?= \yii\helpers\Url::to(['webinar/webinar', 'id' => $webinar['webinar_number']])?>"<button type="button" class="btn green">Вебинар пройден, все тесты выполнены</button></a></center>
+                    <?php endif; ?>
+                    <?php if (isset($webinar['webinar_done']) && $webinar['webinar_done'] == 0):?>
+                    <center><a href="<?= \yii\helpers\Url::to(['webinar/webinar', 'id' => $webinar['webinar_number']])?>"<button type="button" class="btn red-sunglo">Вебинар не пройден! Нажми и выполни тесты!</button></a></center>
+                    <?php endif; ?>
+                    <?php if (!isset($webinar['webinar_done'])):?>
+                    <center><button type="button" class="btn yellow">Вебинар ещё не проводился</button></center>
+                    <?php endif; ?>
+                    </p>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+        <br>
+        <div class="portlet-title text-center"><strong style="font-size: large">Все тесты по курсу:</strong><br><br></div>
         <table class="table table-striped table-hover">
             <tr>
                 <th class="col-md-5 text-left">Тест</th>
@@ -260,6 +319,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 </div>
 
-<?php //\yii\helpers\VarDumper::dump($courseRating['data'], 10, true); ?>
+<?php //\yii\helpers\VarDumper::dump($latestData, 10, true); ?>
 
 

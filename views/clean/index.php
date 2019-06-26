@@ -40,7 +40,8 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 <div class="cleaning">
-    <img class="cleancat" src="/i/catontoilet.png" width="150" height="auto" style="margin-top: 150px; z-index: 5;" />
+    <img class="cleancat" src="/i/clean.png" width="800" height="auto" style="margin-left: 0px; z-index: 1;" />
+    <img class="cleancat" src="/i/catontoilet.png" width="175" height="auto" style="margin-top: 230px; margin-left: 500px; z-index: 7;" />
 <?php $classes = []; ?>
 <?php $number = 1; ?>
 <?php if ($newCleanChallenges):?>
@@ -56,7 +57,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?php $realNumber = '...'; ?><br>
                 <?php  endif; ?>
             <?php  endif; ?>
-                <a href="/challenge/start?id=<?= $challenge['challenge_id']; ?>"><img src="/i/<?= $challenge['challenge_clean_item'] ?>.png" title="Тест по порядку: <?= $number; ?>, №<?= $challenge['challenge_id']; ?> по теме <?= $challenge['subject_name']; ?> на <?= $cleaningTests->time; ?> минут, прибавляет <?= $cleaningTests->percent; ?> % к шкале Уборки, ID темы: <?= $challenge['subject_id']; ?>, Тема по сложности: <?= $number; ?>" class="<?= $all['currentClass']; ?> " /><span style="top:<?= $top = $cleaningTests->getTopLeftStyleNumber($all['currentClass'])['top']; ?>px; left: <?= $left = $cleaningTests->getTopLeftStyleNumber($all['currentClass'])['left']?>px;" title="Тест по порядку: <?= $number; ?>, №<?= $challenge['challenge_id']; ?> по теме <?= $challenge['subject_name']; ?> на <?= $cleaningTests->time; ?> минут, прибавляет <?= $cleaningTests->percent; ?> % к шкале Уборки, ID темы: <?= $challenge['subject_id']; ?>, Тема по сложности: <?= $number; ?>">№<?= $realNumber; ?></span></a>
+                <a href="/challenge/start?id=<?= $challenge['challenge_id']; ?>">
+                    <img src="/i/<?= $challenge['challenge_clean_item'] ?>.png" title="Тест по порядку №<?= $number; ?>. Тема: &laquo;<?= $challenge['subject_name']; ?>&raquo;. Время: <?= $cleaningTests->time; ?> минут. Прибавляет <?= $cleaningTests->percent; ?>% к шкале Уборки. Тема по сложности: <?= $number; ?>" class="<?= $all['currentClass']; ?>" />
+                    <!-- здесь таблички с подярдковыми номерами у предметов
+                    <span style="top:< $top = $cleaningTests->getTopLeftStyleNumber($all['currentClass'])['top']; ?>px; left: < $left = $cleaningTests->getTopLeftStyleNumber($all['currentClass'])['left']?>px;" title="Тест по порядку: < $number; ?>, №< $challenge['challenge_id']; ?> по теме < $challenge['subject_name']; ?> на < $cleaningTests->time; ?> минут, прибавляет < $cleaningTests->percent; ?> % к шкале Уборки, ID темы: < $challenge['subject_id']; ?>, Тема по сложности: < $number; ?>">№< $realNumber; ?>
+                    </span>
+                    -->
+                </a>
                 <?php if (!$challenge['challenge_clean_item']): ?>
                     Добавить элемент уборки в тест №<?= $challenge['challenge_id']; ?><br>
                 <?php  endif; ?>
@@ -128,5 +135,5 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 </div>
 <?php endif; ?>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-<?php \yii\helpers\VarDumper::dump($newCleanChallenges, 10, true); ?>
+<!--<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>-->
+<?php //\yii\helpers\VarDumper::dump($newCleanChallenges, 10, true); ?>

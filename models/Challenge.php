@@ -79,13 +79,13 @@ class Challenge extends \app\models\ar\Challenge
         $questions = parent::getChallengeGenerations()->all();
         foreach ($questions as $question) {
             /** @var ChallengeHasQuestion $question */
-            $q = $question->getQuestion()->one();
-            /** @var \app\models\ar\Question $q */
-            if ($q->question_type_id === QuestionType::TYPE_THREE_QUESTION) {
-                $count += 3;
-            } else {
-                $count ++;
-            }
+        //    $q = $question->getQuestion()->one();
+        //    /** @var \app\models\ar\Question $q */
+        //    if ($q->question_type_id === QuestionType::TYPE_THREE_QUESTION) {
+        //        $count += 3;
+        //    } else {
+        //        $count ++;
+        //    }
         }
 
         return $count;

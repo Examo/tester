@@ -122,8 +122,10 @@ class ChallengeController extends Controller
      */
     public function actionFinish($id = 0, $confirm = false)
     {
+        $timeCorrectness = 60 * 60 * 3;
         $challengeElementsType = Challenge::find()->select('element_id')->where(['id' => $id])->one();
-
+        //date_default_timezone_set('Europe/Moscow');
+        //date_default_timezone_set('Etc/GMT+3');
         $challengeElementsItem = Challenge::find()->select('elements_item_id')->where(['id' => $id])->one();
         $challengeItem = ElementsItem::find()->select('name')->where(['id' => $challengeElementsItem])->one();
 
@@ -140,6 +142,7 @@ class ChallengeController extends Controller
             $event = Event::find()->where(['course_id' => $course->id])->andWhere(['title' => 'Начало'])->one();
             //\yii\helpers\VarDumper::dump($events, 10, true);
             $courseStartTime = Yii::$app->getFormatter()->asTimestamp($event->start);
+            //\yii\helpers\VarDumper::dump($courseStartTime - $timeCorrectness, 10, true);
             $time = Yii::$app->getFormatter()->asTimestamp(time());
             // получаем изменение времени с момента начала курса до текущего момента
             $timeAfterCourseStart = $time - $courseStartTime;
@@ -175,10 +178,10 @@ class ChallengeController extends Controller
                 foreach ($lastChallengeQuestions as $lastChallengeQuestion) {
                     $lastChallengeQuestionCost = Question::find()->select('cost')->where(['id' => $lastChallengeQuestion->question_id])->one();
                     $allLastChallengeQuestionsCost += $lastChallengeQuestionCost->cost;
-                    //\yii\helpers\VarDumper::dump($lastChallengeQuestionCost->cost, 10, true);
+                    \yii\helpers\VarDumper::dump($lastChallengeQuestionCost->cost, 10, true);
                 }
                 $allLastChallengeQuestionsCost = ceil(($allLastChallengeQuestionsCost / 5) * intval($lastChallenge->mark));
-                //\yii\helpers\VarDumper::dump($allLastChallengeQuestionsCost, 10, true);
+                \yii\helpers\VarDumper::dump($allLastChallengeQuestionsCost, 10, true);
 
                 $testQuestions = $summary->getQuestions();
                 $testResults = $summary->getCorrectness();
@@ -235,15 +238,15 @@ class ChallengeController extends Controller
 
                             // получаем шкалу "Уборки" ученика
                             $scale = ScaleClean::find()->where(['user_id' => Yii::$app->user->id])->one();
-                            if (Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 1])->andWhere(['attempt.user_id' => Yii::$app->user->id])->andWhere(['attempt.points' => 1])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one()) {
-                                $lastCleanAttempt = Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 1])->andWhere(['attempt.user_id' => Yii::$app->user->id])->andWhere(['attempt.points' => 1])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one();
+                            if (Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 2])->andWhere(['attempt.user_id' => Yii::$app->user->id])->andWhere(['attempt.points' => 1])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one()) {
+                                $lastCleanAttempt = Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 2])->andWhere(['attempt.user_id' => Yii::$app->user->id])->andWhere(['attempt.points' => 1])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one();
                                 $lastCleanAttemptFinishTime = $lastCleanAttempt->finish_time;
                             } else {
                                 // если нет последнего теста, то просто вставляем текущее время
                                 $lastCleanAttemptFinishTime = time();
                             }
                             // получаем время окончания предыдущего теста
-                            $finishTime = Yii::$app->getFormatter()->asTimestamp($lastCleanAttemptFinishTime);
+                            $finishTime = Yii::$app->getFormatter()->asTimestamp($lastCleanAttemptFinishTime) - $timeCorrectness;
                             // узнаём текущее время и переводим его в простое число
                             $time = Yii::$app->getFormatter()->asTimestamp(time());
                             // получаем изменение времени с момента окончания предыдущего теста до текущего момента
@@ -318,7 +321,7 @@ class ChallengeController extends Controller
                             }
 
                             // получаем время окончания предыдущего теста
-                            $finishTime = Yii::$app->getFormatter()->asTimestamp($lastFeedAttemptFinishTime);
+                            $finishTime = Yii::$app->getFormatter()->asTimestamp($lastFeedAttemptFinishTime) - $timeCorrectness;
                             // узнаём текущее время и переводим его в простое число
                             $time = Yii::$app->getFormatter()->asTimestamp(time());
                             // получаем изменение времени с момента окончания предыдущего теста до текущего момента
@@ -341,6 +344,7 @@ class ChallengeController extends Controller
                                 print '$scale->points > 0';
                                 // записываем ID ученика
                                 $scale->user_id = Yii::$app->user->id;
+
                                 // если разница между баллами и прошедшим временем в баллах равна или меньше 0, то записываем полученные за последний тест баллы
                                 if ($scale->points - $roundTime <= 0) {
                                     print '$scale->points - $roundTime <= 0';

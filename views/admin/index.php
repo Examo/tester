@@ -23,6 +23,8 @@ $this->title = \Yii::$app->name;
                 <p>
                     <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/course/index') ?>">Список</a>
                     <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/course/create') ?>">Создать</a>
+                    <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/course/lecturers') ?>">Преподаватели курсов</a>
+                    <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/course/stats') ?>">Статистика курсов</a>
                 </p>
             </div>
             <div class="col-lg-4">
@@ -52,6 +54,14 @@ $this->title = \Yii::$app->name;
                 <p>
                     <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/element/index') ?>">Элементы</a>
                     <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/elements-item/index') ?>">Предметы</a>
+                </p>
+            </div>
+            <div class="col-lg-4">
+                <h2>Вебинары</h2>
+                <p>Создание страниц для вебинаров</p>
+                <p>
+                    <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/webinar/index') ?>">Все вебинары</a>
+                    <a class="btn btn-default" href="<?= yii\helpers\Url::toRoute('admin/webinar/create') ?>">Создать вебинар</a>
                 </p>
             </div>
         </div>

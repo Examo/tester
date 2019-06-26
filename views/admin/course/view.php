@@ -39,7 +39,8 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
     <?php foreach ($users as $user):?>
-        <?php if ($user->id == $lecturer[0]->user_id): ?>
+        <?php if (isset($lecturer[0])): ?>
+            <?php if ($user->id == $lecturer[0]->user_id): ?>
 
             <table class="table table-striped table-bordered detail-view">
                 <tbody>
@@ -49,6 +50,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 </tr>
                 </tbody>
             </table>
+
+            <?php endif; ?>
+        <?php else: ?>
+
+            <table class="table table-striped table-bordered detail-view">
+                <tbody>
+                <tr>
+                    <th class="col-md-3">Преподователь курса</th>
+                    <td><strong>Ещё не назначен!</strong></td>
+                </tr>
+                </tbody>
+            </table>
+            <?php break; ?>
 
         <?php endif; ?>
     <?php endforeach; ?>

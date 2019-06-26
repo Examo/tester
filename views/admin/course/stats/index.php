@@ -3,8 +3,8 @@
 use yii\helpers\Html;
 
 $this->title = Yii::t('course', 'Courses stats');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Admin'), 'url' => ['admin']];
-$this->params['breadcrumbs'][] = ['label' => Yii::t('course', 'Courses'), 'url' => ['admin/course']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Admin'), 'url' => ['admin/index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('course', 'Courses'), 'url' => ['admin/course/index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="course-index">

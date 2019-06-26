@@ -49,6 +49,7 @@ MetronicAsset::register($this);
         <link href="/metronic/global/css/plugins-md.css" rel="stylesheet" type="text/css"/>
         <link href="/metronic/admin/layout4/css/layout.css" rel="stylesheet" type="text/css"/>
         <link id="style_color" href="/metronic/admin/layout4/css/themes/light.css" rel="stylesheet" type="text/css"/>
+        <link id="style_color" href="/metronic/admin/pages/css/todo.css" rel="stylesheet" type="text/css"/>
         <link href="/metronic/admin/layout4/css/custom.css" rel="stylesheet" type="text/css"/>
         <!-- END THEME STYLES -->
         <link rel="shortcut icon" href="favicon.ico"/>
@@ -85,19 +86,22 @@ MetronicAsset::register($this);
             <!-- BEGIN PAGE TOP -->
             <div class="page-top">
                 <div class="top-menu">
+                    <ul class="nav navbar-nav pull-right">
+                        <li class="separator hide">
+                        </li>
 
-                    <?php echo $this->render('@app/views/layouts/metronic/header_'.( Yii::$app->user->isGuest ? 'guest' : 'user' )) ?>
+                        <?php echo $this->render('@app/views/layouts/metronic/header_'.( Yii::$app->user->isGuest ? 'guest' : 'user' )) ?>
+                        
+                        <?= EventCalendarWidget::widget(); ?>
 
-                    <?= EventCalendarWidget::widget(); ?>
+                        <?= MainChallengesBadgeWidget::widget(); ?>
 
-                    <?= MainChallengesBadgeWidget::widget(); ?>
-
-                    <?= MainAttentionsBadgeWidget::widget(); ?>
-
-                    <?= DailyQuestWidget::widget(); ?>
-                    
-
-
+                        <?= MainAttentionsBadgeWidget::widget(); ?>
+                        
+                        <?= DailyQuestWidget::widget(); ?>
+                        <li class="separator hide">
+                        </li>
+                    </ul>
                 </div>
             </div>
             <!-- END PAGE TOP -->

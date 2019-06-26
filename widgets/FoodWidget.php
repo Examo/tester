@@ -15,26 +15,37 @@ class FoodWidget extends Widget
         $backgroundColor = 'grey';
         $heightScaleValue = 0;
         $scaleNumeration = 0;
+        $timeCorrectness = 60 * 60 * 3;
 
         // если у пользователя существует хотя бы один выполненные тест для "Еды"
-        if (Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 1])->andWhere(['attempt.user_id' => Yii::$app->user->id])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->all()) {
+        if (Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 1])->andWhere(['attempt.user_id' => Yii::$app->user->id])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one()) {
             // получаем последнюю запись о прохождении теста для "Еды"
             $lastFeedAttempt = Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 1])->andWhere(['attempt.user_id' => Yii::$app->user->id])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one();
             // получаем время окончания последнего теста для "Еды"
-            $lastFeedChallengeFinishTime = Yii::$app->getFormatter()->asTimestamp($lastFeedAttempt->finish_time);
+            $lastFeedChallengeFinishTime = Yii::$app->getFormatter()->asTimestamp($lastFeedAttempt->finish_time) - $timeCorrectness;
             // узнаём текущее время и переводим его в простое число
             $time = Yii::$app->getFormatter()->asTimestamp(time());
             // получаем изменение времени с момента окончания теста до текущего момента
             $timeAfterLastFeedChallengeTest = $time - $lastFeedChallengeFinishTime;
             // округляем изменение времени до 100 и отнимаем 1, чтобы получить то значение, которое нужно отнимать для изменения шкалы с течением времени
             $roundTime = ceil($timeAfterLastFeedChallengeTest / 100) - 1;
+            //$roundTime = 100 - $roundTime;
+            //$roundTime = 100 - (0 - $roundTime);
+            //$roundTime = 0 - $roundTime;
             // достаём шкалу "Еды" текущего пользователя (если есть прохождение, то шкала тоже уже у него есть)
             $scale = ScaleFeed::find()->where(['user_id' => Yii::$app->user->id])->one();
             // если от баллов на шкале отнять баллы прошедшего времени и разность будет равна или меньше 0
             // то на шкале будет 0%
+            //\yii\helpers\VarDumper::dump($scale, 10, true);
+            //\yii\helpers\VarDumper::dump($roundTime, 10, true);
+            //\yii\helpers\VarDumper::dump($heightScaleValue, 10, true);
+
+            // шкала минус время
+
             if ($scale->points - $roundTime <= 0) {
                 $scale->points = 0;
                 $roundTime = 0;
+                //print 'меньше или равно нулю';
             }
 
             // если от баллов на шкале отнять баллы прошедшего времени и разность будет равна или больше 100
@@ -42,6 +53,7 @@ class FoodWidget extends Widget
             if ($scale->points - $roundTime >= 100) {
                 $scale->points = 100;
                 $roundTime = 0;
+                //print 'больше или равно сто';
             }
 
             // если от баллов на шкале отнять баллы прошедшего времени и разность будет равна или меньше 10,
@@ -53,9 +65,13 @@ class FoodWidget extends Widget
             }
 
             // значение столбика шкалы в "высоту"
-            $heightScaleValue = 100 - $scale->points + $roundTime;
+            $heightScaleValue = $scale->points - $roundTime;
             // проценты на самой шкале в цифрах
             $scaleNumeration = $scale->points - $roundTime;
+            // значение столбика шкалы в "высоту"
+            //$heightScaleValue = 100 - $scale->points + $roundTime;
+            // проценты на самой шкале в цифрах
+            //$scaleNumeration = $scale->points - $roundTime;
 
         }
         // если не существует записи в таблице шкалы "Еды" для данного пользователя,
@@ -67,6 +83,17 @@ class FoodWidget extends Widget
             $scale->points = 0;
             $scale->step = 0;
             $scale->save();
+        }
+
+        //\yii\helpers\VarDumper::dump($heightScaleValue, 10, true);
+
+        //$heightScaleValue = 100 - $heightScaleValue;
+        $heightScaleValue = 100 - $heightScaleValue;
+        //$scaleNumeration = 10;
+        $backgroundColor = 'green';
+        if ($heightScaleValue <= 0){
+            $heightScaleValue = 100;
+            $scaleNumeration = 0;
         }
 
         echo '<a href="/feed" id="food-widget">' .

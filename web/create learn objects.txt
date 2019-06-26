@@ -1,0 +1,135 @@
+        $object = new LearnObject;
+        $object->object = 'schooldeskcat';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'blackboard';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'backpack';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'bell';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'schoolsponge';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'colorchalks';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'calendar';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'book';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'diary';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'copybook';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'stand';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'colorpaper';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'dailybook';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'ruler';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'scissors';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'paperknife';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'pen';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'pencil';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'stapler';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'glue';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'alarmclock';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'scotch';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'colors';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'brushesjar';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'album';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'felttippens';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'plasticine';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'corrector';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'stencil';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'eraser';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'clips';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'sharpener';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'chalk';
+        $object->save();
+
+        $object = new LearnObject;
+        $object->object = 'laptop';
+        $object->save();

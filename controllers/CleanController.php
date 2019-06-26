@@ -15,6 +15,21 @@ class CleanController extends Controller
 {
     public $layout = 'metronic_sidebar';
 
+    public function beforeAction($action)
+    {
+        if (parent::beforeAction($action)) {
+            // Authorized users only
+            if ( \Yii::$app->user->isGuest ) {
+                $this->redirect( ['user/login'] );
+                return false;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
     public function actionIndex()
     {
         // получаем курс ученика и все события курсов
@@ -50,13 +65,13 @@ class CleanController extends Controller
                         // если курс ещё не начался
                         if ($timeAfterCourseStart < 0) {
                             $timeAfterCourseStart /= 60;
-                            print 'Курс ' . $course->name . ' ещё не начался!<br> До начала курса осталось ' . $timeAfterCourseStart . ' секунд.<br>';
+                            //print 'Курс ' . $course->name . ' ещё не начался!<br> До начала курса осталось ' . $timeAfterCourseStart . ' секунд.<br>';
                         } // если курс уже начался
                         else {
-                            print 'Курс ' . $course->name . ' уже начался!<br> С момента начала курса прошло ' . $timeAfterCourseStart . ' секунд.<br>';
+                            //print 'Курс ' . $course->name . ' уже начался!<br> С момента начала курса прошло ' . $timeAfterCourseStart . ' секунд.<br>';
                             $weekTime = 604800;
                             $week = ceil($timeAfterCourseStart / $weekTime);
-                            print 'Идёт ' . $week . '-я неделя курса<br>';
+                            //print 'Идёт ' . $week . '-я неделя курса<br>';
                             $currentWeeksChallenges = Challenge::find()->where(['course_id' => $course->id])->andWhere(['week' => $week])->andWhere(['element_id' => 2])->all();
                             // соберём все тесты в массив, в котором ключи будут id тестов
                             foreach ($currentWeeksChallenges as $weekChallenge) {
@@ -68,13 +83,14 @@ class CleanController extends Controller
                             $allNewChallenges = [];
                             $challengesTest = ChallengesWeeks::find()->where(['course_id' => $course->id])->andWhere(['element_id' => 2])->andWhere(['week_id' => $week])->andWhere(['user_id' => Yii::$app->user->id])->one();
 
+                            //\yii\helpers\VarDumper::dump($challengesTest->challenges, 10, true);
 
                             if (isset($challengesTest->challenges)) {
                                 $challengesWeeks = ChallengesWeeks::find()->where(['course_id' => $course->id])->andWhere(['element_id' => 2])->andWhere(['week_id' => $week])->andWhere(['user_id' => Yii::$app->user->id])->one();
                                 if (json_decode($challengesWeeks->challenges) == []) {
                                     $allNewChallenges = [];
                                     foreach (json_decode($challengesWeeks->challenges) as $challengesWeek){
-                                        print $challengesWeek . '<br>';
+                                        //print $challengesWeek . '<br>';
                                     }
                                     $currentWeeksChallenges = Challenge::find()->where(['course_id' => $course->id])->andWhere(['week' => $week])->andWhere(['element_id' => 2])->all();
                                     // соберём все тесты в массив, в котором ключи будут id тестов
@@ -88,8 +104,12 @@ class CleanController extends Controller
 
                             // если в таблице challenges_weeks существует запись с указанием курса, недели и id ученика
                             if (ChallengesWeeks::find()->where(['course_id' => $course->id])->andWhere(['element_id' => 2])->andWhere(['week_id' => $week])->andWhere(['user_id' => Yii::$app->user->id])->one()) {
+
                                 // получаем запись о тестах на текущую неделю
                                 $challengesWeeks = ChallengesWeeks::find()->where(['course_id' => $course->id])->andWhere(['element_id' => 2])->andWhere(['week_id' => $week])->andWhere(['user_id' => Yii::$app->user->id])->one();
+
+                                //\yii\helpers\VarDumper::dump($challengesWeeks, 10, true);
+
                                 // получаем из базы массив с записанными id тестов
                                 $challengesIds = json_decode($challengesWeeks->challenges, true);
                                 //$allNewChallenges = [2 => 0];
@@ -223,6 +243,30 @@ class CleanController extends Controller
 
             $difficultSubjects = DifficultSubjects::find()->where(['user_id' => Yii::$app->user->id])->all();
             //\yii\helpers\VarDumper::dump($difficultSubjects, 10, true);
+            if ($difficultSubjects == []) {
+                if (Subject::find()->where(['course_id' => $course->id])->one()) {
+                    $subjects = Subject::find()->where(['course_id' => $course->id])->all();
+                    //\yii\helpers\VarDumper::dump($subjects, 10, true);
+                    foreach ($subjects as $subjectKey => $subjectData) {
+
+                        //\yii\helpers\VarDumper::dump($ownSubjects, 10, true);
+                    }
+
+                    for ($index = 0; $index < count($subjects); $index++){
+                        $ownSubjects = new DifficultSubjects();
+                        $ownSubjects->user_id = Yii::$app->user->id;
+                        $stranger = (int)$subjects[$index]->id;
+                        $test = intval('7');
+                        $ownSubjects->subject_id = (int)$subjects[$index]->id;
+                        $ownSubjects->points = 0;
+                        $ownSubjects->save();
+                       //\yii\helpers\VarDumper::dump(intval($subjects[$index]->id), 10, true);
+                        print '<br>';
+                    }
+
+                }
+            }
+            //\yii\helpers\VarDumper::dump($difficultSubjects, 10, true);
             $newDifficultSubjects = [];
             foreach ($difficultSubjects as $difficultSubject) {
                 $needCourses = Subject::find()->select('course_id')->where(['id' => $difficultSubject->subject_id])->all();
@@ -287,6 +331,12 @@ class CleanController extends Controller
             $challenges =  [];;
             $difficultSubjects = [];
         }
+
+
+       // \yii\helpers\VarDumper::dump($newCleanChallenges, 10, true);
+       // \yii\helpers\VarDumper::dump(Subject::find()->where(['course_id' => $course->id])->all(), 10, true);
+      //  \yii\helpers\VarDumper::dump(DifficultSubjects::find()->where(['user_id' => Yii::$app->user->id])->all(), 10, true);
+        //\yii\helpers\VarDumper::dump($allPreparedChallenges, 10, true);
             return $this->render('index', [
                 'cleaningTests' => $cleaningTests,
                 'challenges' => $challenges,

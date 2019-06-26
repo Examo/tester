@@ -1,0 +1,10 @@
+.answer-editor-extension.assoc .content .item {
+    border: 1px solid #666;
+    background-color: #fff;
+    padding: 5px 0 5px 20px;
+    margin: 5px 0;
+
+    cursor: move;
+
+    background: #fff url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4AgWETQkBV8swQAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAArSURBVEjHY2AYVuDMmTP/CbFJBUy0dvSoBaMWjFowasGoBaMWDA8Lhj4AAF5uClDK3jGHAAAAAElFTkSuQmCC) left center no-repeat;
+}
