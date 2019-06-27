@@ -23,4 +23,29 @@ class Attempt extends \app\models\ar\Attempt
             'points' => Yii::t('attempt', 'Points')
         ];
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAnswers()
+    {
+        return $this->hasMany(Answer::className(), ['attempt_id' => 'id'])->inverseOf('attempt');
+    }
+
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id'])->inverseOf('attempts');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getChallenge()
+    {
+        return $this->hasOne(Challenge::className(), ['id' => 'challenge_id'])->inverseOf('attempts');
+    }
 }

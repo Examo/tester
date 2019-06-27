@@ -15,6 +15,7 @@ class QuestionClientizer
     /**
      * Build client data
      * @param Question $question
+     * @return object
      */
     public static function prepare(Question $question)
     {

@@ -24,7 +24,6 @@ class WebinarController extends \yii\web\Controller
     {
         $this->layout = 'metronic_sidebar';
         $webinar = Webinar::findOne(Yii::$app->request->get('id'));
-
         $events = Event::find()->all();
 
         $regexp = "/(вебинар в системе)([0-9]*)( )(вебинар по порядку)([0-9]*)( )(занятие)([0-9]*)( )(ссылка)(\S*)( )(описание)([\S\s]*)/ui";
