@@ -396,7 +396,7 @@ class ChallengeSummarizer
         }
     }
 
-    public function getAnswersFinish($data, $questionId, $questionTypeId, $answers, $question=null)
+    public function getAnswersFinish($data, $questionId, $questionTypeId, $answers, $question=null, $with_shuffle=true)
     {
         switch ($questionTypeId){
             case 1:
@@ -431,6 +431,7 @@ class ChallengeSummarizer
                     'name' => 'answer',
                     'question' => $question,
                     'answer' => $answers[$questionId],
+                    'with_shuffle' => $with_shuffle,
                     'immediate_result' => '1',
                 ]);
 //                $number = 0;

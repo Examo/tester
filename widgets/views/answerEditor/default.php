@@ -26,6 +26,7 @@ $id = uniqid('ae');
             current: '<?= $current ?>',
             answer: '<?= $answer ?>',
             immediate_result: '<?= $immediate_result ?>',
+            with_shuffle: <?= (int)$with_shuffle ?>,
             comment: <?php if (json_decode($comment)) { ?> JSON.parse('<?= $comment ?>') <?php } else { ?> '<?= $comment ?? '' ?>' <?php } ?>
         });
     });

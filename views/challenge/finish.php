@@ -102,7 +102,7 @@ $number = 1;
                                         <?php if ($question->question_type_id == \app\models\QuestionType::TYPE_ASSOC_TABLE): ?>
                                             <i class="fa answer-text" data-id="answer<?= $number?>"></i>
                                         <?php else: ?>
-                                            <?php $summary->getAnswersFinish($question->data, $question->id, $question->question_type_id, $summary->answers, $question); ?>
+                                            <?php $summary->getAnswersFinish($question->data, $question->id, $question->question_type_id, $summary->answers, $question, false); ?>
                                             <?php ?>
                                         <?php endif;?>
                                     </td>
@@ -130,7 +130,7 @@ $number = 1;
                                 <tr id="answer<?= $number?>" style="display: none;">
                                     <td colspan="8">
                                         <center><i class="fa answer-text" data-id="answer<?= $number?>"></i><strong>Твой ответ:</strong></center>
-                                        <p class="text-center"><center><?php $summary->getAnswersFinish($question->data, $question->id, $question->question_type_id, $summary->answers, $question); ?></center></p>
+                                        <p class="text-center"><center><?php $summary->getAnswersFinish($question->data, $question->id, $question->question_type_id, $summary->answers, $question, false); ?></center></p>
                                     </td>
                                 </tr>
                                 <!-- Вставка блока с объяснением при 7-м задании -->

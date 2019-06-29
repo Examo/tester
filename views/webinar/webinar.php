@@ -205,6 +205,7 @@ $this->title = 'Вебинар';
                                                     <?php
                                                         $attempt = app\models\Attempt::find()->where(['user_id' => Yii::$app->user->id])->andWhere(['challenge_id' => $webinarAnswers->challenge_id])->one();
                                                         $summary = app\helpers\ChallengeSummarizer::fromAttempt($attempt);
+                                                        $questionModel = \app\models\Question::findOne(['id' => $question->id]);
                                                     ?>
                                                     <tr>
                                                         <!-- № -->
@@ -256,14 +257,14 @@ $this->title = 'Вебинар';
                                                     <tr id="answer<?= $identity; ?>" style="display: none;">
                                                         <td colspan="8">
                                                             <center><i class="fa answer-text" data-id="answer<?= $identity; ?>"></i><strong>Твой ответ:</strong></center>
-                                                            <p class="text-center"><center><?php $summary->getAnswersFinish($question->data, $question->id, $question->question_type_id, $summary->answers, \app\models\Question::findOne(['id' => $question->id])); ?></center></p>
+                                                            <p class="text-center"><center><?php $summary->getAnswersFinish($question->data, $question->id, $question->question_type_id, $summary->answers, $questionModel, false); ?></center></p>
                                                         </td>
                                                     </tr>
                                                     <!-- Вставка блока с объяснением при 7-м задании -->
                                                     <tr id="explanation<?= $identity; ?>" style="display: none;">
                                                         <td colspan="8">
                                                             <center><i class="fa explanation-text" data-id="explanation<?= $identity; ?>"></i><strong>Объяснение ответа:</strong></center>
-                                                            <p class="text-center"><center><?php// $question->getCommentFinish($question->data) ?></center></p>
+                                                            <p class="text-center"><center><?php $questionModel->getCommentFinish($question->data) ?></center></p>
                                                         </td>
                                                     </tr>
                                                 <?php else: ?>
