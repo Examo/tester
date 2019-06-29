@@ -41,71 +41,79 @@
             var immediate_result = this.owner.settings.immediate_result;
             answer = answer.replace(/\[/g, '').replace(/\]/g, '');
             answer = answer.split(',');
+            var self = this;
+            var $selfContent = $('.content', self.element);
+            var items = $selfContent.find('.answers input');
 
-            // если есть ответ, рендерит ответ
-            if (answer[0] !== undefined && answer[0] !== null && answer[0] !== "") {
-                var answ_r = [];
-                var answ_l = [];
+            if (answer[0] === undefined || answer[0] === null && answer[0] === "") {
+                return;
+            }
 
-                for (var i = 1; i < answer.length+1; i++) {
-                    if (i % 2 === 0) {
-                        answ_r.push(answer[i-1]);
+            var answ_r = [];
+            var answ_l = [];
+            for (var i = 1; i < answer.length+1; i++) {
+                if (i % 2 === 0) {
+                    answ_r.push(answer[i-1]);
+                } else {
+                    answ_l.push(answer[i-1]);
+                }
+            }
+
+            var rights = $selfContent.find('.options-right [data-id]');
+            // оборачиваем в рамки выводим коментарии
+            $selfContent.find('.options-left .item').each( function(y) {
+                var right = rights[y];
+                var rightId = $(right).data('id');
+                var comment = '';
+
+                if ('comments' in data) {
+                    comment = data.comments[y];
+                }
+
+                if (immediate_result === '1') {
+
+                    if (answ_r[y] === answ_l[y]) {
+                        $(this).wrap('<div class="row success"></div>');
+                        $(this).after(right);
+                        $(this).wrap('<div class="col-md-3 col-xs-3"></div>');
+                        $(right).wrap('<div class="col-md-3 col-xs-3"></div>');
                     } else {
-                        answ_l.push(answer[i-1]);
+                        $(this).wrap('<div class="row error"></div>');
+                        $(this).after(right);
+                        $(this).wrap('<div class="col-md-3 col-xs-3"></div>');
+                        $(right).wrap('<div class="col-md-3 col-xs-3"></div>');
+                        $(this).find('span').last().after(
+                            "</br><b>Комментарий:</b><div class='item'><b>"+comment+"</b></div>"
+                        );
+                        $(right).find('span').last().after(
+                            "</br><b>Правильный ответ:</b><div class='item success' style='padding: 0px'>"+data.associations[y]+"</div></div>"
+                        );
+                    }
+
+                    $selfContent.find('.col-xs-6').each (function() {
+                        if ($(this).find('.options-left').length > 0) {
+                            $(this).css("width", "100%");
+                        }
+                        if ($(this).find('.options-right').length > 0) {
+                            $(this).hide();
+                        }
+                    });
+
+                    $selfContent.find('.col-xs-3').each (function() {
+                        $(this).css("width", "50%");
+                    });
+
+                }
+                //заполняем поля ответов
+                for (let z = 0; z < answ_r.length; z++) {
+                    if (rightId === parseInt(answ_r[z])) {
+                        var item = items[z];
+                        var num = $(right).find('.number').text();
+                        $(item).val(num);
+                        $(item).prop("disabled", true);
                     }
                 }
-                var rights = $('.content', this.element).find('.options-right [data-id]');
-
-                // оборачиваем в рамки выводим коментарии
-                $('.content', this.element).find('.options-left .item').each( function(y) {
-                    var right = rights[y];
-
-                    if (immediate_result === '1') {
-
-                        if (answ_r[y] === answ_l[y]) {
-                            $(this).wrap('<div class="row success"></div>');
-                            $(this).after(right);
-                            $(this).wrap('<div class="col-md-3 col-xs-3"></div>');
-                            $(right).wrap('<div class="col-md-3 col-xs-3"></div>');
-                        } else {
-                            $(this).wrap('<div class="row error"></div>');
-                            $(this).after(right);
-                            $(this).wrap('<div class="col-md-3 col-xs-3"></div>');
-                            $(right).wrap('<div class="col-md-3 col-xs-3"></div>');
-                            $(this).find('span').last().after("</br><b>Комментарий:</b><div class='item'><b>"+data.comments[y]+"</b></div>");
-                            $(right).find('span').last().after("</br><b>Правильный ответ:</b><div class='item success' style='padding: 0px'>"+data.associations[y]+"</div></div>");
-                        }
-
-                        $('.content', this.element).find('.col-xs-6').each (function() {
-                            if ($(this).find('.options-left').length > 0) {
-                                $(this).css("width", "100%");
-                            }
-                            if ($(this).find('.options-right').length > 0) {
-                                $(this).hide();
-                            }
-                        });
-
-                        $('.content', this.element).find('.col-xs-3').each (function() {
-                            $(this).css("width", "50%");
-                        });
-
-                    }
-
-
-                    //заполняем поля ответов
-                    for (var z = 0; z < answ_r.length; z++) {
-                        if ($(right).data('id') === parseInt(answ_r[z])) {
-                            var item = $('.content', this.element).find('.answers input')[z];
-                            $(item).val($(right).find('.number').text());
-                            $(item).prop("disabled", true);
-                        }
-                    }
-
-                });
-
-
-
-            }
+            });
         },
 
         hide: function () {
@@ -157,56 +165,60 @@
             this.onChange.apply(this.owner, [result]);
         },
 
+        isNewQuestion: function(rightIds, shuffle)
+        {
+            return (
+                (rightIds === undefined || rightIds === null || shuffle !== this.owner.settings.current) &&
+                this.owner.settings.with_shuffle !== 0
+            );
+        },
+
+        getRightIds: function(data)
+        {
+            let ids = Object.keys(data.options);
+            for (let i = ids.length - 1; i > 0; i--) {
+                let j = Math.floor(Math.random() * (i + 1));
+                let temp = ids[i];
+                ids[i] = ids[j];
+                ids[j] = temp;
+            }
+            return ids;
+        },
+
         renderHtml: function (data) {
-            var self = this;
-            var shuffle = $.cookie('sfl');
-            var quest_r = $.cookie('qstr');
-            var result = self.getTemplate('content');
-
+            let self = this;
+            let shuffle = $.cookie('sfl');
+            let quest_r = $.cookie('qstr');
+            let result = self.getTemplate('content');
             // left column
+            let leftIds = Object.keys(data.options);
+            let char = "А".charCodeAt(0);
+            let ids = [];
 
-            // shuffle options
-            var ids = Object.keys(data.options);
-            //for (var i = ids.length - 1; i > 0; i--) {
-            //    var j = Math.floor(Math.random() * (i + 1));
-            //    var temp = ids[i];
-            //    ids[i] = ids[j];
-            //    ids[j] = temp;
-            //}
-
-            var char = "А".charCodeAt(0);
-            for (var i in ids) {
-                if ( data.options[ids[i]].length === 0 ) {
+            for (let i in leftIds) {
+                if ( data.options[leftIds[i]].length === 0 ) {
                     continue;
                 }
 
-                var item = self.getTemplate('item');
-                item.find('.text').text(data.options[ids[i]]);
+                let item = self.getTemplate('item');
+                item.find('.text').text(data.options[leftIds[i]]);
                 item.find('.number').text( String.fromCharCode(char) );
                 result.find('.options-left').append(item);
 
-                var answer = self.getTemplate('answer');
+                let answer = self.getTemplate('answer');
                 answer.find('.option').text( String.fromCharCode(char) );
-                answer.find('input').attr('data-id', ids[i]);
+                answer.find('input').attr('data-id', leftIds[i]);
                 result.find('.answers').append(answer);
 
                 char++;
             }
 
-
             // right column
-
             // shuffle options
-            ids = sessionStorage.getItem(quest_r);
+            let rightIds = sessionStorage.getItem(quest_r);
 
-            if (ids === undefined || ids === null || shuffle !== this.owner.settings.current) {
-                var ids = Object.keys(data.options);
-                for (var i = ids.length - 1; i > 0; i--) {
-                    var j = Math.floor(Math.random() * (i + 1));
-                    var temp = ids[i];
-                    ids[i] = ids[j];
-                    ids[j] = temp;
-                }
+            if (self.isNewQuestion(rightIds, shuffle)) {
+                ids = self.getRightIds(data);
                 sessionStorage.setItem(this.element.id + 'r', ids);
 
                 $.cookie('qstr', this.element.id + 'r', {
@@ -221,7 +233,11 @@
                 var answ_r = [];
                 answer = answer.replace(/\[/g, '').replace(/\]/g, '');
                 answer = answer.split(',');
-                ids = ids.split(',');
+                if (rightIds === null) {
+                    ids = self.getRightIds(data);
+                } else {
+                    ids = rightIds.split(',');
+                }
 
                 if (answer[0] !== undefined && answer[0] !== null && answer[0] !== "") {
                     for (var i = 1; i < answer.length + 1; i++) {
@@ -237,20 +253,17 @@
                     });
                     ids = answ_r;
                 }
-
             }
 
-            for (var i in data.associations) {
-
-                if (data.associations[ids[i]] === undefined || data.associations[ids[i]] === null) {
+            for (let i in data.associations) {
+                if (data.associations[ids[i]] === undefined ||
+                    data.associations[ids[i]] === null ||
+                    data.associations[ids[i]].length === 0
+                ) {
                     continue;
-                } else {
-                    if (data.associations[ids[i]].length === 0) {
-                        continue;
-                    }
                 }
 
-                var item = self.getTemplate('item');
+                let item = self.getTemplate('item');
 
                 item.find('.text').text(data.associations[ids[i]]);
                 item.find('.number').text( parseInt(i) + 1 );

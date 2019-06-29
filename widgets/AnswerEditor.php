@@ -37,6 +37,11 @@ class AnswerEditor extends \yii\base\Widget
     public $answer = null;
 
     /**
+     * @var boolean
+     */
+    public $with_shuffle = true;
+
+    /**
      * @var Immediate_result
      */
     public $immediate_result = null;
@@ -80,6 +85,7 @@ class AnswerEditor extends \yii\base\Widget
             'current' => $this->question->id,
             'answer' => $this->answer,
             'immediate_result' => $this->immediate_result,
+            'with_shuffle' => $this->with_shuffle,
         ]);
     }
 
