@@ -1,6 +1,8 @@
 # phpstorm project files
 .idea
 
+*.log
+
 # netbeans project files
 nbproject
 
@@ -26,6 +28,5 @@ phpunit.phar
 # local phpunit config
 /phpunit.xml
 
-config/db.php
-
-web/error.log
+#config
+/config/db.php

@@ -716,14 +716,14 @@ class ChallengeController extends Controller
     {
         $challenge = $this->getChallenge($id);
         $session = new ChallengeSession($challenge, Yii::$app->user->id);
+        $immediate_result = $challenge->getSettings()->getAttribute('immediate_result');
+        $pre = false;
 
-        if (!$session->isFinished()) {
-            if (empty($_SESSION['pre'])) {
-                $pre = true;
-            }
-
-            $session->answer(\Yii::$app->request->post('answer'), $pre);
+        if (!$session->isFinished() && $immediate_result && empty($_SESSION['pre'])) {
+            $pre = true;
         }
+
+        $session->answer(\Yii::$app->request->post('answer'), $pre);
 
         if ($session->isFinished()) {
             return $this->redirect(Url::to(['challenge/finish', 'id' => $challenge->id]));
