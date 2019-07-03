@@ -55,7 +55,7 @@ $summary = \app\helpers\ChallengeSummarizer::fromSession($session);
     </div>
     <div class="panel-body">
         <?= $question->getText() ?>
-        <?php if (!empty($_SESSION['pre'])) { ?>
+        <?php if (!empty($_SESSION['preview_answer'])) { ?>
 
         <?php } ?>
         <?php $form = ActiveForm::begin([
@@ -63,7 +63,7 @@ $summary = \app\helpers\ChallengeSummarizer::fromSession($session);
             'method' => 'post'
         ]); ?>
 
-        <?php if (empty($_SESSION['pre'])) { ?>
+        <?php if (empty($_SESSION['preview_answer'])) { ?>
             <?php echo AnswerEditor::widget([
                 'name' => 'answer',
                 'question' => $question,
@@ -90,16 +90,16 @@ $summary = \app\helpers\ChallengeSummarizer::fromSession($session);
             <?php echo AnswerEditor::widget([
                 'name' => 'answer',
                 'question' => $question,
-                'answer' => $_SESSION['pre'],
+                'answer' => $_SESSION['preview_answer'],
                 'immediate_result' => $challenge->settings->immediate_result,
             ]) ?>
             <?php if ($question->question_type_id !== \app\models\QuestionType::TYPE_ASSOC_TABLE &&
                 $question->question_type_id !== \app\models\QuestionType::TYPE_THREE_QUESTION) { ?>
                 <strong>Твой
-                    ответ <?= $question->check($_SESSION['pre']) ? 'ПРАВИЛЬНЫЙ!' : 'НЕПРАВИЛЬНЫЙ...' ?></strong><br><br>
+                    ответ <?= $question->check($_SESSION['preview_answer']) ? 'ПРАВИЛЬНЫЙ!' : 'НЕПРАВИЛЬНЫЙ...' ?></strong><br><br>
                 <div class="comment-content">
                     <div class="panel panel-default"
-                         style="border: solid; border-color: <?= $question->check($_SESSION['pre']) ? '#219187' : '#F3565D' ?>">
+                         style="border: solid; border-color: <?= $question->check($_SESSION['preview_answer']) ? '#219187' : '#F3565D' ?>">
                         <div class="panel-heading">
                             <div class="general-item-list">
                                 <div class="item">
@@ -121,7 +121,7 @@ $summary = \app\helpers\ChallengeSummarizer::fromSession($session);
 
         <div class="row question-buttons">
             <div class="col-xs-6 col-md-6 text-left">
-                <?php if (empty($_SESSION['pre'])) { ?>
+                <?php if (empty($_SESSION['preview_answer'])) { ?>
                     <input type="submit" class="btn btn-success" value="Ответить">
                 <?php } else { ?>
                     <a href="<?= \yii\helpers\Url::toRoute(['challenge/continue', 'id' => $challenge->id]) ?>"
@@ -129,7 +129,7 @@ $summary = \app\helpers\ChallengeSummarizer::fromSession($session);
                 <?php } ?>
             </div>
             <div class="col-xs-6 col-md-6 text-right">
-                <?php if (empty($_SESSION['pre'])) { ?>
+                <?php if (empty($_SESSION['preview_answer'])) { ?>
                     <?php if ($question->question_type_id !== \app\models\QuestionType::TYPE_THREE_QUESTION) { ?>
                         <a href="#" class="btn btn-primary hint-button">Подсказать</a>
                     <?php } ?>

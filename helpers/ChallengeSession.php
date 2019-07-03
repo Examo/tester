@@ -81,49 +81,31 @@ class ChallengeSession
      * Submit answer and switch to next question.
      * If no questions left - finish challenge
      * @param $answer string
+     * @param $preview
      */
-    public function answer($answer, $pre)
+    public function answer($answer, $preview)
     {
-        if (!$this->isFinished()) {
-            if($pre) {
-                $question = $this->getCurrentQuestion();
-
-                if ($question->question_type_id === \app\models\QuestionType::TYPE_THREE_QUESTION) {
-                    $mistakes = $question->check($answer);
-                    $answers = \yii\helpers\Json::decode($answer) ?? ['', '', ''];
-
-                    if ($mistakes === true) {
-                        foreach ($answers as $key => $ans) {
-                            $arr = [$ans, 1];
-                            $answers[$key] = $arr;
-                        }
-                    } elseif (json_decode($mistakes)) {
-                        $mistakes = \yii\helpers\Json::decode($mistakes);
-                        foreach ($answers as $key => $ans) {
-                            $arr = [$ans, $mistakes[$key] ? 0 : 1];
-                            $answers[$key] = $arr;
-                        }
-                    } else {
-                        foreach ($answers as $key => $ans) {
-                            $arr = [$ans, 0];
-                            $answers[$key] = $arr;
-                        }
-                    }
-
-                    $answer = \yii\helpers\Json::encode($answers);
-                }
-
-                $_SESSION['pre'] = $answer;
-                $this->setCurrentQuestionNumber($this->getCurrentQuestionNumber());
-            } else {
-                $this->storeAnswer($_SESSION['pre']);
-                $_SESSION['pre'] = '';
-                $this->setCurrentQuestionNumber($this->getCurrentQuestionNumber() + 1);
-            }
-        }
-
         if ($this->isFinished()) {
             $this->finish();
+            return;
+        }
+
+        $question = $this->getCurrentQuestion();
+        if ($question->question_type_id === \app\models\QuestionType::TYPE_THREE_QUESTION) {
+            $answer = $this->getAnswerThreeQuestion($question, $answer);
+        }
+
+        if ($preview) {
+            $_SESSION['preview_answer'] = $answer;
+            $this->setCurrentQuestionNumber($this->getCurrentQuestionNumber());
+        } else {
+            if (strlen($_SESSION['preview_answer'])) {
+                $answer = $_SESSION['preview_answer'];
+            }
+
+            $this->storeAnswer($answer);
+            $_SESSION['preview_answer'] = '';
+            $this->setCurrentQuestionNumber($this->getCurrentQuestionNumber() + 1);
         }
     }
 
@@ -300,6 +282,36 @@ class ChallengeSession
         return \Yii::$app->session->get($this->getSessionKey('answers'), []);
     }
 
+    /**
+     * @param Question $question
+     * @param $answer
+     * @return string
+     */
+    public function getAnswerThreeQuestion(Question $question, $answer)
+    {
+        $mistakes = $question->check($answer);
+        $answers = Json::decode($answer) ?? ['', '', ''];
+
+        if ($mistakes === true) {
+            foreach ($answers as $key => $ans) {
+                $arr = [$ans, 1];
+                $answers[$key] = $arr;
+            }
+        } elseif (json_decode($mistakes)) {
+            $mistakes = \yii\helpers\Json::decode($mistakes);
+            foreach ($answers as $key => $ans) {
+                $arr = [$ans, $mistakes[$key] ? 0 : 1];
+                $answers[$key] = $arr;
+            }
+        } else {
+            foreach ($answers as $key => $ans) {
+                $arr = [$ans, 0];
+                $answers[$key] = $arr;
+            }
+        }
+
+        return Json::encode($answers);
+    }
 //----------------------------------------------------------------------------------------------------------------------
 // Questions queue
 //----------------------------------------------------------------------------------------------------------------------
