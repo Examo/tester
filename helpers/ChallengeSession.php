@@ -103,9 +103,13 @@ class ChallengeSession
                 $answer = $_SESSION['preview_answer'];
             }
 
-            $this->storeAnswer($answer);
-            $_SESSION['preview_answer'] = '';
-            $this->setCurrentQuestionNumber($this->getCurrentQuestionNumber() + 1);
+            if (strlen($answer)) {
+                $this->storeAnswer($answer);
+                $_SESSION['preview_answer'] = '';
+                $this->setCurrentQuestionNumber($this->getCurrentQuestionNumber() + 1);
+            } else {
+                $this->setCurrentQuestionNumber($this->getCurrentQuestionNumber());
+            }
         }
     }
 

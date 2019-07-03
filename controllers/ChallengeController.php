@@ -719,7 +719,7 @@ class ChallengeController extends Controller
         $immediate_result = $challenge->getSettings()->getAttribute('immediate_result');
         $preview = false;
 
-        if (!$session->isFinished() && empty($_SESSION['preview_answer']) && $immediate_result) {
+        if (strlen($_SESSION['preview_answer']) && $immediate_result) {
             $preview = true;
         }
 
