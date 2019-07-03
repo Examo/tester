@@ -100,7 +100,7 @@ class ChallengeController extends Controller
 
             $session = new ChallengeSession($challenge, Yii::$app->user->id);
             if ($session->start()) {
-                $_SESSION['pre'] = '';
+                $_SESSION['preview_answer'] = '';
                 return $this->redirect(Url::to(['challenge/progress', 'id' => $challenge->id]));
             } else {
                 throw new HttpException(500);
@@ -717,13 +717,13 @@ class ChallengeController extends Controller
         $challenge = $this->getChallenge($id);
         $session = new ChallengeSession($challenge, Yii::$app->user->id);
         $immediate_result = $challenge->getSettings()->getAttribute('immediate_result');
-        $pre = false;
+        $preview = false;
 
-        if (!$session->isFinished() && $immediate_result && empty($_SESSION['pre'])) {
-            $pre = true;
+        if (!$session->isFinished() && empty($_SESSION['preview_answer']) && $immediate_result) {
+            $preview = true;
         }
 
-        $session->answer(\Yii::$app->request->post('answer'), $pre);
+        $session->answer(\Yii::$app->request->post('answer'), $preview);
 
         if ($session->isFinished()) {
             return $this->redirect(Url::to(['challenge/finish', 'id' => $challenge->id]));
@@ -736,12 +736,13 @@ class ChallengeController extends Controller
     {
         $challenge = $this->getChallenge($id);
         $session = new ChallengeSession($challenge, Yii::$app->user->id);
+        $preview = true;
 
         if (!$session->isFinished()) {
-            if (!empty($_SESSION['pre'])) {
-                $pre = false;
+            if (!empty($_SESSION['preview_answer'])) {
+                $preview = false;
             }
-            $session->answer(\Yii::$app->request->post('answer'), $pre);
+            $session->answer(\Yii::$app->request->post('answer'), $preview);
         }
 
         if ($session->isFinished()) {
