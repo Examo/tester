@@ -158,7 +158,7 @@ $number = 1;
                                     <tr>
                                         <td class="text-center"><strong><?= $number ?><?php $number++?></strong><br>[<?= $question->id ?>]</td>
                                         <!-- Текст -->
-                                        <!--<td class="text-left"><?php// $question->text ?> </td>-->
+                                        <!--<td class="text-left"><?php $question->text ?> </td>-->
                                         <!-- Вопросы -->
                                         <td colspan="2" class="text-left">
                                             <?= \yii\helpers\Html::encode($qDataQuestion) ?>
