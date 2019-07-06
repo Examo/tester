@@ -123,7 +123,7 @@
 
                 item.find('.text').text(data.questions[ids[i]]);
                 $(inputs[i]).before(item);
-                $(inputs[i]).after('<a href=\"#\" class="btn btn-primary hint-button" data-id="'+i+'">Подсказать</a>');
+                $(inputs[i]).after('<a href=\"#\" class="btn btn-primary hint-button" data-id="'+i+'">Подсказать</a></br>');
                 $(inputs[i]).after(
                 '<div class=\"comment-content\">\
                     <div class="panel panel-default">\

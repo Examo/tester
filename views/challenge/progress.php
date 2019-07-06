@@ -150,12 +150,22 @@ $summary = \app\helpers\ChallengeSummarizer::fromSession($session);
 
 <script>
     $(function() {
-
         function showHint(hint, hide=true) {
             $('.hint-content span').html(hint);
             $('.hint-content').show();
             if (hide) {
                 $('.hint-button').hide();
+            }
+        }
+
+        function showThreeQuestionHint(hint, id, hide=true) {
+            var hintButton = $('.hint-button[data-id='+id+']');
+            var hintContent = $('.hint-content');
+            $('.hint-content span').html(hint);
+            hintButton.after(hintContent);
+            hintContent.show();
+            if (hide) {
+                hintButton.hide();
             }
         }
 
@@ -166,7 +176,7 @@ $summary = \app\helpers\ChallengeSummarizer::fromSession($session);
                 $.get('<?= \yii\helpers\Url::to(['challenge/hint', 'id' => $challenge->id]) ?>'+'&num='+id, function(data) {
                     var hints = JSON.parse(data);
                     sessionStorage.setItem('quest_num', id);
-                    showHint(hints[id], false);
+                    showThreeQuestionHint(hints[id], id, false);
                 });
             } else {
                 $.get('<?= \yii\helpers\Url::to(['challenge/hint', 'id' => $challenge->id]) ?>', function(data) {
@@ -186,7 +196,7 @@ $summary = \app\helpers\ChallengeSummarizer::fromSession($session);
                 <?php else: ?>
                     var hints = [];
                 <?php endif ?>
-                showHint(hints[id], false);
+                showThreeQuestionHint(hints[id], id, false);
             <?php else: ?>
                 showHint(<?= \yii\helpers\Json::encode( $session->hint()) ?>);
             <?php endif;?>
