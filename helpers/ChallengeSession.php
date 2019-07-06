@@ -60,6 +60,7 @@ class ChallengeSession
             $this->openQueue();
             $this->setCurrentQuestionNumber(0);
             $this->setStartTime();
+            $this->clearFinishTime();
 
             return true;
         }
@@ -402,6 +403,11 @@ class ChallengeSession
     public function getFinishTime()
     {
         return \Yii::$app->session->get($this->getSessionKey('finish'));
+    }
+
+    public function clearFinishTime()
+    {
+        return \Yii::$app->session->set($this->getSessionKey('finish'), null);
     }
 
 //----------------------------------------------------------------------------------------------------------------------

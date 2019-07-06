@@ -68,10 +68,8 @@ class ChallengeSummarizer
     public static function fromSession(ChallengeSession $session)
     {
         $inst = new self($session->getChallenge(), $session->getUser());
-
         $inst->setStartTime($session->getStartTime());
         $inst->setFinishTime($session->getFinishTime());
-
         $hints = $session->getHints();
 
         foreach ($session->getAnswers() as $question => $answer) {
@@ -107,9 +105,6 @@ class ChallengeSummarizer
         }
 
         $challenge = $attempt->getChallenge()->one();
-//        var_dump($challenge);
-//        exit();
-
         foreach ($challenge->getChallengeMarks()->all() as $range) {
             $inst->addMarkRange($range->value_from, $range->value_to, $range->mark);
         }
