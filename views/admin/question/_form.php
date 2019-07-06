@@ -29,8 +29,9 @@ use kartik\markdown\MarkdownEditor;
     </script>
 
 <?php
-$comment = yii\helpers\Json::encode($model['comment']);
-$hint = yii\helpers\Json::encode($model['hint']);
+
+$comment = app\helpers\Json::encodeForJsParse($model['comment']);
+$hint = app\helpers\Json::encodeForJsParse($model['hint']);
 $script = <<< JS
             if (id === '8' || id === '7') {
                 var comments = JSON.parse($comment);
