@@ -261,10 +261,8 @@ class ChallengeSummarizer
                 if ($hints) {
                     foreach ($hints as $key => $useHint) {
                         $correct = $answersCheck[$key][1];
-                        if ($key === 0) {
-                            $useHint && $correct ? $points -= $cost : '';
-                        } else {
-                            $useHint && $correct ? $points -= $cost / 2 : '';
+                        if ($useHint && $correct) {
+                            $points -= $cost / 2;
                         }
                     }
                 }
@@ -362,7 +360,7 @@ class ChallengeSummarizer
             $allPoints += $points[$question->id];
 
             if ($question->question_type_id == \app\models\QuestionType::TYPE_THREE_QUESTION) {
-                $numberOfPoints += $question->cost*4;
+                $numberOfPoints += $question->cost*3;
             } else {
                 $numberOfPoints += $question->cost;
             }

@@ -93,7 +93,7 @@ class ChallengeSession
         }
 
         $question = $this->getCurrentQuestion();
-        if ($question->question_type_id === \app\models\QuestionType::TYPE_THREE_QUESTION) {
+        if ($question->question_type_id === \app\models\QuestionType::TYPE_THREE_QUESTION && strlen($answer)) {
             $answer = $this->getAnswerThreeQuestion($question, $answer);
         }
 
