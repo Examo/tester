@@ -61,6 +61,7 @@ class ChallengeSession
             $this->setCurrentQuestionNumber(0);
             $this->setStartTime();
             $this->clearFinishTime();
+            $this->setCountThreeQuestion(0);
 
             return true;
         }
@@ -99,19 +100,26 @@ class ChallengeSession
         if ($preview) {
             $_SESSION['preview_answer'] = $answer;
             $this->setCurrentQuestionNumber($this->getCurrentQuestionNumber());
-        } else {
-            if (strlen($_SESSION['preview_answer'])) {
-                $answer = $_SESSION['preview_answer'];
-            }
-
-            if (strlen($answer)) {
-                $this->storeAnswer($answer);
-                $_SESSION['preview_answer'] = '';
-                $this->setCurrentQuestionNumber($this->getCurrentQuestionNumber() + 1);
-            } else {
-                $this->setCurrentQuestionNumber($this->getCurrentQuestionNumber());
-            }
+            return;
         }
+
+        if (strlen($_SESSION['preview_answer'])) {
+            $answer = $_SESSION['preview_answer'];
+        }
+
+        if (!strlen($answer)) {
+            $this->setCurrentQuestionNumber($this->getCurrentQuestionNumber());
+            return;
+        }
+
+        $this->storeAnswer($answer);
+        $_SESSION['preview_answer'] = '';
+
+        if ($question->question_type_id === \app\models\QuestionType::TYPE_THREE_QUESTION) {
+            $this->setCountThreeQuestion($this->getCountThreeQuestion() + 1);
+        }
+
+        $this->setCurrentQuestionNumber($this->getCurrentQuestionNumber() + 1);
     }
 
     /**
@@ -316,6 +324,22 @@ class ChallengeSession
         }
 
         return Json::encode($answers);
+    }
+
+    /**
+     * @param $count
+     */
+    public function setCountThreeQuestion($count)
+    {
+        return \Yii::$app->session->set($this->getSessionKey('three_question_count'), $count);
+    }
+
+    /**
+     * @return int
+     */
+    public function getCountThreeQuestion()
+    {
+        return (int)\Yii::$app->session->get($this->getSessionKey('three_question_count'));
     }
 //----------------------------------------------------------------------------------------------------------------------
 // Questions queue

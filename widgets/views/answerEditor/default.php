@@ -8,7 +8,10 @@ $id = uniqid('ae');
 
 <div id="<?= $id ?>" class="answer-editor">
     <?php foreach ($types as $sysname): ?>
-        <?= $this->render($sysname) ?>
+        <?= $this->render($sysname, [
+                'countThreeQuestions' => $countThreeQuestions
+            ])
+        ?>
     <?php endforeach; ?>
 </div>
 
@@ -27,7 +30,7 @@ $id = uniqid('ae');
             answer: '<?= $answer ?>',
             immediate_result: '<?= $immediate_result ?>',
             with_shuffle: <?= (int)$with_shuffle ?>,
-            comment: <?php if (json_decode($comment)) { ?> JSON.parse('<?= $comment ?>') <?php } else { ?> '<?= $comment ? str_replace(array("\r\n", "\r", "\n"), '',  \yii\helpers\Html::encode($comment)) : '' ?>' <?php } ?>
+            comment: <?php if (json_decode($comment)) { ?> $.parseJSON('<?= addslashes($comment) ?>') <?php } else { ?> '<?= $comment ? str_replace(array("\r\n", "\r", "\n"), '',  \yii\helpers\Html::encode($comment)) : '' ?>' <?php } ?>
         });
     });
 </script>

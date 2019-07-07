@@ -47,6 +47,11 @@ class AnswerEditor extends \yii\base\Widget
     public $immediate_result = null;
 
     /**
+     * @var int
+     */
+    public $countThreeQuestions = 0;
+
+    /**
      * @inheritdoc
      */
     public function run()
@@ -86,6 +91,7 @@ class AnswerEditor extends \yii\base\Widget
             'answer' => $this->answer,
             'immediate_result' => $this->immediate_result,
             'with_shuffle' => $this->with_shuffle,
+            'countThreeQuestions' => $this->countThreeQuestions
         ]);
     }
 
