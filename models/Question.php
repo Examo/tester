@@ -119,7 +119,7 @@ class Question extends \app\models\ar\Question
                 return count($data['options']);
 
             case 'three_question':
-                return 4;
+                return 3;
 
             default:
                 return 1;
@@ -198,7 +198,7 @@ class Question extends \app\models\ar\Question
      */
     public function getCost() {
         if ($this->question_type_id === \app\models\QuestionType::TYPE_THREE_QUESTION) {
-            return $this->cost ? $this->cost*4 : $this->getMaxMistakes();
+            return $this->cost ? $this->cost*3 : $this->getMaxMistakes();
         } else {
             return $this->cost ? $this->cost : $this->getMaxMistakes();
         }
@@ -213,7 +213,7 @@ class Question extends \app\models\ar\Question
         $maxMistakes = $this->getMaxMistakes();
 
         if ($this->question_type_id === \app\models\QuestionType::TYPE_THREE_QUESTION) {
-            $mistakes = Json::decode($mistakes) ?? 4;
+            $mistakes = Json::decode($mistakes) ?? 3;
             $mistakesCount = 0;
 
             if (is_array($mistakes)) {
