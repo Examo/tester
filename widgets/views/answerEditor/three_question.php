@@ -1,7 +1,12 @@
+<?php
+/**
+ * @var int $countThreeQuestions
+ */
+?>
 <?php $id = uniqid('ae_three_question') ?>
 
 <div id="<?= $id ?>" class="three-question answer-editor-extension">
-    <div class="content"></div>
+    <ol type="1" start="<?= ($countThreeQuestions * 3) + 1 ?>"><div class="content"></div></ol>
     <div class="template content-template">
         <ul class="items"></ul>
         <input type="text" class="form-control" placeholder="Ответ 1">

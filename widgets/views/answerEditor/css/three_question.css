@@ -7,3 +7,6 @@ span.text {
 .hint-button {
     margin-bottom: 10px;
 }
+ol {
+    padding-left: 0px;
+}

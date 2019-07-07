@@ -23,7 +23,7 @@ class Json extends \yii\helpers\BaseJson
         if (json_decode($str)) {
             $result = $str;
         } else {
-            $result = $str ? str_replace(array("\r\n", "\r", "\n"), '', \yii\helpers\Html::encode($str)) : '';
+            $result = $str ? str_replace(array("\r\n", "\r", "\n"), '', \yii\helpers\Html::encode($str)) : "''";
         }
 
         return $result;

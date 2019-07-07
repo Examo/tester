@@ -8,7 +8,10 @@ $id = uniqid('ae');
 
 <div id="<?= $id ?>" class="answer-editor">
     <?php foreach ($types as $sysname): ?>
-        <?= $this->render($sysname) ?>
+        <?= $this->render($sysname, [
+                'countThreeQuestions' => $countThreeQuestions
+            ])
+        ?>
     <?php endforeach; ?>
 </div>
 

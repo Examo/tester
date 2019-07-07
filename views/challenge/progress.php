@@ -67,6 +67,7 @@ $summary = \app\helpers\ChallengeSummarizer::fromSession($session);
             <?php echo AnswerEditor::widget([
                 'name' => 'answer',
                 'question' => $question,
+                'countThreeQuestions' => $session->getCountThreeQuestion()
             ]) ?>
             <div class="hint-content" style="display: none">
                 <div class="panel panel-default" style="border: solid; border-color: #00a5bb">
@@ -92,6 +93,7 @@ $summary = \app\helpers\ChallengeSummarizer::fromSession($session);
                 'question' => $question,
                 'answer' => $_SESSION['preview_answer'],
                 'immediate_result' => $challenge->settings->immediate_result,
+                'countThreeQuestions' => $session->getCountThreeQuestion()
             ]) ?>
             <?php if ($question->question_type_id !== \app\models\QuestionType::TYPE_ASSOC_TABLE &&
                 $question->question_type_id !== \app\models\QuestionType::TYPE_THREE_QUESTION) { ?>
