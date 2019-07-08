@@ -54,7 +54,7 @@ class WebinarController extends \yii\web\Controller
             $data['isSubscribed'] = false;
             foreach (Course::findSubscribed(Yii::$app->user->id)->all() as $keyEvent => $course) {
                 if ($course->id == intval($data['course_id'])) {
-                    print 'Есть подписка!';
+                    //print 'Есть подписка!';
                     $data['isSubscribed'] = true;
                     break;
                 }
@@ -74,9 +74,6 @@ class WebinarController extends \yii\web\Controller
                 $week = ceil($timeAfterCourseStart / $weekTime);
                 $data['webinar_week'] = ceil($timeBeforeWebinarStart / $weekTime);
             }
-
-            // \yii\helpers\VarDumper::dump($data['webinar_id'], 10, true);
-            // \yii\helpers\VarDumper::dump($data['course_id'], 10, true);
 
             $challenges = Challenge::find()->where(['course_id' => $data['course_id']])->andWhere(['challenge_type_id' => 3])->andWhere(['week' => $data['webinar_week']])->andWhere(['exercise_number' => $data['webinar_exercise_id']])->all();
             //\yii\helpers\VarDumper::dump($challenges, 10, true);
@@ -98,14 +95,9 @@ class WebinarController extends \yii\web\Controller
             }
         }
 
-       // \yii\helpers\VarDumper::dump($cleanWebinarChallenges, 10, true);
-
-        //\yii\helpers\VarDumper::dump($webinar->getChallengesStatistic(3), 10, true);
         if (!isset($data)){
 
         }
-
-        //\yii\helpers\VarDumper::dump($data['course_id'], 10, true);
 
         if (!empty($webinar)) {
             return $this->render('webinar',
