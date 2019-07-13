@@ -11,7 +11,6 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
     /**
      * @inheritdoc
      */
-    //$webinarRegexp = "/(вебинар в системе)([0-9]*)( )(вебинар по порядку)([0-9]*)( )(занятие)([0-9]*)( )(ссылка)(\S*)( )(описание)([\S\s]*)/ui";
     public function attributeLabels()
     {
         return [
@@ -19,11 +18,21 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
             'course_id' => Yii::t('course', 'Course'),
         ];
     }
+
+    /**
+     * @param $course_id
+     * @return \yii\db\ActiveQuery
+     */
     public function getAllCourses($course_id)
     {
         return CourseSubscription::find()
             ->with('courses')->where(['user_id' => $course_id]);
     }
+
+    /**
+     * @param $course_id
+     * @return array
+     */
     public function getCourseStart($course_id)
     {
         $events = Event::find()->where(['course_id' => $course_id])->all();
@@ -80,11 +89,21 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
         }
         return $result;
     }
+
+    /**
+     * @param $course_id
+     * @return int
+     */
     public function getChallenges($course_id)
     {
         $challenges = Challenge::find()->where(['course_id' => $course_id])->all();
         return count($challenges);
     }
+
+    /**
+     * @param $course_id
+     * @return int
+     */
     public function getWebinarsCount($course_id)
     {
         $events = Event::find()->where(['course_id' => $course_id])->all();
@@ -105,6 +124,11 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
         }
         return $number;
     }
+
+    /**
+     * @param $course_id
+     * @return int
+     */
     public function getHomeworksCount($course_id)
     {
         $events = Event::find()->where(['course_id' => $course_id])->all();
@@ -125,6 +149,11 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
         }
         return $number;
     }
+
+    /**
+     * @param $course_id
+     * @return int
+     */
     public function getExamsCount($course_id)
     {
         $events = Event::find()->where(['course_id' => $course_id])->all();
@@ -145,6 +174,11 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
         }
         return $number;
     }
+
+    /**
+     * @param $course_id
+     * @return mixed
+     */
     public function getCourseRating($course_id)
     {
         $courseRating = UserPoints::find()->where(['course_id' => $course_id])->all();
@@ -229,6 +263,10 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
         return $all;
     }
 
+    /**
+     * @param $course_id
+     * @return array
+     */
     public function getWebinarChallengesCheck($course_id)
     {
         $webinarChallenges = [];
@@ -281,7 +319,7 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
             foreach ($challenges as $challenge) {
                 if (intval($webinarData['webinar_exercise_id']) == $challenge->exercise_number) {
                     //$cleanWebinarChallenges['challenge'][$challenge->id] = $challenge;
-                    $challengeChecked = Attempt::find()->where(['user_id' => Yii::$app->user->id])->andWhere(['challenge_id' => $challenge->id])->one();
+                    $challengeChecked = Attempt::getUserAttemptByChallenge($challenge->id);
                     if (!$challengeChecked) {
                         $cleanWebinarChallenges[$webinarData['webinar_week']][$challenge->id] = 0;
                     } else {
@@ -314,8 +352,11 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
         return $allData;
     }
 
+    /**
+     * @param $course_id
+     * @return array
+     */
     static function getAllWebinars($course_id){
-
         $webinarChallenges = [];
         $regexp = "/(вебинар в системе)([0-9]*)( )(вебинар по порядку)([0-9]*)( )(занятие)([0-9]*)( )(ссылка)(\S*)( )(описание)([\S\s]*)/ui";
         $events = Event::find()->where(['course_id' => $course_id])->all();
@@ -357,13 +398,12 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
         }
 
         foreach ($data as $key => $webinarData) {
-
             $challenges = Challenge::find()->where(['course_id' => $webinarData['course_id']])->andWhere(['challenge_type_id' => 3])->andWhere(['week' => $webinarData['webinar_week']])->andWhere(['exercise_number' => $webinarData['webinar_exercise_id']])->all();
 
             foreach ($challenges as $challenge) {
                 if (intval($webinarData['webinar_exercise_id']) == $challenge->exercise_number) {
                     //$cleanWebinarChallenges['challenge'][$challenge->id] = $challenge;
-                    $challengeChecked = Attempt::find()->where(['user_id' => Yii::$app->user->id])->andWhere(['challenge_id' => $challenge->id])->one();
+                    $challengeChecked = Attempt::getUserAttemptByChallenge($challenge->id);
                     if (!$challengeChecked) {
                         $cleanWebinarChallenges[$webinarData['webinar_week']][$challenge->id] = 0;
                     } else {
@@ -377,7 +417,6 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
         }
 
         $webinarChallengesResult = [];
-
         foreach ($cleanWebinarChallenges as $weekId => $results){
             foreach ($results as $challengeId => $result) {
                 if ($result == 0) {

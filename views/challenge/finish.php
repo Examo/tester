@@ -184,27 +184,7 @@ $number = 1;
                             <tr>
                             <th colspan="7">
                                 <?php // $numberOfPupils = 0; ?>
-                                <?php $questionData = Question::find()->where(['id' => $question->id])->one()?>
-                                <?php $numberOfPupils = $questionData->right_points + $questionData->wrong_points; ?>
-                                <?php
-                                if ($questionData->right_points !== 0) {
-                                    $numberOfRightPointsCoefficient = ($questionData->right_points + $questionData->wrong_points) / $questionData->right_points;
-                                    $numberOfRightPoints = 100 / $numberOfRightPointsCoefficient;
-                                } else {
-                                    $numberOfRightPoints = 0;
-                                }
-                                ?>
-                                <?php $numberOfWrongPoints = 100 - $numberOfRightPoints; ?>
-                                <?php //\yii\helpers\VarDumper::dump($numberOfRightPoints, 10, true); ?>
-                                <center>Выполняли задание раз: <strong><?= $numberOfPupils; ?></center>
-                                <center><label>Неправильно: <strong><?= $questionData->wrong_points; ?></strong>
-                                        / Правильно: <strong><?= $questionData->right_points; ?></strong></label></center>
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-info progress-bar-danger" role="progressbar" aria-valuenow="25.9" aria-valuemin="10" style="width: <?= $numberOfWrongPoints; ?>%">
-                                    </div>
-                                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="74.1" aria-valuemin="10" style="width: <?= $numberOfRightPoints; ?>%">
-                                    </div>
-                                </div>
+
                                 <br>
                             </th>
                             </tr>

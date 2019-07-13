@@ -61,6 +61,7 @@ class QuestionClientizer
     /**
      * Shuffle question options
      * @param $data
+     * @return mixed
      */
     protected static function shuffleOptions(QuestionType $type, $data)
     {
@@ -83,6 +84,4 @@ class QuestionClientizer
 
         return $data;
     }
-
-
 }

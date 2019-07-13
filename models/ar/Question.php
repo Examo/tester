@@ -147,20 +147,14 @@ class Question extends \app\components\ActiveRecord
         return $this->hasMany(Subject::className(), ['id' => 'subject_id'])->viaTable('question_has_subject', ['question_id' => 'id']);
     }
 
-    public function getRightHintText($hint, $answer, $type)
+    /**
+     * @param $hint
+     * @param $answer
+     * @param int $type
+     */
+    public function getRightHintText($hint, $answer, int $type)
     {
-        if ($type == 1 || $type == 2 || $type == 3 || $type == 4 || $type == 5 || $type == 6) {
-            if ($hint == true && $answer == true) {
-                echo 'Подсказка была, увы, балл делится пополам';
-            } elseif ($hint == true && $answer == false) {
-                echo 'Подсказка была, но это не важно';
-            } elseif ($hint == false && $answer == false) {
-                echo 'Подсказки не было, но это не важно';
-            } elseif ($hint == false && $answer == true) {
-                echo 'Подсказки не было, ура!';
-            }
-        }
-        if ($type == 7){
+        if ($type === \app\models\QuestionType::TYPE_ASSOC_TABLE){
             if ($hint == true && $answer == true) {
                 echo 'Подсказка была, увы, общий балл делится пополам';
             } elseif ($hint == true && $answer == false) {
@@ -169,6 +163,16 @@ class Question extends \app\components\ActiveRecord
                 echo 'Подсказки не было';
             } elseif ($hint == false && $answer == true) {
                 echo 'Подсказки не было, великолепно!';
+            }
+        } else {
+            if ($hint == true && $answer == true) {
+                echo 'Подсказка была, увы, балл делится пополам';
+            } elseif ($hint == true && $answer == false) {
+                echo 'Подсказка была, но это не важно';
+            } elseif ($hint == false && $answer == false) {
+                echo 'Подсказки не было, но это не важно';
+            } elseif ($hint == false && $answer == true) {
+                echo 'Подсказки не было, ура!';
             }
         }
     }

@@ -1,4 +1,6 @@
 <?php
+
+use app\helpers\QuestionStats;
 use yii\helpers\Html;
 ?>
 <?php foreach($course as $id): ?>
@@ -108,38 +110,19 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?php array_multisort($rangeQuestions, SORT_DESC, $questions); ?>
 
-                <?php //\yii\helpers\VarDumper::dump($rangeQuestions, 10, true); ?>
-
                 <?php foreach ($questions as $question): ?>
+                <? $questionModel = $question['question'];?>
                     <div class="panel panel-info">
                         <div class="panel-body">
-                    <?php $numberOfPupils =$question['question']->right_points + $question['question']->wrong_points; ?>
-                    <?php
-                    if ($question['question']->right_points !== 0) {
-                        $numberOfRightPointsCoefficient = ($question['question']->right_points + $question['question']->wrong_points) / $question['question']->right_points;
-                        $numberOfRightPoints = 100 / $numberOfRightPointsCoefficient;
-                    } else {
-                        $numberOfRightPoints = 0;
-                    }
-                    ?>
-                    <?php $numberOfWrongPoints = 100 - $numberOfRightPoints; ?>
-                    <?php //\yii\helpers\VarDumper::dump($numberOfRightPoints, 10, true); ?>
-                    <?php //\yii\helpers\VarDumper::dump($question['question'], 10, true); ?>
-                            <p><strong>№ задания</strong>: <?= $question['question']->id; ?></p>
-                    <p><strong>Вопрос</strong>: <?= $question['question']->text; ?></p>
-                            <?php if ($question['question']->question_type_id == 7): ?>
-                    <p><center><strong>Варианты ответа</strong>: <?= $question['question']->getOptionsFinish($question['question']->data)?></center></p>
+                    <?php $numberOfPupils = $questionModel->right_points + $questionModel->wrong_points; ?>
+                    <p><strong>№ задания</strong>: <?= $questionModel->id; ?></p>
+                    <p><strong>Вопрос</strong>: <?= $questionModel->text; ?></p>
+                            <?php if ($questionModel->question_type_id === app\models\QuestionType::TYPE_ASSOC_TABLE): ?>
+                    <p><center><strong>Варианты ответа</strong>: <?= $questionModel->getOptionsFinish($questionModel->data)?></center></p>
                         <?php else: ?>
-                        <p><strong>Варианты ответа</strong>: <?= $question['question']->getOptionsFinish($question['question']->data)?></p>
+                        <p><strong>Варианты ответа</strong>: <?= $questionModel->getOptionsFinish($questionModel->data)?></p>
                         <?php endif; ?>
-                    <center>Выполняли задание раз: <strong><?= $numberOfPupils; ?></strong></center>
-                    <center><label>Неправильно: <strong><?= $question['question']->wrong_points; ?></strong>
-                            / Правильно: <strong><?= $question['question']->right_points; ?></strong></label></center>
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-info progress-bar-danger" role="progressbar" aria-valuenow="25.9" aria-valuemin="10" style="width: <?= $numberOfWrongPoints; ?>%">
-                        </div>
-                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="74.1" aria-valuemin="10" style="width: <?= $numberOfRightPoints; ?>%">
-                        </div>
+                    <?= QuestionStats::getProgressBar($questionModel) ?>
                     </div>
                 </div>
                         </div>

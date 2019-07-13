@@ -20,4 +20,17 @@ class ChallengeHasQuestion extends \app\models\ar\ChallengeHasQuestion
             'position' => Yii::t('app', 'Position'),
         ];
     }
+
+    /**
+     * @param int $challengeId
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    public static function getQuestionsByChallengeId(int $challengeId)
+    {
+        $questions = ChallengeHasQuestion::find()
+            ->innerJoinWith('question')
+            ->where(['challenge_has_question.challenge_id' => $challengeId])
+            ->all();
+        return $questions;
+    }
 }
