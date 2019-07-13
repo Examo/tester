@@ -17,11 +17,11 @@ class CleanWidget extends Widget
         $heightScaleValue = 0;
         $scaleNumeration = 0;
         $timeCorrectness = 60 * 60 * 3;
+        $lastCleanAttempt = Attempt::getCleanLastAttempt();
 
         // если у пользователя существует хотя бы один выполненные тест для "Уборки"
-        if (Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 2])->andWhere(['attempt.user_id' => Yii::$app->user->id])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one()) {
+        if ($lastCleanAttempt) {
             // получаем последнюю запись о прохождении теста для "Уборки"
-            $lastCleanAttempt = Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 2])->andWhere(['attempt.user_id' => Yii::$app->user->id])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one();
             // получаем время окончания последнего теста для "Уборки"
             $lastCleanChallengeFinishTime = Yii::$app->getFormatter()->asTimestamp($lastCleanAttempt->finish_time) - $timeCorrectness;
             // узнаём текущее время и переводим его в простое число
@@ -35,7 +35,7 @@ class CleanWidget extends Widget
             // округляем изменение времени до 100 и отнимаем 1, чтобы получить то значение, которое нужно отнимать для изменения шкалы с течением времени
             $roundTime = ceil($timeAfterLastCleanChallengeTest / 100) - 1;
             // достаём шкалу "Уборки" текущего пользователя (если есть прохождение, то шкала тоже уже у него есть)
-            $scale = ScaleClean::find()->where(['user_id' => Yii::$app->user->id])->one();
+            $scale = ScaleClean::findOne(['user_id' => Yii::$app->user->id]);
 
             //\yii\helpers\VarDumper::dump($scale, 10, true);
             if ($scale) {
@@ -74,7 +74,7 @@ class CleanWidget extends Widget
         }
         // если не существует записи в таблице шкалы "Уборки" для данного пользователя,
         // то создаём её с нулевыми значениями
-        if (!ScaleClean::find()->where(['user_id' => Yii::$app->user->id])->one()) {
+        if (!ScaleClean::findOne(['user_id' => Yii::$app->user->id])) {
             $scale = new ScaleClean();
             $scale->user_id = Yii::$app->user->id;
             $scale->last_time = date("Y-m-d H:i:s");

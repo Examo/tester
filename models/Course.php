@@ -9,6 +9,10 @@ use Yii;
  */
 class Course extends \app\models\ar\Course
 {
+    /**
+     * @param $user
+     * @return \yii\db\ActiveQuery
+     */
     static public function findSubscribed($user)
     {
         $subscriptions = CourseSubscription::find()
@@ -19,6 +23,10 @@ class Course extends \app\models\ar\Course
         return self::find()->where(['id' => $subscriptions]);
     }
 
+    /**
+     * @param $user
+     * @return \yii\db\ActiveQuery
+     */
     static public function findAvailable($user)
     {
         $subscriptions = CourseSubscription::find()
@@ -68,6 +76,10 @@ class Course extends \app\models\ar\Course
             ->where(['id' => array_diff($challenges, $attempts)]);
     }
 
+    /**
+     * @param $user
+     * @return array|\yii\db\ActiveQuery
+     */
     public function getNewCleanChallenges($user)
     {
         $challenges = $this->getChallenges()->select('id')->column();

@@ -268,32 +268,6 @@ class Question extends \app\models\ar\Question
         }
     }
 
-    public function getRightHintText($hint, $answer, $type)
-    {
-        if ($type == 1 || $type == 2 || $type == 3 || $type == 4 || $type == 5 || $type == 6) {
-            if ($hint == true && $answer == true) {
-                echo 'Подсказка была, увы, балл делится пополам';
-            } elseif ($hint == true && $answer == false) {
-                echo 'Подсказка была, но это не важно';
-            } elseif ($hint == false && $answer == false) {
-                echo 'Подсказки не было, но это не важно';
-            } elseif ($hint == false && $answer == true) {
-                echo 'Подсказки не было, ура!';
-            }
-        }
-        if ($type == 7){
-            if ($hint == true && $answer == true) {
-                echo 'Подсказка была, увы, общий балл делится пополам';
-            } elseif ($hint == true && $answer == false) {
-                echo 'Подсказка была';
-            } elseif ($hint == false && $answer == false) {
-                echo 'Подсказки не было';
-            } elseif ($hint == false && $answer == true) {
-                echo 'Подсказки не было, великолепно!';
-            }
-        }
-    }
-
     public function getCommentFinish($data)
     {
         $i = 1;

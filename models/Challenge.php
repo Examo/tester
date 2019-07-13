@@ -123,18 +123,14 @@ class Challenge extends \app\models\ar\Challenge
             });
     }
 
-    public function getQuestionsByChallengeId($challengeId)
-    {
-        $questions = ChallengeHasQuestion::find()->innerJoinWith('question')->where(['challenge_has_question.challenge_id' => $challengeId])->all();
-        return $questions;
-    }
-
     /**
-     * @return ChallengeSettings
+     * @return array|\yii\db\ActiveRecord|null
      */
     public function getSettings() {
         if ( is_null($this->_settings) ) {
-            $this->_settings = $this->hasOne(ChallengeSettings::className(), ['challenge_id' => 'id'])->inverseOf('challenge')->one();
+            $this->_settings = $this->hasOne(ChallengeSettings::className(), ['challenge_id' => 'id'])
+                ->inverseOf('challenge')
+                ->one();
         }
 
         return $this->_settings;

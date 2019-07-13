@@ -221,14 +221,7 @@ class ChallengeController extends Controller
                     $scale = ScaleClean::find()->where(['user_id' => Yii::$app->user->id])->one();
                     // если шкала "Еды" ученика существует
                     if ($scale) {
-                        $lastCleanAttempt = Attempt::find()
-                            ->innerJoinWith('challenge')
-                            ->where(['challenge.element_id' => 2])
-                            ->andWhere(['attempt.user_id' => Yii::$app->user->id])
-                            ->andWhere(['attempt.points' => 1])
-                            ->orderBy(['attempt.id' => SORT_DESC])
-                            ->limit(1)
-                            ->one();
+                        $lastCleanAttempt = Attempt::getCleanLastAttempt();
 
                         if ($lastCleanAttempt) {
                             $lastCleanAttemptFinishTime = $lastCleanAttempt->finish_time;
@@ -299,12 +292,7 @@ class ChallengeController extends Controller
                     $scale = ScaleFeed::find()->where(['user_id' => Yii::$app->user->id])->one();
                     // если шкала "Еды" ученика существует
                     if ($scale) {
-                        $lastFeedAttempt = Attempt::find()
-                            ->innerJoinWith('challenge')
-                            ->where(['challenge.element_id' => 1])
-                            ->andWhere(['attempt.user_id' => Yii::$app->user->id])
-                            ->andWhere(['attempt.points' => 1])
-                            ->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one();
+                        $lastFeedAttempt = Attempt::getFeedLastAttempt();
 
                         // если имеется последний тест для Еды, то получаем последний тест для Еды
                         if ($lastFeedAttempt) {

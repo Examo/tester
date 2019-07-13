@@ -16,11 +16,11 @@ class FoodWidget extends Widget
         $heightScaleValue = 0;
         $scaleNumeration = 0;
         $timeCorrectness = 60 * 60 * 3;
+        $lastFeedAttempt = Attempt::getFeedLastAttempt();
 
         // если у пользователя существует хотя бы один выполненные тест для "Еды"
-        if (Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 1])->andWhere(['attempt.user_id' => Yii::$app->user->id])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one()) {
+        if ($lastFeedAttempt) {
             // получаем последнюю запись о прохождении теста для "Еды"
-            $lastFeedAttempt = Attempt::find()->innerJoinWith('challenge')->where(['challenge.element_id' => 1])->andWhere(['attempt.user_id' => Yii::$app->user->id])->orderBy(['attempt.id' => SORT_DESC])->limit(1)->one();
             // получаем время окончания последнего теста для "Еды"
             $lastFeedChallengeFinishTime = Yii::$app->getFormatter()->asTimestamp($lastFeedAttempt->finish_time) - $timeCorrectness;
             // узнаём текущее время и переводим его в простое число
@@ -76,7 +76,7 @@ class FoodWidget extends Widget
         }
         // если не существует записи в таблице шкалы "Еды" для данного пользователя,
         // то создаём её с нулевыми значениями
-        if (!ScaleFeed::find()->where(['user_id' => Yii::$app->user->id])->one()) {
+        if (!ScaleFeed::findOne(['user_id' => Yii::$app->user->id])) {
             $scale = new ScaleFeed();
             $scale->user_id = Yii::$app->user->id;
             $scale->last_time = date("Y-m-d H:i:s");
