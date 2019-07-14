@@ -123,11 +123,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         <p><strong>Варианты ответа</strong>: <?= $questionModel->getOptionsFinish($questionModel->data)?></p>
                         <?php endif; ?>
                     <?= QuestionStats::getProgressBar($questionModel) ?>
-                    </div>
-                </div>
                         </div>
+                    </div>
                 <?php endforeach; ?>
-
             </div>
         </div>
     </div>

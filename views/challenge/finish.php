@@ -2,6 +2,7 @@
 /**
  * @var \app\helpers\ChallengeSummarizer $summary
  */
+use app\helpers\QuestionStats;
 use app\models\Question;
 use yii\bootstrap\ActiveForm;
 
@@ -183,9 +184,8 @@ $number = 1;
                             <?php endif;?>
                             <tr>
                             <th colspan="7">
+                                <?= QuestionStats::getProgressBar($question) ?>
                                 <?php // $numberOfPupils = 0; ?>
-
-                                <br>
                             </th>
                             </tr>
                         <?php endif;?>

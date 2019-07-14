@@ -467,7 +467,6 @@ class WebinarChallengesWidget extends Widget
                                                             <tr>
                                                                 <th colspan="7">
                                                                     <?= QuestionStats::getProgressBar($question->id) ?>
-                                                                    <br>
                                                                 </th>
                                                             </tr>
                                                         <?php endif; ?>
