@@ -351,7 +351,7 @@ class WebinarChallengesWidget extends Widget
                                                                                data-id="explanation<?= $identity; ?>"></i>
                                                                         <?php else: ?>
                                                                             <?= json_decode($question->comment) ? implode("<br>",
-                                                                                yii\helpers\Json::decode($question->comment)) : $question->comment ?>
+                                                                                \yii\helpers\Json::decode($question->comment)) : $question->comment ?>
                                                                         <?php endif; ?>
                                                                     </td>
                                                                     <!-- Подсказка была? -->
@@ -551,17 +551,15 @@ class WebinarChallengesWidget extends Widget
                                             <p><strong>№ задания</strong>: <?= $questionModel->id; ?></p>
                                             <p><strong>Вопрос</strong>: <?= $questionModel->text; ?></p>
                                             <?php if ($questionModel->question_type_id === QuestionType::TYPE_ASSOC_TABLE): ?>
-                                                <p>
-                                                <center>
+                                                <p><center>
                                                     <strong>Варианты ответа</strong>: <?= $questionModel->getOptionsFinish($questionModel->data) ?>
-                                                </center>
-                                                </p>
+                                                </center></p>
                                             <?php else: ?>
                                                 <p>
                                                     <strong>Варианты ответа</strong>: <?= $questionModel->getOptionsFinish($questionModel->data) ?>
                                                 </p>
                                             <?php endif; ?>
-                                            <?= QuestionStats::getProgressBar($questionModel) ?>
+                                            <?= QuestionStats::getProgressBar($question['question']->id) ?>
                                         </div>
                                     </div>
                                 <?php endforeach; ?>
@@ -575,13 +573,12 @@ class WebinarChallengesWidget extends Widget
 </div>
 
 <script style="opacity: 1;">
-    $(".table_results td .options-text, .table_results td .answer-text, .table_results td .correct-answer-text,
-    .table_results td .explanation-text").click(function(){
-    var $tr_id = $(this).attr('data-id');
-    $('#'+$tr_id).toggle('slow');
+    $(".table_results td .options-text, .table_results td .answer-text, .table_results td .correct-answer-text, .table_results td .explanation-text").click(function(){
+        var $tr_id = $(this).attr('data-id');
+        $('#'+$tr_id).toggle('slow');
     });
     setTimeout(function(){
-    anim_ball(10);
+        anim_ball(10);
     },500);
 </script>
 

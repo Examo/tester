@@ -44,27 +44,27 @@ class QuestionStats
         $numberOfRightPoints = QuestionStats::getNumberOfRightPoints($questionModel);
         $numberOfWrongPoints = 100 - $numberOfRightPoints;
 
-        return "<center>Выполняли задание раз: <strong>$numberOfPupils</center>
+        return '<center>Выполняли задание раз:' . $numberOfPupils . '</center>
             <center>
                 <label>Неправильно: 
-                    <strong>$questionModel->wrong_points</strong>
+                    <strong>' . $questionModel->wrong_points . '</strong>
                     / Правильно: 
-                    <strong>$questionModel->right_points</strong>
+                    <strong>' . $questionModel->right_points . '</strong>
                 </label>
             </center>
-            <div class=\"progress\">
-                <div class=\"progress-bar progress-bar-info progress-bar-danger\" 
-                     role=\"progressbar\" 
-                     aria-valuenow=\"25.9\" 
-                     aria-valuemin=\"10\" 
-                     style=\"width: $numberOfWrongPoints% \">
+            <div class="progress">
+                <div class="progress-bar progress-bar-info progress-bar-danger" 
+                     role="progressbar" 
+                     aria-valuenow="25.9" 
+                     aria-valuemin="10" 
+                     style="width:' . $numberOfWrongPoints . '% ">
                 </div>
-                <div class=\"progress-bar progress-bar-info\" 
-                     role=\"progressbar\" 
-                     aria-valuenow=\"74.1\" 
-                     aria-valuemin=\"10\" 
-                     style=\"width: $numberOfRightPoints% \">
+                <div class="progress-bar progress-bar-info" 
+                     role="progressbar" 
+                     aria-valuenow="74.1" 
+                     aria-valuemin="10" 
+                     style="width:' . $numberOfRightPoints . '% ">
                 </div>
-            </div>";
+            </div>';
     }
 }
