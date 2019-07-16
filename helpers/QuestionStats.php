@@ -44,7 +44,7 @@ class QuestionStats
         $numberOfRightPoints = QuestionStats::getNumberOfRightPoints($questionModel);
         $numberOfWrongPoints = 100 - $numberOfRightPoints;
 
-        return '<center>Выполняли задание раз:' . $numberOfPupils . '</center>
+        return '<center>Выполняли задание раз: <strong>' . $numberOfPupils . '</strong></center>
             <center>
                 <label>Неправильно: 
                     <strong>' . $questionModel->wrong_points . '</strong>

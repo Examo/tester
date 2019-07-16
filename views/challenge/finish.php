@@ -184,8 +184,9 @@ $number = 1;
                             <?php endif;?>
                             <tr>
                             <th colspan="7">
-                                <?= QuestionStats::getProgressBar($question) ?>
-                                <?php // $numberOfPupils = 0; ?>
+
+                                <?= QuestionStats::getProgressBar($question->id) ?>
+
                             </th>
                             </tr>
                         <?php endif;?>
@@ -210,5 +211,3 @@ $number = 1;
         },500);
     </script>
 </div>
-
-

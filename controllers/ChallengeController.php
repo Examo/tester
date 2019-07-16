@@ -128,7 +128,7 @@ class ChallengeController extends Controller
         $challengeItem = ElementsItem::find()->select('name')->where(['id' => $challengeElementsItem])->one();
         $challenge = $this->getChallenge($id);
         $session = new ChallengeSession($challenge, Yii::$app->user->id);
-        $course = Course::find()->where(['id' => $challenge->course_id])->one();
+        //$course = Course::find()->where(['id' => $challenge->course_id])->one();
         $days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
         $currentDay = strtolower(date("l"));
         $week = 0;
@@ -153,8 +153,6 @@ class ChallengeController extends Controller
                     'challengeItem' => $challengeItem
                 ]);
             }
-        } else {
-            $session->finish();
         }
 
         if (!count($session->getAnswers())) {
@@ -177,16 +175,17 @@ class ChallengeController extends Controller
                     ->where(['id' => $lastChallengeQuestion->question_id])
                     ->one();
                 $allLastChallengeQuestionsCost += $lastChallengeQuestionCost->cost;
-                \yii\helpers\VarDumper::dump($lastChallengeQuestionCost->cost, 10, true);
+                //\yii\helpers\VarDumper::dump($lastChallengeQuestionCost->cost, 10, true);
             }
             $allLastChallengeQuestionsCost = ceil(($allLastChallengeQuestionsCost / 5) * intval($lastAttempt->mark));
-            \yii\helpers\VarDumper::dump($allLastChallengeQuestionsCost, 10, true);
+            //\yii\helpers\VarDumper::dump($allLastChallengeQuestionsCost, 10, true);
 
             $testQuestions = $summary->getQuestions();
             $testResults = $summary->getCorrectness();
 
-            //\yii\helpers\VarDumper::dump($lastAttempt, 10, true);
+            print 'ДО ПОИНТС';
             if ($lastAttempt->points == 0) {
+                print 'ПОСЛЕ ПОИНТС';
                 foreach ($summary->answers as $realQuestionId => $answer) {
                     foreach ($testQuestions as $i => $question) {
                         if ($realQuestionId == $question['id']) {
@@ -259,12 +258,12 @@ class ChallengeController extends Controller
                             $scale->user_id = Yii::$app->user->id;
                             // если разница между баллами в шкале и баллами прошедшего времени больше 0, то баллы в шкале делаем такими, каковы они на текущий момент
                             if ($scalePoints - $roundTime > 0) {
-                                print '<br>$scale->points - $roundTime > 0 (или всё по-прежнему не работает, если прошло много времени, а тест перезаписал имевшиеся баллы в шкале)';
+                                //print '<br>$scale->points - $roundTime > 0 (или всё по-прежнему не работает, если прошло много времени, а тест перезаписал имевшиеся баллы в шкале)';
                                 $scale->points = $allLastChallengeQuestionsCost + $scalePoints - $roundTime;
                             }
                             // если разница между баллами и прошедшим временем в баллах равна или меньше 0, то записываем полученные за последний тест баллы
                             if ($scalePoints - $roundTime <= 0) {
-                                print '$scale->points - $roundTime <= 0';
+                                //print '$scale->points - $roundTime <= 0';
                                 $scale->points = $allLastChallengeQuestionsCost;
                             }
                             $scale->step = 0;
@@ -600,6 +599,7 @@ class ChallengeController extends Controller
                 $_SESSION['all_points'] = $summary->getAllPoints($newQuestions, $points)['numberOfPoints'];
                 $_SESSION['time'] = round($summary->getTime() / 60);
             }
+
         } else {
             $testQuestions = $summary->getQuestions();
             $testResults = $summary->getCorrectness();
@@ -633,6 +633,7 @@ class ChallengeController extends Controller
             'testQuestions' => $testQuestions,
             'difficultSubjects' => $difficultSubjects,
             'allSubjects' => $allSubjects,
+            'testResults' => $testResults,
     //       'results' => $results,
     //       'points' => $points,
     //       'hints' => $hints,
