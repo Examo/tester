@@ -87,11 +87,6 @@ class ChallengeSession
      */
     public function answer($answer, $preview)
     {
-        if ($this->isFinished()) {
-            $this->finish();
-            return;
-        }
-
         $question = $this->getCurrentQuestion();
         if ($question->question_type_id === \app\models\QuestionType::TYPE_THREE_QUESTION && strlen($answer)) {
             $answer = $this->getAnswerThreeQuestion($question, $answer);
@@ -120,6 +115,11 @@ class ChallengeSession
         }
 
         $this->setCurrentQuestionNumber($this->getCurrentQuestionNumber() + 1);
+
+        if ($this->isFinished()) {
+            $this->finish();
+            return;
+        }
     }
 
     /**
