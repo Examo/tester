@@ -2,13 +2,11 @@
 
 namespace app\widgets;
 
-use app\helpers\QuestionClientizer;
 use app\helpers\QuestionStats;
 use app\models\Attempt;
 use app\models\Challenge;
 use app\models\ChallengeHasQuestion;
 use app\models\Course;
-use app\models\Question;
 use app\models\QuestionType;
 use app\models\Webinar;
 use Yii;
@@ -585,12 +583,17 @@ class WebinarChallengesWidget extends Widget
         <?php
     }
 
-
-
     /**
      * @return string|void
      */
     public function run()
     {
+$script = <<< JS
+    var updateWidget = setTimeout(function rqst() {
+        $('#tab-content').load('/webinar/widget?id='+ $this->webinarId +' #tab-content');
+        updateWidget = setTimeout(rqst, 60000);
+    }, 60000);
+JS;
+    $this->view->registerJs($script, yii\web\View::POS_READY);
     }
 }

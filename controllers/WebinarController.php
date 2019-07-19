@@ -2,15 +2,8 @@
 
 namespace app\controllers;
 
-use app\models\Attempt;
-use app\models\Challenge;
-use app\models\Course;
-use app\models\Webinar;
-use dektrium\user\models\UserSearch;
+use app\widgets\WebinarChallengesWidget;
 use Yii;
-use yii\helpers\Url;
-use yii\web\NotFoundHttpException;
-use app\models\Event;
 
 /**
  * Class WebinarController
@@ -43,4 +36,15 @@ class WebinarController extends \yii\web\Controller
         );
     }
 
+    /**
+     * @return string
+     * @throws \Exception
+     */
+    public function actionWidget()
+    {
+        $this->layout = false;
+        $webinarID = Yii::$app->request->get('id');
+
+        return WebinarChallengesWidget::widget(['webinarId' => $webinarID]);
+    }
 }
