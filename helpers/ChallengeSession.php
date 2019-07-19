@@ -87,34 +87,36 @@ class ChallengeSession
      */
     public function answer($answer, $preview)
     {
-        $question = $this->getCurrentQuestion();
-        if ($question->question_type_id === \app\models\QuestionType::TYPE_THREE_QUESTION && strlen($answer)) {
-            $answer = $this->getAnswerThreeQuestion($question, $answer);
+        if (!$this->isFinished()) {
+            $question = $this->getCurrentQuestion();
+            if ($question->question_type_id === \app\models\QuestionType::TYPE_THREE_QUESTION && strlen($answer)) {
+                $answer = $this->getAnswerThreeQuestion($question, $answer);
+            }
+
+            if ($preview) {
+                $_SESSION['preview_answer'] = $answer;
+                $this->setCurrentQuestionNumber($this->getCurrentQuestionNumber());
+                return;
+            }
+
+            if (strlen($_SESSION['preview_answer'])) {
+                $answer = $_SESSION['preview_answer'];
+            }
+
+            if (!strlen($answer)) {
+                $this->setCurrentQuestionNumber($this->getCurrentQuestionNumber());
+                return;
+            }
+
+            $this->storeAnswer($answer);
+            $_SESSION['preview_answer'] = '';
+
+            if ($question->question_type_id === \app\models\QuestionType::TYPE_THREE_QUESTION) {
+                $this->setCountThreeQuestion($this->getCountThreeQuestion() + 1);
+            }
+
+            $this->setCurrentQuestionNumber($this->getCurrentQuestionNumber() + 1);
         }
-
-        if ($preview) {
-            $_SESSION['preview_answer'] = $answer;
-            $this->setCurrentQuestionNumber($this->getCurrentQuestionNumber());
-            return;
-        }
-
-        if (strlen($_SESSION['preview_answer'])) {
-            $answer = $_SESSION['preview_answer'];
-        }
-
-        if (!strlen($answer)) {
-            $this->setCurrentQuestionNumber($this->getCurrentQuestionNumber());
-            return;
-        }
-
-        $this->storeAnswer($answer);
-        $_SESSION['preview_answer'] = '';
-
-        if ($question->question_type_id === \app\models\QuestionType::TYPE_THREE_QUESTION) {
-            $this->setCountThreeQuestion($this->getCountThreeQuestion() + 1);
-        }
-
-        $this->setCurrentQuestionNumber($this->getCurrentQuestionNumber() + 1);
 
         if ($this->isFinished()) {
             $this->finish();
