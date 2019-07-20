@@ -17,60 +17,52 @@ class CleanWidget extends Widget
         $heightScaleValue = 0;
         $scaleNumeration = 0;
         $timeCorrectness = 60 * 60 * 3;
-        $lastCleanAttempt = Attempt::getCleanLastAttempt();
+        $lastCleanAttempt = Attempt::getCleanLastAttempt(1);
+        date_default_timezone_set('Europe/Moscow');
 
         // если у пользователя существует хотя бы один выполненные тест для "Уборки"
         if ($lastCleanAttempt) {
             // получаем последнюю запись о прохождении теста для "Уборки"
             // получаем время окончания последнего теста для "Уборки"
-            $lastCleanChallengeFinishTime = Yii::$app->getFormatter()->asTimestamp($lastCleanAttempt->finish_time) - $timeCorrectness;
+            $lastCleanChallengeFinishTime = Yii::$app->getFormatter()->asTimestamp($lastCleanAttempt->finish_time)  - $timeCorrectness;
             // узнаём текущее время и переводим его в простое число
-            $time = Yii::$app->getFormatter()->asTimestamp(time());
+            $time = time();
             // получаем изменение времени с момента окончания теста до текущего момента
             $timeAfterLastCleanChallengeTest = $time - $lastCleanChallengeFinishTime;
-            // если после крайнего теста прошло больше 10000 секунд, то
-            //if ($timeAfterLastCleanChallengeTest >= 10000){
-            //    $timeAfterLastCleanChallengeTest = 1000;
-            //  }
             // округляем изменение времени до 100 и отнимаем 1, чтобы получить то значение, которое нужно отнимать для изменения шкалы с течением времени
-            $roundTime = ceil($timeAfterLastCleanChallengeTest / 100) - 1;
+            $roundTime = ceil($timeAfterLastCleanChallengeTest / 60) - 1;
             // достаём шкалу "Уборки" текущего пользователя (если есть прохождение, то шкала тоже уже у него есть)
-            $scale = ScaleClean::findOne(['user_id' => Yii::$app->user->id]);
-
-            //\yii\helpers\VarDumper::dump($scale, 10, true);
-            if ($scale) {
-                $scalePoints = $scale->points;
-                // если от баллов на шкале отнять баллы прошедшего времени и разность будет равна или меньше 0
-                // то на шкале будет 0%
-                if ($scalePoints - $roundTime <= 0) {
-                    $scale->points = 0;
-                    $roundTime = 0;
-                }
-
-                // если от баллов на шкале отнять баллы прошедшего времени и разность будет равна или больше 100
-                // то на шкале будет 100%
-                if ($scalePoints - $roundTime >= 100) {
-                    $scale->points = 100;
-                    $roundTime = 0;
-                }
-
-                // если от баллов на шкале отнять баллы прошедшего времени и разность будет равна или меньше 10,
-                // то шкала будет красного цвета
-                if ($scalePoints - $roundTime <= 10) {
-                    $backgroundColor = 'red';
-                } else {
-                    $backgroundColor = 'green';
-                }
-
-                // значение столбика шкалы в "высоту"
-                $heightScaleValue = $scale->points + $roundTime;
-                // проценты на самой шкале в цифрах
-                $scaleNumeration = $scale->points - $roundTime;
-            } else {
-                $heightScaleValue = 100;
-                $scaleNumeration = 0;
+            $scale = ScaleClean::find()->where(['user_id' => Yii::$app->user->id])->one();
+            // если от баллов на шкале отнять баллы прошедшего времени и разность будет равна или меньше 0
+            // то на шкале будет 0%
+            // шкала минус время
+            if ($scale->points - $roundTime <= 0) {
+                $scale->points = 0;
+                $roundTime = 0;
+            }
+            // если от баллов на шкале отнять баллы прошедшего времени и разность будет равна или больше 100
+            // то на шкале будет 100%
+            if ($scale->points - $roundTime >= 100) {
+                $scale->points = 100;
+                $roundTime = 0;
             }
 
+            // если от баллов на шкале отнять баллы прошедшего времени и разность будет равна или меньше 10,
+            // то шкала будет красного цвета
+            if ($scale->points - $roundTime <= 10) {
+                $backgroundColor = 'red';
+            } else {
+                $backgroundColor = 'green';
+            }
+
+            // значение столбика шкалы в "высоту"
+            $heightScaleValue = $scale->points - $roundTime;
+            // проценты на самой шкале в цифрах
+            $scaleNumeration = $scale->points - $roundTime;
+            // значение столбика шкалы в "высоту"
+            //$heightScaleValue = 100 - $scale->points + $roundTime;
+            // проценты на самой шкале в цифрах
+            //$scaleNumeration = $scale->points - $roundTime;
         }
         // если не существует записи в таблице шкалы "Уборки" для данного пользователя,
         // то создаём её с нулевыми значениями
@@ -83,13 +75,17 @@ class CleanWidget extends Widget
             $scale->save();
         }
 
-        $heightScaleValue = 100 - $heightScaleValue;
-        //$scaleNumeration = 10;
-        $backgroundColor = 'green';
         if ($heightScaleValue <= 0){
-            $heightScaleValue = 100;
+            $heightScaleValue = 0;
             $scaleNumeration = 0;
         }
+        if ($heightScaleValue >= 100){
+            $heightScaleValue = 100;
+            $scaleNumeration = 100;
+        }
+
+        $heightScaleValue = 100 - $heightScaleValue;
+
         echo '<a href="/clean" id="clean-widget">' .
             '<div class="bar-wrapper"><p>Уборка</p>' .
             '<div class="feeding-progress-bar-block" style=" background-color:' . $backgroundColor .'">' .

@@ -575,9 +575,7 @@ class WebinarChallengesWidget extends Widget
         var $tr_id = $(this).attr('data-id');
         $('#'+$tr_id).toggle('slow');
     });
-    setTimeout(function(){
-        anim_ball(10);
-    },500);
+
 </script>
 
         <?php
