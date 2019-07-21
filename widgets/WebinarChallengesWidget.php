@@ -103,12 +103,21 @@ class WebinarChallengesWidget extends Widget
         }
 
 ?>
+<div class="col-md-12 col-lg-12 col-xl-12">
+    <label class="form__row-label form__row-label--checkbox d-flex">
+        <input type="checkbox" class="form__row-checkbox" id="autoUpdate" onclick="updateSwitch();">
+        <span class="form__label-checkbox"></span>
+        <span class="form__label-name">Обновлять каждую минуту</span>
+    </label>
+</div>
 <div class="challenge-form">
     <script>
         $(function () {
             $('#tabs a').click(function (e) {
                 e.preventDefault();
                 $(this).tab('show');
+                window.a_tab = $(this)[0].text;
+                window.a_tab_id = $(this)[0].getAttribute('href');
             })
         });
     </script>
@@ -131,7 +140,7 @@ class WebinarChallengesWidget extends Widget
         <?php endif; ?>
     </ul>
 
-    <div class="tab-content">
+    <div class="tab-content" id="tab-content">
         <div role="tabpanel" class="tab-pane active fade in" id="info">
             <div class="site-about">
                 <h1><?php // Html::encode($this->title) ?></h1>
@@ -587,11 +596,58 @@ class WebinarChallengesWidget extends Widget
     public function run()
     {
 $script = <<< JS
-    var updateWidget = setTimeout(function rqst() {
-        $('#tab-content').load('/webinar/widget?id='+ $this->webinarId +' #tab-content');
-        updateWidget = setTimeout(rqst, 60000);
-    }, 60000);
+    function setCookie(sName, sValue) {
+     document.cookie = sName + "=" + escape(sValue) + "; path=/; expires=Tue, 01 Jan 2038 01:01:01 UTC;";
+    }
+    
+    function getCookie(sName) {
+     var aCookie = document.cookie.split("; ");
+     for (var i=0; i < aCookie.length; i++) {
+       var aCrumb = aCookie[i].split("=");
+       if (sName == aCrumb[0])
+         return unescape(aCrumb[1]);
+     }
+    
+     return null;
+    }
+    
+    var updateInterval = null, updateTime = 60000, updateCookie = "autoupdate";
+    
+    function updateDo() {
+        $('#tab-content').load('/webinar/widget?id='+ $this->webinarId + ' #tab-content > div', function() {
+          console.log('widget update');
+          if (window.a_tab) {
+              let tabs = $('div .tab-pane').removeClass('active fade in');
+              let nav_tab = $('#tabs a:contains("'+window.a_tab+'")');
+              let tab_content = $(window.a_tab_id);
+              nav_tab.tab('show');
+              tab_content.addClass('active fade in');
+          }
+        });
+    }
+    
+    function updateInit() {
+     if (getCookie(updateCookie) == null)
+      setCookie(updateCookie, 1);
+     if (getCookie(updateCookie) == 1) {
+      updateInterval = setInterval(updateDo, updateTime);
+      document.getElementById("autoUpdate").checked = true;
+     } else {
+      clearInterval(updateInterval);
+      document.getElementById("autoUpdate").checked = false;
+     }
+    }
+    
+    function updateSwitch() {
+     if (getCookie(updateCookie) == 1)
+      setCookie(updateCookie, 0);
+     else
+      setCookie(updateCookie, 1);
+     updateInit();
+    }
+    
+    updateInit();
 JS;
-    $this->view->registerJs($script, yii\web\View::POS_READY);
+    $this->view->registerJs($script, yii\web\View::POS_END);
     }
 }
