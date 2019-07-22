@@ -110,18 +110,7 @@ class WebinarChallengesWidget extends Widget
         <span class="form__label-name">Обновлять каждую минуту</span>
     </label>
 </div>
-<div class="challenge-form">
-    <script>
-        $(function () {
-            $('#tabs a').click(function (e) {
-                e.preventDefault();
-                $(this).tab('show');
-                window.a_tab = $(this)[0].text;
-                window.a_tab_id = $(this)[0].getAttribute('href');
-            })
-        });
-    </script>
-
+<div class="challenge-form" id="challenge-form">
     <ul class="nav nav-tabs" id="tabs">
         <li role="presentation" class="active"><a href="#info">О вебинаре</a></li>
         <?php if (!empty($cleanWebinarChallenges)): ?>
@@ -596,6 +585,15 @@ class WebinarChallengesWidget extends Widget
     public function run()
     {
 $script = <<< JS
+    function initTabs() {
+        $('#tabs a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+            window.a_tab = $(this)[0].text;
+            window.a_tab_id = $(this)[0].getAttribute('href');
+        });
+    }
+
     function setCookie(sName, sValue) {
      document.cookie = sName + "=" + escape(sValue) + "; path=/; expires=Tue, 01 Jan 2038 01:01:01 UTC;";
     }
@@ -614,8 +612,9 @@ $script = <<< JS
     var updateInterval = null, updateTime = 60000, updateCookie = "autoupdate";
     
     function updateDo() {
-        $('#tab-content').load('/webinar/widget?id='+ $this->webinarId + ' #tab-content > div', function() {
+        $('#challenge-form').load('/webinar/widget?id='+ $this->webinarId + ' #challenge-form >', function() {
           console.log('widget update');
+          initTabs();
           if (window.a_tab) {
               let tabs = $('div .tab-pane').removeClass('active fade in');
               let nav_tab = $('#tabs a:contains("'+window.a_tab+'")');
@@ -646,6 +645,7 @@ $script = <<< JS
      updateInit();
     }
     
+    initTabs();
     updateInit();
 JS;
     $this->view->registerJs($script, yii\web\View::POS_END);
