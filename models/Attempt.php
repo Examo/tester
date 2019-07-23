@@ -27,13 +27,13 @@ class Attempt extends \app\models\ar\Attempt
     /**
      * @return array|\yii\db\ActiveRecord|null
      */
-    public static function getCleanLastAttempt($points)
+    public static function getCleanLastAttempt()
     {
         return Attempt::find()
             ->innerJoinWith('challenge')
             ->where(['challenge.element_id' => 2])
             ->andWhere(['attempt.user_id' => Yii::$app->user->id])
-            ->andWhere(['attempt.points' => $points])
+            ->andWhere(['attempt.points' => 1])
             ->orderBy(['attempt.id' => SORT_DESC])
             ->limit(1)
             ->one();
@@ -42,13 +42,13 @@ class Attempt extends \app\models\ar\Attempt
     /**
      * @return array|\yii\db\ActiveRecord|null
      */
-    public static function getFeedLastAttempt($points)
+    public static function getFeedLastAttempt()
     {
         return Attempt::find()
             ->innerJoinWith('challenge')
             ->where(['challenge.element_id' => 1])
             ->andWhere(['attempt.user_id' => Yii::$app->user->id])
-            ->andWhere(['attempt.points' => $points])
+            ->andWhere(['attempt.points' => 1])
             ->orderBy(['attempt.id' => SORT_DESC])
             ->limit(1)
             ->one();

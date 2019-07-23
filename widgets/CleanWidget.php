@@ -17,7 +17,7 @@ class CleanWidget extends Widget
         $heightScaleValue = 0;
         $scaleNumeration = 0;
         $timeCorrectness = 60 * 60 * 3;
-        $lastCleanAttempt = Attempt::getCleanLastAttempt(1);
+        $lastCleanAttempt = Attempt::getCleanLastAttempt();
         date_default_timezone_set('Europe/Moscow');
 
         // если у пользователя существует хотя бы один выполненные тест для "Уборки"
@@ -30,7 +30,7 @@ class CleanWidget extends Widget
             // получаем изменение времени с момента окончания теста до текущего момента
             $timeAfterLastCleanChallengeTest = $time - $lastCleanChallengeFinishTime;
             // округляем изменение времени до 100 и отнимаем 1, чтобы получить то значение, которое нужно отнимать для изменения шкалы с течением времени
-            $roundTime = ceil($timeAfterLastCleanChallengeTest / 60) - 1;
+            $roundTime = floor($timeAfterLastCleanChallengeTest / 60);
             // достаём шкалу "Уборки" текущего пользователя (если есть прохождение, то шкала тоже уже у него есть)
             $scale = ScaleClean::find()->where(['user_id' => Yii::$app->user->id])->one();
             // если от баллов на шкале отнять баллы прошедшего времени и разность будет равна или меньше 0
@@ -101,7 +101,7 @@ class CleanWidget extends Widget
                 updateCleanWidget = setTimeout(rqst, 100000);
             }, 100000);
 JS;
-        $this->view->registerJs($script, yii\web\View::POS_READY);
+        $this->view->registerJs($script, \yii\web\View::POS_READY);
         //return $this->food;
     }
 

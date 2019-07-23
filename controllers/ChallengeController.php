@@ -214,123 +214,21 @@ class ChallengeController extends Controller
                 }
 
                 if ($challengeElementsType->element_id == 1) {
-                    // получаем шкалу "Еды" ученика
-                    $scale = ScaleFeed::find()->where(['user_id' => Yii::$app->user->id])->one();
-                    // если шкала "Еды" ученика существует
-                    if ($scale) {
-                        $lastFeedAttempt = Attempt::getFeedLastAttempt(1);
 
-                        // если имеется последний тест для Еды, то получаем последний тест для Еды
-                        if ($lastFeedAttempt) {
-                            $lastFeedAttemptFinishTime = $lastFeedAttempt->finish_time;
-                        } else {
-                            // если нет последнего теста, то просто вставляем текущее время
-                            $lastFeedAttemptFinishTime = date(time());
-                        }
-                        // получаем время окончания предыдущего теста
-                        $finishTime = Yii::$app->getFormatter()->asTimestamp($lastFeedAttemptFinishTime) - $timeCorrectness;
-                        // узнаём текущее время, простое число
-                        $time = time();
-                        // получаем изменение времени с момента окончания предыдущего теста до текущего момента
-                        $timeAfterLastFeedChallenge = $time - $finishTime;
-                        // округляем изменение времени до 100 и отнимаем 1, чтобы получить то значение, которое нужно отнимать для изменения шкалы с течением времени
-                        $roundTime = ceil($timeAfterLastFeedChallenge / 60) - 1;
-                        // если в шкале на данный момент баллов меньше или равно 0 (такое логически не возможно), то прибавляем полученные за тест баллы и сохраняем
+                    // установка значения шкалы Еды
+                    Challenge::setScale('ScaleFeed', $allLastChallengeQuestionsCost, $timeCorrectness, $lastAttempt);
 
-                        if ($scale->points - $roundTime + $allLastChallengeQuestionsCost <= 0) {
-                            $scale->user_id = Yii::$app->user->id;
-                            $scale->points = $allLastChallengeQuestionsCost;
-                            $scale->last_time = $lastAttempt->finish_time;
-                            $scale->step = 0;
-                            $scale->save();
-                        }
-                        if ($scale->points - $roundTime + $allLastChallengeQuestionsCost > 0) {
-                            $scale->user_id = Yii::$app->user->id;
-                            $scale->points = $scale->points - $roundTime + $allLastChallengeQuestionsCost;
-                            $scale->last_time = $lastAttempt->finish_time;
-                            $scale->step = 0;
-                            $scale->save();
-                        }
-                        if ($scale->points - $roundTime + $allLastChallengeQuestionsCost >= 100) {
-                            $scale->user_id = Yii::$app->user->id;
-                            $scale->points = 100;
-                            $scale->last_time = $lastAttempt->finish_time;
-                            $scale->step = 0;
-                            $scale->save();
-                        }
-                        $lastAttempt->points = 1;
-                        $lastAttempt->save();
-                    } else {
-                        $scale = new ScaleFeed();
-                        //$lastAttempt = Attempt::getFeedLastAttempt();
-                        $lastAttempt->points = 1;
-                        $lastAttempt->save();
-                        $scale->user_id = Yii::$app->user->id;
-                        $scale->last_time = $lastAttempt->finish_time;
-                        $scale->points = $allLastChallengeQuestionsCost;
-                        $scale->step = 0;
-                        $scale->save();
-                    }
-                }
+                 }
 
                 if ($challengeElementsType->element_id == 2) {
-                    // получаем шкалу "Уборки" ученика
-                    $scale = ScaleClean::find()->where(['user_id' => Yii::$app->user->id])->one();
-                    // если шкала "Уборки" ученика существует
-                    if ($scale) {
-                        $lastCleanAttempt = Attempt::getCleanLastAttempt(1);
 
-                        // если имеется последний тест для Уборки, то получаем последний тест для Уборки
-                        if ($lastCleanAttempt) {
-                            $lastCleanAttemptFinishTime = $lastCleanAttempt->finish_time;
-                        } else {
-                            // если нет последнего теста, то просто вставляем текущее время
-                            $lastCleanAttemptFinishTime = date(time());
-                        }
-                        // получаем время окончания предыдущего теста
-                        $finishTime = Yii::$app->getFormatter()->asTimestamp($lastCleanAttemptFinishTime) - $timeCorrectness;
-                        // узнаём текущее время, простое число
-                        $time = time();
-                        // получаем изменение времени с момента окончания предыдущего теста до текущего момента
-                        $timeAfterLastCleanChallenge = $time - $finishTime;
-                        // округляем изменение времени до 100 и отнимаем 1, чтобы получить то значение, которое нужно отнимать для изменения шкалы с течением времени
-                        $roundTime = ceil($timeAfterLastCleanChallenge / 60) - 1;
-                        // если в шкале на данный момент баллов меньше или равно 0 (такое логически не возможно), то прибавляем полученные за тест баллы и сохраняем
+                    // установка значения шкалы Уборки
+                    Challenge::setScale('ScaleClean', $allLastChallengeQuestionsCost, $timeCorrectness, $lastAttempt);
 
-                        if ($scale->points - $roundTime + $allLastChallengeQuestionsCost <= 0) {
-                            $scale->user_id = Yii::$app->user->id;
-                            $scale->points = $allLastChallengeQuestionsCost;
-                            $scale->last_time = $lastAttempt->finish_time;
-                            $scale->step = 0;
-                            $scale->save();
-                        }
-                        if ($scale->points - $roundTime + $allLastChallengeQuestionsCost > 0) {
-                            $scale->user_id = Yii::$app->user->id;
-                            $scale->points = $scale->points - $roundTime + $allLastChallengeQuestionsCost;
-                            $scale->last_time = $lastAttempt->finish_time;
-                            $scale->step = 0;
-                            $scale->save();
-                        }
-                        if ($scale->points - $roundTime + $allLastChallengeQuestionsCost >= 100) {
-                            $scale->user_id = Yii::$app->user->id;
-                            $scale->points = 100;
-                            $scale->last_time = $lastAttempt->finish_time;
-                            $scale->step = 0;
-                            $scale->save();
-                        }
-                        $lastAttempt->points = 1;
-                        $lastAttempt->save();
-                    } else {
-                        $scale = new ScaleClean();
-                        $lastAttempt->points = 1;
-                        $lastAttempt->save();
-                        $scale->user_id = Yii::$app->user->id;
-                        $scale->last_time = $lastAttempt->finish_time;
-                        $scale->points = $allLastChallengeQuestionsCost;
-                        $scale->step = 0;
-                        $scale->save();
-                    }
                 }
+                
+                $lastAttempt->points = 1;
+                $lastAttempt->save();
 
                 $challengeNew = Challenge::find()->where(['id' => $id])->one();
                 $challengesWeeks = ChallengesWeeks::find()
@@ -362,9 +260,6 @@ class ChallengeController extends Controller
                         ->andWhere(['week_id' => $challengeNew->week])
                         ->andWhere(['user_id' => Yii::$app->user->id])->one();
                     if ($learn) {
-                        //$learn = ScaleLearn::find()->where(['course_id' => $challengeNew->course_id])->andWhere(['week_id' => $challengeNew->week])->andWhere(['element_id' => $challengeNew->element_id])->andWhere(['user_id' => Yii::$app->user->id])->one();
-                        //\yii\helpers\VarDumper::dump($days, 10, true);
-                        //\yii\helpers\VarDumper::dump($learn, 10, true);
                         foreach ($days as $keyDay => $day) {
                             $data = json_decode($learn->$day, true);
                             if ($day == $currentDay && $currentDay == 'monday') {
@@ -613,16 +508,16 @@ class ChallengeController extends Controller
             'difficultSubjects' => $difficultSubjects,
             'allSubjects' => $allSubjects,
             'testResults' => $testResults,
-    //       'results' => $results,
-    //       'points' => $points,
-    //       'hints' => $hints,
-    //       'mark' => $mark,
-    //       'textMark' => $textMark,
-    //       'emoticon' => $emoticon,
-    //       'allPoints' => $allPoints,
-    //       'numberOfPoints' => $numberOfPoints,
-    //       'challengeTime' => $challengeTime,
-    //       'webinarAnswers' => $webinarAnswers
+            //       'results' => $results,
+            //       'points' => $points,
+            //       'hints' => $hints,
+            //       'mark' => $mark,
+            //       'textMark' => $textMark,
+            //       'emoticon' => $emoticon,
+            //       'allPoints' => $allPoints,
+            //       'numberOfPoints' => $numberOfPoints,
+            //       'challengeTime' => $challengeTime,
+            //       'webinarAnswers' => $webinarAnswers
         ]);
     }
 
@@ -740,7 +635,7 @@ class ChallengeController extends Controller
             throw new NotFoundHttpException(Yii::t('challenge', 'Not found'));
         }
     }
-    
+
     public function actionSave($id){
         print 'USPESHEN SAVE';
         //\yii\helpers\VarDumper::dump($_SESSION, 10, true);

@@ -3,6 +3,8 @@
 namespace app\models;
 
 use app\helpers\Subset;
+use app\models\ar\ScaleClean;
+use app\models\ar\ScaleFeed;
 use app\widgets\AnswerEditor;
 use Yii;
 use yii\db\ActiveQuery;
@@ -468,6 +470,74 @@ class Challenge extends \app\models\ar\Challenge
                 echo $answers[$questionId];
                 break;
         }
+    }
+
+    public static function setScale($scaleType, $allLastChallengeQuestionsCost, $timeCorrectness, $lastAttempt)
+    {
+
+        if ($scaleType == 'ScaleFeed') {
+            $scale = ScaleFeed::find()->where(['user_id' => Yii::$app->user->id])->one();
+            if (!$scale) {
+                $scale = new ScaleFeed();
+            }
+        }
+        if ($scaleType == 'ScaleClean'){
+            $scale = ScaleClean::find()->where(['user_id' => Yii::$app->user->id])->one();
+            if (!$scale) {
+                $scale = new ScaleClean();
+            }
+        }
+            // если шкала "Еды" ученика существует
+        if ($scale) {
+            $lastTypeAttempt = Attempt::getFeedLastAttempt();
+
+            // если имеется последний тест для Еды, то получаем последний тест для Еды
+            if ($lastTypeAttempt) {
+                $lastTypeAttemptFinishTime = $lastTypeAttempt->finish_time;
+            } else {
+                // если нет последнего теста, то просто вставляем текущее время
+                $lastTypeAttemptFinishTime = date(time());
+            }
+            // получаем время окончания предыдущего теста
+            $finishTime = Yii::$app->getFormatter()->asTimestamp($lastTypeAttemptFinishTime) - $timeCorrectness;
+            // узнаём текущее время, простое число
+            $time = time();
+            // получаем изменение времени с момента окончания предыдущего теста до текущего момента
+            $timeAfterLastTypeChallenge = $time - $finishTime;
+            // округляем изменение времени до 100 и отнимаем 1, чтобы получить то значение, которое нужно отнимать для изменения шкалы с течением времени
+            $roundTime = floor($timeAfterLastTypeChallenge / 60);
+            // если в шкале на данный момент баллов меньше или равно 0 (такое логически не возможно), то прибавляем полученные за тест баллы и сохраняем
+
+            if ($scale->points - $roundTime + $allLastChallengeQuestionsCost <= 0) {
+                $scale->user_id = Yii::$app->user->id;
+                $scale->points = $allLastChallengeQuestionsCost;
+                $scale->last_time = $lastAttempt->finish_time;
+                $scale->step = 0;
+                $scale->save();
+            }
+            if ($scale->points - $roundTime + $allLastChallengeQuestionsCost > 0) {
+                $scale->user_id = Yii::$app->user->id;
+                $scale->points = $scale->points - $roundTime + $allLastChallengeQuestionsCost + 2;
+                $scale->last_time = $lastAttempt->finish_time;
+                $scale->step = 0;
+                $scale->save();
+            }
+            if ($scale->points - $roundTime + $allLastChallengeQuestionsCost >= 100) {
+                $scale->user_id = Yii::$app->user->id;
+                $scale->points = 100;
+                $scale->last_time = $lastAttempt->finish_time;
+                $scale->step = 0;
+                $scale->save();
+            }
+
+        } else {
+                //$lastAttempt = Attempt::getFeedLastAttempt();
+                $scale->user_id = Yii::$app->user->id;
+                $scale->last_time = $lastAttempt->finish_time;
+                $scale->points = $allLastChallengeQuestionsCost;
+                $scale->step = 0;
+                $scale->save();
+            }
     }
 
 }

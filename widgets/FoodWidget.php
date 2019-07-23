@@ -16,7 +16,7 @@ class FoodWidget extends Widget
         $heightScaleValue = 0;
         $scaleNumeration = 0;
         $timeCorrectness = 60 * 60 * 3;
-        $lastFeedAttempt = Attempt::getFeedLastAttempt(1);
+        $lastFeedAttempt = Attempt::getFeedLastAttempt();
         date_default_timezone_set('Europe/Moscow');
 
         // если у пользователя существует хотя бы один выполненные тест для "Еды"
@@ -29,7 +29,7 @@ class FoodWidget extends Widget
             // получаем изменение времени с момента окончания теста до текущего момента
             $timeAfterLastFeedChallengeTest = $time - $lastFeedChallengeFinishTime;
             // округляем изменение времени до 100 и отнимаем 1, чтобы получить то значение, которое нужно отнимать для изменения шкалы с течением времени
-            $roundTime = ceil($timeAfterLastFeedChallengeTest / 60) - 1;
+            $roundTime = floor($timeAfterLastFeedChallengeTest / 60);
             // достаём шкалу "Еды" текущего пользователя (если есть прохождение, то шкала тоже уже у него есть)
             $scale = ScaleFeed::find()->where(['user_id' => Yii::$app->user->id])->one();
             // если от баллов на шкале отнять баллы прошедшего времени и разность будет равна или меньше 0
