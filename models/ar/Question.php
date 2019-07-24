@@ -9,6 +9,7 @@ use Yii;
  *
  * @property integer $id
  * @property integer $question_type_id
+ * @property integer $question_settings_id
  * @property string $text
  * @property string $data
  * @property string $hint
@@ -19,6 +20,7 @@ use Yii;
  * @property ChallengeHasQuestion[] $challengeHasQuestions
  * @property Challenge[] $challenges
  * @property QuestionType $questionType
+ * @property QuestionSettings $questionSettings
  * @property QuestionHasChallengeType[] $questionHasChallengeTypes
  * @property ChallengeType[] $challengeTypes
  * @property QuestionHasCourse[] $questionHasCourses
@@ -43,7 +45,7 @@ class Question extends \app\components\ActiveRecord
     {
         return [
             [['question_type_id'], 'required'],
-            [['question_type_id', 'cost', 'right_points', 'wrong_points'], 'integer'],
+            [['question_type_id', 'question_settings_id', 'cost', 'right_points', 'wrong_points'], 'integer'],
             [['text', 'data', 'hint', 'comment'], 'string'],
             [['question_type_id', 'right_points', 'wrong_points'], 'exist', 'skipOnError' => true, 'targetClass' => QuestionType::className(), 'targetAttribute' => ['question_type_id' => 'id']],
         ];
@@ -57,6 +59,7 @@ class Question extends \app\components\ActiveRecord
         return [
             'id' => 'ID',
             'question_type_id' => 'Question Type ID',
+            'question_settings_id' => 'Question Settings ID',
             'text' => 'Text',
             'data' => 'Data',
             'hint' => 'Hint',
@@ -97,6 +100,14 @@ class Question extends \app\components\ActiveRecord
     public function getQuestionType()
     {
         return $this->hasOne(QuestionType::className(), ['id' => 'question_type_id'])->inverseOf('questions');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getQuestionSettings()
+    {
+        return $this->hasOne(QuestionSettings::className(), ['id' => 'question_settings_id'])->inverseOf('questions');
     }
 
     /**

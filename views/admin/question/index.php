@@ -18,6 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a(Yii::t('app', 'Create') . ' ' . Yii::t('question', 'Question'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a( Yii::t('questionSettings', 'List of Question Settings'), ['admin/questionSettings/index'], ['class' => 'btn btn-primary']) ?>
     </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
