@@ -32,17 +32,20 @@ use kartik\markdown\MarkdownEditor;
 
 $comment = app\helpers\Json::encodeForJsParse($model['comment']);
 $hint = app\helpers\Json::encodeForJsParse($model['hint']);
+$TYPE_THREE_QUESTION = QuestionType::TYPE_THREE_QUESTION;
+$TYPE_ASSOC_TABLE = QuestionType::TYPE_ASSOC_TABLE;
 $script = <<< JS
-            if (id === '8' || id === '7') {
-                var comments = JSON.parse($comment);
-                var hints = JSON.parse($hint);
+            var id = $('#question_type_id').children('option:selected').val();
+
+            if (id === "$TYPE_ASSOC_TABLE" || id === "$TYPE_THREE_QUESTION") {
+                var comments = JSON.parse("$comment");
+                var hints = JSON.parse("$hint");
             } else {
-                var comments = $comment;
-                var hints = $hint;
+                var comments = "$comment";
+                var hints = "$hint";
             }
             
-            var id = $('#question_type_id').children('option:selected').val();
-            if (id === '8') {
+            if (id === "$TYPE_THREE_QUESTION") {
                 $("div[id^='question-comment-container']").each(function (i) {
                     $(this).show();
                     try {
