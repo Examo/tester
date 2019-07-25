@@ -16,6 +16,8 @@ class QuestionSettings extends \app\models\ar\QuestionSettings
             parent::attributeLabels(),
             [
                 'name' => Yii::t('app', 'Name'),
+                'type_id' => Yii::t('questionSettings', 'Question Type ID'),
+                'settings' => Yii::t('questionSettings', 'Settings'),
             ]
         );
     }

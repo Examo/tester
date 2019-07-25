@@ -7,20 +7,18 @@ use yii\widgets\Pjax;
 /* @var $searchModel app\models\search\QuestionSettingsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('question', 'Questions');
+$this->title = Yii::t('questionSettings', 'Question Settings');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Admin'), 'url' => ['admin/index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="question-index">
+<div class="question-settings-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <p>
-        <?= Html::a(Yii::t('app', 'Create') . ' ' . Yii::t('question', 'Question'), ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a( Yii::t('questionSettings', 'List of Question Settings'), ['admin/question-settings/index'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', 'Create') . ' ' . Yii::t('questionSettings', 'Question Settings'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-<?php Pjax::begin(); ?>    <?= GridView::widget([
+<?php Pjax::begin(); ?>
+    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
@@ -31,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]
             ],
             [
-                'attribute'=>'question_type_id',
+                'attribute'=>'type_id',
                 'filter' => \app\models\QuestionType::getList(),
                 'headerOptions' => [
                     'class' => 'col-md-3'
@@ -41,7 +39,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
-                'attribute' => 'text',
+                'attribute' => 'name',
+                'format' => 'ntext',
+                'headerOptions' => [
+                    'class' => 'col-md-7'
+                ],
+            ],            [
+                'attribute' => 'settings',
                 'format' => 'ntext',
                 'headerOptions' => [
                     'class' => 'col-md-7'
