@@ -38,11 +38,11 @@ $script = <<< JS
             var id = $('#question_type_id').children('option:selected').val();
 
             if (id === "$TYPE_ASSOC_TABLE" || id === "$TYPE_THREE_QUESTION") {
-                var comments = JSON.parse("$comment");
-                var hints = JSON.parse("$hint");
+                var comments = JSON.parse('$comment');
+                var hints = JSON.parse('$hint');
             } else {
-                var comments = "$comment";
-                var hints = "$hint";
+                var comments = '$comment';
+                var hints = '$hint';
             }
             
             if (id === "$TYPE_THREE_QUESTION") {
@@ -59,7 +59,7 @@ $script = <<< JS
                     } catch {}
                 });
                 $("label[for=question-comment]").show();
-            } else if (id === '7') {
+            } else if (id === '$TYPE_ASSOC_TABLE') {
                 $("div[id^='question-comment-container']:visible").each(function () {
                     $(this).hide();
                 });
@@ -90,7 +90,7 @@ $this->registerJs($script, yii\web\View::POS_READY);
         $(function () {
             $('#question_type_id').on('change', function () {
                 var id = $(this).children('option:selected').val();
-                if (id === '7') {
+                if (id === "<?= $TYPE_ASSOC_TABLE ?>") {
                     $("div[id^='question-comment-container']:visible").each(function () {
                         $(this).hide();
                     });
@@ -99,7 +99,7 @@ $this->registerJs($script, yii\web\View::POS_READY);
                     });
                     $("label[for=question-comment]").hide();
                     $('#question-hint-container').show();
-                } else if (id === '8') {
+                } else if (id === "<?= $TYPE_THREE_QUESTION ?>") {
                     $("div[id^='question-comment-container']:hidden").each(function () {
                        $(this).show();
                     });

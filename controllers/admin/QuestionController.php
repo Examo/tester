@@ -88,7 +88,7 @@ class QuestionController extends BaseAdminCrudController
 
         $data = Yii::$app->request->post();
         if ($data) {
-            if ((int)$data['Question']['question_type_id'] === 8) {
+            if ((int)$data['Question']['question_type_id'] === \app\models\QuestionType::TYPE_THREE_QUESTION) {
                 $data['Question']['comment'] = Json::encode($data['Question']['comment']);
                 $data['Question']['hint'] = Json::encode($data['Question']['hint']);
             } else {

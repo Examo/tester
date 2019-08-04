@@ -20,10 +20,18 @@ class Json extends \yii\helpers\BaseJson
      */
     public static function encodeForJsParse($str)
     {
+        $result = '';
+
         if (json_decode($str)) {
-            $result = $str;
+            $arr = json_decode($str);
+            foreach ($arr as &$ar) {
+                $ar =  htmlentities(html_entity_decode($ar, ENT_QUOTES), ENT_QUOTES, "UTF-8");
+            }
+            $result = addslashes(json_encode($arr));
         } else {
-            $result = $str ? str_replace(array("\r\n", "\r", "\n"), '', \yii\helpers\Html::encode($str)) : "''";
+            if (!empty($str)) {
+                $result = $str ? str_replace(array("\r\n", "\r", "\n"), '', \yii\helpers\Html::encode($str)) : "''";
+            }
         }
 
         return $result;
