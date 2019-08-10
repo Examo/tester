@@ -48,7 +48,7 @@ class MainAttentionsBadgeWidget extends Widget
                 // получаем изменение времени с момента окончания теста до текущего момента
                 $timeAfterLastFeedChallengeTest = $time - $lastFeedChallengeFinishTime;
                 // округляем изменение времени до 100 и отнимаем 1, чтобы получить то значение, которое нужно отнимать для изменения шкалы с течением времени
-                $roundTime = ceil($timeAfterLastFeedChallengeTest / 100) - 1;
+                $roundTime = ceil($timeAfterLastFeedChallengeTest / 60) - 1;
                 //\yii\helpers\VarDumper::dump($roundTime, 10, true);
 
                 if ($roundTime >= 60 && $roundTime < 60 * 3) {

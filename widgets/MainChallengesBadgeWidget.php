@@ -1,5 +1,6 @@
 <?php
 namespace app\widgets;
+use app\helpers\CourseStats;
 use app\models\ar\ChallengesWeeks;
 use app\models\ar\LearnObject;
 use app\models\ar\ScaleLearn;
@@ -13,6 +14,9 @@ use yii\base\Widget;
 
 class MainChallengesBadgeWidget extends Widget
 {
+    /**
+     *
+     */
     public function init()
     {
         parent::init();
@@ -25,21 +29,14 @@ class MainChallengesBadgeWidget extends Widget
         $allValue = 0;
         foreach (Course::findSubscribed(Yii::$app->user->id)->all() as $keyEvent => $course) {
             if (Event::find()->where(['course_id' => $course->id])->andWhere(['title' => 'Начало'])->one()) {
-                $event = Event::find()->where(['course_id' => $course->id])->andWhere(['title' => 'Начало'])->one();
-                //\yii\helpers\VarDumper::dump($events, 10, true);
-                $courseStartTime = Yii::$app->getFormatter()->asTimestamp($event->start);
-                $time = Yii::$app->getFormatter()->asTimestamp(time());
-                // получаем изменение времени с момента начала курса до текущего момента
-                $timeAfterCourseStart = $time - $courseStartTime;
-                $weekTime = 604800;
-                $week = ceil($timeAfterCourseStart / $weekTime);
-                //\yii\helpers\VarDumper::dump($week, 10, true);
-                $learn = ScaleLearn::find()->where(['course_id' => $course->id])->andWhere(['week_id' => $week])->andWhere(['user_id' => Yii::$app->user->id])->one();
-                //\yii\helpers\VarDumper::dump($learn, 10, true);
+
+                $courseStats = CourseStats::getCourseStart($course->id);
+
+                $learn = ScaleLearn::find()->where(['course_id' => $course->id])->andWhere(['week_id' => $courseStats['week']])->andWhere(['user_id' => Yii::$app->user->id])->one();
 
                 if ($learn) {
 
-                    for ($o = 1; $o <= $week; $o++) {
+                    for ($o = 1; $o <= $courseStats['week']; $o++) {
                         if (ScaleLearn::find()->where(['course_id' => $course->id])->andWhere(['week_id' => $o])->andWhere(['user_id' => Yii::$app->user->id])->one()) {
                             $scale = ScaleLearn::find()->where(['course_id' => $course->id])->andWhere(['week_id' => $o])->andWhere(['user_id' => Yii::$app->user->id])->one();
                             foreach ($days as $day) {
@@ -67,7 +64,7 @@ class MainChallengesBadgeWidget extends Widget
                     // узнаём текущее время и переводим его в простое число
 
                     // получаем изменение времени с момента начала курса до текущего момента
-                    $timeAfterCourseStart = $time - $courseStartTime;
+                    //$timeAfterCourseStart = $time - $courseStartTime;
                     // если курс ещё не начался
 
                     $regexp = "/(тест)([0-9]*)/ui";
@@ -75,12 +72,12 @@ class MainChallengesBadgeWidget extends Widget
                     $match = [];
                     foreach ($test as $key => $oneTest) {
                         if (preg_match($regexp, $oneTest->title, $match[$course->id][$key])) {
-                            $currentWeek = ceil($timeAfterCourseStart / $weekTime);
+                            $currentWeek = ceil($courseStats['timeAfterCourseStart'] / $weekTime);
                             $testWeekTime = Yii::$app->getFormatter()->asTimestamp($oneTest->start);
-                            $tillTestWeekStart = $testWeekTime - $courseStartTime;
+                            $tillTestWeekStart = $testWeekTime - $courseStats['courseStartTime'];
                             if ($tillTestWeekStart > 0) {
                                 $testWeek = ceil($tillTestWeekStart / $weekTime);
-                                $week = ceil($timeAfterCourseStart / $weekTime);
+                                $week = ceil($courseStats['timeAfterCourseStart'] / $weekTime);
                                 if ($week - $testWeek > 0) {
                                     $learnObject = LearnObject::find()->where(['id' => $testWeek])->one();
                                     //$chain[$course->id]['currentWeek'] = $currentWeek;
@@ -108,13 +105,11 @@ class MainChallengesBadgeWidget extends Widget
                         }
                     }
 
-                    if (ChallengesWeeks::find()->where(['course_id' => $course->id])->andWhere(['element_id' => 1])->andWhere(['week_id' => $week])->andWhere(['user_id' => Yii::$app->user->id])->one() && ChallengesWeeks::find()->where(['course_id' => $course->id])->andWhere(['element_id' => 2])->andWhere(['week_id' => $week])->andWhere(['user_id' => Yii::$app->user->id])->one()) {
-                        $feedChallengesWeeks = ChallengesWeeks::find()->where(['course_id' => $course->id])->andWhere(['element_id' => 1])->andWhere(['week_id' => $week])->andWhere(['user_id' => Yii::$app->user->id])->one();
+                    if (ChallengesWeeks::find()->where(['course_id' => $course->id])->andWhere(['element_id' => 1])->andWhere(['week_id' => $courseStats['week']])->andWhere(['user_id' => Yii::$app->user->id])->one() && ChallengesWeeks::find()->where(['course_id' => $course->id])->andWhere(['element_id' => 2])->andWhere(['week_id' => $courseStats['week']])->andWhere(['user_id' => Yii::$app->user->id])->one()) {
+                        $feedChallengesWeeks = ChallengesWeeks::find()->where(['course_id' => $course->id])->andWhere(['element_id' => 1])->andWhere(['week_id' => $courseStats['week']])->andWhere(['user_id' => Yii::$app->user->id])->one();
                         $challengesFeed = json_decode($feedChallengesWeeks->challenges, true);
-                        $cleanChallengesWeeks = ChallengesWeeks::find()->where(['course_id' => $course->id])->andWhere(['element_id' => 2])->andWhere(['week_id' => $week])->andWhere(['user_id' => Yii::$app->user->id])->one();
+                        $cleanChallengesWeeks = ChallengesWeeks::find()->where(['course_id' => $course->id])->andWhere(['element_id' => 2])->andWhere(['week_id' => $courseStats['week']])->andWhere(['user_id' => Yii::$app->user->id])->one();
                         $challengesClean = json_decode($cleanChallengesWeeks->challenges, true);
-                        //\yii\helpers\VarDumper::dump($challengesClean, 10, true);
-                        //\yii\helpers\VarDumper::dump($challengesFeed, 10, true);
 
                         $checked = [];
                         foreach ($days as $keyDay => $day) {
@@ -272,7 +267,7 @@ class MainChallengesBadgeWidget extends Widget
                         //print $week['test'];
                         $challengeWeek = Challenge::find()->select(['week'])->where(['id' => $week['test']])->one();
                         if (Attempt::find()->where(['challenge_id' => $week['test']])->andWhere(['user_id' => Yii::$app->user->id])->one()) {
-                            //$ifAttemp = Attempt::find()->where(['challenge_id' => $week['test']])->andWhere(['user_id' => Yii::$app->user->id])->one();
+                            
                         } else {
                             echo '<li>
 										<a href="/challenge/start?id=' . $week['test'] . '">
@@ -291,87 +286,7 @@ class MainChallengesBadgeWidget extends Widget
             }
 
 
-            echo '<!--<li>
-										<a href="javascript:;">
-										<span class="time">3 mins</span>
-										<span class="details">
-										<span class="label label-sm label-icon label-danger">
-										<i class="fa fa-bolt"></i>
-										</span>
-										Server #12 overloaded. </span>
-										</a>
-									</li>
-									<li>
-										<a href="javascript:;">
-										<span class="time">10 mins</span>
-										<span class="details">
-										<span class="label label-sm label-icon label-warning">
-										<i class="fa fa-bell-o"></i>
-										</span>
-										Server #2 not responding. </span>
-										</a>
-									</li>
-									<li>
-										<a href="javascript:;">
-										<span class="time">14 hrs</span>
-										<span class="details">
-										<span class="label label-sm label-icon label-info">
-										<i class="fa fa-bullhorn"></i>
-										</span>
-										Application error. </span>
-										</a>
-									</li>
-									<li>
-										<a href="javascript:;">
-										<span class="time">2 days</span>
-										<span class="details">
-										<span class="label label-sm label-icon label-danger">
-										<i class="fa fa-bolt"></i>
-										</span>
-										Database overloaded 68%. </span>
-										</a>
-									</li>
-									<li>
-										<a href="javascript:;">
-										<span class="time">3 days</span>
-										<span class="details">
-										<span class="label label-sm label-icon label-danger">
-										<i class="fa fa-bolt"></i>
-										</span>
-										A user IP blocked. </span>
-										</a>
-									</li>
-									<li>
-										<a href="javascript:;">
-										<span class="time">4 days</span>
-										<span class="details">
-										<span class="label label-sm label-icon label-warning">
-										<i class="fa fa-bell-o"></i>
-										</span>
-										Storage Server #4 not responding dfdfdfd. </span>
-										</a>
-									</li>
-									<li>
-										<a href="javascript:;">
-										<span class="time">5 days</span>
-										<span class="details">
-										<span class="label label-sm label-icon label-info">
-										<i class="fa fa-bullhorn"></i>
-										</span>
-										System Error. </span>
-										</a>
-									</li>
-									<li>
-										<a href="javascript:;">
-										<span class="time">9 days</span>
-										<span class="details">
-										<span class="label label-sm label-icon label-danger">
-										<i class="fa fa-bolt"></i>
-										</span>
-										Storage server failed. </span>
-										</a>
-									</li>-->
-								</ul>';
+            echo '</ul>';
         }
 
 

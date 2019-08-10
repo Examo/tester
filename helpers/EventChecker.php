@@ -120,11 +120,16 @@ class EventChecker
 
     }
 
+    /**
+     * @param $course_id
+     * @return array
+     */
     static function getEvents($course_id) {
         $data = [];
-        $date = date_create('2000-01-01', timezone_open('Europe/Moscow'));
+        $weekTime = 604800;
+        //$date = date_create('2000-01-01', timezone_open('Europe/Moscow'));
         date_default_timezone_set('Europe/Moscow');
-        $timeCorrectness = (60 * 60 * 3);
+        $timeCorrectness = 60 * 60 * 3;
         $time = Yii::$app->getFormatter()->asTimestamp(time());
         //$time = date_create($time, timezone_open('Europe/Moscow'));
         //\yii\helpers\VarDumper::dump($time, 10, true);
@@ -133,9 +138,9 @@ class EventChecker
         $regexp = "/(вебинар в системе)([0-9]*)( )(вебинар по порядку)([0-9]*)( )(занятие)([0-9]*)( )(ссылка)(\S*)( )(описание)([\S\s]*)/ui";
         $match = [];
         if (Event::find()->where(['course_id' => $course_id])->andWhere(['title' => 'Начало'])->one()) {
-            $begining = Event::find()->where(['course_id' => $course_id])->andWhere(['title' => 'Начало'])->one();
             foreach ($events as $key => $event) {
                 if (preg_match($regexp, $event->title, $match[$course_id][$key])) {
+                    $begining = Event::find()->where(['course_id' => $course_id])->andWhere(['title' => 'Начало'])->one();
                     $courseStartTime = Yii::$app->getFormatter()->asTimestamp($begining->start) - $timeCorrectness;
                     //\yii\helpers\VarDumper::dump(date("d.m.Y года в H:i:s", $courseStartTime), 10, true);
                     $webinarStartTime = Yii::$app->getFormatter()->asTimestamp($event->start)  - $timeCorrectness;
@@ -143,8 +148,7 @@ class EventChecker
                     $timeBeforeWebinarStart = $webinarStartTime - $courseStartTime;
                     $webinarEndTime = Yii::$app->getFormatter()->asTimestamp($event->end) - $timeCorrectness;
                     $timeBeforeWebinarEnd = $webinarEndTime - $time;
-                    $weekTime = 604800;
-
+                    
                     if ($time < $webinarStartTime) {
                         $data[$course_id][$key]['course_week'] = ceil($timeAfterCourseStart / $weekTime);
                         $data[$course_id][$key]['webinarWeek'] = ceil($timeBeforeWebinarStart / $weekTime);
