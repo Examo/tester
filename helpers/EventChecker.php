@@ -130,7 +130,7 @@ class EventChecker
         //$date = date_create('2000-01-01', timezone_open('Europe/Moscow'));
         date_default_timezone_set('Europe/Moscow');
         $timeCorrectness = 60 * 60 * 3;
-        $time = Yii::$app->getFormatter()->asTimestamp(time());
+        $time = time();
         //$time = date_create($time, timezone_open('Europe/Moscow'));
         //\yii\helpers\VarDumper::dump($time, 10, true);
         $events = Event::find()->where(['course_id' => $course_id])->all();

@@ -206,10 +206,10 @@ Page Header
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown > .dropdown-toggle {
   margin: -10px;
-  padding: 29px 12px 24px 12px;
+  padding: 29px 15px 24px 15px;
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown > .dropdown-toggle:last-child {
-  padding-right: 0;
+  /*padding-right: 0;*/
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown > .dropdown-toggle > i {
   font-size: 16px;

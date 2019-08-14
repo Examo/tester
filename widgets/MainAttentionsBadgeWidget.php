@@ -68,15 +68,15 @@ class MainAttentionsBadgeWidget extends Widget
                     //Yii::$app->session->setFlash('successFeed', "Прошёл уже день, как я не ела!");
                 }
                 if ($roundTime >= 60 * 24 * 2 && $roundTime < 60 * 24 * 3) {
-                    $feedMessage = 'Прошло уже почти целых три дня, как я не ела!';
-                    //Yii::$app->session->setFlash('successFeed', "Прошёл уже целых три дня, как я не ела!");
+                    $feedMessage = 'Прошло уже почти целых три дня, как я не ела! Хочется ку-у-ушать!..';
+                    //Yii::$app->session->setFlash('successFeed', "Прошёл уже целых три дня, как я не ела! Очень хочется ку-у-ушать!..");
                 }
                 if ($roundTime >= 60 * 24 * 3 && $roundTime < 60 * 24 * 7) {
-                    $feedMessage = 'Прошло уже больше трёх дней, как я не ела!';
+                    $feedMessage = 'Прошло уже больше трёх дней, как я не ела! Начались необратимые изменения в организме!..';
                     //Yii::$app->session->setFlash('successFeed', "Прошло уже больше трёх дней, как я не ела!");
                 }
                 if ($roundTime >= 60 * 24 * 7) {
-                    $feedMessage = 'Прошла уже неделя, как я не ела! Прощай!';
+                    $feedMessage = 'Прошла уже неделя, как я не ела! Прощай...';
                     //Yii::$app->session->setFlash('successFeed', "Прошла уже неделя, как я не ела! Прощай!");
                 }
             } else {
@@ -118,24 +118,24 @@ class MainAttentionsBadgeWidget extends Widget
                     //Yii::$app->session->setFlash('successClean', "Прошло больше трёх часов, я очень хочу сделать уборку!");
                 }
                 if ($roundTime >= 60 * 12 && $roundTime < 60 * 24) {
-                    $cleanMessage = 'Прошёл уже день, как я не делала уборку!';
-                    //Yii::$app->session->setFlash('successClean', "Прошёл уже день, как я не делала уборку!");
+                    $cleanMessage = 'Прошёл уже день, как я не делала уборку! Обрастаю грязью...';
+                    //Yii::$app->session->setFlash('successClean', "Прошёл уже день, как я не делала уборку! Обрастаю грязью...");
                 }
                 if ($roundTime >= 60 * 24 && $roundTime < 60 * 24 * 2) {
                     $cleanMessage = 'Прошло уже больше дня, как я не делала уборку! Ну очень хочется сделать уборку!';
                     //Yii::$app->session->setFlash('successClean', "Прошло уже больше дня, как я не делала уборку!");
                 }
                 if ($roundTime >= 60 * 24 * 2 && $roundTime < 60 * 24 * 3) {
-                    $cleanMessage = 'Прошло уже больше двух дней, как я не делала уборку!';
-                    //Yii::$app->session->setFlash('successClean', "Прошло уже больше двух дней, как я не делала уборку!");
+                    $cleanMessage = 'Прошло уже больше двух дней, как я не делала уборку! Я вся в грязи!';
+                    //Yii::$app->session->setFlash('successClean', "Прошло уже больше двух дней, как я не делала уборку!  Я вся в грязи!");
                 }
                 if ($roundTime >= 60 * 24 * 3 && $roundTime < 60 * 24 * 7) {
-                    $cleanMessage = 'Прошло уже больше трёх дней, как я не делала уборку!';
-                    //Yii::$app->session->setFlash('successClean', "Прошло уже больше трёх дней, как я не делала уборку!");
+                    $cleanMessage = 'Прошло уже больше трёх дней, как я не делала уборку! Я намылилась уходить от тебя!';
+                    //Yii::$app->session->setFlash('successClean', "Прошло уже больше трёх дней, как я не делала уборку! Я намылилась уходить от тебя!");
                 }
                 if ($roundTime >= 60 * 24 * 7) {
-                    $cleanMessage = 'Прошла уже неделя, как я не делала уборку! До свидания!';
-                    //Yii::$app->session->setFlash('successClean', "Прошла уже неделя, как я не делала уборку! До свидания!");
+                    $cleanMessage = 'Прошла уже неделя, как я не делала уборку! Прошай, грязнуля!';
+                    //Yii::$app->session->setFlash('successClean', "Прошла уже неделя, как я не делала уборку! Прощай, грязнуля!");
                 }
             } else {
                 $scale = new ScaleClean();
@@ -146,7 +146,7 @@ class MainAttentionsBadgeWidget extends Widget
                 $scale->save();
             }
         } else {
-            //print 'Нет подписки ни на один курс!';
+            //print 'Нет подписки ни на один Курс  №!';
         }
 
         if (Course::findSubscribed(Yii::$app->user->id)->one() && ScaleLearn::find()->where(['course_id' => Course::findSubscribed(Yii::$app->user->id)->one()->id])->andWhere(['user_id' => Yii::$app->user->id])->one()) {
@@ -178,17 +178,27 @@ class MainAttentionsBadgeWidget extends Widget
                 }
                 if ($feedPoints[$course->id] + $cleanPoints[$course->id] < 100 && $feedPoints[$course->id] + $cleanPoints[$course->id] > 0) {
                     $allPoints = $feedPoints[$course->id] + $cleanPoints[$course->id];
-                    $pointsMessage[$course->id] = "Курс " . $course->id . " Неплохо! Очков уже " . $allPoints . "!";
+                    $pointsMessage[$course->id] = "Курс  №" . $course->id . " Неплохо! Очков уже " . $allPoints . "!";
                 }
                 if ($feedPoints[$course->id] + $cleanPoints[$course->id] >= 100 && $feedPoints[$course->id] + $cleanPoints[$course->id] < 300) {
                     $allPoints = $feedPoints[$course->id] + $cleanPoints[$course->id];
-                    $pointsMessage[$course->id] = "Курс " . $course->id . " Ого, как у тебя много очков! Уже целых " . $allPoints . "!";
+                    $pointsMessage[$course->id] = "Курс  №" . $course->id . " Ого, как у тебя много очков! Уже целых " . $allPoints . "!";
                     //Yii::$app->session->setFlash('successPoints', "Ого, как у тебя много очков! Уже целых " . $allPoints ."!");
                 }
                 if ($feedPoints[$course->id] + $cleanPoints[$course->id] >= 300 && $feedPoints[$course->id] + $cleanPoints[$course->id] < 1000) {
                     $allPoints = $feedPoints[$course->id] + $cleanPoints[$course->id];
-                    $pointsMessage[$course->id] = "Курс " . $course->id . " Ничего себе! Вот это ты набираешь очки! Уже целых " . $allPoints . "!";
+                    $pointsMessage[$course->id] = "Курс  №" . $course->id . " Ничего себе! Вот это ты набираешь очки! Уже целых " . $allPoints . "!";
                     //Yii::$app->session->setFlash('successPoints', "Ничего себе! Вот это ты набираешь очки! Уже целых " . $allPoints ."!");
+                }
+                if ($feedPoints[$course->id] + $cleanPoints[$course->id] >= 1000 && $feedPoints[$course->id] + $cleanPoints[$course->id] < 2000) {
+                    $allPoints = $feedPoints[$course->id] + $cleanPoints[$course->id];
+                    $pointsMessage[$course->id] = "Курс  №" . $course->id . " Вот это ты умничка! Вот это ты даёшь по очкам! У тебя целых " . $allPoints . "!";
+                    //Yii::$app->session->setFlash('successPoints', "Вот это ты умничка! Вот это ты даёшь по очкам! У тебя целых " . $allPoints ."!");
+                }
+                if ($feedPoints[$course->id] + $cleanPoints[$course->id] >= 2000 && $feedPoints[$course->id] + $cleanPoints[$course->id] < 10000) {
+                    $allPoints = $feedPoints[$course->id] + $cleanPoints[$course->id];
+                    $pointsMessage[$course->id] = "Курс  №" . $course->id . " Нет слов... У тебя сейчас очков вот столько: " . $allPoints . "!";
+                    //Yii::$app->session->setFlash('successPoints', "Вот это ты умничка! Вот это ты даёшь по очкам! У тебя целых " . $allPoints ."!");
                 }
             }
 
@@ -210,62 +220,70 @@ class MainAttentionsBadgeWidget extends Widget
                 $badgeColor = 'white';
             }
 
-            echo '<ul class="nav navbar-nav pull-right">
-					<li class="separator hide">
-					</li>
-					<li class="dropdown dropdown-extended dropdown-dark" id="header_inbox_bar">
-						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">
+    print ' <li class="dropdown dropdown-extended dropdown-notification dropdown-dark" id="fire">
+						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 						<i class="icon-fire"></i>
 						<span class="badge badge-danger" style="background-color: ' . $badgeBackgroundColor . '; color: ' . $badgeColor . '">' . $number . '</span>
-						</a>';
-
-            //if ($number != 0) {
-            echo '<ul class="dropdown-menu">
+						</a>
+						
+						<ul class="dropdown-menu">
 							<li class="external">
-								<h3>У тебя <span class="bold">' . $number . ' новых</span> сообщ.</h3>
-								<a href="#">*</a>
+								<h3><span class="bold">' . $number . ' новых</span> сообщ.</h3>
+								<!--<a href="profile.html">view all</a>-->
 							</li>
 							<li>
-								<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 250px;"><ul class="dropdown-menu-list scroller" style="height: 250px; overflow: hidden; width: auto;" data-handle-color="#637283" data-initialized="1">';
-            if (isset($feedMessage)) {
-                echo '<li>
-			    <a href="/feed' . '">
-				
-				<span class="details">
-				<span class="label label-sm label-icon"> ' . '
-				<!--<i class="fa fa-plus"></i>-->
-				</span>
-				';
-                echo $feedMessage;
-                echo '</a>
-                  </li>';
-            }
+							    <ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="white">';
+									if (isset($feedMessage)) {
+						    			print '
+						    			<li>
+						    				<!--<a href="javascript:;">-->
+						    				<a href="/feed' . '">
+						    				<span class="details">
+				                            <span class="label label-sm label-icon label-danger">
+				                            <i class="fa fa-exclamation"></i>
+				                            </span>
+				                            </span>';
+                                            print $feedMessage;
+                                            print '</a>
+						    			</li>';
+                                    }
 
-            if (isset($cleanMessage)) {
-                echo '<li>
-			    <a href="/clean' . '">
-				<span class="details">
-				<span class="label label-sm label-icon"> ' . '
-				<!--<i class="fa fa-plus"></i>-->
-				</span>';
-                echo $cleanMessage;
-                echo '</a></li>';
-            }
+                                    if (isset($cleanMessage)) {
+                                        print '
+						    			<li>
+						    				<!--<a href="javascript:;">-->
+						    				<a href="/clean' . '">
+						    				<span class="details">
+				                            <span class="label label-sm label-icon label-danger">
+				                            <i class="fa fa-exclamation"></i>
+				                            </span>
+				                            </span>';
+                                            print $cleanMessage;
+                                            print '</a>
+						    			</li>';
+                                    }
 
-            if (isset($pointsMessage) && $pointsMessage != []) {
-                foreach ($pointsMessage as $courseId => $text) {
-                    echo '<li>
-  			    <a href="#' . '">
-  				<span class="details">' . $text . '</a>
-                   </li>';
-                }
-            }
-
-            echo '</ul><div class="slimScrollBar" style="background: rgb(99, 114, 131); width: 7px; position: absolute; top: 114px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 160.904px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(234, 234, 234); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
+                                    if (isset($pointsMessage) && $pointsMessage != []) {
+                                        foreach ($pointsMessage as $courseId => $text) {
+                                            print '
+                                            <li>
+  	                        		            <a href="/subscription">
+  	                        			        <span class="details">
+  	                        			        <span class="label label-sm label-icon label-success">
+				                                <i class="fa fa-star"></i>
+				                                </span>
+				                                </span>';
+                                                print $text;
+  	                        			        print '</a>
+                                           </li>';
+                                        }
+                                    }
+									
+						print	'</ul>
 							</li>
 						</ul>
-						</li>
-						</ul>';
+					</li>
+            ';
         }
     }
 

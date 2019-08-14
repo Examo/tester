@@ -19,97 +19,99 @@ class EventCalendarWidget extends Widget
         parent::init();
 
         $data = EventChecker::getEventsData();
-        //echo '<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>';
-       // echo time();
-        //\yii\helpers\VarDumper::dump($data, 10, true);
+
         $badgeColor = $data['badgeColor'];
         $badgeBackgroundColor = $data['badgeBackgroundColor'];
         $countEvent = $data['countEvent'];
         $today = $data['today'];
         $all = $data['all'];
 
-        if (isset($all) && !Yii::$app->user->isGuest){
-            echo '<ul class="nav navbar-nav pull-right">
-					<li class="separator hide">
-					</li>
-					<li class="dropdown dropdown-extended dropdown-dark" id="header_inbox_bar">
-						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">
+if (isset($all) && !Yii::$app->user->isGuest){
+   echo '<li class="dropdown dropdown-extended dropdown-notification dropdown-dark" id="calendar">
+						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 						<i class="icon-calendar"></i>
 						<span class="badge badge-danger" style="background-color: ' . $badgeBackgroundColor . '; color: ' . $badgeColor . '">' . $countEvent .  '</span>
-						</a>';
-
-            echo '<ul class="dropdown-menu">
+						</a>
+						<ul class="dropdown-menu">
 							<li class="external">
-							    <h3>Сегодня <span class="bold">' . $today . '</span></h3><br>
+								<h3>Сегодня <span class="bold">' . $today . '</span></h3><br>
 								<h3>Событий на неделе: <span class="bold">' . $countEvent .  '</span></h3>
-								<a href="#"></a>
+								<!--<a href="extra_profile.html">view all</a>-->
+							</li>';
+						if ($countEvent == 0) {
+                 print '</ul>';
+                        } else {
+							print '
+                            <li>
+								<ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="white">';
+								foreach ($all as $course => $webinar) {
+                                    if ($webinar['webinar_begining'] == 0) {
+                                        print '
+                                        <li>
+										<!--<a href="javascript:;">-->
+										<!--<span class="time">just now</span>-->
+										<!--<span class="details">-->
+										<center>
+										<span class="label label-sm label-icon" style="color: white"><br>Вебинар №' . $webinar['webinar_id'] . '
+                                        <!--<i class="fa fa-plus"></i>-->
+										</span>
+										<p style="color: white">по курсу<br>' . $webinar['course_name'] . '</p>
+                                        <p style="color: white">Осталось <span class="bold" style="color: white">' . $webinar['daysToWait'] . ' д., ' . $webinar['lastHours'] . ' ч., ' . $webinar['lastMinutes'] . ' мин.</span></p>';
+                                        if ($webinar['daysToWait'] == 0 && $webinar['lastHours'] == 0 && $webinar['lastMinutes'] <= 15) {
+                                            print '<a href="' . \yii\helpers\Url::to(['webinar/webinar', 'id' => $webinar['webinar_id']]) . '" class="btn btn-success" style="font-size: large">Присоединиться</a></center>';
+                                        }
+                                        print '
+                                        </center>
+                                        <!--</a>-->
+                                        </li>';
+                                    }
+                                    if ($webinar['webinar_begining'] == 1) {
+                                        print '
+                                        <li>
+										<!--<a href="javascript:;">-->
+										<!--<span class="time">just now</span>-->
+										<!--<span class="details">-->
+                                        <center>
+	     			                    <span class="label label-sm label-icon" style="color: white"><br>Вебинар №' . $webinar['webinar_id'];
+                                        print ' по курсу <br>"' . $webinar['course_name'] . '"';
+                                        print '<br>уже начался!<br>До конца остаётся <span class="bold">' . $webinar['webinar_hours_before_end']. ' ч. ' . $webinar['webinar_minutes_before_end']. ' мин.</span>';
+                                        print '<br><br><center><a href="' . \yii\helpers\Url::to(['webinar/webinar', 'id' => $webinar['webinar_id']]) . '" class="btn btn-success" style="font-size: large">Присоединиться</a></center>';
+                                        print '
+                                        </center>
+                                        <!--</a>-->
+                                        </li>';
+                                    }
+                                }
+								print '
+								</ul>
 							</li>
-							<li>
-								<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 250px;"><ul class="dropdown-menu-list scroller" style="height: 250px; overflow: hidden; width: auto;" data-handle-color="#637283" data-initialized="1">';
-
-            foreach ($all as $course => $webinar) {
-            echo '<li>';
-            if ($webinar['webinar_begining'] == 0) {
-
-                echo '<center>
-				<span class="label label-sm label-icon" style="color: white"><br>Вебинар №' . $webinar['webinar_id'] . '
-				<!--<i class="fa fa-plus"></i>-->
-				</span>
-				';
-                echo '<p  style="color: white">по курсу<br>' . $webinar['course_name'] . '</p>';
-                echo '<p  style="color: white">Осталось <span class="bold" style="color: white">' . $webinar['daysToWait'] . ' д., ' . $webinar['lastHours'] . ' ч., ' . $webinar['lastMinutes'] . ' мин.</span></p>';
-                if ($webinar['daysToWait'] == 0 && $webinar['lastHours'] == 0 && $webinar['lastMinutes'] <= 15) {
-                    echo '<a href="' . \yii\helpers\Url::to(['webinar/webinar', 'id' => $webinar['webinar_id']]) . '" class="btn btn-success" style="font-size: large">Присоединиться</a></center>';
-                }
-            }
-            if ($webinar['webinar_begining'] == 1) {
-                if ($webinar['webinar_begining'] == 1) {
-                    echo '<center>
-				<span class="label label-sm label-icon" style="color: white"><br>Вебинар №' . $webinar['webinar_id'];
-                    echo ' по курсу <br>"' . $webinar['course_name'] . '"';
-                    echo '<br>уже начался!<br>До конца остаётся <span class="bold">' . $webinar['webinar_hours_before_end']. ' ч. ' . $webinar['webinar_minutes_before_end']. ' мин.</span>';
-                    echo '<br><br><center><a href="' . \yii\helpers\Url::to(['webinar/webinar', 'id' => $webinar['webinar_id']]) . '" class="btn btn-success" style="font-size: large">Присоединиться</a></center>';
-                }
-            }
-
-        }
-
-        } else {
-
-            echo '<ul class="nav navbar-nav pull-right">
-					<li class="separator hide">
-					</li>
-					<li class="dropdown dropdown-extended dropdown-dark" id="header_inbox_bar">
-						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">
-						<i class="icon-calendar"></i>
-						<span class="badge badge-danger" style="background-color: ' . $badgeBackgroundColor . '; color: ' . $badgeColor . '">' . $countEvent .  '</span>
-						</a>';
-
-            echo '<ul class="dropdown-menu">
-							<li class="external">
-							    <h3>Сегодня <span class="bold">' . $today . '</span></h3><br>
-								<h3>События на неделе: <span class="bold"><br><br>Ожидаются!<br>Заходи, авторизуйся!<br>Или зарегистрируйся!</span></h3>
-							</li>
-							<li>
-								<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 250px;"><ul class="dropdown-menu-list scroller" style="height: 250px; overflow: hidden; width: auto;" data-handle-color="#637283" data-initialized="1">';
-
-
-            echo '<li>';
-
-                echo '<center>
-                <p style="color: white"><br>У нас есть
-				<br>курс</p>';
-                echo '<p  style="color: white"><br>Подготовка к ЕГЭ по русскому языку</p>';
-                echo '</center>';
-        }
-
-        echo '</ul><div class="slimScrollBar" style="background: rgb(99, 114, 131); width: 7px; position: absolute; top: 114px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 160.904px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(234, 234, 234); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
-							</li>
-						</ul>
-						</li>
 						</ul>';
-    }
+						}
+   print ' </li>';
+} else {
 
+print '<li class="dropdown dropdown-extended dropdown-dark" id="calendar">
+      <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">
+          <i class="icon-calendar"></i>
+          <span class="badge badge-danger" style="background-color: ' . $badgeBackgroundColor . '; color: ' . $badgeColor . '">' . $countEvent . '</span>
+      </a>
+          <ul class="dropdown-menu">
+              <li class="external">
+                  <h3>Сегодня <span class="bold">' . $today . '</span></h3><br>
+                  <h3>События на неделе: <span class="bold"><br><br>Ожидаются!<br>Заходи, авторизуйся!<br>Или зарегистрируйся!</span></h3>
+              </li>
+              <li>
+              <center>
+                  <p style="color: white"><br>У нас есть
+                      <br>курс</p>
+                  <p  style="color: white"><br>Подготовка к ЕГЭ по русскому языку</p>
+              </center>
+              </li>
+          </ul>
+      </li>';
+}
+
+    }
 
     public function run(){
 

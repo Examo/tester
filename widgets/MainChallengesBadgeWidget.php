@@ -218,87 +218,56 @@ class MainChallengesBadgeWidget extends Widget
             $badgeBackgroundColor = '#26A69A';
             $badgeColor = 'white';
         }
-        if (isset($all)) {
-            print '<ul class="nav navbar-nav pull-right">
-					<li class="separator hide">
-					</li>
-					<!-- BEGIN NOTIFICATION DROPDOWN -->
-					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-					<li class="dropdown dropdown-extended dropdown-notification dropdown-dark" id="header_notification_bar">
-						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">
+
+        print '<li class="dropdown dropdown-extended dropdown-notification dropdown-dark" id="challenges">
+						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 						<i class="icon-bell"></i>
 						<span class="badge badge-success" style="background-color: ' . $badgeBackgroundColor . '; color: ' . $badgeColor . '">' . $allValue . '</span>
 						</a>';
-
-
-        if ($allValue != 0) {
-            print                '<ul class="dropdown-menu">
+						if ($allValue != 0) {
+                        print '
+						<ul class="dropdown-menu">
 							<li class="external">
 								<h3>Пропущено: <span class="bold">' . $allValue . '</span></h3>
-								<!--<a href="extra_profile.html">view all</a>-->
+								<!--<a href="profile.html">view all</a>-->
 							</li>
+							
 							<li>
-								<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 250px;"><ul class="dropdown-menu-list scroller" style="height: 250px; overflow: hidden; width: auto;" data-handle-color="#637283" data-initialized="1">';
+								<ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="white">';
+									$number = 1;
+                                    foreach ($all as $course => $days) {
+                                        foreach ($days as $day => $values) {
+                                            foreach ($values as $element => $value) {
+                                                $label = 'success';
+                                                if ($element == 'clean') {
+                                                    $label = 'success';
+                                                }
+                                                if ($element == 'feed') {
+                                                    $label = 'danger';
+                                                }
+                                                print '
+                                                <li>
+			    							    <a href="/challenge/start?id=' . $value . '">
+			    		    			        <span class="time">Курс №' . $course . '</span>
+			    		    			        <span class="details">
+                                                <span class="label label-sm label-icon label-' . $label . '"> 
+			    		                        <i class="fa fa-plus"></i>
+			    		                        </span>
+			    		                        ' . Yii::t('days', $day) . ', ' . Yii::t('element', $element) . '</span>
+			    		                        </a>
+			    			                    </li>';
+                                                $number++;
+                                            }
+                                        }
+                                    }
 
-
-            $number = 1;
-            foreach ($all as $course => $days) {
-                foreach ($days as $day => $values) {
-                    foreach ($values as $element => $value) {
-
-                        echo '<li>
-										<a href="/challenge/start?id=' . $value . '">
-										<span class="time">Курс ' . $course . '</span>
-										<span class="details">
-										<span class="label label-sm label-icon"> ' . $number . '
-										<!--<i class="fa fa-plus"></i>-->
-										</span>
-										' . Yii::t('days', $day) . ', ' . Yii::t('element', $element) . '</span>
-										</a>
-									</li>';
-                        $number++;
-                    }
-                }
-            }
-
-            if (isset($chain)) {
-                foreach ($chain as $course => $weeks) {
-                    foreach ($weeks as $week) {
-                        //print $week['test'];
-                        $challengeWeek = Challenge::find()->select(['week'])->where(['id' => $week['test']])->one();
-                        if (Attempt::find()->where(['challenge_id' => $week['test']])->andWhere(['user_id' => Yii::$app->user->id])->one()) {
-                            
-                        } else {
-                            echo '<li>
-										<a href="/challenge/start?id=' . $week['test'] . '">
-										<span class="time">Курс ' . $course . '</span>
-										<span class="details">
-										<span class="label label-sm label-icon">' . $number . '
-										<!--<i class="fa fa-plus"> </i>-->
-										</span>
-										Неделя ' . $week['week'] . ', общий тест ' . $week['test'] . '</span>
-										</a>
-									</li>';
-                            $number++;
                         }
-                    }
-                }
-            }
-
-
-            echo '</ul>';
-        }
-
-
-		print						'<div class="slimScrollBar" style="background: rgb(99, 114, 131); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 121.359px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(234, 234, 234); opacity: 0.2; z-index: 90; right: 1px;"></div>
+						  print '</ul>
 							</li>
 						</ul>
-					</li>
-					';
-        }
+			 </li>';
 
     }
-
 
     public function run(){
 

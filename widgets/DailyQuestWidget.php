@@ -23,7 +23,7 @@ class DailyQuestWidget extends Widget
 
         $dailyChallenges = [];
         $dailyQuestStartTime = [];
-        if (Course::findSubscribed(Yii::$app->user->id)->one() && ScaleLearn::find()->where(['course_id' => Course::findSubscribed(Yii::$app->user->id)->one()->id])->andWhere(['user_id' => Yii::$app->user->id])->one()) {
+if (Course::findSubscribed(Yii::$app->user->id)->one() && ScaleLearn::find()->where(['course_id' => Course::findSubscribed(Yii::$app->user->id)->one()->id])->andWhere(['user_id' => Yii::$app->user->id])->one()) {
     foreach (Course::findSubscribed(Yii::$app->user->id)->all() as $keyEvent => $course) {
 
         $events = Event::find()->where(['course_id' => $course->id])->all();
@@ -46,13 +46,7 @@ class DailyQuestWidget extends Widget
                 }
             }
         }
-
-
-        //
-        //$time = Yii::$app->getFormatter()->asTimestamp(time());
-        //\yii\helpers\VarDumper::dump($dailyChallenges, 10, true);
     }
-
 
     $numberOfQuests = count($dailyChallenges);
     if ($numberOfQuests == 0) {
@@ -63,64 +57,46 @@ class DailyQuestWidget extends Widget
         $badgeColor = 'white';
     }
 
-    print '<ul class="nav navbar-nav pull-right">
-					<li class="separator hide">
-					</li>
-					<!-- BEGIN NOTIFICATION DROPDOWN -->
-					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-					<li class="dropdown dropdown-extended dropdown-notification dropdown-dark" id="header_notification_bar">
-						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">
+    print '<li class="dropdown dropdown-extended dropdown-notification dropdown-dark" id="quest">
+						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 						<i class="icon-pin"></i>
 						<span class="badge badge-success" style="background-color: ' . $badgeBackgroundColor . '; color: ' . $badgeColor . '">' . $numberOfQuests . '</span>
 						</a>';
 
-    if ($numberOfQuests != 0) {
-        print                '<ul class="dropdown-menu">
-							<li class="external">
-								<h3>Пропущено: <span class="bold">' . $numberOfQuests . '</span></h3>
-								<!--<a href="extra_profile.html">view all</a>-->
-							</li>
-							<li>
-								<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 250px;"><ul class="dropdown-menu-list scroller" style="height: 250px; overflow: hidden; width: auto;" data-handle-color="#637283" data-initialized="1">';
+						if ($numberOfQuests != 0) {
+                            print '
+                            <ul class="dropdown-menu">
+		    					<li class="external">
+		    						<h3>Пропущено: <span class="bold">' . $numberOfQuests . '</span></h3>
+		    						<!--<a href="extra_profile.html">view all</a>-->
+		    					</li>
+		    					<li>
+		    						<ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="white">';
 
-        foreach ($dailyChallenges as $courseId => $challengeId) {
-            foreach ($dailyQuestStartTime as $dailyCourseId => $startTime) {
-
-                if ($courseId == $dailyCourseId && $challengeId != null) {
-                    //print 'Ежедневное задание по курсу ' . $dailyCourseId . ' - тест номер ' . $challengeId;
-                    print '<li>
-	     	<a href="/challenge/start?id=' . $challengeId . '">
-		     	<span>Курс ' . $dailyCourseId . '</span>
-		     	<span class="details">Ежедневное задание: тест номер ' . $challengeId . ' для Еды/Уборки по курсу ' . $dailyCourseId . '
-		     	<span class="label label-sm label-icon">Жми! ' . '
-		     	<!--<i class="fa fa-plus"></i>-->
-		     	</span>
-		     	</span>
-		     	</a>
-		     </li>';
-                }
-            }
-        }
-        print '</ul>';
-
-    }
-}
-            echo '<div class="slimScrollBar" style="background: rgb(99, 114, 131); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 121.359px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(234, 234, 234); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
+                            foreach ($dailyChallenges as $courseId => $challengeId) {
+                                foreach ($dailyQuestStartTime as $dailyCourseId => $startTime) {
+                                    if ($courseId == $dailyCourseId && $challengeId != null) {
+                                        print '
+                                            <li>
+		            					    <a href="/challenge/start?id=' . $challengeId . '">
+		     	                            <span>Курс ' . $dailyCourseId . '</span>
+		     	                            <span class="details">Ежедневное задание: тест номер ' . $challengeId . ' для Еды/Уборки по курсу ' . $dailyCourseId . '
+		     	                            <span class="label label-sm label-icon">Жми!</span>
+		     	                            <!--<i class="fa fa-plus"></i>-->
+		     	                            </span>
+		     	                            </a>
+		            				        </li>';
+                                    }
+                                }
+                            }
+                        }
+						print '</ul>
 							</li>
 						</ul>
-					</li>
-					<!-- END NOTIFICATION DROPDOWN -->
-					<li class="separator hide">
-					</li>
-					
-					<li class="separator hide">
-					</li>
+			</li>';
+}
 
-				</ul>';
-
-
-    }
-
+}
 
     public function run(){
 

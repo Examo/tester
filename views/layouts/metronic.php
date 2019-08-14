@@ -91,14 +91,30 @@ MetronicAsset::register($this);
                         </li>
 
                         <?php echo $this->render('@app/views/layouts/metronic/header_'.( Yii::$app->user->isGuest ? 'guest' : 'user' )) ?>
-                        
+                        <ul class="nav navbar-nav pull-right">
+                            <li class="separator hide">
+                            </li>
                         <?= EventCalendarWidget::widget(); ?>
+                        </ul>
 
+                        <ul class="nav navbar-nav pull-right">
+                            <li class="separator hide">
+                            </li>
                         <?= MainChallengesBadgeWidget::widget(); ?>
+                        </ul>
 
-                        <?= MainAttentionsBadgeWidget::widget(); ?>
+                        <ul class="nav navbar-nav pull-right">
+                            <li class="separator hide">
+                            </li>
+                            <?= DailyQuestWidget::widget(); ?>
+                        </ul>
                         
-                        <?= DailyQuestWidget::widget(); ?>
+                        <ul class="nav navbar-nav pull-right">
+                            <li class="separator hide">
+                            </li>
+                            <?= MainAttentionsBadgeWidget::widget(); ?>
+                        </ul>
+
                         <li class="separator hide">
                         </li>
                     </ul>
