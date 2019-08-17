@@ -239,21 +239,24 @@ class MainChallengesBadgeWidget extends Widget
                                         foreach ($days as $day => $values) {
                                             foreach ($values as $element => $value) {
                                                 $label = 'success';
+                                                $icon = 'paw';
                                                 if ($element == 'clean') {
                                                     $label = 'success';
+                                                    $icon = 'trash';
                                                 }
                                                 if ($element == 'feed') {
                                                     $label = 'danger';
+                                                    $icon = 'cutlery';
                                                 }
                                                 print '
                                                 <li>
 			    							    <a href="/challenge/start?id=' . $value . '">
-			    		    			        <span class="time">Курс №' . $course . '</span>
+			    		    			        <!--<span class="time" title="' . Course::find()->where(['id' => $course])->one()->name .'">Курс?</span>-->
 			    		    			        <span class="details">
                                                 <span class="label label-sm label-icon label-' . $label . '"> 
-			    		                        <i class="fa fa-plus"></i>
+			    		                        <i class="fa fa-' . $icon . '"></i>
 			    		                        </span>
-			    		                        ' . Yii::t('days', $day) . ', ' . Yii::t('element', $element) . '</span>
+			    		                        ' . Yii::t('days', $day) . ', ' . Yii::t('element', $element) . '<br><center><strong>Курс</strong></center> "'. Course::find()->where(['id' => $course])->one()->name .'"</span>
 			    		                        </a>
 			    			                    </li>';
                                                 $number++;

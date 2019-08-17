@@ -59,8 +59,8 @@ $networksVisible = count(Yii::$app->authClientCollection->clients) > 0;
     'items' => [
         ['label' => '<i class="fa fa-home"> </i><span class="title"> ' . Yii::t('home', 'Home') . '</span>', 'url' => ['/home']],
         ['label' => '<i class="fa fa-tasks"> </i><span class="title"> ' . Yii::t('home', 'Learn') . '</span>', 'url' => ['/learn']],
-        ['label' => '<i class="fa fa-coffee"> </i><span class="title"> ' . Yii::t('home', 'Feed') . '</span>', 'url' => ['/feed']],
-        ['label' => '<i class="fa fa-inbox"> </i><span class="title"> ' . Yii::t('home', 'Clean') . '</span>', 'url' => ['/clean']],
+        ['label' => '<i class="fa fa-cutlery"> </i><span class="title"> ' . Yii::t('home', 'Feed') . '</span>', 'url' => ['/feed']],
+        ['label' => '<i class="fa fa-trash"> </i><span class="title"> ' . Yii::t('home', 'Clean') . '</span>', 'url' => ['/clean']],
         ['label' => '<i class="fa fa-gamepad"> </i><span class="title"> ' . Yii::t('home', 'Gamer') . '</span>', 'url' => ['/gamer']],
         ['label' => '<i class="fa fa-book"> </i><span class="title"> ' . Yii::t('home', 'Subscriptions') . '</span>', 'url' => ['/subscription']],
         ['label' => '<i class="fa fa-sitemap"> </i><span class="title"> ' . Yii::t('home', 'Courses') . '</span>', 'url' => ['/subscription/all']],
