@@ -105,26 +105,12 @@ class QuestionSettingsController extends BaseAdminCrudController
         }
     }
 
-
     /**
      * @param int $id
      * @return mixed|string
-     * @throws \yii\web\NotFoundHttpException
      */
     public function actionDelete($id)
     {
-        /** @var QuestionSettings $model */
-        $model = $this->findModel($id);
-
-        $challenges = $model->getChallenges()->all();
-
-        if ( count($challenges) && !Yii::$app->request->post('confirm') ) {
-            return $this->render('delete', [
-                'model' => $model,
-                'challenges' => $challenges
-            ]);
-        }
-
         return parent::actionDelete($id);
     }
 }

@@ -50,6 +50,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'headerOptions' => [
                     'class' => 'col-md-7'
                 ],
+                'value' => function($model) {
+                    return \yii\helpers\StringHelper::truncate($model->settings, 100);
+                }
             ],
             [
                 'class' => 'yii\grid\ActionColumn',

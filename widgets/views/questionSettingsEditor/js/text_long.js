@@ -35,7 +35,6 @@
         },
 
         show: function (data) {
-            console.log('text long show');
             var content = this.renderHtml(this.parseData(data));
             $('.content', this.element).html('').append(content);
         },
@@ -66,13 +65,13 @@
 
         parseData: function (raw) {
             return {
-                min_length: raw && 'min_length' in raw ? parseInt(raw.min_length) : 0
+                'settings': raw && 'settings' in raw ? raw.settings : []
             };
         },
 
         changeData: function () {
-            var result = {
-                min_length: parseInt($('.content', this.element).find('input[type=text]').val())
+            var result  = {
+                'settings': $.trim($('.content', this.element).find('.block-content').val())
             };
 
             this.onChange.apply(this.owner, [result]);
@@ -80,16 +79,18 @@
 
         renderHtml: function (data) {
             var self = this;
-
             var result = self.getTemplate('content');
 
-            result.on('change', 'input', function () {
-                self.changeData();
+            $(result).find('.block-content').on('change keyup paste', function() {
+                if(this.value.length) {
+                    self.changeData();
+                }
             });
+
+            $(result).find('.block-content').val(data.settings);
 
             return result;
         }
-
         //--------------------------------------------------------------------------------------------------------------
 
     });

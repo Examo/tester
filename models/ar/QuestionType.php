@@ -62,4 +62,12 @@ class QuestionType extends \app\components\ActiveRecord
     {
         return $this->hasMany(Question::className(), ['question_type_id' => 'id'])->inverseOf('questionType');
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getQuestionSettings()
+    {
+        return $this->hasMany(QuestionSettings::className(), ['type_id' => 'id'])->inverseOf('questionType');
+    }
 }
