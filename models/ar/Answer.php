@@ -36,6 +36,7 @@ class Answer extends \app\components\ActiveRecord
             [['attempt_id', 'question_id'], 'required'],
             [['attempt_id', 'question_id', 'correct', 'hint'], 'integer'],
             [['data'], 'string'],
+            [['result'], 'safe'],
             [['attempt_id'], 'exist', 'skipOnError' => true, 'targetClass' => Attempt::className(), 'targetAttribute' => ['attempt_id' => 'id']],
             [['question_id'], 'exist', 'skipOnError' => true, 'targetClass' => Question::className(), 'targetAttribute' => ['question_id' => 'id']],
         ];
@@ -53,6 +54,7 @@ class Answer extends \app\components\ActiveRecord
             'data' => 'Data',
             'correct' => 'Correct',
             'hint' => 'Hint',
+            'result' => 'Result'
         ];
     }
 
