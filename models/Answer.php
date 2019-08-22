@@ -24,4 +24,28 @@ class Answer extends \app\models\ar\Answer
         ];
     }
 
+    /**
+     * @throws \Exception
+     */
+    public function getResultCriterions()
+    {
+        $questionSettings = $this->question->questionSettings;
+
+        if (!$questionSettings->settings) {
+            throw new \Exception('Настройки задания не найдены');
+        }
+
+        $settings = str_replace(array('\n'), '', $questionSettings->settings);
+        $jsonSettings = json_decode($settings);
+
+        if (!$jsonSettings->settings) {
+            throw new \Exception('Настройки задания не найдены');
+        }
+
+        try {
+            return json_decode($jsonSettings->settings);
+        } catch (\Exception $e) {
+            throw new \Exception('Настройки задания заданы неверно');
+        }
+    }
 }

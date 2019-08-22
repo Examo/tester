@@ -59,7 +59,8 @@ class Question extends \app\models\ar\Question
             'wrong_points' => Yii::t('question', 'Wrong Points'),
             'courses_ids' => Yii::t('question', 'Courses'),
             'subjects_ids' => Yii::t('question', 'Subjects'),
-            'challengeTypes_ids' => Yii::t('question', 'Challenge Types')
+            'challengeTypes_ids' => Yii::t('question', 'Challenge Types'),
+            'question_settings_id' => Yii::t('question', 'Question Settings Id')
         ];
     }
 

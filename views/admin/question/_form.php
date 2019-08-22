@@ -216,6 +216,14 @@ $this->registerJs($script, yii\web\View::POS_READY);
                     'multiple' => true
                 ],
             ]) ?>
+
+            <?= $form->field($model, 'question_settings_id')->widget(Select2::className(), [
+                'data' => \app\models\QuestionSettings::getList(),
+                'options' => [
+                    'id' => 'question_settings_id',
+                    'multiple' => false
+                ],
+            ]) ?>
         </div>
     </div>
 
