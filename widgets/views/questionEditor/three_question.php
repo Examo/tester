@@ -1,6 +1,6 @@
 <?php $id = uniqid('qe_three_question') ?>
 
-<div id="<?= $id ?>" class="select-one question-editor-extension">
+<div id="<?= $id ?>" class="three_question question-editor-extension">
     <div class="content"></div>
     <div class="template content-template">
         <label>1</label>

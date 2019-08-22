@@ -7,6 +7,7 @@ return [
     'Challenges' => 'Тесты',
     'Create' => 'Создать',
     'Update' => 'Изменить',
+    'Save' => 'Сохранить',
     'Delete' => 'Удалить',
     'Remove' => 'Удалить',
     'Search' => 'Поиск',

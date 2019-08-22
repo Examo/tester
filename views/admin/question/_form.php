@@ -32,17 +32,20 @@ use kartik\markdown\MarkdownEditor;
 
 $comment = app\helpers\Json::encodeForJsParse($model['comment']);
 $hint = app\helpers\Json::encodeForJsParse($model['hint']);
+$TYPE_THREE_QUESTION = QuestionType::TYPE_THREE_QUESTION;
+$TYPE_ASSOC_TABLE = QuestionType::TYPE_ASSOC_TABLE;
 $script = <<< JS
-            if (id === '8' || id === '7') {
-                var comments = JSON.parse($comment);
-                var hints = JSON.parse($hint);
+            var id = $('#question_type_id').children('option:selected').val();
+
+            if (id === "$TYPE_ASSOC_TABLE" || id === "$TYPE_THREE_QUESTION") {
+                var comments = JSON.parse('$comment');
+                var hints = JSON.parse('$hint');
             } else {
-                var comments = $comment;
-                var hints = $hint;
+                var comments = '$comment';
+                var hints = '$hint';
             }
             
-            var id = $('#question_type_id').children('option:selected').val();
-            if (id === '8') {
+            if (id === "$TYPE_THREE_QUESTION") {
                 $("div[id^='question-comment-container']").each(function (i) {
                     $(this).show();
                     try {
@@ -56,7 +59,7 @@ $script = <<< JS
                     } catch {}
                 });
                 $("label[for=question-comment]").show();
-            } else if (id === '7') {
+            } else if (id === '$TYPE_ASSOC_TABLE') {
                 $("div[id^='question-comment-container']:visible").each(function () {
                     $(this).hide();
                 });
@@ -87,7 +90,7 @@ $this->registerJs($script, yii\web\View::POS_READY);
         $(function () {
             $('#question_type_id').on('change', function () {
                 var id = $(this).children('option:selected').val();
-                if (id === '7') {
+                if (id === "<?= $TYPE_ASSOC_TABLE ?>") {
                     $("div[id^='question-comment-container']:visible").each(function () {
                         $(this).hide();
                     });
@@ -96,7 +99,7 @@ $this->registerJs($script, yii\web\View::POS_READY);
                     });
                     $("label[for=question-comment]").hide();
                     $('#question-hint-container').show();
-                } else if (id === '8') {
+                } else if (id === "<?= $TYPE_THREE_QUESTION ?>") {
                     $("div[id^='question-comment-container']:hidden").each(function () {
                        $(this).show();
                     });
@@ -211,6 +214,14 @@ $this->registerJs($script, yii\web\View::POS_READY);
                 'options' => [
                     'id' => 'challengeTypes_ids',
                     'multiple' => true
+                ],
+            ]) ?>
+
+            <?= $form->field($model, 'question_settings_id')->widget(Select2::className(), [
+                'data' => \app\models\QuestionSettings::getList(),
+                'options' => [
+                    'id' => 'question_settings_id',
+                    'multiple' => false
                 ],
             ]) ?>
         </div>

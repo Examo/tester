@@ -3,17 +3,24 @@
 namespace app\controllers\admin;
 
 use app\components\BaseAdminCrudController;
-use app\models\Question;
-use app\models\search\QuestionSearch;
+use app\models\QuestionSettings;
+use app\models\search\QuestionSettingsSearch;
 use yii\helpers\Json;
 use Yii;
 
 /**
- * QuestionController implements the CRUD actions for Question model.
+ * QuestionSettingsController implements the CRUD actions for Question model.
  */
-class QuestionController extends BaseAdminCrudController
+class QuestionSettingsController extends BaseAdminCrudController
 {
+    /**
+     * @var string
+     */
     public $layout = 'OLDMAIN/main';
+
+    /**
+     * @return array
+     */
     public function behaviors()
     {
         return [];
@@ -24,7 +31,7 @@ class QuestionController extends BaseAdminCrudController
      */
     protected function getModelClass()
     {
-        return Question::className();
+        return QuestionSettings::className();
     }
 
     /**
@@ -32,7 +39,7 @@ class QuestionController extends BaseAdminCrudController
      */
     protected function getSearchModelClass()
     {
-        return QuestionSearch::className();
+        return QuestionSettingsSearch::className();
     }
 
     /**
@@ -43,20 +50,10 @@ class QuestionController extends BaseAdminCrudController
     public function actionCreate()
     {
         $class = $this->getModelClass();
-       
         $model = new $class();
-        $model->right_points = 0;
-        $model->wrong_points = 0;
 
         $data = Yii::$app->request->post();
         if ($data) {
-            if ((int)$data['Question']['question_type_id'] === 8) {
-                $data['Question']['comment'] = Json::encode($data['Question']['comment']);
-                $data['Question']['hint'] = Json::encode($data['Question']['hint']);
-            } else {
-                $data['Question']['comment'] = implode($data['Question']['comment']);
-                $data['Question']['hint'] = implode($data['Question']['hint']);
-            }
             Yii::$app->request->setBodyParams($data);
         }
 
@@ -81,6 +78,7 @@ class QuestionController extends BaseAdminCrudController
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
+     * @throws \yii\web\NotFoundHttpException
      */
     public function actionUpdate($id)
     {
@@ -88,13 +86,6 @@ class QuestionController extends BaseAdminCrudController
 
         $data = Yii::$app->request->post();
         if ($data) {
-            if ((int)$data['Question']['question_type_id'] === \app\models\QuestionType::TYPE_THREE_QUESTION) {
-                $data['Question']['comment'] = Json::encode($data['Question']['comment']);
-                $data['Question']['hint'] = Json::encode($data['Question']['hint']);
-            } else {
-                $data['Question']['comment'] = implode($data['Question']['comment']);
-                $data['Question']['hint'] = implode($data['Question']['hint']);
-            }
             Yii::$app->request->setBodyParams($data);
         }
 
@@ -114,23 +105,12 @@ class QuestionController extends BaseAdminCrudController
         }
     }
 
-
+    /**
+     * @param int $id
+     * @return mixed|string
+     */
     public function actionDelete($id)
     {
-        /** @var Question $model */
-        $model = $this->findModel($id);
-
-        $challenges = $model->getChallenges()->all();
-
-        if ( count($challenges) && !Yii::$app->request->post('confirm') ) {
-            return $this->render('delete', [
-                'model' => $model,
-                'challenges' => $challenges
-            ]);
-        }
-
         return parent::actionDelete($id);
     }
-
-
 }

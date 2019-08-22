@@ -118,6 +118,10 @@ a.desc:after {
     text-align: left;
 }
 
+.answer-update .block-result{
+    padding-left: 15px;
+}
+
 
 /*.refrigerator {position: absolute; width: 600px; height: auto; top: 120px; left: 200px; z-index: 1;  }
 .feeding IMG { position: relative; width: 70px;}
