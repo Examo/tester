@@ -4,6 +4,10 @@ namespace app\controllers;
 
 use app\helpers\Json;
 use app\models\Answer;
+use app\models\Attempt;
+use app\models\Challenge;
+use app\models\Course;
+use app\models\User;
 use Yii;
 use yii\web\Controller;
 use app\models\search\ResultSearch;
@@ -75,8 +79,11 @@ class ResultController extends Controller
 
     public function actionView($id)
     {
+        $data = $this->getData($id);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'data' => $data
         ]);
     }
 
@@ -84,7 +91,7 @@ class ResultController extends Controller
     {
         $model = $this->findModel($id);
         $data = Yii::$app->request->post();
-
+        $userData = $this->getData($id);
         if ($data) {
             $data['Answer']['result'] = Json::encode($data['Answer']['result']);
         }
@@ -101,6 +108,7 @@ class ResultController extends Controller
 
             return $this->render('update', [
                 'model' => $model,
+                'userData' => $userData
             ]);
         }
     }
@@ -114,5 +122,25 @@ class ResultController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function getData($id){
+
+        $data = [];
+        $attempt = Attempt::find()->where(['id' => $this->findModel($id)['attempt_id']])->one();
+        $user_id = $attempt->user_id;
+        $user = User::find()->where(['id' => $user_id])->one();
+        $username = $user->username;
+        $challenge_id = $attempt->challenge_id;
+        $course_id = Challenge::find()->where(['id' => $challenge_id])->one();
+        $course = Course::find()->where(['id' => $course_id])->one();
+        $course_name = $course->name;
+        $data['user_id'] = $user_id;
+        $data['username'] = $username;
+        $data['challenge_id'] = $challenge_id;
+        $data['course_name'] = $course_name;
+
+        return $data;
+
     }
 }

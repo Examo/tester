@@ -207,7 +207,9 @@ class ChallengeController extends Controller
                                 $difficultSubjects->points = 1;
                             }
                             $difficultSubjects->user_id = Yii::$app->user->id;
-                            $difficultSubjects->subject_id = $subject->subject_id;
+                            if (isset($subject->subject_id)) {
+                                $difficultSubjects->subject_id = $subject->subject_id;
+                            }
                             $difficultSubjects->save();
                         }
                     }

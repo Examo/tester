@@ -27,6 +27,7 @@ class MainChallengesBadgeWidget extends Widget
         $currentDayNumber = 0;
         $all = [];
         $allValue = 0;
+        $chain = [];
         foreach (Course::findSubscribed(Yii::$app->user->id)->all() as $keyEvent => $course) {
             if (Event::find()->where(['course_id' => $course->id])->andWhere(['title' => 'Начало'])->one()) {
 
@@ -67,9 +68,10 @@ class MainChallengesBadgeWidget extends Widget
                     //$timeAfterCourseStart = $time - $courseStartTime;
                     // если курс ещё не начался
 
-                    $regexp = "/(тест)([0-9]*)/ui";
+                    $regexp = "/(Общий тест) ([0-9]*)/ui";
                     $weekTime = 604800;
                     $match = [];
+
                     foreach ($test as $key => $oneTest) {
                         if (preg_match($regexp, $oneTest->title, $match[$course->id][$key])) {
                             $currentWeek = ceil($courseStats['timeAfterCourseStart'] / $weekTime);
@@ -78,18 +80,23 @@ class MainChallengesBadgeWidget extends Widget
                             if ($tillTestWeekStart > 0) {
                                 $testWeek = ceil($tillTestWeekStart / $weekTime);
                                 $week = ceil($courseStats['timeAfterCourseStart'] / $weekTime);
-                                if ($week - $testWeek > 0) {
+                                if ($week - $testWeek >= 0) {
                                     $learnObject = LearnObject::find()->where(['id' => $testWeek])->one();
                                     //$chain[$course->id]['currentWeek'] = $currentWeek;
-                                    $chain[$course->id][$key]['week'] = $testWeek;
-                                    $chain[$course->id][$key]['test'] = $match[$course->id][$key][2];
-                                    $chain[$course->id][$key]['object'] = $learnObject->object;
-                                    if (Attempt::find()->where(['challenge_id' => $testWeek])->andWhere(['user_id' => Yii::$app->user->id])->one()) {
-                                        //\yii\helpers\VarDumper::dump($ifAttemp, 10, true);
-                                        $chain[$course->id][$key]['isAttempt'] = true;
-                                        $allValue = $allValue - 1;
+                                    $chain[$course->id][$testWeek]['week'] = $testWeek;
+                                    $chain[$course->id][$testWeek]['test'] = $match[$course->id][$key][2];
+                                    $chain[$course->id][$testWeek]['object'] = $learnObject->object;
+                                    if (Challenge::find()->where(['id' => $chain[$course->id][$testWeek]['test']])->andWhere(['challenge_type_id' => 4])->one()) {
+                                        if (Attempt::find()->where(['challenge_id' => $chain[$course->id][$testWeek]['test']])->andWhere(['user_id' => Yii::$app->user->id])->one()) {
+                                            //\yii\helpers\VarDumper::dump($ifAttemp, 10, true);
+                                            $chain[$course->id][$testWeek]['isAttempt'] = 1;
+                                            $allValue = $allValue - 1;
+                                        } else {
+                                            $chain[$course->id][$testWeek]['isAttempt'] = 0;
+                                        }
                                     } else {
-                                        $chain[$course->id][$key]['isAttempt'] = null;
+                                        $allValue = $allValue - 1;
+                                        $chain[$course->id][$testWeek]['isAttempt'] = 2;
                                     }
                                 }
                             }
@@ -97,6 +104,9 @@ class MainChallengesBadgeWidget extends Widget
                             unset($match[$course->id][$key]);
                         }
                     }
+                    //\yii\helpers\VarDumper::dump($match[$course->id][3][2], 10, true);
+                    //print '<br><br><br><br><br><br><br><br><br>';
+                    //\yii\helpers\VarDumper::dump($chain, 10, true);
 
 
                     foreach ($days as $key => $day) {
@@ -232,38 +242,58 @@ class MainChallengesBadgeWidget extends Widget
 								<!--<a href="profile.html">view all</a>-->
 							</li>
 							
-							<li>
+                            <li>
 								<ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="white">';
-									$number = 1;
-                                    foreach ($all as $course => $days) {
-                                        foreach ($days as $day => $values) {
-                                            foreach ($values as $element => $value) {
+                                $number = 1;
+                            if (isset($all)) {
+                                foreach ($all as $course => $days) {
+                                    foreach ($days as $day => $values) {
+                                        foreach ($values as $element => $value) {
+                                            $label = 'success';
+                                            $icon = 'paw';
+                                            if ($element == 'clean') {
                                                 $label = 'success';
-                                                $icon = 'paw';
-                                                if ($element == 'clean') {
-                                                    $label = 'success';
-                                                    $icon = 'trash';
-                                                }
-                                                if ($element == 'feed') {
-                                                    $label = 'danger';
-                                                    $icon = 'cutlery';
-                                                }
-                                                print '
+                                                $icon = 'trash';
+                                            }
+                                            if ($element == 'feed') {
+                                                $label = 'danger';
+                                                $icon = 'cutlery';
+                                            }
+                                            print '
                                                 <li>
 			    							    <a href="/challenge/start?id=' . $value . '">
-			    		    			        <!--<span class="time" title="' . Course::find()->where(['id' => $course])->one()->name .'">Курс?</span>-->
+			    		    			        <!--<span class="time" title="">Курс?</span>-->
 			    		    			        <span class="details">
                                                 <span class="label label-sm label-icon label-' . $label . '"> 
 			    		                        <i class="fa fa-' . $icon . '"></i>
 			    		                        </span>
-			    		                        ' . Yii::t('days', $day) . ', ' . Yii::t('element', $element) . '<br><center><strong>Курс</strong></center> "'. Course::find()->where(['id' => $course])->one()->name .'"</span>
+			    		                        ' . Yii::t('days', $day) . ', ' . Yii::t('element', $element) . '<br><center><strong>Курс</strong></center> "' . Course::find()->where(['id' => $course])->one()->name . '"</span>
 			    		                        </a>
 			    			                    </li>';
-                                                $number++;
-                                            }
+                                            $number++;
                                         }
                                     }
+                                }
+                            }
 
+                            if ($chain){
+                                foreach ($chain as $course => $weeks){
+                                    foreach ($weeks as $generalChallenges){
+                                        //\yii\helpers\VarDumper::dump($generalChallenges, 10, true);
+                                        print '
+                                                <li>
+			    							    <a href="/challenge/start?id=' . $generalChallenges['test'] . '">
+			    		    			        <span class="details">
+                                                <span class="label label-sm label-icon label-danger"> 
+			    		                        <i class="fa fa-star"></i>
+			    		                        </span>
+			    		                        Общий тест за ' . $generalChallenges['week'] . '-ю неделю, заполняет в Учёбе "' . Yii::t('learnObjects',  $generalChallenges['object']) . '"<br>"' . Course::find()->where(['id' => $course])->one()->name . '"
+			    		                        </a>
+			    			                    </li>';
+                                        $number++;
+                                    }
+                                }
+                            }
                         }
 						  print '</ul>
 							</li>

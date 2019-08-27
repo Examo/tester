@@ -22,5 +22,8 @@ return [
     'Game' => 'Игра',
     'Program of course' => 'Программа курса',
     'All available courses' => 'Все доступные курсы',
-    'My courses' => 'Мои курсы'
+    'My courses' => 'Мои курсы',
+    'All essays' => 'Все сочинения',
+    'Essay checking' => 'Проверка сочинения',
+    'Essay checked' => 'Проверенное сочинение'
 ];

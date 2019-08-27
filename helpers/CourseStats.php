@@ -18,7 +18,7 @@ class CourseStats
         $event = Event::find()->where(['course_id' => $course_id])->andWhere(['title' => 'Начало'])->one();
         //\yii\helpers\VarDumper::dump($events, 10, true);
         $courseStartTime = Yii::$app->getFormatter()->asTimestamp($event->start);
-        $time = Yii::$app->getFormatter()->asTimestamp(time());
+        $time = time();
         // получаем изменение времени с момента начала курса до текущего момента
         $timeAfterCourseStart = $time - $courseStartTime;
         $weekTime = 604800;
