@@ -61,6 +61,7 @@ class ResultController extends Controller
      */
     public function actionIndex()
     {
+        $userData = [];
         if ( \Yii::$app->user->isGuest ) {
             $this->layout = 'metronic_sidebar';
             return $this->redirect('/home/index');
@@ -70,9 +71,19 @@ class ResultController extends Controller
             $searchModel = new $class();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+            //$number = 1;
+
+            foreach ($dataProvider->models as $key => $value){
+                //\yii\helpers\VarDumper::dump($value, 10, true);
+                $userData[$value->id] = $this->getData($value->id);
+                //print $value->id;
+                //$number++;
+            }
+
             return $this->render('index', [
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
+                'userData' => $userData
             ]);
         }
     }

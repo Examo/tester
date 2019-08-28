@@ -51,7 +51,28 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Essay checked');
 
     <tr>
         <th>Результаты</th>
-        <td><?= $model->result ?></td>
+        <td><?php $result = json_decode($model->result, true) ?>
+
+            <table id="w0" class="table table-striped table-bordered detail-view">
+                <tbody>
+                <tr>
+                    <th class="col-md-6">Критерии</th>
+                    <th class="col-md-4">Балл</th>
+                </tr>
+
+                <?php foreach ($result as $sections => $criterions): ?>
+                    <?php foreach ($criterions as $description => $point): ?>
+                <tr>
+                    <td><?= $description; ?></td>
+                    <td><?= $point[0]; ?></td>
+                </tr>
+                    <?php endforeach; ?>
+                <?php endforeach; ?>
+
+                </tbody>
+            </table>
+
+        </td>
     </tr>
 
     <tr>
