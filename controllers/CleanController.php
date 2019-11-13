@@ -90,7 +90,7 @@ class CleanController extends Controller
                                 if (json_decode($challengesWeeks->challenges) == []) {
                                     $allNewChallenges = [];
                                     foreach (json_decode($challengesWeeks->challenges) as $challengesWeek){
-                                        //print $challengesWeek . '<br>';
+                                        print $challengesWeek . '<br>';
                                     }
                                     $currentWeeksChallenges = Challenge::find()->where(['course_id' => $course->id])->andWhere(['week' => $week])->andWhere(['element_id' => 2])->all();
                                     // соберём все тесты в массив, в котором ключи будут id тестов
