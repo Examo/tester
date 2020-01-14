@@ -298,10 +298,10 @@ class ChallengeController extends Controller
                                     $day = $days[$i];
                                     $data = json_decode($learn->$day, true);
                                     //print $i . ' - день по счёту<br>';
-                                    Yii::$app->session->setFlash(
-                                        'success',
-                                        "Просто должно всё работать и появиться оповещение, если день не понедельник!"
-                                    );
+                                //    Yii::$app->session->setFlash(
+                                //        'success',
+                                //        "Тест выполнен! Ура!"
+                                //    );
                                     if ($challengeNew->element_id == 1 && $data['feed'] == 0) {
                                         Yii::$app->session->setFlash(
                                             'success',
@@ -533,12 +533,20 @@ class ChallengeController extends Controller
     {
         $challenge = $this->getChallenge($id);
         $session = new ChallengeSession($challenge, Yii::$app->user->id);
+        $challengeElementsObjectName = '';
 
         //$food_id = ChallengeFood::find()->select('food_id')->where(['challenge_id' => $id])->one();
         //$challengeFood = Food::find()->select('food_name')->where(['id' => $food_id])->one();
 
         $challengeElementsItem = Challenge::find()->select('elements_item_id')->where(['id' => $id])->one();
+        
         $challengeItem = ElementsItem::find()->select('name')->where(['id' => $challengeElementsItem])->one();
+        if ($challenge->element_id == 1) {
+            $challengeElementsObjectName = 'foodObjects';
+        }
+        if ($challenge->element_id == 2) {
+            $challengeElementsObjectName = 'cleanObjects';
+        }
 
         if ($session->isFinished()) {
             return $this->redirect(Url::to(['challenge/finish', 'id' => $challenge->id]));
@@ -547,7 +555,8 @@ class ChallengeController extends Controller
         return $this->render('progress', [
             'session' => $session,
             'challenge' => $challenge,
-            'challengeItem' => $challengeItem
+            'challengeItem' => $challengeItem,
+            'challengeElementsObjectName' => $challengeElementsObjectName
         ]);
     }
 

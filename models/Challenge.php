@@ -480,16 +480,18 @@ class Challenge extends \app\models\ar\Challenge
             if (!$scale) {
                 $scale = new ScaleFeed();
             }
+            $lastTypeAttempt = Attempt::getFeedLastAttempt();
         }
         if ($scaleType == 'ScaleClean'){
             $scale = ScaleClean::find()->where(['user_id' => Yii::$app->user->id])->one();
             if (!$scale) {
                 $scale = new ScaleClean();
             }
+            $lastTypeAttempt = Attempt::getCleanLastAttempt();
         }
             // если шкала "Еды" ученика существует
         if ($scale) {
-            $lastTypeAttempt = Attempt::getFeedLastAttempt();
+            //$lastTypeAttempt = Attempt::getFeedLastAttempt();
 
             // если имеется последний тест для Еды, то получаем последний тест для Еды
             if ($lastTypeAttempt) {
