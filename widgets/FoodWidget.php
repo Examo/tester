@@ -50,7 +50,11 @@ class FoodWidget extends Widget
             // то шкала будет красного цвета
             if ($scale->points - $roundTime <= 10) {
                 $backgroundColor = 'red';
-            } else {
+            }
+            if ($scale->points - $roundTime >= 100){
+                $backgroundColor = 'blue';
+            }
+            else {
                 $backgroundColor = 'green';
             }
 
