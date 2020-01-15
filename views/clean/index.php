@@ -1,4 +1,5 @@
 <?php
+use app\models\Challenge;
 use app\widgets\CleanWidget;
 use app\widgets\FoodWidget;
 use app\widgets\LearnWidget;
@@ -92,7 +93,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <strong>Курс: <?= $oneSubject['course_name']; ?><br></strong>
                                         Тема: <strong><?= $oneSubject['subject_name']; ?></strong><br>
                                         Место в рейтинге: <strong>№<?= $key + 1; ?></strong> (Количество баллов у темы: <strong><?= $oneSubject['subject_points']; ?></strong>)<br>
-                                        Предмет для уборки:<center><img src="/i/<?= $oneSubject['challenge_clean_item'] ? $oneSubject['challenge_clean_item'] : 'no_image' ?>.png" width="auto" /></center><br>
+                                        Предмет для уборки:<center><img src="/i/<?= $oneSubject['challenge_clean_item'] ? $oneSubject['challenge_clean_item'] : 'no_image' ?>.png"  <?= Challenge::getRightImageWidth($oneSubject['challenge_clean_item']);?>  /></center><br>
                                         Пройти тест -> Тест №<?= $oneSubject['challenge_id']; ?> по теме <strong><?= $oneSubject['subject_name']; ?></strong> на <?= $cleaningTests->time; ?> минут, прибавляет <?= $cleaningTests->percent; ?> % к шкале "Уборки"
                                     </div></a>
                                 </div>

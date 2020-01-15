@@ -18,7 +18,7 @@ $summary = \app\helpers\ChallengeSummarizer::fromSession($session);
 <div class="panel panel-default">
     <?php if ($challengeItem): ?>
         <p>
-        <center><img src="/i/<?= $challengeItem->name ? $challengeItem->name : "no_image"; ?>.png" title="<?= Yii::t($challengeElementsObjectName, $challengeItem->name)?>"/></center></p>
+        <center><img src="/i/<?= $challengeItem->name ? $challengeItem->name : "no_image"; ?>.png" title="<?= Yii::t($challengeElementsObjectName, $challengeItem->name)?>" <?= $challenge->getRightImageWidth($challengeItem->name) ?> /></center></p>
     <?php endif; ?>
     <div class="panel-heading">
         <?= $challenge->name ?>

@@ -542,4 +542,16 @@ class Challenge extends \app\models\ar\Challenge
             }
     }
 
+    public static function getRightImageWidth($challengeItemName)
+    {
+        if ($challengeItemName == 'bath'){
+            echo 'width="300"';
+        } elseif ($challengeItemName == 'broom'){
+            echo 'height="100"';
+        }
+        else {
+            echo 'width="auto"';
+        } 
+    }
+
 }

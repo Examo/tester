@@ -37,7 +37,7 @@ $number = 1;
                 <p><strong>Оценка: <?= $summary->getMark() ? $summary->getTextMark($summary->getMark()) : 'не доступно - слишком мало было дано ответов' ?></strong></p>
                 <p><?php $summary->getEmoticon($summary->getMark());?></p>
                 <?php if($challengeItem): ?>
-                    <p><center><img src="/i/<?= $challengeItem->name ? $challengeItem->name : "no_image" ; ?>.png" /></center></p>
+                    <p><center><img src="/i/<?= $challengeItem->name ? $challengeItem->name : "no_image" ; ?>.png" <?= $challenge->getRightImageWidth($challengeItem->name) ?> /></center></p>
                 <?php endif; ?>
                 <p><strong>Всего набрано баллов: <?= $summary->getAllPoints($questions, $points)['allPoints']; ?> из <?=$summary->getAllPoints($questions, $points)['numberOfPoints']?></strong></p>
                 <p>Время выполнения: <?= round($summary->getTime() / 60) ?> мин.</p>
