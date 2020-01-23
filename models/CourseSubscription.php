@@ -269,6 +269,8 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
      */
     public function getWebinarChallengesCheck($course_id)
     {
+        // тут надо учитывать, сколько недель прошло
+        //добавить неделю = и всё слетит на странице курса и прочих
         $webinarChallenges = [];
         $regexp = "/(вебинар в системе)([0-9]*)( )(вебинар по порядку)([0-9]*)( )(занятие)([0-9]*)( )(ссылка)(\S*)( )(описание)([\S\s]*)/ui";
         $events = Event::find()->where(['course_id' => $course_id])->all();
@@ -311,6 +313,7 @@ class CourseSubscription extends \app\models\ar\CourseSubscription
             //}
         }
 
+        //\yii\helpers\VarDumper::dump($data, 10, true);
 
         foreach ($data as $key => $webinarData) {
 

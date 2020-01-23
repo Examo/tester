@@ -53,7 +53,7 @@ class CleanWidget extends Widget
         if ($scale->points - $roundTime >= 100){
             $backgroundColor = 'blue';
         }
-        else {
+        if ($scale->points - $roundTime > 10 && $scale->points - $roundTime < 100) {
             $backgroundColor = 'green';
         }
 

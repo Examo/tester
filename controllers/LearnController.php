@@ -48,6 +48,7 @@ class LearnController extends Controller
         $data = [];
         $lastData = [];
         $coursesBegin = [];
+        $latestData = [];
 
         foreach (Course::findSubscribed(Yii::$app->user->id)->all() as $keyCourse => $course) {
             $events = Event::find()->where(['course_id' => $course->id])->all();
@@ -65,7 +66,85 @@ class LearnController extends Controller
                 if (LearnObject::find()->where(['id' => $weekKey])->one()) {
                     $learn = LearnObject::find()->where(['id' => $weekKey])->one();
 
-                    $assignmentValue = 7 * 2 * count($latestData['lastWeeks']);
+                    // заявленное значение равно 7 дней умножить на 2 теста в день (Еда и Уборка) и умножить на количество курсов
+                    // но нужно умножить на вебинары готовы или не готовы,
+                    // 7 * 2 + ()
+                    // Вебинары + тесты для Еды и Уборки + Домашнее задание + Экзамен = 100%
+                    // тесты для Еды и Уборки - это 100% разделить на 4 и разделить на 14 - так каждый тест даёт
+                    // вебинары - это 25% и всё остальное - тоже
+                    // на домашнее задание
+                    // на общий тест за неделю
+
+
+                    $webinar = 0;
+                    if (isset($latestData['webinarsData'])){
+                        foreach ($latestData['webinarsData'] as $webinarId => $webinarsData){
+                            if (isset($webinarsData['undone'])){
+                                $webinar = 14;
+                                print 'webinar undone';
+                            }
+                            if (!isset($webinarsData['undone'])){
+                                $webinar = 0;
+                                print 'webinar done';
+                            }
+
+                        }
+
+                    }
+                    \yii\helpers\VarDumper::dump($latestData['webinarsData'], 10, true);
+
+                    $number = 1;
+                    $generalValue = 7 * 2; // 7 дней и 2 обязательных теста в каждом
+                    $generalScaleValue = $value;
+
+                    if (isset($webinar) && isset($webinar['done'])){
+                        $webinar = $generalValue;
+                        $generalScaleValue += $webinar;
+                        $number++;
+                    }
+                    if (isset($webinar) && isset($webinar['undone'])){
+                        $webinar = 0;
+                        $generalScaleValue += $webinar;
+                        $number++;
+                    }
+                    if (isset($homework) && isset($homework['done'])){
+                        $homework = $generalValue;
+                        $generalScaleValue += $homework;
+                        $number++;
+                    }
+                    if (isset($homework) && isset($homework['undone'])){
+                        $homework = 0;
+                        $generalScaleValue += $homework;
+                        $number++;
+                    }
+                    if (isset($exam) && isset($exam['done'])){
+                        $exam = $generalValue;
+                        $generalScaleValue += $exam;
+                        $number++;
+                    }
+                    if (isset($exam) && isset($exam['undone'])){
+                        $exam = 0;
+                        $generalScaleValue += $exam;
+                        $number++;
+                    }
+                    if (isset($generalChallenge) && isset($generalChallenge['done'])){
+                        $generalChallenge = $generalValue;
+                        $generalScaleValue += $generalChallenge;
+                        $number++;
+                    }
+                    if (isset($generalChallenge) && isset($generalChallenge['undone'])){
+                        $generalChallenge = 0;
+                        $generalScaleValue += $generalChallenge;
+                        $number++;
+                    }
+
+                    $hundredPercent = $generalValue * $number;
+                    $onePercent = $hundredPercent / 100 * 1;
+
+                    $result = $value * 100 / $hundredPercent;
+
+
+                    $assignmentValue = ((7 * 2) + $webinar) * count($latestData['lastWeeks']);
                     $assignmentValueCost = 100 / $assignmentValue;
                     $value *= $assignmentValueCost;
 
@@ -89,6 +168,8 @@ class LearnController extends Controller
 
         }
 
+        //\yii\helpers\VarDumper::dump($latestData, 10, true);
+
         return $this->render('index', [
             'learning' => $learning,
             'challenges' => $challenges,
@@ -98,7 +179,8 @@ class LearnController extends Controller
             'allCourses' => $allCourses,
             'data' => $data,
             'lastData' => $lastData,
-            'coursesBegin' => $coursesBegin
+            'coursesBegin' => $coursesBegin,
+            'latestData' => $latestData
         ]);
     }
 }
