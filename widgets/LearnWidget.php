@@ -34,17 +34,35 @@ class LearnWidget extends Widget
 
         foreach ($latestData['lastResult'] as $weekKey => $value) {
             // общее количество обязательных заданий
-            $assignmentValue = 7 * 2 * count($latestData['lastWeeks']);
-
+            // $assignmentValue = 7 * 2 * count($latestData['lastWeeks']);
             // стоимость в процентах одного задания
-             $assignmentValueCost = 100 / $assignmentValue;
+            //  $assignmentValueCost = 100 / $assignmentValue;
             //\yii\helpers\VarDumper::dump($assignmentValueCost, 10, true);
             // //$value *= 25;
-            $value *= $assignmentValueCost;
-            //$heightScaleValue = 100 - $assignmentValueCost;
+            // $value *= $assignmentValueCost;
+            //  $heightScaleValue = 100 - $value;
+
+             $webinar = 0;
+             $number = 1;
+             $generalValue = 7 * 2; // 7 дней и 2 обязательных теста в каждом
+             $generalScaleValue = $value;
+
+            if (isset($latestData['webinarsData'][$weekKey]) && $latestData['webinarsData'][$weekKey]['countUndone'] == 0){
+                $webinar = $generalValue;
+                $generalScaleValue += $webinar;
+                $number++;
+            }
+            if (isset($latestData['webinarsData'][$weekKey]['undone'])){
+                $webinar = 0;
+                $generalScaleValue += $webinar;
+                $number++;
+            }
+
+            $assignmentValue = $generalValue * $number * count($latestData['lastWeeks']);
+            // стоимость в процентах одного задания
+            $assignmentValueCost = 100 / $assignmentValue;
+            $value = $generalScaleValue * $assignmentValueCost;
             $heightScaleValue = 100 - $value;
-
-
 
             if ($value <= 10) {
                 $backgroundColor = 'red';
@@ -56,8 +74,6 @@ class LearnWidget extends Widget
                 $backgroundColor = 'blue';
                 $value = '&#10004';
             }
-
-
 
             echo '<a href="/learn" id="learn-widget">' .
                 '<div class="bar-wrapper-learn"><p style="font-size:9px"><strong>' . $weekKey . '<br>' . $value . '</strong></p>' .
@@ -76,14 +92,8 @@ class LearnWidget extends Widget
                 '</div>' .
                 '</div></a>';
         }
-        
-        
-
     }
 
-
     public function run(){
-
-        //return $this->food;
     }
 }

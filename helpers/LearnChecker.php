@@ -110,13 +110,12 @@ class LearnChecker
                         }
                         if ($challengeData == 1) {
                             // если выполнен, то записывается 1 в done
-                            $webinarsData[$weekKey]['done'] = 1;
+                            //$webinarsData[$weekKey]['done'] = 1;
                             $webinarsData[$weekKey]['countDone'] = $webinarsData[$weekKey]['countDone'] + 1;
                         }
                     }
                 }
             }
-            //\yii\helpers\VarDumper::dump($webinarsData, 10, true);
 
             // перебираем все выполненные тесты для Еды и Уборки на неделю
             $result = [];
@@ -141,34 +140,15 @@ class LearnChecker
                                     }
                                 }
                             }
-                            \yii\helpers\VarDumper::dump($weekResult, 10, true);
-                            // если
-                        ////   if (isset($webinarsData[$keyFeed]) && $weekResult != 7 * 2 * count($allDaysFeed)) {
-                        //       $result[$courseFeed][$keyFeed] = $weekResult + (4.5 / count($allDaysFeed));
-                        //       if ($result[$courseFeed][$keyFeed] > 7 * 2 * count($allDaysFeed)) {
-                        //           $result[$courseFeed][$keyFeed] = 7 * 2 * count($allDaysFeed);
-                        //       }
-                        //   } else {
-                        //       $result[$courseFeed][$keyFeed] = $weekResult;
-                        //   }
 
-                            //if (isset($webinarsData[$keyFeed]['undone'])){
-                                $result[$courseFeed][$keyFeed] = $weekResult;
-                          //  }
-                          //  if (!isset($webinarsData[$keyFeed]['undone'])){
-                          //      $result[$courseFeed][$keyFeed] = $weekResult;
-                          //  }
+                            $result[$courseFeed][$keyFeed] = $weekResult;
+
                         }
                     }
                 }
             }
-
-             \yii\helpers\VarDumper::dump($allDaysFeed, 10, true);
-             \yii\helpers\VarDumper::dump($allDaysClean, 10, true);
-            \yii\helpers\VarDumper::dump($result, 10, true);
             $lastResult = [];
             $lastWeeks = [];
-            //$allWeeks = [];
             foreach ($result as $course => $week) {
                 foreach ($week as $weekKey => $day) {
                     if (isset($lastResult[$weekKey])) {
@@ -185,7 +165,6 @@ class LearnChecker
             $lastValue = 0;
             foreach ($lastWeeks as $course => $lastWeeksValue) {
                 $lastValue += $lastWeeksValue['result'];
-                //\yii\helpers\VarDumper::dump($course, 10, true);
             }
 
             $lastData['lastWeeks'] = $lastWeeks;
@@ -195,7 +174,6 @@ class LearnChecker
             $lastData['webinarsData'] = $webinarsData;
 
         }
-      \yii\helpers\VarDumper::dump($lastData, 10, true);
         return $lastData;
     }
 }

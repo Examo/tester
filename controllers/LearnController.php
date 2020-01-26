@@ -65,44 +65,17 @@ class LearnController extends Controller
             foreach ($latestData['lastResult'] as $weekKey => $value) {
                 if (LearnObject::find()->where(['id' => $weekKey])->one()) {
                     $learn = LearnObject::find()->where(['id' => $weekKey])->one();
-
-                    // заявленное значение равно 7 дней умножить на 2 теста в день (Еда и Уборка) и умножить на количество курсов
-                    // но нужно умножить на вебинары готовы или не готовы,
-                    // 7 * 2 + ()
-                    // Вебинары + тесты для Еды и Уборки + Домашнее задание + Экзамен = 100%
-                    // тесты для Еды и Уборки - это 100% разделить на 4 и разделить на 14 - так каждый тест даёт
-                    // вебинары - это 25% и всё остальное - тоже
-                    // на домашнее задание
-                    // на общий тест за неделю
-
-
                     $webinar = 0;
-                    if (isset($latestData['webinarsData'])){
-                        foreach ($latestData['webinarsData'] as $webinarId => $webinarsData){
-                            if (isset($webinarsData['undone'])){
-                                $webinar = 14;
-                                print 'webinar undone';
-                            }
-                            if (!isset($webinarsData['undone'])){
-                                $webinar = 0;
-                                print 'webinar done';
-                            }
-
-                        }
-
-                    }
-                    \yii\helpers\VarDumper::dump($latestData['webinarsData'], 10, true);
-
                     $number = 1;
                     $generalValue = 7 * 2; // 7 дней и 2 обязательных теста в каждом
                     $generalScaleValue = $value;
 
-                    if (isset($webinar) && isset($webinar['done'])){
+                    if (isset($latestData['webinarsData'][$weekKey]) && $latestData['webinarsData'][$weekKey]['countUndone'] == 0){
                         $webinar = $generalValue;
                         $generalScaleValue += $webinar;
                         $number++;
                     }
-                    if (isset($webinar) && isset($webinar['undone'])){
+                    if (isset($latestData['webinarsData'][$weekKey]['undone'])){
                         $webinar = 0;
                         $generalScaleValue += $webinar;
                         $number++;
@@ -140,20 +113,13 @@ class LearnController extends Controller
 
                     $hundredPercent = $generalValue * $number;
                     $onePercent = $hundredPercent / 100 * 1;
-
-                    $result = $value * 100 / $hundredPercent;
-
-
-                    $assignmentValue = ((7 * 2) + $webinar) * count($latestData['lastWeeks']);
-                    $assignmentValueCost = 100 / $assignmentValue;
-                    $value *= $assignmentValueCost;
-
-                    $heightScaleValue = 100 - $value;
+                    $doneProcent = $generalScaleValue * 100 / $hundredPercent;
+                    $undoneProcent = 100 - ceil($doneProcent);
 
                     $all[$weekKey]['week'] = $weekKey;
                     $all[$weekKey]['object'] = $learn->object;
-                    $all[$weekKey]['value'] = ceil($value);
-                    $all[$weekKey]['heightScaleValue'] = $heightScaleValue;
+                    $all[$weekKey]['value'] = ceil($doneProcent);
+                    $all[$weekKey]['heightScaleValue'] = $undoneProcent;
                 }
             }
 
@@ -167,9 +133,7 @@ class LearnController extends Controller
             $all = null;
 
         }
-
-        //\yii\helpers\VarDumper::dump($latestData, 10, true);
-
+        
         return $this->render('index', [
             'learning' => $learning,
             'challenges' => $challenges,
