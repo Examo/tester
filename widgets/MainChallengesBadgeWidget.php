@@ -104,8 +104,9 @@ class MainChallengesBadgeWidget extends Widget
                             unset($match[$course->id][$key]);
                         }
                     }
-                    //\yii\helpers\VarDumper::dump($match[$course->id][3][2], 10, true);
-                    //print '<br><br><br><br><br><br><br><br><br>';
+                   // print '<br><br><br><br><br><br><br><br><br>';
+                   // \yii\helpers\VarDumper::dump($chain, 10, true);
+
                     //\yii\helpers\VarDumper::dump($chain, 10, true);
 
 
@@ -113,6 +114,48 @@ class MainChallengesBadgeWidget extends Widget
                         if ($currentDay == $day) {
                             $currentDayNumber = $key;
                         }
+                    }
+
+                    if (!ChallengesWeeks::find()->where(['course_id' => $course->id])->andWhere(['element_id' => 1])->andWhere(['week_id' => $courseStats['week']])->andWhere(['user_id' => Yii::$app->user->id])->one()){
+                        $currentWeeksChallenges = Challenge::find()->where(['course_id' => $course->id])->andWhere(['week' => $week])->andWhere(['element_id' => 1])->all();
+                        $allNewChallenges = [];
+                        foreach ($currentWeeksChallenges as $newChallenge) {
+                            $allNewChallenges[$newChallenge->id] = 0;
+                        }
+                        if (!$currentWeeksChallenges) {
+
+                        }
+                        if ($allNewChallenges == []){
+                            $allNewChallenges = [2 => 0];
+                        }
+                        $challengesWeeks = new ChallengesWeeks();
+                        $challengesWeeks->course_id = $course->id;
+                        $challengesWeeks->week_id = $week;
+                        $challengesWeeks->user_id = Yii::$app->user->id;
+                        $challengesWeeks->challenges = json_encode($allNewChallenges);
+                        $challengesWeeks->element_id = 1;
+                        $challengesWeeks->save();
+                    }
+
+                    if (!ChallengesWeeks::find()->where(['course_id' => $course->id])->andWhere(['element_id' => 2])->andWhere(['week_id' => $courseStats['week']])->andWhere(['user_id' => Yii::$app->user->id])->one()){
+                        $currentWeeksChallenges = Challenge::find()->where(['course_id' => $course->id])->andWhere(['week' => $week])->andWhere(['element_id' => 1])->all();
+                        $allNewChallenges = [];
+                        foreach ($currentWeeksChallenges as $newChallenge) {
+                            $allNewChallenges[$newChallenge->id] = 0;
+                        }
+                        if (!$currentWeeksChallenges) {
+
+                        }
+                        if ($allNewChallenges == []){
+                            $allNewChallenges = [1 => 0];
+                        }
+                        $challengesWeeks = new ChallengesWeeks();
+                        $challengesWeeks->course_id = $course->id;
+                        $challengesWeeks->week_id = $week;
+                        $challengesWeeks->user_id = Yii::$app->user->id;
+                        $challengesWeeks->challenges = json_encode($allNewChallenges);
+                        $challengesWeeks->element_id = 2;
+                        $challengesWeeks->save();
                     }
 
                     if (ChallengesWeeks::find()->where(['course_id' => $course->id])->andWhere(['element_id' => 1])->andWhere(['week_id' => $courseStats['week']])->andWhere(['user_id' => Yii::$app->user->id])->one() && ChallengesWeeks::find()->where(['course_id' => $course->id])->andWhere(['element_id' => 2])->andWhere(['week_id' => $courseStats['week']])->andWhere(['user_id' => Yii::$app->user->id])->one()) {
@@ -126,7 +169,7 @@ class MainChallengesBadgeWidget extends Widget
                             //print $keyDay;
                             if ($data = json_decode($learn->$day, true)) {
                                 $data = json_decode($learn->$day, true);
-
+                               // \yii\helpers\VarDumper::dump($data, 10, true);
                                 if ($day == $currentDay && $data['feed'] == 0) {
                                     // print 'Сегодня ' . $day;
                                     $all[$course->id][$day]['feed'] = null;
@@ -191,6 +234,7 @@ class MainChallengesBadgeWidget extends Widget
             }
         }
 
+        //\yii\helpers\VarDumper::dump($all, 10, true);
         //$allValue = 0;
         foreach ($all as $course => $days){
             foreach ($days as $day => $values){
