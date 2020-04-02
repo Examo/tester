@@ -2,6 +2,7 @@
 namespace app\widgets;
 use app\helpers\CourseStats;
 use app\models\ar\ChallengesWeeks;
+use app\models\ar\DifficultSubjects;
 use app\models\ar\LearnObject;
 use app\models\ar\ScaleLearn;
 use app\models\Attempt;

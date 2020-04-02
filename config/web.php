@@ -32,7 +32,25 @@ $config = [
                 ],
             ],
         ],
-        'mailer' => require(__DIR__ . '/mailer.php'),
+        //'mailer' => require(__DIR__ . '/mailer.php'),
+
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'useFileTransport' => false,
+            'messageConfig' => [
+                'charset' => 'UTF-8',
+                'from' => [$params['adminEmail'] => $params['adminName']],
+            ],
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp.yandex.ru',
+                'username' => $params['adminEmail'],
+                'password' => $params['adminPassword'],
+                'port' => '587',
+                'encryption' => 'tls',
+            ],
+        ],
+
         'db' => require(__DIR__ . '/db.php'),
 
         'urlManager' => [

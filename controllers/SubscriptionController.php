@@ -4,12 +4,14 @@ namespace app\controllers;
 
 use app\helpers\EventChecker;
 use app\helpers\LearnChecker;
+use app\models\ar\DifficultSubjects;
 use app\models\AuthAssignment;
 use app\models\Course;
 use app\models\CourseLecturer;
 use app\models\CourseSubscription;
 use app\models\Discipline;
 use app\models\search\CourseSearch;
+use app\models\Subject;
 use app\models\User;
 use Yii;
 use yii\helpers\Url;
@@ -277,6 +279,28 @@ class SubscriptionController extends Controller
         }
 
         $course->subscribe(Yii::$app->user->id);
+
+        $subjects = Subject::find()->where(['course_id' => $id])->all();
+        $userDifficultSubjects = DifficultSubjects::find()->where(['user_id' => Yii::$app->user->id])->all();
+
+        foreach($userDifficultSubjects as $difficultSubject) {
+            $subjectIdsMap[$difficultSubject->subject_id] = true;
+        }
+
+        foreach($subjects as $subject) {
+            if (!isset($subjectIdsMap[$subject->id])) {
+                //echo("Got it! subjectIdsMap[subject->id] = false & ". $subject->id ."<br>");
+                $newDifficultSubject = new DifficultSubjects();
+                $newDifficultSubject->user_id = Yii::$app->user->id;
+                $newDifficultSubject->subject_id = $subject->id;
+                $newDifficultSubject->points = 0;
+                $newDifficultSubject->save();
+
+            }
+            if (isset($subjectIdsMap[$subject->id])) {
+                //echo(" Nope! subjectIdsMap[subject->id] =" . $subjectIdsMap[$subject->id] . "<br>");
+            }
+        }
 
         return $this->redirect(Url::to(['/subscription']));
     }
