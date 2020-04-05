@@ -3,7 +3,7 @@
 return [
     'adminEmail' => 'examo@yandex.ru',
     'adminName' => 'Examo',
-    'adminPassword' => 'g1Fghgheidgfhghyw7'
+    'adminPassword' => 'fRew344QwkjGhh154'
 ];
 
 //return [

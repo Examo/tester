@@ -52,7 +52,6 @@ class SubscriptionController extends Controller
      */
     public function actionIndex()
     {
-
         $courseTime = $challengesCount = $webinarsCount = $homeworksCount = $examsCount = $webinarsDone = [];
 
         $searchModel = new CourseSearch();

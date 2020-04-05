@@ -130,29 +130,269 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
 .coffee_10 { width: 70px; top: 320px; left: 380px; z-index: 1; }
 
 .jam { width: 30px; top: 45px; left: 290px; z-index: 1; }
+.jam_2 { width: 30px; top: 45px; left: 290px; z-index: 1; }
+.jam_3 { width: 30px; top: 45px; left: 290px; z-index: 1; }
+.jam_4 { width: 30px; top: 45px; left: 290px; z-index: 1; }
+.jam_5 { width: 30px; top: 45px; left: 290px; z-index: 1; }
+.jam_6 { width: 30px; top: 45px; left: 290px; z-index: 1; }
+.jam_7 { width: 30px; top: 45px; left: 290px; z-index: 1; }
+.jam_8 { width: 30px; top: 45px; left: 290px; z-index: 1; }
+.jam_9 { width: 30px; top: 45px; left: 290px; z-index: 1; }
+.jam_10 { width: 30px; top: 45px; left: 290px; z-index: 1; }
+
 .pan { width: 80px; top: 310px; left: 320px; z-index: 2; }
+.pan_2 { width: 80px; top: 310px; left: 320px; z-index: 2; }
+.pan_3 { width: 80px; top: 310px; left: 320px; z-index: 2; }
+.pan_4 { width: 80px; top: 310px; left: 320px; z-index: 2; }
+.pan_5 { width: 80px; top: 310px; left: 320px; z-index: 2; }
+.pan_6 { width: 80px; top: 310px; left: 320px; z-index: 2; }
+.pan_7 { width: 80px; top: 310px; left: 320px; z-index: 2; }
+.pan_8 { width: 80px; top: 310px; left: 320px; z-index: 2; }
+.pan_9 { width: 80px; top: 310px; left: 320px; z-index: 2; }
+.pan_10 { width: 80px; top: 310px; left: 320px; z-index: 2; }
+
 .bread { width: 70px; top: 330px; left: 280px; z-index: 2; }
+.bread_2  { width: 70px; top: 330px; left: 280px; z-index: 2; }
+.bread_3  { width: 70px; top: 330px; left: 280px; z-index: 2; }
+.bread_4  { width: 70px; top: 330px; left: 280px; z-index: 2; }
+.bread_5  { width: 70px; top: 330px; left: 280px; z-index: 2; }
+.bread_6  { width: 70px; top: 330px; left: 280px; z-index: 2; }
+.bread_7  { width: 70px; top: 330px; left: 280px; z-index: 2; }
+.bread_8  { width: 70px; top: 330px; left: 280px; z-index: 2; }
+.bread_9  { width: 70px; top: 330px; left: 280px; z-index: 2; }
+.bread_10 { width: 70px; top: 330px; left: 280px; z-index: 2; }
+
 .cake { width: 50px; top: 310px; left: 260px; z-index: 1; }
+.cake_2  { width: 50px; top: 310px; left: 260px; z-index: 1; }
+.cake_3  { width: 50px; top: 310px; left: 260px; z-index: 1; }
+.cake_4  { width: 50px; top: 310px; left: 260px; z-index: 1; }
+.cake_5  { width: 50px; top: 310px; left: 260px; z-index: 1; }
+.cake_6  { width: 50px; top: 310px; left: 260px; z-index: 1; }
+.cake_7  { width: 50px; top: 310px; left: 260px; z-index: 1; }
+.cake_8  { width: 50px; top: 310px; left: 260px; z-index: 1; }
+.cake_9  { width: 50px; top: 310px; left: 260px; z-index: 1; }
+.cake_10 { width: 50px; top: 310px; left: 260px; z-index: 1; }
+
 .bisquit { width: 60px; top: 40px; left: 220px; z-index: 1; }
+.bisquit_2 { width: 60px; top: 40px; left: 220px; z-index: 1; }
+.bisquit_3 { width: 60px; top: 40px; left: 220px; z-index: 1; }
+.bisquit_4 { width: 60px; top: 40px; left: 220px; z-index: 1; }
+.bisquit_5 { width: 60px; top: 40px; left: 220px; z-index: 1; }
+.bisquit_6 { width: 60px; top: 40px; left: 220px; z-index: 1; }
+.bisquit_7 { width: 60px; top: 40px; left: 220px; z-index: 1; }
+.bisquit_8 { width: 60px; top: 40px; left: 220px; z-index: 1; }
+.bisquit_9 { width: 60px; top: 40px; left: 220px; z-index: 1; }
+.bisquit_10 { width: 60px; top: 40px; left: 220px; z-index: 1; }
+
 .coke_pear { width: 20px; top: 275px; left: 375px; z-index: 1; }
+.coke_pear_2  { width: 20px; top: 275px; left: 375px; z-index: 1; }
+.coke_pear_3  { width: 20px; top: 275px; left: 375px; z-index: 1; }
+.coke_pear_4  { width: 20px; top: 275px; left: 375px; z-index: 1; }
+.coke_pear_5  { width: 20px; top: 275px; left: 375px; z-index: 1; }
+.coke_pear_6  { width: 20px; top: 275px; left: 375px; z-index: 1; }
+.coke_pear_7  { width: 20px; top: 275px; left: 375px; z-index: 1; }
+.coke_pear_8  { width: 20px; top: 275px; left: 375px; z-index: 1; }
+.coke_pear_9  { width: 20px; top: 275px; left: 375px; z-index: 1; }
+.coke_pear_10 { width: 20px; top: 275px; left: 375px; z-index: 1; }
+
 .coke_apple { width: 20px; top: 275px; left: 355px; z-index: 1; }
+.coke_apple_2  { width: 20px; top: 275px; left: 355px; z-index: 1; }
+.coke_apple_3  { width: 20px; top: 275px; left: 355px; z-index: 1; }
+.coke_apple_4  { width: 20px; top: 275px; left: 355px; z-index: 1; }
+.coke_apple_5  { width: 20px; top: 275px; left: 355px; z-index: 1; }
+.coke_apple_6  { width: 20px; top: 275px; left: 355px; z-index: 1; }
+.coke_apple_7  { width: 20px; top: 275px; left: 355px; z-index: 1; }
+.coke_apple_8  { width: 20px; top: 275px; left: 355px; z-index: 1; }
+.coke_apple_9  { width: 20px; top: 275px; left: 355px; z-index: 1; }
+.coke_apple_10 { width: 20px; top: 275px; left: 355px; z-index: 1; }
+
 .condenced_milk { width: 35px; top: 180px; left: 390px; z-index: 2; }
+.condenced_milk_2  { width: 35px; top: 180px; left: 390px; z-index: 2; }
+.condenced_milk_3  { width: 35px; top: 180px; left: 390px; z-index: 2; }
+.condenced_milk_4  { width: 35px; top: 180px; left: 390px; z-index: 2; }
+.condenced_milk_5  { width: 35px; top: 180px; left: 390px; z-index: 2; }
+.condenced_milk_6  { width: 35px; top: 180px; left: 390px; z-index: 2; }
+.condenced_milk_7  { width: 35px; top: 180px; left: 390px; z-index: 2; }
+.condenced_milk_8  { width: 35px; top: 180px; left: 390px; z-index: 2; }
+.condenced_milk_9  { width: 35px; top: 180px; left: 390px; z-index: 2; }
+.condenced_milk_10 { width: 35px; top: 180px; left: 390px; z-index: 2; }
+
 .coke_orange { width: 35px; top: 150px; left: 400px; z-index: 1; }
+.coke_orange_2  { width: 35px; top: 150px; left: 400px; z-index: 1; }
+.coke_orange_3  { width: 35px; top: 150px; left: 400px; z-index: 1; }
+.coke_orange_4  { width: 35px; top: 150px; left: 400px; z-index: 1; }
+.coke_orange_5  { width: 35px; top: 150px; left: 400px; z-index: 1; }
+.coke_orange_6  { width: 35px; top: 150px; left: 400px; z-index: 1; }
+.coke_orange_7  { width: 35px; top: 150px; left: 400px; z-index: 1; }
+.coke_orange_8  { width: 35px; top: 150px; left: 400px; z-index: 1; }
+.coke_orange_9  { width: 35px; top: 150px; left: 400px; z-index: 1; }
+.coke_orange_10 { width: 35px; top: 150px; left: 400px; z-index: 1; }
+
 .greens { width: 50px; top: 150px; left: 350px; z-index: 1; }
+.greens_2  { width: 50px; top: 150px; left: 350px; z-index: 1; }
+.greens_3  { width: 50px; top: 150px; left: 350px; z-index: 1; }
+.greens_4  { width: 50px; top: 150px; left: 350px; z-index: 1; }
+.greens_5  { width: 50px; top: 150px; left: 350px; z-index: 1; }
+.greens_6  { width: 50px; top: 150px; left: 350px; z-index: 1; }
+.greens_7  { width: 50px; top: 150px; left: 350px; z-index: 1; }
+.greens_8  { width: 50px; top: 150px; left: 350px; z-index: 1; }
+.greens_9  { width: 50px; top: 150px; left: 350px; z-index: 1; }
+.greens_10 { width: 50px; top: 150px; left: 350px; z-index: 1; }
+
 .condenced_milk_bag { width: 40px; top: 90px; left: 390px; z-index: 1; }
+.condenced_milk_bag_2  { width: 40px; top: 90px; left: 390px; z-index: 1; }
+.condenced_milk_bag_3  { width: 40px; top: 90px; left: 390px; z-index: 1; }
+.condenced_milk_bag_4  { width: 40px; top: 90px; left: 390px; z-index: 1; }
+.condenced_milk_bag_5  { width: 40px; top: 90px; left: 390px; z-index: 1; }
+.condenced_milk_bag_6  { width: 40px; top: 90px; left: 390px; z-index: 1; }
+.condenced_milk_bag_7  { width: 40px; top: 90px; left: 390px; z-index: 1; }
+.condenced_milk_bag_8  { width: 40px; top: 90px; left: 390px; z-index: 1; }
+.condenced_milk_bag_9  { width: 40px; top: 90px; left: 390px; z-index: 1; }
+.condenced_milk_bag_10 { width: 40px; top: 90px; left: 390px; z-index: 1; }
+
 .egg1 { width: 10px; top: 100px; left: 355px; z-index: 1; }
+.egg1_2  { width: 10px; top: 100px; left: 355px; z-index: 1; }
+.egg1_3  { width: 10px; top: 100px; left: 355px; z-index: 1; }
+.egg1_4  { width: 10px; top: 100px; left: 355px; z-index: 1; }
+.egg1_5  { width: 10px; top: 100px; left: 355px; z-index: 1; }
+.egg1_6  { width: 10px; top: 100px; left: 355px; z-index: 1; }
+.egg1_7  { width: 10px; top: 100px; left: 355px; z-index: 1; }
+.egg1_8  { width: 10px; top: 100px; left: 355px; z-index: 1; }
+.egg1_9  { width: 10px; top: 100px; left: 355px; z-index: 1; }
+.egg1_10 { width: 10px; top: 100px; left: 355px; z-index: 1; }
+
 .egg2 { width: 10px; top: 100px; left: 365px; z-index: 1; }
+.egg2_2  { width: 10px; top: 100px; left: 365px; z-index: 1; }
+.egg2_3  { width: 10px; top: 100px; left: 365px; z-index: 1; }
+.egg2_4  { width: 10px; top: 100px; left: 365px; z-index: 1; }
+.egg2_5  { width: 10px; top: 100px; left: 365px; z-index: 1; }
+.egg2_6  { width: 10px; top: 100px; left: 365px; z-index: 1; }
+.egg2_7  { width: 10px; top: 100px; left: 365px; z-index: 1; }
+.egg2_8  { width: 10px; top: 100px; left: 365px; z-index: 1; }
+.egg2_9  { width: 10px; top: 100px; left: 365px; z-index: 1; }
+.egg2_10 { width: 10px; top: 100px; left: 365px; z-index: 1; }
+
 .egg3 { width: 10px; top: 100px; left: 375px; z-index: 1; }
+.egg3_2  { width: 10px; top: 100px; left: 375px; z-index: 1; }
+.egg3_3  { width: 10px; top: 100px; left: 375px; z-index: 1; }
+.egg3_4  { width: 10px; top: 100px; left: 375px; z-index: 1; }
+.egg3_5  { width: 10px; top: 100px; left: 375px; z-index: 1; }
+.egg3_6  { width: 10px; top: 100px; left: 375px; z-index: 1; }
+.egg3_7  { width: 10px; top: 100px; left: 375px; z-index: 1; }
+.egg3_8  { width: 10px; top: 100px; left: 375px; z-index: 1; }
+.egg3_9  { width: 10px; top: 100px; left: 375px; z-index: 1; }
+.egg3_10 { width: 10px; top: 100px; left: 375px; z-index: 1; }
+
 .egg4 { width: 10px; top: 110px; left: 350px; z-index: 1; }
+.egg4_2  { width: 10px; top: 110px; left: 350px; z-index: 1; }
+.egg4_3  { width: 10px; top: 110px; left: 350px; z-index: 1; }
+.egg4_4  { width: 10px; top: 110px; left: 350px; z-index: 1; }
+.egg4_5  { width: 10px; top: 110px; left: 350px; z-index: 1; }
+.egg4_6  { width: 10px; top: 110px; left: 350px; z-index: 1; }
+.egg4_7  { width: 10px; top: 110px; left: 350px; z-index: 1; }
+.egg4_8  { width: 10px; top: 110px; left: 350px; z-index: 1; }
+.egg4_9  { width: 10px; top: 110px; left: 350px; z-index: 1; }
+.egg4_10 { width: 10px; top: 110px; left: 350px; z-index: 1; }
+
 .egg5 { width: 10px; top: 110px; left: 360px; z-index: 1; }
+.egg5_2  { width: 10px; top: 110px; left: 360px; z-index: 1; }
+.egg5_3  { width: 10px; top: 110px; left: 360px; z-index: 1; }
+.egg5_4  { width: 10px; top: 110px; left: 360px; z-index: 1; }
+.egg5_5  { width: 10px; top: 110px; left: 360px; z-index: 1; }
+.egg5_6  { width: 10px; top: 110px; left: 360px; z-index: 1; }
+.egg5_7  { width: 10px; top: 110px; left: 360px; z-index: 1; }
+.egg5_8  { width: 10px; top: 110px; left: 360px; z-index: 1; }
+.egg5_9  { width: 10px; top: 110px; left: 360px; z-index: 1; }
+.egg5_10 { width: 10px; top: 110px; left: 360px; z-index: 1; }
+
 .egg6 { width: 10px; top: 110px; left: 370px; z-index: 1; }
+.egg6_2  { width: 10px; top: 110px; left: 370px; z-index: 1; }
+.egg6_3  { width: 10px; top: 110px; left: 370px; z-index: 1; }
+.egg6_4  { width: 10px; top: 110px; left: 370px; z-index: 1; }
+.egg6_5  { width: 10px; top: 110px; left: 370px; z-index: 1; }
+.egg6_6  { width: 10px; top: 110px; left: 370px; z-index: 1; }
+.egg6_7  { width: 10px; top: 110px; left: 370px; z-index: 1; }
+.egg6_8  { width: 10px; top: 110px; left: 370px; z-index: 1; }
+.egg6_9  { width: 10px; top: 110px; left: 370px; z-index: 1; }
+.egg6_10 { width: 10px; top: 110px; left: 370px; z-index: 1; }
+
 .sausages { width: 73px; top: 150px; left: 260px; z-index: 2; }
+.sausages_2  { width: 73px; top: 150px; left: 260px; z-index: 2; }
+.sausages_3  { width: 73px; top: 150px; left: 260px; z-index: 2; }
+.sausages_4  { width: 73px; top: 150px; left: 260px; z-index: 2; }
+.sausages_5  { width: 73px; top: 150px; left: 260px; z-index: 2; }
+.sausages_6  { width: 73px; top: 150px; left: 260px; z-index: 2; }
+.sausages_7  { width: 73px; top: 150px; left: 260px; z-index: 2; }
+.sausages_8  { width: 73px; top: 150px; left: 260px; z-index: 2; }
+.sausages_9  { width: 73px; top: 150px; left: 260px; z-index: 2; }
+.sausages_10 { width: 73px; top: 150px; left: 260px; z-index: 2; }
+
 .cheese_head { width: 55px; top: 150px; left: 240px; z-index: 1; }
+.cheese_head_2  { width: 55px; top: 150px; left: 240px; z-index: 1; }
+.cheese_head_3  { width: 55px; top: 150px; left: 240px; z-index: 1; }
+.cheese_head_4  { width: 55px; top: 150px; left: 240px; z-index: 1; }
+.cheese_head_5  { width: 55px; top: 150px; left: 240px; z-index: 1; }
+.cheese_head_6  { width: 55px; top: 150px; left: 240px; z-index: 1; }
+.cheese_head_7  { width: 55px; top: 150px; left: 240px; z-index: 1; }
+.cheese_head_8  { width: 55px; top: 150px; left: 240px; z-index: 1; }
+.cheese_head_9  { width: 55px; top: 150px; left: 240px; z-index: 1; }
+.cheese_head_10 { width: 55px; top: 150px; left: 240px; z-index: 1; }
+
 .cheese { width: 30px; top: 150px; left: 290px; z-index: 2; }
+.cheese_2  { width: 30px; top: 150px; left: 290px; z-index: 2; }
+.cheese_3  { width: 30px; top: 150px; left: 290px; z-index: 2; }
+.cheese_4  { width: 30px; top: 150px; left: 290px; z-index: 2; }
+.cheese_5  { width: 30px; top: 150px; left: 290px; z-index: 2; }
+.cheese_6  { width: 30px; top: 150px; left: 290px; z-index: 2; }
+.cheese_7  { width: 30px; top: 150px; left: 290px; z-index: 2; }
+.cheese_8  { width: 30px; top: 150px; left: 290px; z-index: 2; }
+.cheese_9  { width: 30px; top: 150px; left: 290px; z-index: 2; }
+.cheese_10 { width: 30px; top: 150px; left: 290px; z-index: 2; }
+
 .soup { width: 65px; top: 190px; left: 270px; z-index: 1; }
+.soup_2  { width: 65px; top: 190px; left: 270px; z-index: 1; }
+.soup_3  { width: 65px; top: 190px; left: 270px; z-index: 1; }
+.soup_4  { width: 65px; top: 190px; left: 270px; z-index: 1; }
+.soup_5  { width: 65px; top: 190px; left: 270px; z-index: 1; }
+.soup_6  { width: 65px; top: 190px; left: 270px; z-index: 1; }
+.soup_7  { width: 65px; top: 190px; left: 270px; z-index: 1; }
+.soup_8  { width: 65px; top: 190px; left: 270px; z-index: 1; }
+.soup_9  { width: 65px; top: 190px; left: 270px; z-index: 1; }
+.soup_10 { width: 65px; top: 190px; left: 270px; z-index: 1; }
+
 .hen { width: 100px; top: 95px; left: 240px; z-index: 1; }
+.hen_2  { width: 100px; top: 95px; left: 240px; z-index: 1; }
+.hen_3  { width: 100px; top: 95px; left: 240px; z-index: 1; }
+.hen_4  { width: 100px; top: 95px; left: 240px; z-index: 1; }
+.hen_5  { width: 100px; top: 95px; left: 240px; z-index: 1; }
+.hen_6  { width: 100px; top: 95px; left: 240px; z-index: 1; }
+.hen_7  { width: 100px; top: 95px; left: 240px; z-index: 1; }
+.hen_8  { width: 100px; top: 95px; left: 240px; z-index: 1; }
+.hen_9  { width: 100px; top: 95px; left: 240px; z-index: 1; }
+.hen_10 { width: 100px; top: 95px; left: 240px; z-index: 1; }
+
 .banana { width: 52px; top: 230px; left: 245px; z-index: 3; }
+.banana_2  { width: 52px; top: 230px; left: 245px; z-index: 3; }
+.banana_3  { width: 52px; top: 230px; left: 245px; z-index: 3; }
+.banana_4  { width: 52px; top: 230px; left: 245px; z-index: 3; }
+.banana_5  { width: 52px; top: 230px; left: 245px; z-index: 3; }
+.banana_6  { width: 52px; top: 230px; left: 245px; z-index: 3; }
+.banana_7  { width: 52px; top: 230px; left: 245px; z-index: 3; }
+.banana_8  { width: 52px; top: 230px; left: 245px; z-index: 3; }
+.banana_9  { width: 52px; top: 230px; left: 245px; z-index: 3; }
+.banana_10 { width: 52px; top: 230px; left: 245px; z-index: 3; }
+
 .carrot { width: 70px; top: 350px; left: 345px; z-index: 3; }
+.carrot_2  { width: 70px; top: 350px; left: 345px; z-index: 3; }
+.carrot_3  { width: 70px; top: 350px; left: 345px; z-index: 3; }
+.carrot_4  { width: 70px; top: 350px; left: 345px; z-index: 3; }
+.carrot_5  { width: 70px; top: 350px; left: 345px; z-index: 3; }
+.carrot_6  { width: 70px; top: 350px; left: 345px; z-index: 3; }
+.carrot_7  { width: 70px; top: 350px; left: 345px; z-index: 3; }
+.carrot_8  { width: 70px; top: 350px; left: 345px; z-index: 3; }
+.carrot_9  { width: 70px; top: 350px; left: 345px; z-index: 3; }
+.carrot_10 { width: 70px; top: 350px; left: 345px; z-index: 3; }
+
 
 /*
 
