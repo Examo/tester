@@ -9,7 +9,8 @@ $this->title = Yii::t('app', 'My courses');
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        Мои курсы
+        Мои курсы <font face="webdings" title="Общая информация по всем твоим курсам.
+Чтобы перейти к подробностям, нажми на ПОСМОТРЕТЬ ПРОГРАММУ КУРСА"> i </font>
     </div>
     <div class="panel-body">
         <?php if( !$dataProvider->getCount() ): ?>
@@ -30,7 +31,7 @@ $this->title = Yii::t('app', 'My courses');
                 <div class="panel-heading">
                     <center><a href="<?= \yii\helpers\Url::to(['subscription/view', 'id' => $course->id]) ?>"><img src="/i/course<?= $course->id; ?>.jpg" style="width: 300px;" /></a>
                         <label style="padding: 20px">Курс: <strong style="font-size: large"><?= $course->name ?></strong>
-                            <br>***** <strong style="font-size: large">(123 оценки)</strong>
+                            <!--<br>***** <strong style="font-size: large">(123 оценки)</strong>-->
                             <br><strong style="font-size: large">Уже учеников</strong>: <strong style="font-size: large"><?= $numberOfPupils[$course->id] ?></strong>
                             <br>
                             <?php if (isset($courseTime[$course->id]['courseStartTime'])):?>

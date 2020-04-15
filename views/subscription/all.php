@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?php if ($lecturer->user_id == $user->id): ?>
                                 <div class="col-md-4 ">
                                     <!-- BEGIN Portlet PORTLET-->
-                                    <div class="portlet box blue">
+                                    <div class="portlet box red">
                                         <img src="/i/course<?= $course->id; ?>.jpg" style="width: 100% " />
                                         <div class="portlet-title"style="text-align: center">
                                             <div class="caption" style="text-align: center">

@@ -12,9 +12,13 @@ setlocale(LC_ALL, 'ru_RU.UTF8');
 $today = strftime("%A, %e %b.", mktime(0, 0, 0, $month, $day, $year));
 ?>
 
-<div class="panel panel-default">
+<div class="panel panel-default" xmlns="http://www.w3.org/1999/html">
     <div class="panel-heading">
-        Мой дом
+        Мой дом <font face="webdings" title="Привет, меня зовут Лиза, а это – мой дом, тут я живу! Меня можно кормить тестами по русскому языку, со мной можно делать уборку – и тоже тестами по русскому.
+Давай вместе готовиться к ЕГЭ! Хочу кушать и жить в чистоте!
+Только я живу тут недавно, мой дом был построен пару недель назад и не совершенен. Поэтому не расстраивайся, если что-то пойдёт не так, хорошо? Лучше напиши Саше в ВК – вот в этой группе: https://vk.com/examo_ru, он поможет.
+Ну что, начинаем дружить?
+"> <a href="https://vk.com/examo_ru"> i </a></font>
     </div>
     <div class="panel-body">
 

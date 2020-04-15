@@ -3,6 +3,7 @@ use app\models\Challenge;
 use app\widgets\CleanWidget;
 use app\widgets\FoodWidget;
 use app\widgets\LearnWidget;
+use yii\helpers\Html;
 
 $this->title = Yii::t('app', 'Clean');
 $this->params['breadcrumbs'][] = $this->title;
@@ -11,7 +12,10 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="panel panel-default element-container cleaning" xmlns="http://www.w3.org/1999/html" >
     <div class="panel-heading">
         <h4 class="panel-title">
-            Уборка
+            <?= Html::encode($this->title) ?> <font face="webdings" title="Делай вместе с кошкой уборку – выбирай любой предмет и выполняй тест.
+Шкала Уборки вырастет в конце теста, кошка будет счастлива.
+Каждую минуту шкала Уборки уменьшается на 1%, а если опустится до 0% – кошка Лиза загрустит…
+Давай устроим хорошую уборку!"> i </font>
         </h4>
     </div>
 

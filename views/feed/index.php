@@ -40,7 +40,10 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="panel panel-default element-container" xmlns="http://www.w3.org/1999/html">
     <div class="panel-heading">
         <h4 class="panel-title">
-            <?= Html::encode($this->title) ?>
+            <?= Html::encode($this->title) ?> <font face="webdings" title="Покорми кошку – выбери любое блюдо и выполни тест. Шкала Еды будет вырастать в конце теста, а кошка будет довольна.
+Каждую минуту шкала Еды уменьшается на 1%, а когда опустится до 0% –  кошка Лиза проголодается и расстроится…
+Не расстраивай кошку, пожалуйста!
+"> i </font>
         </h4>
     </div>
     <center><img src="/i/refrigerator.png" width="400" height="auto" /></center>
@@ -120,7 +123,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
  </div>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<!--<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>-->
 <?php //\yii\helpers\VarDumper::dump($scaleTwist, 10, true)?>
 <?php //\yii\helpers\VarDumper::dump($scale->last_time, 10, true)?>
 <?php //\yii\helpers\VarDumper::dump($scale->points, 10, true)?>
