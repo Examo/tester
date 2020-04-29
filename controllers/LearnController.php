@@ -1,5 +1,6 @@
 <?php
 namespace app\controllers;
+use app\helpers\EventChecker;
 use app\helpers\LearnChecker;
 use app\models\ar\LearnObject;
 use app\models\Course;
@@ -33,6 +34,7 @@ class LearnController extends Controller
         $learning = new Learn();
 
         $challenges = [];
+        $subjectWeekData = [];
 
         foreach (Course::findSubscribed(Yii::$app->user->id)->all() as $course) {
             $challenges = array_merge($challenges, $course->getNewChallenges(Yii::$app->user->id)->all());
@@ -120,8 +122,15 @@ class LearnController extends Controller
                     $all[$weekKey]['object'] = $learn->object;
                     $all[$weekKey]['value'] = ceil($doneProcent);
                     $all[$weekKey]['heightScaleValue'] = $undoneProcent;
+
+
                 }
             }
+
+            foreach ($allEvents as $courseId => $events) {
+            $subjectWeekData = EventChecker::getWeekSubject($courseId);
+            }
+            //\yii\helpers\VarDumper::dump($subjectWeekData, 10, true);
 
             $allCourses = [];
             $allCourses['number'] = 0;
@@ -144,7 +153,8 @@ class LearnController extends Controller
             'data' => $data,
             'lastData' => $lastData,
             'coursesBegin' => $coursesBegin,
-            'latestData' => $latestData
+            'latestData' => $latestData,
+            'subjectWeekData' => $subjectWeekData
         ]);
     }
 }

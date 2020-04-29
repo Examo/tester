@@ -1,5 +1,6 @@
 <?php
 namespace app\controllers;
+use app\helpers\EventChecker;
 use app\models\ar\ChallengesWeeks;
 use app\models\ar\Clean;
 use app\models\ar\DifficultSubjects;
@@ -41,6 +42,7 @@ class CleanController extends Controller
         $allPreparedChallenges = [];
 
         $allNewChallenges = [];
+        $subjectWeekData = [];
 
         // если существуют события "Начало" в каком-либо курсе, на который подписан ученик
         if (isset($allEvents)) {
@@ -196,6 +198,8 @@ class CleanController extends Controller
                             }
 
                         }
+
+                        $subjectWeekData[$course->id] = EventChecker::getWeekSubject($course->id);
                     }
                     $allPreparedChallenges[] = $allNewChallenges;
                 }
@@ -341,7 +345,8 @@ class CleanController extends Controller
                 'cleaningTests' => $cleaningTests,
                 'challenges' => $challenges,
                 'difficultSubjects' => $difficultSubjects,
-                'newCleanChallenges' => $newCleanChallenges
+                'newCleanChallenges' => $newCleanChallenges,
+                'subjectWeekData' => $subjectWeekData,
             ]);
 
     }

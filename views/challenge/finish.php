@@ -4,9 +4,13 @@
  */
 use app\helpers\QuestionStats;
 use app\models\Question;
+use app\widgets\CleanWidget;
+use app\widgets\FoodWidget;
+use app\widgets\RatingWidget;
 use yii\bootstrap\ActiveForm;
 
 $questions = $summary->getQuestions();
+
 $results = $summary->getCorrectness();
 $hints = $summary->getHints();
 $points = $summary->getPoints();
@@ -15,7 +19,7 @@ $number = 1;
 
 <div class="panel panel-default" xmlns="http://www.w3.org/1999/html">
     <div class="panel-heading" role="tab">
-        <h4 class="panel-title">Общие результаты</h4>
+        <h4 class="panel-title"><strong>Общие результаты</strong></h4>
         <?php if( Yii::$app->session->hasFlash('dailyQuest') ): ?>
             <br>
             <div class="alert alert-success alert-dismissible" role="alert">
@@ -37,11 +41,20 @@ $number = 1;
                 <p><strong>Оценка: <?= $summary->getMark() ? $summary->getTextMark($summary->getMark()) : 'не доступно - слишком мало было дано ответов' ?></strong></p>
                 <p><?php $summary->getEmoticon($summary->getMark());?></p>
                 <?php if($challengeItem): ?>
-                    <p><center><img src="/i/<?= $challengeItem->name ? $challengeItem->name : "no_image" ; ?>.png" <?= $challenge->getRightImageWidth($challengeItem->name) ?> /></center></p>
+                    <p><center><img src="/i/<?= $challengeItem->name ? $challengeItem->name : "no_image" ; ?>.png"  title="<?= Yii::t($challengeElementsObjectName, $challengeItem->name)?>" <?= $challenge->getRightImageWidth($challengeItem->name) ?> /></center></p>
                 <?php endif; ?>
                 <p><strong>Всего набрано баллов: <?= $summary->getAllPoints($questions, $points)['allPoints']; ?> из <?=$summary->getAllPoints($questions, $points)['numberOfPoints']?></strong></p>
                 <p>Время выполнения: <?= round($summary->getTime() / 60) ?> мин.</p>
-
+                <?php if ($challenge->element_id == 1): ?>
+                    <p><strong>Твоя шкала Еды увеличилась!</strong></p>
+                    <p><?= FoodWidget::widget(); ?></p>
+                <?php endif; ?>
+                <?php if ($challenge->element_id == 2): ?>
+                    <p><strong>Твоя шкала Уборки подросла!</strong></p>
+                    <p><?= CleanWidget::widget(); ?></p>
+                <?php endif; ?>
+                <p><strong>Тест повлиял и на твой</strong></p>
+                <p style="margin-top: -20px"><?= RatingWidget::widget(['courseId' => $challenge->course_id]); ?></p>
                 <!--<p><a class="btn btn-lg btn-success" href="<?php // \yii\helpers\Url::toRoute(['challenge/save', 'id' => $challenge->id]) ?>">Кинуть на стену в VK</a></p>-->
                 <p><a class="btn btn-lg btn-success" href="<?= \yii\helpers\Url::to(['start', 'id' => $challenge->id, 'confirm' => true]) ?>">Повторить этот тест</a></p>
                 <?php if ($challenge->element_id == 1): ?>
@@ -59,7 +72,7 @@ $number = 1;
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h4 class="panel-title">Подробные результаты</h4>
+        <h4 class="panel-title"><strong>Подробные результаты</strong></h4>
     </div>
     <div aria-labelledby="summaryHead">
         <div class="panel-body">

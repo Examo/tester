@@ -2,9 +2,11 @@
 
 namespace app\helpers;
 
+use app\models\Challenge;
 use app\models\Course;
 use app\models\Event;
 use app\models\Question;
+use app\models\Subject;
 use Yii;
 
 class EventChecker
@@ -184,6 +186,69 @@ class EventChecker
             }
         }
 
+        return $data;
+
+    }
+
+    static function getWeekSubject($course_id) {
+        $data = [];
+        $weekTime = 604800;
+        //$date = date_create('2000-01-01', timezone_open('Europe/Moscow'));
+        date_default_timezone_set('Europe/Moscow');
+        $timeCorrectness = 60 * 60 * 3;
+        $time = time();
+        //$time = date_create($time, timezone_open('Europe/Moscow'));
+        $events = Event::find()->where(['course_id' => $course_id])->all();
+
+        if (Event::find()->where(['course_id' => $course_id])->andWhere(['title' => 'Начало'])->one()) {
+            //foreach ($events as $key => $event) {
+                //if (preg_match($regexp, $event->title, $match[$course_id][$key])) {
+                    $begining = Event::find()->where(['course_id' => $course_id])->andWhere(['title' => 'Начало'])->one();
+                    $courseStartTime = Yii::$app->getFormatter()->asTimestamp($begining->start) - $timeCorrectness;
+                    //\yii\helpers\VarDumper::dump(date("d.m.Y года в H:i:s", $courseStartTime), 10, true);
+                    //$webinarStartTime = Yii::$app->getFormatter()->asTimestamp($event->start)  - $timeCorrectness;
+                    $timeAfterCourseStart = $time - $courseStartTime;
+                    //$timeBeforeWebinarStart = $webinarStartTime - $courseStartTime;
+                    //$webinarEndTime = Yii::$app->getFormatter()->asTimestamp($event->end) - $timeCorrectness;
+                    //$timeBeforeWebinarEnd = $webinarEndTime - $time;
+
+                    if ($time > $timeAfterCourseStart) {
+
+                        $challenges = Challenge::find()->where(['course_id' => $course_id])->andWhere(['week' => ceil($timeAfterCourseStart / $weekTime)])->andWhere(['element_id' => 1])->all();
+                        //$challenges->groupBy(['id', 'status']);
+
+                        $challengesWeeks = [];
+                        foreach ($challenges as $challenge){
+                            if (!isset($challengesWeeks[$challenge->subject_id])) {
+                                $challengesWeeks[$challenge->subject_id] = 1;
+                            } else {
+                                $challengesWeeks[$challenge->subject_id] += 1;
+                            }
+                        }
+
+                       // \yii\helpers\VarDumper::dump($challengesWeeks, 10, true);
+                        //$data[$course_id]['course_start'] = $courseStartTime;
+                        $data[$course_id]['course_week'] = ceil($timeAfterCourseStart / $weekTime);
+
+                        arsort($challengesWeeks);
+                        //\yii\helpers\VarDumper::dump($challengesWeeks, 10, true);
+
+                        foreach ($challengesWeeks as $subjectId => $challengesWeek){
+                            $subjectWeek = Subject::find()->where(['id' => $subjectId])->one();
+                            $data[$course_id]['subject_week'] = $subjectWeek->name;
+                            break;
+                        }
+                        //\yii\helpers\VarDumper::dump($subjectWeek->name, 10, true);
+                        //$data[$course_id][$key]['webinarWeek'] = ceil($timeBeforeWebinarStart / $weekTime);
+                        $data[$course_id]['course_id'] = $course_id;
+                        $courseName = Course::find()->select('name')->where(['id' => $course_id])->one();
+                        $data[$course_id]['course_name'] = $courseName->name;
+                    }
+
+
+            //}
+        }
+        //\yii\helpers\VarDumper::dump($data, 10, true);
         return $data;
 
     }

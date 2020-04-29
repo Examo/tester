@@ -12,10 +12,21 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="panel panel-default element-container cleaning" xmlns="http://www.w3.org/1999/html" >
     <div class="panel-heading">
         <h4 class="panel-title">
-            <?= Html::encode($this->title) ?> <font face="webdings" title="Делай вместе с кошкой уборку – выбирай любой предмет и выполняй тест.
+            <strong><?= Html::encode($this->title) ?></strong> <font face="webdings" title="В Уборке все тесты по твоим сложным темам за все твои курсы на текущую неделю, помогают все сложные темы отработать!
+Делай вместе с кошкой уборку – выбирай любой предмет и выполняй тест.
 Шкала Уборки вырастет в конце теста, кошка будет счастлива.
 Каждую минуту шкала Уборки уменьшается на 1%, а если опустится до 0% – кошка Лиза загрустит…
 Давай устроим хорошую уборку!"> i </font>
+
+            <?php foreach ($subjectWeekData as $courseId => $courseIdInner): ?>
+                <?php foreach ($courseIdInner as $weekData):?>
+                    <font size="2">Тема недели <strong>"<?= $weekData['subject_week']?>"</strong>.
+                        Идёт <strong><?= $weekData['course_week']?>-я неделя</strong>
+                        по курсу... </font>
+                    <font face="webdings" title="<?= $weekData['course_name']?>">4</font>
+                <?php endforeach; ?>
+            <?php endforeach; ?>
+
         </h4>
     </div>
 

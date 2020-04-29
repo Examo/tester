@@ -18,7 +18,7 @@ $this->title = Yii::t('app', 'My courses');
                 Здесь пусто!
             </p>
             <p class="text-muted text-center">
-                Мало просто зарегистрироваться, нужно ещё и <strong><a href="<?= \yii\helpers\Url::to(['subscription/all']) ?>">выбрать себе какой-нибудь курс</a></strong>.
+                А просто нужно <strong><a href="<?= \yii\helpers\Url::to(['subscription/all']) ?>">выбрать себе какой-нибудь курс</a></strong>!
             </p>
         <?php else: ?>
 
@@ -51,7 +51,7 @@ $this->title = Yii::t('app', 'My courses');
                 </div>
                 <div class="panel-body">
                     <?php $progress = $course->getProgress( Yii::$app->user->id ) ?>
-                    <center><label>Выполнено по курсу:</label>
+                    <center><label  class="caption-subject theme-font-color bold uppercase">Выполнено по курсу:</label>
                     <strong><?= $progress ?>%</strong></center>
                     <div class="progress">
                         <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="<?= $progress ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $progress ?>%">
@@ -68,7 +68,7 @@ $this->title = Yii::t('app', 'My courses');
                             <?php $feedNumber += $challenge->getAttemptsElementsCount(1, $challenge->id, $challenge->element_id); ?>
                             <?php $cleanNumber += $challenge->getAttemptsElementsCount(2, $challenge->id, $challenge->element_id); ?>
                         <?php endforeach; ?>
-                        <div class="portlet-title text-center"><strong style="font-size: large">Сделано / Обязательных:</strong><br><br></div>
+                        <div class="portlet-title text-center"><strong style="font-size: large" class="caption-subject theme-font-color bold uppercase">Сделано / Обязательных:</strong><br><br></div>
                         <table class="table table-striped table-hover">
 
                             <tr>
@@ -96,8 +96,7 @@ $this->title = Yii::t('app', 'My courses');
                     <div class="portlet-title" style="margin-top: -13px">
                         <center><div class="caption caption-md">
                                 <i class="icon-bar-chart theme-font-color hide"></i>
-                                <span class="caption-subject theme-font-color bold uppercase"><br>Рейтинг учащихся</span>
-
+                                <span style="font-size: large" class="caption-subject theme-font-color bold uppercase"><br>Рейтинг учащихся</span>
                             </div></center>
 
                     </div>

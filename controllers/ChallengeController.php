@@ -94,7 +94,13 @@ class ChallengeController extends Controller
         $challenge = $this->getChallenge($id);
         $challengeElementsItem = Challenge::find()->select('elements_item_id')->where(['id' => $id])->one();
         $challengeItem = ElementsItem::find()->select('name')->where(['id' => $challengeElementsItem])->one();
-
+        $challengeElementsObjectName = '';
+        if ($challenge->element_id == 1) {
+            $challengeElementsObjectName = 'foodObjects';
+        }
+        if ($challenge->element_id == 2) {
+            $challengeElementsObjectName = 'cleanObjects';
+        }
         if ($challenge->settings->autostart || $confirm) {
             $session = new ChallengeSession($challenge, Yii::$app->user->id);
             if ($session->start()) {
@@ -107,7 +113,8 @@ class ChallengeController extends Controller
         } else {
             return $this->render('start', [
                 'challenge' => $challenge,
-                'challengeItem' => $challengeItem
+                'challengeItem' => $challengeItem,
+                'challengeElementsObjectName' => $challengeElementsObjectName
             ]);
         }
     }
@@ -127,6 +134,13 @@ class ChallengeController extends Controller
         $challengeElementsItem = Challenge::find()->select('elements_item_id')->where(['id' => $id])->one();
         $challengeItem = ElementsItem::find()->select('name')->where(['id' => $challengeElementsItem])->one();
         $challenge = $this->getChallenge($id);
+        $challengeElementsObjectName = '';
+        if ($challenge->element_id == 1) {
+            $challengeElementsObjectName = 'foodObjects';
+        }
+        if ($challenge->element_id == 2) {
+            $challengeElementsObjectName = 'cleanObjects';
+        }
         $session = new ChallengeSession($challenge, Yii::$app->user->id);
         //$course = Course::find()->where(['id' => $challenge->course_id])->one();
         $days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
@@ -510,6 +524,7 @@ class ChallengeController extends Controller
             'difficultSubjects' => $difficultSubjects,
             'allSubjects' => $allSubjects,
             'testResults' => $testResults,
+            'challengeElementsObjectName' => $challengeElementsObjectName
             //       'results' => $results,
             //       'points' => $points,
             //       'hints' => $hints,

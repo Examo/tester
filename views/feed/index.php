@@ -40,10 +40,19 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="panel panel-default element-container" xmlns="http://www.w3.org/1999/html">
     <div class="panel-heading">
         <h4 class="panel-title">
-            <?= Html::encode($this->title) ?> <font face="webdings" title="Покорми кошку – выбери любое блюдо и выполни тест. Шкала Еды будет вырастать в конце теста, а кошка будет довольна.
+            <strong><?= Html::encode($this->title) ?></strong> <font face="webdings" title="В Еде все тесты за текущую неделю, помогают её отработать!
+Покорми кошку – выбери любое блюдо и выполни тест. Шкала Еды будет вырастать в конце теста, а кошка будет довольна.
 Каждую минуту шкала Еды уменьшается на 1%, а когда опустится до 0% –  кошка Лиза проголодается и расстроится…
 Не расстраивай кошку, пожалуйста!
 "> i </font>
+            <?php foreach ($subjectWeekData as $courseId => $courseIdInner): ?>
+                <?php foreach ($courseIdInner as $weekData):?>
+                    <font size="2">Тема недели <strong>"<?= $weekData['subject_week']?>"</strong>.
+                    Идёт <strong><?= $weekData['course_week']?>-я неделя</strong>
+                    по курсу... </font>
+                    <font face="webdings" title="<?= $weekData['course_name']?>">4</font>
+                <?php endforeach; ?>
+            <?php endforeach; ?>
         </h4>
     </div>
     <center><img src="/i/refrigerator.png" width="400" height="auto" /></center>
@@ -124,7 +133,10 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
  </div>
 <!--<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>-->
-<?php //\yii\helpers\VarDumper::dump($scaleTwist, 10, true)?>
+<!--<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>-->
+
+
+<?php //\yii\helpers\VarDumper::dump($subjectWeekData, 10, true)?>
 <?php //\yii\helpers\VarDumper::dump($scale->last_time, 10, true)?>
 <?php //\yii\helpers\VarDumper::dump($scale->points, 10, true)?>
 <?php //\yii\helpers\VarDumper::dump($allLastChallengeQuestionsCost, 10, true)?>

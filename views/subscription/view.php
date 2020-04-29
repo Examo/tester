@@ -4,6 +4,8 @@
  * @var \yii\web\View $this
  *
  */
+use app\widgets\RatingWidget;
+
 $this->title = Yii::t('app', 'Program of course') . ' ' . $course->name;
 $this->params['breadcrumbs'][] = $this->title;
 setlocale(LC_ALL, 'ru_RU.UTF8');
@@ -56,168 +58,25 @@ setlocale(LC_ALL, 'ru_RU.UTF8');
                         <?= 'Пока что 0...'; ?>
                     <?php endif; ?></strong></center>
         </div>
-    <div class="panel-heading">
+
         <?php if( $course->isSubscribed(Yii::$app->user->id) ): ?>
-            <div>
-                <center><a href="<?= \yii\helpers\Url::to(['subscription/unsubscribe', 'id' => $course->id]) ?>" class="btn btn-default" style="padding: 20px; font-size: large">Отписка! (Не получать новые тесты по курсу)</a></center>
-            </div>
         <?php else: ?>
+        <div class="panel-heading">
             <div>
                 <center><a href="<?= \yii\helpers\Url::to(['subscription/subscribe', 'id' => $course->id]) ?>" class="btn btn-success" style="padding: 20px; font-size: large">Подписаться и получать новые тесты</a></center>
             </div>
+        </div>
         <?php endif; ?>
-    </div>
 
+    <?= RatingWidget::widget(['courseId' => 1]); ?>
 
-        <div class="portlet-title">
-            <center><div class="caption caption-md">
-                    <i class="icon-bar-chart theme-font-color hide"></i>
-                    <span class="caption-subject theme-font-color bold uppercase"><br>Рейтинг учащихся</span>
-                </div></center>
-        </div>
-    <?php if ($courseRating['rating']): ?>
-        <div class="portlet-body">
-            <div class="table-scrollable table-scrollable-borderless">
-                <table class="table table-hover table-light">
-                    <thead>
-                    <tr class="uppercase">
-                        <th colspan="2">
-                            Учащийся
-                        </th>
-
-                        <th>
-                            "Еда"
-                        </th>
-
-                        <th>
-                            "Уборка"
-                        </th>
-
-                        <th>
-                            "Игра"
-                        </th>
-
-                        <th>
-                            "Учёба"
-                        </th>
-
-                        <th>
-                            Всего
-                        </th>
-
-                        <th>
-                            Место
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php foreach ($courseRating['rating'] as $userId => $userPoints):?>
-                        <tr<?php foreach ($courseRating['data'] as $userData): ?>
-                            <?php if ($userData['isSelf'] == true && $userData['user_id'] == $userId): ?>
-                                <?= 'style="border-width: thin; border-bottom: dashed; border-top: dashed; border-left: groove; border-color: #26A69A; overflow-x: hidden;"'; ?>
-                                <?php break; ?>
-                            <?php endif; ?>
-                        <?php endforeach; ?>>
-                            <td class="fit">
-                                <img class="user-pic" src="/i/hintemoticon.jpg">
-                            </td>
-
-                            <td>
-                                <?php foreach ($courseRating['data'] as $userData): ?>
-                                    <?php if ($userData['user_id'] == $userId && $userData['element_id'] == 1): ?>
-                                        <?= $userData['username']; ?>
-                                    <?php endif; ?>
-                                <?php endforeach; ?>
-                            </td>
-
-                            <td>
-                                <?php foreach ($courseRating['data'] as $userData): ?>
-                                    <?php if ($userData['user_id'] == $userId && $userData['element_id'] == 1): ?>
-                                        <?= $userData['points']; ?>
-                                    <?php endif; ?>
-                                <?php endforeach; ?>
-                            </td>
-
-                            <td>
-                                <?php foreach ($courseRating['data'] as $userData): ?>
-                                    <?php if ($userData['user_id'] == $userId && $userData['element_id'] == 2): ?>
-                                        <?= $userData['points']; ?>
-                                    <?php endif; ?>
-                                <?php endforeach; ?>
-                            </td>
-
-                            <td>
-                                <?php foreach ($courseRating['data'] as $userData): ?>
-                                    <?php if ($userData['user_id'] == $userId && $userData['element_id'] == 3): ?>
-                                        <?= $userData['points']; ?>
-                                    <?php endif; ?>
-                                <?php endforeach; ?>
-                                -
-                            </td>
-
-                            <td>
-                              -
-                            </td>
-
-                            <td>
-                                <?= $userPoints; ?>
-                            </td>
-
-                            <td>
-                                <span class="bold theme-font-color"><?php foreach ($courseRating['data'] as $userData): ?>
-                                        <?php if ($userData['user_id'] == $userId && $userData['element_id'] == 1): ?>
-                                            <?= $userData['position']; ?>
-                                        <?php endif; ?>
-                                    <?php endforeach; ?>
-                                    <?php endforeach; ?></span>
-                            </td>
-                        </tr>
-                    </tbody></table>
-            </div>
-        </div>
-    <?php else: ?>
-    <div class="portlet-body">
-        <center><strong>Никто не выполнял тесты по курсу, поэтому нет и рейтинга!</strong></center>
-    </div>
-    <?php endif; ?>
-    <div class="portlet-body">
-        <?php $attemptNumber = 0; ?>
-        <?php $feedNumber = 0; ?>
-        <?php $cleanNumber = 0; ?>
-        <?php foreach( $course->getChallenges()->all() as $challenge ): ?>
-            <?php $attemptNumber += $challenge->getAttemptsCount(Yii::$app->user->id) ?>
-            <?php $feedNumber += $challenge->getAttemptsElementsCount(1, $challenge->id, $challenge->element_id); ?>
-            <?php $cleanNumber += $challenge->getAttemptsElementsCount(2, $challenge->id, $challenge->element_id); ?>
-        <?php endforeach; ?>
-        
-        <div class="portlet-title text-center"><strong style="font-size: large">Сделано / Обязательных:</strong><br><br></div>
-        <table class="table table-striped table-hover">
-
-            <tr>
-                <th class="col-md-2 text-center">Тестов для "Еды"</th>
-                <th class="col-md-2 text-center">Тестов для "Уборки"</th>
-                <th class="col-md-2 text-center">Всего "Игр"</th>
-                <th class="col-md-2 text-center">Домашних заданий</th>
-                <th class="col-md-2 text-center">Экзаменов</th>
-                <th class="col-md-2 text-center">Вебинаров</th>
-            </tr>
-            <tr>
-            <td class="text-center"><strong style="font-size: large"><?= $feedNumber; ?> / <?php if (isset($challenge)):?><?= $challenge->getElementChallengesCount($course->id, 1); ?><?php else: ?>0<?php endif; ?></strong></td>
-            <td class="text-center"><strong style="font-size: large"><?= $cleanNumber; ?> / <?php if (isset($challenge)):?><?= $challenge->getElementChallengesCount($course->id, 2); ?><?php else: ?>0<?php endif; ?></strong></td>
-            <td class="text-center"><strong style="font-size: large">-</td>
-            <td class="text-center"><strong style="font-size: large">_ / <?= $homeworksCount; ?></strong></td>
-            <td class="text-center"><strong style="font-size: large">_ / <?= $examsCount; ?></strong></td>
-            <td class="text-center"><strong style="font-size: large"><?= $webinarsDone['counted']; ?> / <?= $webinarsCount; ?></strong></td>
-            </tr>
-            </table>
-    </div>
     <div class="panel-body">
-        <div class="panel-heading">
-            <strong style="font-size: large">Полное описание курса</strong>
+        <div class="panel-heading text-center" style="margin-top: -40px">
+            <strong style="font-size: large" class="caption-subject theme-font-color bold uppercase">Полное описание курса</strong>
         </div>
-        <p><?= $course->description ?></p>
+        <p style="font-size: large"><?= $course->description ?></p>
 
-        <div class="portlet-title text-center"><strong style="font-size: large">Все вебинары по этому курсу:</strong><br><br></div>
+        <div class="portlet-title text-center"><strong style="font-size: large" class="caption-subject theme-font-color bold uppercase">Все вебинары по этому курсу:</strong><br><br></div>
 
         <center><label>Выполнено вебинаров <strong><?= $latestData['counted']; ?> из <?= count($latestData['data']) ?></label></center>
         <?php
@@ -276,7 +135,7 @@ setlocale(LC_ALL, 'ru_RU.UTF8');
         <?php endforeach; ?>
     </div>
         <br>
-        <div class="portlet-title text-center"><strong style="font-size: large">Все тесты по курсу:</strong><br><br></div>
+        <div class="portlet-title text-center"><strong style="font-size: large" class="caption-subject theme-font-color bold uppercase">Все тесты по курсу:</strong><br><br></div>
         <table class="table table-striped table-hover">
             <tr>
                 <th class="col-md-5 text-left">Тест</th>
@@ -316,9 +175,7 @@ setlocale(LC_ALL, 'ru_RU.UTF8');
             <?php endif; ?>
         </div>
     </div>
-
 </div>
-
 <?php //\yii\helpers\VarDumper::dump($latestData, 10, true); ?>
 
 

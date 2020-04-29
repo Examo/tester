@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\helpers\EventChecker;
 use app\models\ar\ChallengeHasQuestion;
 use app\models\ar\ChallengesWeeks;
 use app\models\ar\DifficultSubjects;
@@ -68,6 +69,7 @@ class FeedController extends Controller
         $feedingTests = new Feed();
 
         $allNewChallenges = [];
+        $subjectWeekData = [];
 
         $challenges = [];
         foreach (Course::findSubscribed(Yii::$app->user->id)->all() as $course) {
@@ -229,9 +231,14 @@ class FeedController extends Controller
                             }
 
                         }
+
+                        $subjectWeekData[$course->id] = EventChecker::getWeekSubject($course->id);
+
                     }
                     $allPreparedChallenges[] = $allNewChallenges;
                 }
+
+
 
             }
 
@@ -343,7 +350,7 @@ class FeedController extends Controller
             'challenges' => $challenges,
             'difficultSubjects' => $difficultSubjects,
             'newFeedChallenges' => $newFeedChallenges,
-            'feedingTests' => $feedingTests,
+            'subjectWeekData' => $subjectWeekData,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
           

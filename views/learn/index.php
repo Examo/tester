@@ -11,15 +11,23 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="panel panel-default element-container">
     <div class="panel-heading">
         <h4 class="panel-title">
-            <?php if (isset($allCourses['number'])):?>
-            Учёба. Количество твоих курсов: <strong><?= $allCourses['number']; ?></strong>
-            <?php else: ?>
-            Учёба. Количество твоих курсов: ноль целых ноль десятых...
-            <?php endif; ?>
+            <strong>Учёба</strong>
             <font face="webdings" title="Здесь все твои темы по всем твоим курсам.
-Один предмет – одна неделя обучения.
-Заполнение предмета цветом – это твой прогресс обучения на соответствующей неделе.
-Просто корми кошку вовремя, вовремя убирай за ней, выполняй задания для вебинаров и домашние задания – и прогресс Учёбы будет расти, а соответствующий предмет будет заполняться!"> i </font>
+Один предмет – одна неделя обучения по всем курсам.
+Предмет заполняется цветом – это твой прогресс обучения на неделе.
+Просто корми кошку вовремя, вовремя убирай за ней, выполняй задания для вебинаров и домашние задания – и прогресс Учёбы будет расти, а предмет недели будет заполняться!"> i </font>
+            <?php if (isset($allCourses['number'])):?>
+                Количество твоих курсов: <strong><?= $allCourses['number']; ?></strong>.
+            <?php else: ?>
+                Количество твоих курсов: ноль целых ноль десятых...
+            <?php endif; ?>
+            <?php foreach ($subjectWeekData as $courseId =>  $weekData):?>
+                    <font size="3">     Тема этой недели...</font>
+                    <font face="webdings" title="<?= $weekData['subject_week']?>.
+                    Идёт <?= $weekData['course_week']?>-я неделя
+по курсу <?= $weekData['course_name']?>">4</font>
+            <?php endforeach; ?>
+
         </h4>
     </div>
     <div class="learning">

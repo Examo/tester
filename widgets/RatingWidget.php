@@ -10,6 +10,7 @@ use app\models\Attempt;
 use app\models\Challenge;
 use app\models\ChallengeHasQuestion;
 use app\models\Course;
+use app\models\CourseSubscription;
 use app\models\Event;
 use app\models\Question;
 use Yii;
@@ -17,176 +18,175 @@ use yii\base\Widget;
 
 class RatingWidget extends Widget
 {
+    public $courseId;
+
     public function init()
     {
         parent::init();
 
+        $course = Course::find()->where(['id' => $this->courseId])->one();
+        $subscriptionStart = CourseSubscription::find()->one();
+        $courseRating = $subscriptionStart->getCourseRating($this->courseId);
+        $courseTime = $subscriptionStart->getCourseStart($this->courseId);
+        $challengesCount = $subscriptionStart->getChallenges($this->courseId);
+        $webinarsCount = $subscriptionStart->getWebinarsCount($this->courseId);
+        $webinarsDone = $subscriptionStart->getWebinarChallengesCheck($this->courseId);
+        $homeworksCount = $subscriptionStart->getHomeworksCount($this->courseId);
+        $examsCount = $subscriptionStart->getExamsCount($this->courseId);
+
+  echo '
+     
+        <div class="portlet-title">
+            <center><div class="caption caption-md">
+                    <i class="icon-bar-chart theme-font-color hide"></i>
+                    <span  style="font-size: large" class="caption-subject theme-font-color bold uppercase"><br>Рейтинг учащихся</span>
+                    </div>
+            </center>
+        </div>';
+      if ($courseRating['rating']) {
+      echo   '
+     <div class="portlet-body">
+        <div class="table-scrollable table-scrollable-borderless">
+            <table class="table table-hover table-light">
+                <thead>
+                <tr class="uppercase">
+                    <th colspan="2">
+                    Учащийся
+                    </th>
+
+                    <th>
+                    "Еда"
+                    </th>
+
+                    <th>
+                    "Уборка"
+                    </th>
+
+                    <th>
+                    "Игра"
+                    </th>
+
+                    <th>
+                    "Учёба"
+                    </th>
+
+                    <th>
+                    Всего
+                    </th>
+
+                    <th>
+                    Место
+                    </th>
+                </tr>
+                </thead>
+                <tbody>';
+        foreach ($courseRating['rating'] as $userId => $userPoints) {
+            foreach ($courseRating['data'] as $userData) {
+                if ($userData['isSelf'] == true && $userData['user_id'] == $userId) {
+                    echo '<tr style="border-width: thin; border-bottom: dashed; border-top: dashed; border-left: groove; border-color: #26A69A; overflow-x: hidden;">';
+                    break;
+                }
+            }
+      echo '<td class="fit">
+            <img class="user-pic" src="/i/hintemoticon.jpg">
+            </td>
+
+            <td>';
+            foreach ($courseRating['data'] as $userData) {
+                if ($userData['user_id'] == $userId && $userData['element_id'] == 1) {
+                    echo $userData['username'];
+                }
+            }
+      echo '</td>
+
+            <td>';
+            foreach ($courseRating['data'] as $userData) {
+                if ($userData['user_id'] == $userId && $userData['element_id'] == 1) {
+                    echo $userData['points'];
+                }
+            }
+      echo '</td>
+
+            <td>';
+            foreach ($courseRating['data'] as $userData) {
+                if ($userData['user_id'] == $userId && $userData['element_id'] == 2) {
+                    echo $userData['points'];
+                }
+            }
+      echo '</td>
+
+            <td>';
+            foreach ($courseRating['data'] as $userData) {
+                if ($userData['user_id'] == $userId && $userData['element_id'] == 3) {
+                    echo $userData['points'];
+                }
+            }
+            echo '- 
+            </td>
+
+            <td>
+            -
+            </td>
+
+            <td>';
+            echo $userPoints;
+      echo '</td>
+
+            <td>
+            <span class="bold theme-font-color">';
+            foreach ($courseRating['data'] as $userData) {
+                if ($userData['user_id'] == $userId && $userData['element_id'] == 1) {
+                    echo $userData['position'];
+                }
+            }echo '</span></td></tr>';
+        }
+
+     echo    '
+         
+      </tbody>
+      </table>
+</div>
+</div>
+';
+} else {
+echo '<div class="portlet-body">
+      <center><strong>Никто не выполнял тесты по курсу, поэтому нет и рейтинга!</strong></center>
+      </div>';
+}
+
+echo '<div class="portlet-body">';
+    $attemptNumber = 0;
+    $feedNumber = 0;
+    $cleanNumber = 0;
+    foreach( $course->getChallenges()->all() as $challenge ) {
+        $attemptNumber += $challenge->getAttemptsCount(Yii::$app->user->id);
+        $feedNumber += $challenge->getAttemptsElementsCount(1, $challenge->id, $challenge->element_id);
+        $cleanNumber += $challenge->getAttemptsElementsCount(2, $challenge->id, $challenge->element_id);
+    }
+
+    echo '<div class="portlet-title text-center"><strong style="font-size: large" class="caption-subject theme-font-color bold uppercase">Сделано / Обязательных:</strong><br><br></div>
+    <table class="table table-striped table-hover">
+
+        <tr>
+            <th class="col-md-2 text-center">Тестов для "Еды"</th>
+            <th class="col-md-2 text-center">Тестов для "Уборки"</th>
+            <th class="col-md-2 text-center">Всего "Игр"</th>
+            <th class="col-md-2 text-center">Домашних заданий</th>
+            <th class="col-md-2 text-center">Экзаменов</th>
+            <th class="col-md-2 text-center">Вебинаров</th>
+        </tr>
+        <tr>
+            <td class="text-center"><strong style="font-size: large">'; echo $feedNumber . '/'; if (isset($challenge)){echo $challenge->getElementChallengesCount($course->id, 1); } else{echo '0';} echo '</strong></td>
+            <td class="text-center"><strong style="font-size: large">';echo $cleanNumber. '/'; if (isset($challenge)){ echo $challenge->getElementChallengesCount($course->id, 2); } else{echo '0';} echo '</strong></td>
+            <td class="text-center"><strong style="font-size: large">-</td>
+            <td class="text-center"><strong style="font-size: large">_ / '; echo $homeworksCount; echo '</strong></td>
+            <td class="text-center"><strong style="font-size: large">_ / '; echo $examsCount; echo '</strong></td>
+            <td class="text-center"><strong style="font-size: large">'; echo $webinarsDone['counted'] . '/'; echo $webinarsCount; echo '</strong></td>
+        </tr>
+    </table>
+</div>';
 
 
-        echo '<div class="portlet light ">
-						<div class="portlet-title">
-							<center><div class="caption caption-md">
-								<i class="icon-bar-chart theme-font-color hide"></i>
-								<span class="caption-subject theme-font-color bold uppercase">Рейтинг учащихся курса<br>Подготовка к ЕГЭ по русскому языку<br> </span>
-								
-							</div></center>
-							
-						</div>
-						<div class="portlet-body">
-							<div class="row number-stats margin-bottom-30">
-								<div class="col-md-6 col-sm-6 col-xs-6">
-									<div class="stat-left">
-										<!-- <div class="stat-chart">
-											do not line break "sparkline_bar" div. sparkline chart has an issue when the container div has line break 
-											<div id="sparkline_bar"><canvas width="90" height="45" style="display: inline-block; width: 90px; height: 45px; vertical-align: top;"></canvas></div>
-										</div>-->
-										<div class="stat-number">
-											<div class="title">
-    Всего учащихся:
-											</div>
-											<div class="number">
-    4
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-6 col-sm-6 col-xs-6">
-									<div class="stat-right">
-										<div class="stat-chart">
-											<!-- do not line break "sparkline_bar" div. sparkline chart has an issue when the container div has line break
-											<div id="sparkline_bar2"><canvas width="90" height="45" style="display: inline-block; width: 90px; height: 45px; vertical-align: top;"></canvas></div> -->
-										</div>
-										<div class="stat-number">
-											<div class="title">
-    Новых за сегодня:
-											</div>
-											<div class="number">
-    2
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="table-scrollable table-scrollable-borderless">
-								<table class="table table-hover table-light">
-								<thead>
-								<tr class="uppercase">
-									<th colspan="2">
-    Учащийся
-									</th>
-									<th>
-    "Еда"
-									</th>
-									<th>
-    "Уборка"
-									</th>
-									<th>
-    "Игра"
-									</th>
-									<th>
-    "Учёба"
-									</th>
-									<th>
-    Место
-									</th>
-								</tr>
-								</thead>
-								<tbody><tr>
-									<td class="fit">
-										<img class="user-pic" src="/i/hintemoticon.jpg">
-									</td>
-									<td>
-										<a href="javascript:;" class="primary-link">Brain</a>
-									</td>
-									<td>
-    345
-    </td>
-									<td>
-    45
-									</td>
-									<td>
-    124
-									</td>
-													<td>
-    124
-									</td>
-									<td>
-										<span class="bold theme-font-color">1</span>
-									</td>
-								</tr>
-								<tr>
-									<td class="fit">
-										<img class="user-pic" src="/i/hintemoticon.jpg">
-									</td>
-									<td>
-										<a href="javascript:;" class="primary-link">Nick</a>
-									</td>
-									<td>
-    560
-    </td>
-									<td>
-    12
-									</td>
-									<td>
-    24
-									</td>
-									<td>
-    24
-									</td>
-									<td>
-										<span class="bold theme-font-color">2</span>
-									</td>
-								</tr>
-								<tr>
-									<td class="fit">
-										<img class="user-pic" src="/i/hintemoticon.jpg">
-									</td>
-									<td>
-										<a href="javascript:;" class="primary-link">Tim</a>
-									</td>
-									<td>
-    1,345
-    </td>
-									<td>
-    450
-									</td>
-									<td>
-    46
-									</td>
-									<td>
-    46
-									</td>
-									<td>
-										<span class="bold theme-font-color">3</span>
-									</td>
-								</tr>
-								<tr>
-									<td class="fit">
-										<img class="user-pic" src="/i/hintemoticon.jpg">
-									</td>
-									<td>
-										<a href="javascript:;" class="primary-link">Tom</a>
-									</td>
-									<td>
-    645
-    </td>
-									<td>
-    50
-									</td>
-									<td>
-    89
-									</td>
-									<td>
-    89
-									</td>
-									<td>
-										<span class="bold theme-font-color">4</span>
-									</td>
-								</tr>
-								</tbody></table>
-							</div>
-						</div>
-					</div>';
 
     }
 
@@ -195,3 +195,4 @@ class RatingWidget extends Widget
 
     }
 }
+

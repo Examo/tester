@@ -19,7 +19,7 @@ class EventCalendarWidget extends Widget
         parent::init();
 
         $data = EventChecker::getEventsData();
-
+        //$data2 = EventChecker::getWeekSubject(1);
         $badgeColor = $data['badgeColor'];
         $badgeBackgroundColor = $data['badgeBackgroundColor'];
         $countEvent = $data['countEvent'];
@@ -110,6 +110,7 @@ print '<li class="dropdown dropdown-extended dropdown-dark" id="calendar">
           </ul>
       </li>';
 }
+        //\yii\helpers\VarDumper::dump($data2, 10, true);
 
     }
 

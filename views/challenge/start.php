@@ -17,7 +17,7 @@
         <p>Количество заданий: <strong><?= $challenge->getQuestionsCount() ?></strong></p>
 
         <?php if($challengeItem): ?>
-            <p><a href="<?= \yii\helpers\Url::to(['start', 'id' => $challenge->id, 'confirm' => true]) ?>"><img src="/i/<?= $challengeItem->name ? $challengeItem->name : "no_image" ; ?>.png" <?= $challenge->getRightImageWidth($challengeItem->name) ?> /></a></p>
+            <p><a href="<?= \yii\helpers\Url::to(['start', 'id' => $challenge->id, 'confirm' => true]) ?>"><img src="/i/<?= $challengeItem->name ? $challengeItem->name : "no_image" ; ?>.png" title="<?= Yii::t($challengeElementsObjectName, $challengeItem->name)?>" <?= $challenge->getRightImageWidth($challengeItem->name) ?> /></a></p>
         <?php endif; ?>
 
         <p><a class="btn btn-lg btn-success" href="<?= \yii\helpers\Url::to(['start', 'id' => $challenge->id, 'confirm' => true]) ?>">Начать этот тест</a></p>
