@@ -25,6 +25,7 @@ Rounded Portlets
 .table-cell-danger {display:table-cell; border:solid 1px gainsboro; background-color: #F3565D; text-align: center; color: white}
 .table-cell-success {display:table-cell; border:solid 1px gainsboro; background-color: #26A69A; text-align: center; color: white}
 .table-finish ul li {margin: 3px; padding: 5px; line-height: 1em}
+.table-scroll {overflow-y: scroll;}
 
 table.table-finish { width: 100%; border: 0px none; margin-top: -16px;   }
  .table-finish th {vertical-align: middle; text-align: center;  padding-top: 20px; margin-top: 20px}
@@ -690,6 +691,7 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
         max-width: 300px;
         left: 10px;
         z-index: 1;  }
+    .table-scroll {overflow-y: scroll;}
 }
 @media only screen and (max-width:480px) {
     .element-container, .required-container, .passed-container {
@@ -697,6 +699,7 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
         height: auto;
         left: 10px;
         z-index: 1;  }
+    .table-scroll {overflow-y: scroll;}
 }
 
 @media only screen and (max-width:768px) {
@@ -705,6 +708,7 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
         height: auto;
         left: 10px;
         z-index: 1;  }
+    .table-scroll {overflow-y: scroll;}
 }
 
 @media only screen and (max-width:800px) {
@@ -713,6 +717,7 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
         height: auto;
         left: 10px;
         z-index: 1;  }
+    .table-scroll {overflow-y: scroll;}
 }
 
 @media only screen and (max-width:1024px) {
@@ -721,6 +726,7 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
         height: auto;
         left: 20px;
         z-index: 1;  }
+    .table-scroll {overflow-y: scroll;}
 }
 
 @media only screen and (max-width:1280px) {
@@ -728,6 +734,7 @@ table.table-finish .fa.explanation-text{ width: 45px; height: 52px; display: blo
         width: 700px;
         height: auto;
         z-index: 1;  }
+    .table-scroll {overflow-y: scroll;}
 }
 
 

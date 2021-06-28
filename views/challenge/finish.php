@@ -76,6 +76,7 @@ $number = 1;
     </div>
     <div aria-labelledby="summaryHead">
         <div class="panel-body">
+            <div class="table-scrollable">
             <table class="table table-finish table-hover table_results">
                 <?php foreach ($summary->answers as $realQuestionId => $answer):?>
                     <?php foreach( $questions as $i => $question ): ?>
@@ -212,6 +213,7 @@ $number = 1;
                     <td class="text-center"><strong>Всего баллов: <?= $summary->getAllPoints($questions, $points)['allPoints']; ?> из <?=$summary->getAllPoints($questions, $points)['numberOfPoints']?></strong></td>
                 </tr>
             </table>
+            </div>    
         </div>
     </div>
     <script style="opacity: 1;">
